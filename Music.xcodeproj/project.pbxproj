@@ -7,21 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3ABAFCAE2AA7D6C40011BFD6 /* JellyfinMusicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABAFCAD2AA7D6C40011BFD6 /* JellyfinMusicApp.swift */; };
-		3ABAFCB02AA7D6C40011BFD6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABAFCAF2AA7D6C40011BFD6 /* ContentView.swift */; };
-		3ABAFCB22AA7D6C40011BFD6 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABAFCB12AA7D6C40011BFD6 /* Item.swift */; };
-		3ABAFCB42AA7D6C50011BFD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ABAFCB32AA7D6C50011BFD6 /* Assets.xcassets */; };
-		3ABAFCB82AA7D6C50011BFD6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ABAFCB72AA7D6C50011BFD6 /* Preview Assets.xcassets */; };
+		3AEB322B2AA7EC3C00853210 /* MusicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321A2AA7EC3C00853210 /* MusicApp.swift */; };
+		3AEB322C2AA7EC3C00853210 /* JellyfinClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */; };
+		3AEB322D2AA7EC3C00853210 /* JellyfinClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */; };
+		3AEB322E2AA7EC3C00853210 /* JellyfinClient+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321E2AA7EC3C00853210 /* JellyfinClient+Request.swift */; };
+		3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEB321F2AA7EC3C00853210 /* Assets.xcassets */; };
+		3AEB32302AA7EC3C00853210 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEB32212AA7EC3C00853210 /* Preview Assets.xcassets */; };
+		3AEB32312AA7EC3C00853210 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32232AA7EC3C00853210 /* ContentView.swift */; };
+		3AEB32322AA7EC3C00853210 /* LargeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32262AA7EC3C00853210 /* LargeButtonStyle.swift */; };
+		3AEB32332AA7EC3C00853210 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32292AA7EC3C00853210 /* LoginView.swift */; };
+		3AEB32362AA7EEBF00853210 /* JellyfinClient+Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32352AA7EEBF00853210 /* JellyfinClient+Authorization.swift */; };
+		3AEB323B2AA7FF1100853210 /* NavigationRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB323A2AA7FF1100853210 /* NavigationRoot.swift */; };
+		3AEB323E2AA7FFA100853210 /* NavigationRoot+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB323D2AA7FFA100853210 /* NavigationRoot+Search.swift */; };
+		3AEB32402AA7FFF100853210 /* NavigationRoot+Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB323F2AA7FFF100853210 /* NavigationRoot+Library.swift */; };
+		3AEB32422AA800C800853210 /* Navigation+Artists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32412AA800C800853210 /* Navigation+Artists.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3ABAFCAA2AA7D6C40011BFD6 /* JellyfinMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JellyfinMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3ABAFCAD2AA7D6C40011BFD6 /* JellyfinMusicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JellyfinMusicApp.swift; sourceTree = "<group>"; };
-		3ABAFCAF2AA7D6C40011BFD6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		3ABAFCB12AA7D6C40011BFD6 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
-		3ABAFCB32AA7D6C50011BFD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3ABAFCB52AA7D6C50011BFD6 /* JellyfinMusic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JellyfinMusic.entitlements; sourceTree = "<group>"; };
-		3ABAFCB72AA7D6C50011BFD6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3ABAFCAA2AA7D6C40011BFD6 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AEB321A2AA7EC3C00853210 /* MusicApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicApp.swift; sourceTree = "<group>"; };
+		3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JellyfinClientError.swift; sourceTree = "<group>"; };
+		3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JellyfinClient.swift; sourceTree = "<group>"; };
+		3AEB321E2AA7EC3C00853210 /* JellyfinClient+Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JellyfinClient+Request.swift"; sourceTree = "<group>"; };
+		3AEB321F2AA7EC3C00853210 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3AEB32212AA7EC3C00853210 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3AEB32222AA7EC3C00853210 /* Music.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Music.entitlements; sourceTree = "<group>"; };
+		3AEB32232AA7EC3C00853210 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3AEB32262AA7EC3C00853210 /* LargeButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeButtonStyle.swift; sourceTree = "<group>"; };
+		3AEB32292AA7EC3C00853210 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		3AEB322A2AA7EC3C00853210 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3AEB32352AA7EEBF00853210 /* JellyfinClient+Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JellyfinClient+Authorization.swift"; sourceTree = "<group>"; };
+		3AEB323A2AA7FF1100853210 /* NavigationRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRoot.swift; sourceTree = "<group>"; };
+		3AEB323D2AA7FFA100853210 /* NavigationRoot+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Search.swift"; sourceTree = "<group>"; };
+		3AEB323F2AA7FFF100853210 /* NavigationRoot+Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Library.swift"; sourceTree = "<group>"; };
+		3AEB32412AA800C800853210 /* Navigation+Artists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation+Artists.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,46 +57,128 @@
 		3ABAFCA12AA7D6C40011BFD6 = {
 			isa = PBXGroup;
 			children = (
-				3ABAFCAC2AA7D6C40011BFD6 /* JellyfinMusic */,
+				3AEB32192AA7EC3C00853210 /* Music */,
 				3ABAFCAB2AA7D6C40011BFD6 /* Products */,
+				3ABAFCC02AA7D84B0011BFD6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		3ABAFCAB2AA7D6C40011BFD6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3ABAFCAA2AA7D6C40011BFD6 /* JellyfinMusic.app */,
+				3ABAFCAA2AA7D6C40011BFD6 /* Music.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3ABAFCAC2AA7D6C40011BFD6 /* JellyfinMusic */ = {
+		3ABAFCC02AA7D84B0011BFD6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3ABAFCAD2AA7D6C40011BFD6 /* JellyfinMusicApp.swift */,
-				3ABAFCAF2AA7D6C40011BFD6 /* ContentView.swift */,
-				3ABAFCB12AA7D6C40011BFD6 /* Item.swift */,
-				3ABAFCB32AA7D6C50011BFD6 /* Assets.xcassets */,
-				3ABAFCB52AA7D6C50011BFD6 /* JellyfinMusic.entitlements */,
-				3ABAFCB62AA7D6C50011BFD6 /* Preview Content */,
 			);
-			path = JellyfinMusic;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3ABAFCB62AA7D6C50011BFD6 /* Preview Content */ = {
+		3AEB32192AA7EC3C00853210 /* Music */ = {
 			isa = PBXGroup;
 			children = (
-				3ABAFCB72AA7D6C50011BFD6 /* Preview Assets.xcassets */,
+				3AEB32242AA7EC3C00853210 /* Presentation */,
+				3AEB321B2AA7EC3C00853210 /* JellyfinClient */,
+				3AEB322A2AA7EC3C00853210 /* Info.plist */,
+				3AEB32222AA7EC3C00853210 /* Music.entitlements */,
+				3AEB321F2AA7EC3C00853210 /* Assets.xcassets */,
+				3AEB32202AA7EC3C00853210 /* Preview Content */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
+		3AEB321B2AA7EC3C00853210 /* JellyfinClient */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB32382AA7EF6000853210 /* Methods */,
+				3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */,
+				3AEB321E2AA7EC3C00853210 /* JellyfinClient+Request.swift */,
+				3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */,
+			);
+			path = JellyfinClient;
+			sourceTree = "<group>";
+		};
+		3AEB32202AA7EC3C00853210 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB32212AA7EC3C00853210 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		3AEB32242AA7EC3C00853210 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB323C2AA7FF4500853210 /* Navigation */,
+				3AEB32272AA7EC3C00853210 /* Views */,
+				3AEB32252AA7EC3C00853210 /* Styles */,
+				3AEB32392AA7F63200853210 /* Core */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		3AEB32252AA7EC3C00853210 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB32262AA7EC3C00853210 /* LargeButtonStyle.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		3AEB32272AA7EC3C00853210 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB32282AA7EC3C00853210 /* Account */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3AEB32282AA7EC3C00853210 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB32292AA7EC3C00853210 /* LoginView.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		3AEB32382AA7EF6000853210 /* Methods */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB32352AA7EEBF00853210 /* JellyfinClient+Authorization.swift */,
+			);
+			path = Methods;
+			sourceTree = "<group>";
+		};
+		3AEB32392AA7F63200853210 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB321A2AA7EC3C00853210 /* MusicApp.swift */,
+				3AEB32232AA7EC3C00853210 /* ContentView.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		3AEB323C2AA7FF4500853210 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				3AEB323A2AA7FF1100853210 /* NavigationRoot.swift */,
+				3AEB323D2AA7FFA100853210 /* NavigationRoot+Search.swift */,
+				3AEB323F2AA7FFF100853210 /* NavigationRoot+Library.swift */,
+				3AEB32412AA800C800853210 /* Navigation+Artists.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3ABAFCA92AA7D6C40011BFD6 /* JellyfinMusic */ = {
+		3ABAFCA92AA7D6C40011BFD6 /* Music */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3ABAFCBB2AA7D6C50011BFD6 /* Build configuration list for PBXNativeTarget "JellyfinMusic" */;
+			buildConfigurationList = 3ABAFCBB2AA7D6C50011BFD6 /* Build configuration list for PBXNativeTarget "Music" */;
 			buildPhases = (
 				3ABAFCA62AA7D6C40011BFD6 /* Sources */,
 				3ABAFCA72AA7D6C40011BFD6 /* Frameworks */,
@@ -87,9 +188,11 @@
 			);
 			dependencies = (
 			);
-			name = JellyfinMusic;
+			name = Music;
+			packageProductDependencies = (
+			);
 			productName = JellyfinMusic;
-			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* JellyfinMusic.app */;
+			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* Music.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -107,7 +210,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3ABAFCA52AA7D6C40011BFD6 /* Build configuration list for PBXProject "JellyfinMusic" */;
+			buildConfigurationList = 3ABAFCA52AA7D6C40011BFD6 /* Build configuration list for PBXProject "Music" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -120,7 +223,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3ABAFCA92AA7D6C40011BFD6 /* JellyfinMusic */,
+				3ABAFCA92AA7D6C40011BFD6 /* Music */,
 			);
 		};
 /* End PBXProject section */
@@ -130,8 +233,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3ABAFCB82AA7D6C50011BFD6 /* Preview Assets.xcassets in Resources */,
-				3ABAFCB42AA7D6C50011BFD6 /* Assets.xcassets in Resources */,
+				3AEB32302AA7EC3C00853210 /* Preview Assets.xcassets in Resources */,
+				3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,9 +245,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3ABAFCB02AA7D6C40011BFD6 /* ContentView.swift in Sources */,
-				3ABAFCB22AA7D6C40011BFD6 /* Item.swift in Sources */,
-				3ABAFCAE2AA7D6C40011BFD6 /* JellyfinMusicApp.swift in Sources */,
+				3AEB323B2AA7FF1100853210 /* NavigationRoot.swift in Sources */,
+				3AEB322C2AA7EC3C00853210 /* JellyfinClientError.swift in Sources */,
+				3AEB32332AA7EC3C00853210 /* LoginView.swift in Sources */,
+				3AEB32402AA7FFF100853210 /* NavigationRoot+Library.swift in Sources */,
+				3AEB32422AA800C800853210 /* Navigation+Artists.swift in Sources */,
+				3AEB323E2AA7FFA100853210 /* NavigationRoot+Search.swift in Sources */,
+				3AEB32362AA7EEBF00853210 /* JellyfinClient+Authorization.swift in Sources */,
+				3AEB32322AA7EC3C00853210 /* LargeButtonStyle.swift in Sources */,
+				3AEB32312AA7EC3C00853210 /* ContentView.swift in Sources */,
+				3AEB322B2AA7EC3C00853210 /* MusicApp.swift in Sources */,
+				3AEB322D2AA7EC3C00853210 /* JellyfinClient.swift in Sources */,
+				3AEB322E2AA7EC3C00853210 /* JellyfinClient+Request.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,14 +382,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = JellyfinMusic/JellyfinMusic.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Music/Music.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"JellyfinMusic/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Music/Preview Content\"";
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Music/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -293,7 +406,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.JellyfinMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.Music;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -308,14 +421,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = JellyfinMusic/JellyfinMusic.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Music/Music.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"JellyfinMusic/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Music/Preview Content\"";
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Music/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -331,7 +445,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.JellyfinMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.Music;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -344,7 +458,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3ABAFCA52AA7D6C40011BFD6 /* Build configuration list for PBXProject "JellyfinMusic" */ = {
+		3ABAFCA52AA7D6C40011BFD6 /* Build configuration list for PBXProject "Music" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3ABAFCB92AA7D6C50011BFD6 /* Debug */,
@@ -353,7 +467,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3ABAFCBB2AA7D6C50011BFD6 /* Build configuration list for PBXNativeTarget "JellyfinMusic" */ = {
+		3ABAFCBB2AA7D6C50011BFD6 /* Build configuration list for PBXNativeTarget "Music" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3ABAFCBC2AA7D6C50011BFD6 /* Debug */,
