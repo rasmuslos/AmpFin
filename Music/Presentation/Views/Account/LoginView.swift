@@ -10,7 +10,7 @@ import SwiftUI
 struct LoginView: View {
     var callback : () -> ()
     
-    @State var loginSheetPresented = true
+    @State var loginSheetPresented = false
     @State var loginFlowState: LoginFlowState = .server
     
     @State var server = JellyfinClient.shared.serverUrl?.absoluteString ?? ""
@@ -143,6 +143,6 @@ extension LoginView {
 
 #Preview {
     LoginView() {
-        print("Login flow finished", JellyfinClient.shared.token)
+        print("Login flow finished")
     }
 }

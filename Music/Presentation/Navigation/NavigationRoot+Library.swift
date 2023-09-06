@@ -10,10 +10,13 @@ import SwiftUI
 extension NavigationRoot {
     struct LibraryTab: View {
         var body: some View {
-            Text("TODO")
-                .tabItem {
-                    Label("Library", systemImage: "rectangle.stack.fill")
-                }
+            NavigationStack {
+                LibraryView(dataProvider: OnlineLibraryDataProivder())
+                    .modifier(NowPlayingBarModifier())
+            }
+            .tabItem {
+                Label("Library", systemImage: "rectangle.stack.fill")
+            }
         }
     }
 }

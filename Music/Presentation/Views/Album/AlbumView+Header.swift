@@ -1,0 +1,79 @@
+//
+//  AlbumHeader.swift
+//  Music
+//
+//  Created by Rasmus Krämer on 06.09.23.
+//
+
+import SwiftUI
+import UIImageColors
+
+extension AlbumView {
+    struct Header: View {
+        let album: AlbumItem
+        
+        @Binding var navbarVisible: Bool
+        @Binding var imageColors: ImageColors
+        
+        var body: some View {
+            ZStack(alignment: .top) {
+                GeometryReader { reader in
+                    let offset = reader.frame(in: .global).minY
+                    
+                    Rectangle()
+                        .foregroundStyle(imageColors.background)
+                        .offset(y: -offset)
+                        .frame(height: offset)
+                        .onChange(of: offset) {
+                            navbarVisible = offset < -350
+                        }
+                }
+                .frame(height: 0)
+                
+                VStack {
+                    ItemImage(cover: album.cover)
+                        .shadow(color: .black.opacity(0.25), radius: 20)
+                        .frame(width: 275)
+                    
+                    Text(album.name)
+                        .padding(.top)
+                        .lineLimit(1)
+                        .font(.headline)
+                        .foregroundStyle(imageColors.isLight ? .black : .white)
+                    Text(album.artists.map { $0.name }.joined(separator: ", "))
+                        .padding(.bottom)
+                        .lineLimit(1)
+                        .font(.subheadline)
+                        .foregroundStyle(imageColors.detail)
+                    
+                    HStack {
+                        Group {
+                            Button {
+                                
+                            } label: {
+                                Label("Play", systemImage: "play.fill")
+                            }
+                            Button {
+                                
+                            } label: {
+                                Label("Shuffle", systemImage: "shuffle")
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .foregroundColor(imageColors.secondary)
+                        .background(imageColors.primary.opacity(0.5))
+                        .bold()
+                        .cornerRadius(7)
+                    }
+                }
+                .padding(.top, 100)
+                .padding(.bottom)
+                .padding(.horizontal)
+            }
+            .background(imageColors.background)
+            .listRowSeparator(.hidden)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+        }
+    }
+}
