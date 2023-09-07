@@ -36,6 +36,7 @@ extension JellyfinClient {
             URLQueryItem(name: "Recursive", value: "true"),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
         ]
         
         if(limit > 0) {
@@ -50,8 +51,6 @@ extension JellyfinClient {
 // MARK: Get album items
 
 extension JellyfinClient {
-    // https://video.rfk.io/Users/845d8eda893745489dc884363818f240/Items?ParentId=8a5979a8fc18fe9cb1f19637c6375638&Fields=ItemCounts%2CPrimaryImageAspectRatio%2CBasicSyncInfo%2CCanDelete%2CMediaSourceCount&SortBy=ParentIndexNumber%2CIndexNumber%2CSortName
-    
     func getAlbumItems(id: String) async throws -> [SongItem] {
         let response = try await request(ClientRequest<SongsItemResponse>(path: "Items", method: "GET", query: [
             URLQueryItem(name: "SortBy", value: "ParentIndexNumber,IndexNumber,SortName"),
@@ -64,6 +63,30 @@ extension JellyfinClient {
         ]))
         
         return response.Items.enumerated().map { SongItem.convertFromJellyfin($1, fallbackIndex: $0) }
+    }
+}
+
+// MARK: Lyrics
+
+extension JellyfinClient {
+    func getLyrics(itemId: String) async throws -> SongItem.Lyrics {
+        let userId = UserDefaults.standard.string(forKey: "userId")!
+        let response = try await request(ClientRequest<LyricsResponse>(path: "/Users/\(userId)/Items/\(itemId)/Lyrics", method: "GET"))
+        
+        var lyrics: SongItem.Lyrics = [
+            0: nil,
+        ]
+        response.Lyrics.forEach { element in
+            let start = Double(element.Start / 10_000_000)
+            var text: String? = element.Text.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if text == "" {
+                text = nil
+            }
+            lyrics[start] = text
+        }
+        
+        return lyrics
     }
 }
 

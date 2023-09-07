@@ -9,20 +9,29 @@ import SwiftUI
 
 struct SongList: View {
     let songs: [SongItem]
-    var includeButtons: Bool = true
+    var album: AlbumItem? = nil
     
     @State var search: String = ""
     
     var body: some View {
-        if includeButtons {
-            SongListButtons()
+        if album == nil {
+            SongListButtons() {
+                startPlayback(index: 0, shuffle: $0)
+            }
         }
         
-        ForEach(filter()) { item in
-            SongListItem(item: item)
+        ForEach(Array(filter().enumerated()), id: \.offset) { index, item in
+            Button {
+                startPlayback(index: index, shuffle: false)
+            } label: {
+                SongListItem(item: item, album: album)
+            }
+            .buttonStyle(.plain)
+            .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
+            .padding(.horizontal)
         }
         
-        if includeButtons {
+        if album == nil {
             // .searchable adds padding... for some reason
             Color.clear
                 .searchable(text: $search, prompt: "Search")
@@ -36,14 +45,21 @@ struct SongList: View {
 // MARK: Helper
 
 extension SongList {
-    func filter() -> [SongItem] {
+    private func filter() -> [SongItem] {
+        var filtered = songs
+        
         if search != "" {
-            return songs.filter { $0.name.contains(search) || $0.album.name.contains(search) }
+            filtered = filtered.filter { $0.name.contains(search) || $0.album.name.contains(search) }
         }
         
-        return songs
+        return filtered.sorted { $0.index < $1.index }
+    }
+    
+    private func startPlayback(index: Int, shuffle: Bool) {
+        AudioPlayer.shared.startPlayback(items: filter(), startIndex: index, shuffle: shuffle)
     }
 }
+
 
 #Preview {
     NavigationStack {

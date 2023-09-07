@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct SongListButtons: View {
+    let startPlayback: (_ shuffle: Bool) -> ()
+    
     var body: some View {
         HStack {
             Button {
-                
+                startPlayback(false)
             } label: {
                 Label("Play", systemImage: "play.fill")
             }
             .buttonStyle(PlayButtonStyle())
             Button {
-                
+                startPlayback(true)
             } label: {
                 Label("Shuffle", systemImage: "shuffle")
             }

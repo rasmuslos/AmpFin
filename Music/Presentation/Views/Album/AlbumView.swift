@@ -23,14 +23,19 @@ struct AlbumView: View {
                 .navigationTitle(album.name)
                 .navigationBarTitleDisplayMode(.inline)
             
-            SongList(songs: songs, includeButtons: false)
+            SongList(songs: songs, album: album)
                 .padding(.top, 4)
+            
+            if let overview = album.overview {
+                Text(overview)
+            }
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .ignoresSafeArea(edges: .top)
-        .modifier(ToolbarModifier(album: album, navbarVisible: $navbarVisible, imageColors: $imageColors))
         // introspect does not work here
+        .modifier(ToolbarModifier(album: album, navbarVisible: $navbarVisible, imageColors: $imageColors))
+        .modifier(NowPlayingBarSafeAreaModifier())
         .task {
             if let songs = try? await dataProvider.getAlbumItems(id: album.id) {
                 self.songs = songs

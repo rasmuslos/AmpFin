@@ -41,10 +41,20 @@ extension AlbumView {
                         .font(.headline)
                         .foregroundStyle(imageColors.isLight ? .black : .white)
                     Text(album.artists.map { $0.name }.joined(separator: ", "))
-                        .padding(.bottom)
                         .lineLimit(1)
                         .font(.subheadline)
                         .foregroundStyle(imageColors.detail)
+                    
+                    HStack {
+                        if let releaseDate = album.releaseDate {
+                            Text(String(releaseDate.get(.year)))
+                        }
+                        Text(album.genres.joined(separator: ", "))
+                            .lineLimit(1)
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+                    .padding(.bottom)
                     
                     HStack {
                         Group {
@@ -62,7 +72,7 @@ extension AlbumView {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
                         .foregroundColor(imageColors.secondary)
-                        .background(imageColors.primary.opacity(0.5))
+                        .background(imageColors.primary.opacity(0.25))
                         .bold()
                         .cornerRadius(7)
                     }

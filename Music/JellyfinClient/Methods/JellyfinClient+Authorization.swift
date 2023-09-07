@@ -35,10 +35,17 @@ extension JellyfinClient {
             "Username": username,
             "Pw": password,
         ]))
+        
+        UserDefaults.standard.set(response.User.Id, forKey: "userId")
         return response.AccessToken
     }
     
     struct AuthenticateByNameResponse: Codable {
         let AccessToken: String
+        let User: User
+        
+        struct User: Codable {
+            let Id: String
+        }
     }
 }

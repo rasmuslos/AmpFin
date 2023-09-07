@@ -12,8 +12,8 @@ extension NavigationRoot {
         var body: some View {
             NavigationStack {
                 LibraryView(dataProvider: OnlineLibraryDataProivder())
-                    .modifier(NowPlayingBarModifier())
             }
+            .modifier(NowPlayingBarModifier())
             .tabItem {
                 Label("Library", systemImage: "rectangle.stack.fill")
             }

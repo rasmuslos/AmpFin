@@ -13,8 +13,10 @@ extension AlbumItem {
             id: item.Id,
             name: item.Name,
             sortName: item.SortName,
+            overview: item.Overview,
+            genres: item.Genres,
             releaseDate: item.PremiereDate != nil ? try? Date(item.PremiereDate!, strategy: .dateTime) : nil,
-            artists: item.ArtistItems.map {
+            artists: item.AlbumArtists.map {
                 ItemArtist(id: $0.Id, name: $0.Name)
             },
             cover: ItemCover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id),

@@ -15,6 +15,8 @@ extension JellyfinClient {
         var query: [URLQueryItem]?
     }
     
+    struct EmptyResponse: Decodable {}
+    
     func request<T: Decodable>(_ clientRequest: ClientRequest<T>) async throws -> T {
         var url = self.serverUrl.appending(path: clientRequest.path)
         
@@ -48,6 +50,11 @@ extension JellyfinClient {
         do {
             let (data, _) = try await URLSession.shared.data(for: request)
             // print(clientRequest.path, String.init(data: data, encoding: .utf8))
+            
+            if T.self == EmptyResponse.self {
+                return EmptyResponse() as! T
+            }
+            
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
             print(error)

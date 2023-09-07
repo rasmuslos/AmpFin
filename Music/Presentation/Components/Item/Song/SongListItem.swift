@@ -9,21 +9,33 @@ import SwiftUI
 
 struct SongListItem: View {
     let item: SongItem
+    var album: AlbumItem? = nil
     
     var body: some View {
+        let showArtist = album == nil || !item.artists.elementsEqual(album!.artists) { $0.id == $1.id }
+        
         HStack {
-            ItemImage(cover: item.cover)
-                .frame(width: 45)
+            if album != nil {
+                Text(String(item.index))
+                    .frame(width: 23)
+                    // .padding(.horizontal, 7)
+            } else {
+                ItemImage(cover: item.cover)
+                    .frame(width: 45)
+            }
             
             VStack(alignment: .leading) {
                 Text(item.name)
                     .lineLimit(1)
                     .font(.headline)
+                    .padding(.vertical, showArtist ? 0 : 6)
                 
-                Text(item.artists.map { $0.name }.joined(separator: ", "))
-                    .lineLimit(1)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                if showArtist {
+                    Text(item.artists.map { $0.name }.joined(separator: ", "))
+                        .lineLimit(1)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
             }
             .padding(.horizontal, 5)
             
@@ -32,11 +44,10 @@ struct SongListItem: View {
                 
             } label: {
                 Image(systemName: "ellipsis")
-                    .foregroundStyle(.primary)
+                    .renderingMode(.original)
+                    .foregroundStyle(Color(UIColor.label))
             }
         }
-        .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-        .padding(.horizontal)
     }
 }
 

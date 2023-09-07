@@ -29,6 +29,7 @@ struct SongsView: View {
             }
         }
         .navigationTitle("Songs")
+        .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(sortOrder: $sortOrder)
         }

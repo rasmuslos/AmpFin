@@ -26,9 +26,11 @@ extension AlbumView {
                             VStack {
                                 Text(album.name)
                                     .font(.headline)
+                                    .lineLimit(1)
                                 if let releaseDate = album.releaseDate {
                                     Text(String(releaseDate.get(.year)))
                                         .font(.caption2)
+                                        .lineLimit(1)
                                 }
                             }
                         } else {
@@ -50,22 +52,22 @@ extension AlbumView {
                 }
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
-                        Button {
-                            
-                        } label: {
-                            // and for some other reason this was blue when i used a label
-                            Image(systemName: "arrow.down")
-                                .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
-                        }
-                    }
-                    ToolbarItem(placement: .primaryAction) {
-                        Menu {
-                            Label("Option 1", systemImage: "command")
-                            Label("Option 1", systemImage: "command")
-                        } label: {
-                            // for some reason it did show the label...
-                            Image(systemName: "ellipsis")
-                                .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
+                        HStack {
+                            Button {
+                                
+                            } label: {
+                                // and for some other reason this was blue when i used a label
+                                Image(systemName: "arrow.down")
+                                    .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
+                            }
+                            Menu {
+                                Label("Option 1", systemImage: "command")
+                                Label("Option 1", systemImage: "command")
+                            } label: {
+                                // for some reason it did show the label...
+                                Image(systemName: "ellipsis")
+                                    .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
+                            }
                         }
                     }
                 }
@@ -78,7 +80,7 @@ extension AlbumView {
         
         func body(content: Content) -> some View {
             content
-                // .font(.system(size: 16))
+                .font(.system(size: 20))
                 .imageScale(.large)
                 .symbolVariant(.circle.fill)
                 .symbolRenderingMode(.palette)

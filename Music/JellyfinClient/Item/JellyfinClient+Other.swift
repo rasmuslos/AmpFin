@@ -21,4 +21,13 @@ extension JellyfinClient {
     struct ImageTags: Codable {
         let Primary: String?
     }
+    
+    struct LyricsResponse: Codable {
+        let Lyrics: [Line]
+        
+        struct Line: Codable {
+            let Start: Int64
+            let Text: String
+        }
+    }
 }

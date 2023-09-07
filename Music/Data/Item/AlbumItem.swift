@@ -12,6 +12,9 @@ struct AlbumItem: Item {
     let name: String
     let sortName: String?
     
+    let overview: String?
+    let genres: [String]
+    
     let releaseDate: Date?
     let artists: [ItemArtist]
     

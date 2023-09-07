@@ -13,12 +13,17 @@ extension JellyfinClient {
     }
     
     struct JellyfinAlbum: Codable {
-        let Name: String
         let Id: String
+        let Name: String
         let SortName: String?
+        
+        let Overview: String?
+        let Genres: [String]
+        
         let PremiereDate: String?
+        let AlbumArtists: [JellyfinArtist]
+        
         let UserData: UserData
-        let ArtistItems: [JellyfinArtist]
         let ImageTags: ImageTags
     }
 }

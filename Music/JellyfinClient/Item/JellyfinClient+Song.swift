@@ -13,8 +13,8 @@ extension JellyfinClient {
     }
     
     struct JellyfinSongItem: Codable {
-        let Name: String
         let Id: String
+        let Name: String
         
         let PremiereDate: String?
         let IndexNumber: Int?

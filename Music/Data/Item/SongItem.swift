@@ -29,4 +29,6 @@ struct SongItem: Item {
         let name: String
         let artists: [ItemArtist]
     }
+    
+    typealias Lyrics = [Double: String?]
 }
