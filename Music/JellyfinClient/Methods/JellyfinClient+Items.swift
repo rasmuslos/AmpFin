@@ -7,11 +7,11 @@
 
 import Foundation
 
-// MARK: Get all items
+// MARK: Get all tracks
 
 extension JellyfinClient {
-    func getAllSongs(sortOrder: ItemSortOrder, ascending: Bool) async throws -> [SongItem] {
-        let response = try await request(ClientRequest<SongsItemResponse>(path: "Items", method: "GET", query: [
+    func getAllTracks(sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        let response = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
             URLQueryItem(name: "IncludeItemTypes", value: "Audio"),
@@ -21,14 +21,14 @@ extension JellyfinClient {
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
         ]))
         
-        return response.Items.enumerated().map { SongItem.convertFromJellyfin($1, fallbackIndex: $0) }
+        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
 }
 
 // MARK: Get albums
 
 extension JellyfinClient {
-    func getAlbums(limit: Int, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [AlbumItem] {
+    func getAlbums(limit: Int, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Album] {
         var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
@@ -44,15 +44,15 @@ extension JellyfinClient {
         }
         
         let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query))
-        return response.Items.map { AlbumItem.convertFromJellyfin($0) }
+        return response.Items.map(Album.convertFromJellyfin)
     }
 }
 
-// MARK: Get album items
+// MARK: Get album tracks
 
 extension JellyfinClient {
-    func getAlbumItems(id: String) async throws -> [SongItem] {
-        let response = try await request(ClientRequest<SongsItemResponse>(path: "Items", method: "GET", query: [
+    func getAlbumTracks(id: String) async throws -> [Track] {
+        let response = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: [
             URLQueryItem(name: "SortBy", value: "ParentIndexNumber,IndexNumber,SortName"),
             URLQueryItem(name: "SortOrder", value: "Ascending"),
             URLQueryItem(name: "IncludeItemTypes", value: "Audio"),
@@ -60,20 +60,19 @@ extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
-        ]))
+        ], userPrefix: true))
         
-        return response.Items.enumerated().map { SongItem.convertFromJellyfin($1, fallbackIndex: $0) }
+        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
 }
 
 // MARK: Lyrics
 
 extension JellyfinClient {
-    func getLyrics(itemId: String) async throws -> SongItem.Lyrics {
-        let userId = UserDefaults.standard.string(forKey: "userId")!
-        let response = try await request(ClientRequest<LyricsResponse>(path: "/Users/\(userId)/Items/\(itemId)/Lyrics", method: "GET"))
+    func getLyrics(trackId: String) async throws -> Track.Lyrics {
+        let response = try await request(ClientRequest<LyricsResponse>(path: "Items/\(trackId)/Lyrics", method: "GET", userPrefix: true))
         
-        var lyrics: SongItem.Lyrics = [
+        var lyrics: Track.Lyrics = [
             0: nil,
         ]
         response.Lyrics.forEach { element in
@@ -87,6 +86,39 @@ extension JellyfinClient {
         }
         
         return lyrics
+    }
+}
+
+// MARK: Artists
+
+extension JellyfinClient {
+    func getArtists(albumOnly: Bool) async throws -> [Artist] {
+        let response = try await request(ClientRequest<ArtistItemsResponse>(path: albumOnly ? "Artists/AlbumArtists" : "Artists", method: "GET", query: [
+            URLQueryItem(name: "SortBy", value: ItemSortOrder.name.rawValue),
+            URLQueryItem(name: "SortOrder", value: "Ascending"),
+            // URLQueryItem(name: "Recursive", value: "true"),
+        ]))
+        
+        return response.Items.map(Artist.convertFromJellyfin)
+    }
+}
+
+// MARK: Get artist albums
+
+extension JellyfinClient {
+    func getArtistAlbums(id: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Album] {
+        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: [
+            URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
+            URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
+            URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
+            URLQueryItem(name: "AlbumArtistIds", value: id),
+        ], userPrefix: true))
+        
+        return response.Items.map(Album.convertFromJellyfin)
     }
 }
 

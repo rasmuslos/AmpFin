@@ -10,7 +10,7 @@ import UIImageColors
 
 extension AlbumView {
     struct Header: View {
-        let album: AlbumItem
+        let album: Album
         
         @Binding var navbarVisible: Bool
         @Binding var imageColors: ImageColors
@@ -42,10 +42,16 @@ extension AlbumView {
                         .lineLimit(1)
                         .font(.headline)
                         .foregroundStyle(imageColors.isLight ? .black : .white)
-                    Text(album.artists.map { $0.name }.joined(separator: ", "))
-                        .lineLimit(1)
-                        .font(.subheadline)
-                        .foregroundStyle(imageColors.detail)
+                    
+                    if let first = album.artists.first {
+                        NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
+                            Text(album.artists.map { $0.name }.joined(separator: ", "))
+                                .lineLimit(1)
+                                .font(.subheadline)
+                                .foregroundStyle(imageColors.detail)
+                        }
+                        .buttonStyle(.plain)
+                    }
                     
                     HStack {
                         if let releaseDate = album.releaseDate {

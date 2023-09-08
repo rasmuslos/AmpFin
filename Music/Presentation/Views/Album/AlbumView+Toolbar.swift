@@ -11,7 +11,7 @@ extension AlbumView {
     struct ToolbarModifier: ViewModifier {
         @Environment(\.presentationMode) var presentationMode
         
-        let album: AlbumItem
+        let album: Album
         
         @Binding var navbarVisible: Bool
         @Binding var imageColors: ImageColors

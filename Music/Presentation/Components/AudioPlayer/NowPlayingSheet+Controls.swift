@@ -11,11 +11,17 @@ import AVKit
 extension NowPlayingSheet {
     struct Controls: View {
         @Binding var playing: Bool
-        @Binding var currentTab: Tab
+        @Binding var currentTab: Tab {
+            didSet {
+                queueTabActive = currentTab == .queue
+            }
+        }
         
         @State var duration: Double = AudioPlayer.shared.duration()
         @State var currentTime: Double = AudioPlayer.shared.currentTime()
         @State var playedPercentage: Double = (AudioPlayer.shared.currentTime() / AudioPlayer.shared.duration()) * 100
+        
+        @State var queueTabActive = false
         
         var body: some View {
             VStack {
@@ -36,26 +42,26 @@ extension NowPlayingSheet {
                         Text(Duration.seconds(duration).formatted(.time(pattern: .minuteSecond)))
                     }
                     .font(.caption)
+                    .foregroundStyle(.secondary)
                 }
                 
                 HStack {
                     Group {
                         Button {
-                            AudioPlayer.shared.playPreviousItem()
+                            AudioPlayer.shared.playPreviousTrack()
                         } label: {
                             Image(systemName: "backward.fill")
                         }
                         Button {
-                            
                             AudioPlayer.shared.setPlaying(!AudioPlayer.shared.isPlaying())
                         } label: {
                             Image(systemName: playing ? "pause.fill" : "play.fill")
                                 .font(.system(size: 47))
                                 .padding(.horizontal, 50)
-                                .symbolEffect(.bounce, value: playing)
+                                .contentTransition(.symbolEffect(.replace))
                         }
                         Button {
-                            AudioPlayer.shared.playNextItem()
+                            AudioPlayer.shared.playNextTrack()
                         } label: {
                             Image(systemName: "forward.fill")
                         }
@@ -74,21 +80,23 @@ extension NowPlayingSheet {
                     } label: {
                         Image(systemName: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
                     }
+                    .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
+                    
                     Spacer()
                     AirPlayView()
                         .frame(width: 45)
                         .padding(.vertical, -100)
+                    
                     Spacer()
                     Button {
                         setActiveTab(.queue)
                     } label: {
                         Image(systemName: "list.dash")
-                            .foregroundStyle(currentTab == .queue ? .accent.opacity(0.75) : .primary.opacity(0.75))
                     }
+                    .buttonStyle(SymbolButtonStyle(active: $queueTabActive))
                 }
                 .bold()
                 .font(.system(size: 20))
-                .foregroundStyle(.primary.opacity(0.75))
                 .frame(height: 45)
                 .padding(.horizontal, 45)
                 .padding(.top, 35)
@@ -96,17 +104,9 @@ extension NowPlayingSheet {
             }
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.PositionUpdated), perform: { _ in
                 withAnimation {
-                    if duration == 0 {
-                        duration = AudioPlayer.shared.duration()
-                    }
-                    
+                    duration = AudioPlayer.shared.duration()
                     currentTime = AudioPlayer.shared.currentTime()
                     playedPercentage = (currentTime / duration) * 100
-                }
-            })
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.ItemChange), perform: { _ in
-                withAnimation {
-                    duration = AudioPlayer.shared.duration()
                 }
             })
         }
@@ -131,7 +131,7 @@ extension NowPlayingSheet {
             let routePickerView = AVRoutePickerView()
             routePickerView.backgroundColor = UIColor.clear
             routePickerView.activeTintColor = UIColor(Color.accentColor)
-            routePickerView.tintColor = UIColor(Color.primary.opacity(0.75))
+            routePickerView.tintColor = UIColor(Color.secondary)
             
             return routePickerView
         }

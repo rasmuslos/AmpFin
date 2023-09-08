@@ -8,24 +8,24 @@
 import Foundation
 
 extension JellyfinClient {
-    func reportPlaybackStopped(itemId: String) async throws {
+    func reportPlaybackStopped(trackId: String) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing/stopped", method: "POST", body: [
-            "ItemId": itemId,
+            "ItemId": trackId,
             // "PositionTicks": positionSeconds * 10_000_000,
         ]))
     }
     
-    func reportPlaybackProgress(itemId: String, positionSeconds: Double, paused: Bool) async throws {
+    func reportPlaybackProgress(trackId: String, positionSeconds: Double, paused: Bool) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing/progress", method: "POST", body: [
-            "ItemId": itemId,
+            "ItemId": trackId,
             "PositionTicks": positionSeconds * 10_000_000,
             "IsPaused": paused,
         ]))
     }
     
-    func reportPlaybackStarted(itemId: String) async throws {
+    func reportPlaybackStarted(trackId: String) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing", method: "POST", body: [
-            "ItemId": itemId,
+            "ItemId": trackId,
             "PositionTicks": 0,
         ]))
     }

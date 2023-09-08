@@ -1,5 +1,5 @@
 //
-//  SongListButtons.swift
+//  TrackListButtons.swift
 //  Music
 //
 //  Created by Rasmus Krämer on 06.09.23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SongListButtons: View {
+struct TrackListButtons: View {
     let startPlayback: (_ shuffle: Bool) -> ()
     
     var body: some View {

@@ -13,21 +13,25 @@ extension LibraryView {
         
         var body: some View {
             Group {
-                NavigationLink(destination: SongsView()) {
-                    Label("Songs", systemImage: "music.note")
+                NavigationLink(destination: TracksView()) {
+                    Label("Tracks", systemImage: "music.note")
                 }
                 NavigationLink(destination: AlbumsView()) {
                     Label("Albums", systemImage: "square.stack")
                 }
-                NavigationLink(destination: Text("oof")) {
+                NavigationLink(destination: ArtistsView(albumOnly: true)) {
                     Label("Album Artists", systemImage: "music.mic")
                 }
-                NavigationLink(destination: Text("oof")) {
+                NavigationLink(destination: ArtistsView(albumOnly: false)) {
                     Label("Artists", systemImage: "mic.fill")
                 }
+                /*
+                 Not really possible without knowing the library id
+                 
                 NavigationLink(destination: Text("oof")) {
                     Label("Genres", systemImage: "guitars")
                 }
+                 */
             }
             .font(.headline)
         }

@@ -13,12 +13,20 @@ extension JellyfinClient {
         var method: String
         var body: Any?
         var query: [URLQueryItem]?
+        
+        var userPrefix = false
     }
     
     struct EmptyResponse: Decodable {}
     
     func request<T: Decodable>(_ clientRequest: ClientRequest<T>) async throws -> T {
-        var url = self.serverUrl.appending(path: clientRequest.path)
+        var url: URL
+        
+        if clientRequest.userPrefix {
+            url = serverUrl.appending(path: "Users").appending(path: userId).appending(path: clientRequest.path)
+        } else {
+            url = serverUrl.appending(path: clientRequest.path)
+        }
         
         if let query = clientRequest.query {
             url = url.appending(queryItems: query)

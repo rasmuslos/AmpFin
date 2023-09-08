@@ -11,7 +11,7 @@ import SwiftUI
 
 extension NowPlayingSheet {
     struct Queue: View {
-        let item: SongItem
+        let track: Track
         let namespace: Namespace.ID
         
         @State var histroy = AudioPlayer.shared.history
@@ -31,35 +31,41 @@ extension NowPlayingSheet {
                 Spacer()
                 
                 Button {
-                    AudioPlayer.shared.shuffle(!shuffled)
+                    withAnimation {
+                        AudioPlayer.shared.shuffle(!shuffled)
+                    }
                 } label: {
                     Image(systemName: "shuffle")
-                        .foregroundStyle(shuffled ? Color.accentColor : .secondary)
                 }
-                .padding()
+                .buttonStyle(SymbolButtonStyle(active: $shuffled))
+                .padding(.horizontal, 4)
                 
                 Button {
-                    showHistory.toggle()
+                    withAnimation {
+                        showHistory.toggle()
+                    }
                 } label: {
                     Image(systemName: "calendar.day.timeline.leading")
-                        .foregroundStyle(showHistory ? Color.accentColor : .secondary)
                 }
+                .buttonStyle(SymbolButtonStyle(active: $showHistory))
             }
             .padding(.top, 10)
-            .padding(.bottom, 5)
+            .padding(.bottom, -10)
             
             List {
                 if showHistory {
-                    ForEach(Array(histroy.enumerated()), id: \.offset) { index, item in
-                        QueueItem(item: item)
+                    ForEach(Array(histroy.enumerated()), id: \.offset) { index, track in
+                        QueueTrackRow(track: track)
                             .onTapGesture {
                                 AudioPlayer.shared.restoreHistory(index: index)
                             }
+                            .padding(.top, index == 0 ? 15 : 0)
+                            .padding(.bottom, (index == histroy.count - 1) ? 15 : 0)
                     }
                     .defaultScrollAnchor(.bottom)
                 } else {
-                    ForEach(Array(queue.enumerated()), id: \.offset) { index, item in
-                        QueueItem(item: item)
+                    ForEach(Array(queue.enumerated()), id: \.offset) { index, track in
+                        QueueTrackRow(track: track)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
                                     let _ = AudioPlayer.shared.removeItem(index: index)
@@ -70,10 +76,13 @@ extension NowPlayingSheet {
                             .onTapGesture {
                                 AudioPlayer.shared.skip(to: index)
                             }
+                            .padding(.top, index == 0 ? 15 : 0)
+                            .padding(.bottom, (index == queue.count - 1) ? 15 : 0)
+                            .padding(.bottom, (index == queue.count - 1) ? 15 : 0)
                     }
                     .onMove { from, to in
                         from.forEach {
-                            AudioPlayer.shared.moveItem(from: $0, to: to)
+                            AudioPlayer.shared.moveTrack(from: $0, to: to)
                         }
                     }
                     .defaultScrollAnchor(.top)
@@ -82,8 +91,7 @@ extension NowPlayingSheet {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
             // move drag indicator
-            .padding(.trailing, -20)
-            
+            // .padding(.trailing, -20)
             // .environment(\.editMode, .constant(.active))
             .mask(
                 VStack(spacing: 0) {
@@ -96,7 +104,7 @@ extension NowPlayingSheet {
                         .frame(height: 40)
                 }
             )
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.ItemChange), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
                 withAnimation {
                     nowPlaying = AudioPlayer.shared.nowPlaying!
                 }
@@ -116,20 +124,20 @@ extension NowPlayingSheet {
 // MARK: Item
 
 extension NowPlayingSheet {
-    struct QueueItem: View {
-        let item: SongItem
+    struct QueueTrackRow: View {
+        let track: Track
         
         var body: some View {
             HStack {
-                ItemImage(cover: item.cover)
+                ItemImage(cover: track.cover)
                     .frame(width: 45)
                 
                 VStack(alignment: .leading) {
-                    Text(item.name)
+                    Text(track.name)
                         .lineLimit(1)
                         .font(.headline)
                     
-                    Text(item.artists.map { $0.name }.joined(separator: ", "))
+                    Text(track.artists.map { $0.name }.joined(separator: ", "))
                         .lineLimit(1)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)

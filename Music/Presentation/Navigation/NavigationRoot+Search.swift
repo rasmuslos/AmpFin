@@ -9,8 +9,8 @@ import SwiftUI
 
 extension NavigationRoot {
     struct SearchTab: View {
-        @State var history = [SongItem]()
-        @State var queue = [SongItem]()
+        @State var history = [Track]()
+        @State var queue = [Track]()
         
         var body: some View {
             List {

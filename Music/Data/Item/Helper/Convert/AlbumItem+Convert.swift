@@ -7,21 +7,22 @@
 
 import Foundation
 
-extension AlbumItem {
-    static func convertFromJellyfin(_ item: JellyfinClient.JellyfinAlbum) -> AlbumItem {
-        return AlbumItem(
+extension Album {
+    static func convertFromJellyfin(_ item: JellyfinClient.JellyfinAlbum) -> Album {
+        return Album(
             id: item.Id,
             name: item.Name,
             sortName: item.SortName,
+            cover: Cover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id),
+            favorite: item.UserData.IsFavorite,
             overview: item.Overview,
             genres: item.Genres,
             releaseDate: Date.parseDate(item.PremiereDate),
             artists: item.AlbumArtists.map {
-                ItemArtist(id: $0.Id, name: $0.Name)
+                ReducedArtist(
+                    id: $0.Id,
+                    name: $0.Name)
             },
-            cover: ItemCover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id),
-            downloaded: false,
-            favorite: item.UserData.IsFavorite,
             playCount: item.UserData.PlayCount)
     }
 }

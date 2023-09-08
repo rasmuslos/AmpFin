@@ -12,7 +12,7 @@ struct LibraryView: View {
     
     let dataProvider: LibraryDataProvider
     
-    @State var recentAlbums: [AlbumItem]?
+    @State var recentAlbums: [Album]?
     
     var body: some View {
         ScrollView {

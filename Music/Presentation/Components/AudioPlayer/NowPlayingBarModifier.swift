@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct NowPlayingBarModifier: ViewModifier {
-    @State var playing = false
-    @State var currentItem: SongItem?
+    @State var playing = AudioPlayer.shared.isPlaying()
+    @State var currentTrack = AudioPlayer.shared.nowPlaying
     
     @State var nowPlayingSheetPresented = false
     
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom) {
-                if let currentItem = currentItem {
+                if let currentTrack = currentTrack {
                     RoundedRectangle(cornerRadius: 15)
                     // Set tabbar background
                         .toolbarBackground(.hidden, for: .tabBar)
@@ -31,11 +31,11 @@ struct NowPlayingBarModifier: ViewModifier {
                     // add content
                         .overlay {
                             HStack {
-                                ItemImage(cover: currentItem.cover)
+                                ItemImage(cover: currentTrack.cover)
                                     .frame(width: 40, height: 40)
                                     .padding(.leading, 5)
                                 
-                                Text(currentItem.name)
+                                Text(currentTrack.name)
                                     .lineLimit(1)
                                 
                                 Spacer()
@@ -44,15 +44,12 @@ struct NowPlayingBarModifier: ViewModifier {
                                     Button {
                                         AudioPlayer.shared.setPlaying(!playing)
                                     } label: {
-                                        if playing {
-                                            Image(systemName: "pause.fill")
-                                        } else {
-                                            Image(systemName: "play.fill")
-                                        }
+                                        Image(systemName: playing ?  "pause.fill" : "play.fill")
+                                            .contentTransition(.symbolEffect(.replace))
                                     }
                                     
                                     Button {
-                                        AudioPlayer.shared.playNextItem()
+                                        AudioPlayer.shared.playNextTrack()
                                     } label: {
                                         Image(systemName: "forward.fill")
                                     }
@@ -72,13 +69,13 @@ struct NowPlayingBarModifier: ViewModifier {
                             nowPlayingSheetPresented.toggle()
                         }
                         .fullScreenCover(isPresented: $nowPlayingSheetPresented) {
-                            NowPlayingSheet(item: currentItem, playing: $playing)
+                            NowPlayingSheet(track: currentTrack, playing: $playing)
                         }
                 }
             }
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.ItemChange), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
                 withAnimation {
-                    currentItem = AudioPlayer.shared.nowPlaying
+                    currentTrack = AudioPlayer.shared.nowPlaying
                 }
             })
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.PlayPause), perform: { _ in
@@ -90,12 +87,12 @@ struct NowPlayingBarModifier: ViewModifier {
 }
 
 struct NowPlayingBarSafeAreaModifier: ViewModifier {
-    @State var isVisible = false
+    @State var isVisible = AudioPlayer.shared.nowPlaying != nil
     
     func body(content: Content) -> some View {
         content
             .safeAreaPadding(.bottom, isVisible ? 75 : 0)
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.ItemChange), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
                 withAnimation {
                     isVisible = AudioPlayer.shared.nowPlaying != nil
                 }

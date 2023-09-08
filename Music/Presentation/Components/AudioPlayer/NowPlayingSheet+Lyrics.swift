@@ -11,10 +11,10 @@ import SwiftUI
 
 extension NowPlayingSheet {
     struct LyricsContainer: View {
-        let item: SongItem
+        let track: Track
         @Binding var controlsVisible: Bool
         
-        @State var lyrics: SongItem.Lyrics?
+        @State var lyrics: Track.Lyrics?
         @State var activeLineIndex: Int = 0
         
         var body: some View {
@@ -62,15 +62,16 @@ extension NowPlayingSheet {
                         }
                     }))
             }
-            .onAppear {
-                Task.detached {
-                    lyrics = try? await JellyfinClient.shared.getLyrics(itemId: item.id)
-                }
-            }
+            .onAppear(perform: fetchLyrics)
+            .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
+                fetchLyrics()
+            })
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.PositionUpdated), perform: { _ in
                 updateLyricsIndex()
             })
         }
+        
+        // MARK: Helper
         
         func updateLyricsIndex() {
             if let lyrics = lyrics, lyrics.count > activeLineIndex + 1 {
@@ -80,6 +81,12 @@ extension NowPlayingSheet {
                     activeLineIndex += 1
                     updateLyricsIndex()
                 }
+            }
+        }
+        
+        func fetchLyrics() {
+            Task.detached {
+                lyrics = try? await JellyfinClient.shared.getLyrics(trackId: track.id)
             }
         }
     }

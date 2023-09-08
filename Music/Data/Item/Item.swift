@@ -7,31 +7,33 @@
 
 import Foundation
 
-protocol Item: Identifiable {
-    var id: String { get }
-    var name: String { get }
-    var cover: ItemCover? { get set }
-    var downloaded: Bool { get set }
-    var favorite: Bool { get set }
-}
-
-struct ItemCover {
-    let type: ItemCoverType
-    let url: URL
-    
-    enum ItemCoverType {
-    case local
-    case remote
-    }
-}
-struct ItemArtist {
+class Item: Identifiable {
     let id: String
     let name: String
-}
-
-enum ItemType {
-    case song
-    case album
-    case artist
-    case genre
+    let sortName: String?
+    
+    var cover: Cover?
+    var favorite: Bool
+    
+    init(id: String, name: String, sortName: String?, cover: Cover? = nil, favorite: Bool) {
+        self.id = id
+        self.name = name
+        self.sortName = sortName
+        self.cover = cover
+        self.favorite = favorite
+    }
+    
+    struct Cover: Codable {
+        let type: CoverType
+        let url: URL
+        
+        enum CoverType: Codable {
+            case local
+            case remote
+        }
+    }
+    struct ReducedArtist: Codable {
+        let id: String
+        let name: String
+    }
 }

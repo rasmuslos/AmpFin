@@ -128,9 +128,10 @@ extension LoginView {
             
             Task {
                 do {
-                    let token = try await JellyfinClient.shared.login(username: username, password: password)
+                    let (token, userId) = try await JellyfinClient.shared.login(username: username, password: password)
                     
                     JellyfinClient.shared.setToken(token)
+                    JellyfinClient.shared.setUserId(userId)
                     callback()
                 } catch {
                     errorText = "Login failed"

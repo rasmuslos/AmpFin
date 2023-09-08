@@ -11,25 +11,26 @@ import SwiftUIIntrospect
 struct AlbumView: View {
     @Environment(\.libraryDataProvider) var dataProvider
     
-    let album: AlbumItem
+    let album: Album
     
-    @State var songs = [SongItem]()
+    @State var tracks = [Track]()
     @State var navbarVisible = false
     @State var imageColors = ImageColors()
     
     var body: some View {
         List {
             Header(album: album, navbarVisible: $navbarVisible, imageColors: $imageColors) { shuffle in
-                AudioPlayer.shared.startPlayback(items: songs, startIndex: 0, shuffle: shuffle)
+                AudioPlayer.shared.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle)
             }
             .navigationTitle(album.name)
             .navigationBarTitleDisplayMode(.inline)
             
-            SongList(songs: songs, album: album)
+            TrackList(tracks: tracks, album: album)
                 .padding(.top, 4)
             
-            if let overview = album.overview {
+            if let overview = album.overview, overview.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                 Text(overview)
+                    .listRowSeparator(.hidden, edges: .bottom)
             }
         }
         .listStyle(.plain)
@@ -39,8 +40,8 @@ struct AlbumView: View {
         .modifier(ToolbarModifier(album: album, navbarVisible: $navbarVisible, imageColors: $imageColors))
         .modifier(NowPlayingBarSafeAreaModifier())
         .task {
-            if let songs = try? await dataProvider.getAlbumItems(id: album.id) {
-                self.songs = songs
+            if let tracks = try? await dataProvider.getAlbumTracks(id: album.id) {
+                self.tracks = tracks
             }
         }
         .onAppear {
@@ -57,22 +58,22 @@ struct AlbumView: View {
 
 #Preview {
     NavigationStack {
-        AlbumView(album: AlbumItem.fixture, songs: [
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
-            SongItem.fixture,
+        AlbumView(album: Album.fixture, tracks: [
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
         ])
     }
 }

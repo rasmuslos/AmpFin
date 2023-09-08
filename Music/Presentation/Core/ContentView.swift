@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    // @Environment(\.modelContext) private var modelContext
     @State var isAuthorized = JellyfinClient.shared.isAuthorized
     
     var body: some View {

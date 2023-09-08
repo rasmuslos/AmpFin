@@ -11,13 +11,15 @@ import UIKit
 class JellyfinClient {
     private(set) var serverUrl: URL!
     private(set) var token: String!
+    private(set) var userId: String!
     
     private(set) var clientVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
     private(set) var clientName = UIDevice.current.name
     
-    init(serverUrl: URL!, token: String? = nil) {
+    init(serverUrl: URL!, token: String?, userId: String?) {
         self.serverUrl = serverUrl
         self.token = token
+        self.userId = userId
     }
     
     lazy private(set) var isAuthorized = {
@@ -40,13 +42,20 @@ extension JellyfinClient {
         UserDefaults.standard.set(token, forKey: "token")
         self.token = token
     }
+    func setUserId(_ userId: String) {
+        UserDefaults.standard.set(userId, forKey: "userId")
+        self.userId = userId
+    }
 }
 
 // MARK: Singleton
 
 extension JellyfinClient {
     private static func getJellyfinApiClient() -> JellyfinClient {
-        JellyfinClient(serverUrl: UserDefaults.standard.url(forKey: "serverUrl"), token: UserDefaults.standard.string(forKey: "token"))
+        JellyfinClient(
+            serverUrl: UserDefaults.standard.url(forKey: "serverUrl"),
+            token: UserDefaults.standard.string(forKey: "token"),
+            userId: UserDefaults.standard.string(forKey: "userId"))
     }
     
     private(set) static var shared = getJellyfinApiClient()

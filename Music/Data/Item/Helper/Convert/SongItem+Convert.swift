@@ -1,5 +1,5 @@
 //
-//  SongItem+Convert.swift
+//  Track+Convert.swift
 //  Music
 //
 //  Created by Rasmus Krämer on 06.09.23.
@@ -7,28 +7,32 @@
 
 import Foundation
 
-extension SongItem {
-    static func convertFromJellyfin(_ item: JellyfinClient.JellyfinSongItem, fallbackIndex: Int = 0) -> SongItem {
-        let album = SongItem.Album(
+extension Track {
+    static func convertFromJellyfin(_ item: JellyfinClient.JellyfinTrackItem, fallbackIndex: Int = 0) -> Track {
+        let album = ReducedAlbum(
             id: item.AlbumId,
             name: item.Album,
             artists: item.AlbumArtists.map {
-                ItemArtist(id: $0.Id, name: $0.Name)
+                ReducedArtist(
+                    id: $0.Id,
+                    name: $0.Name)
             })
         
-        return SongItem(
+        return Track(
             id: item.Id,
             name: item.Name,
-            cover: ItemCover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id),
-            index: SongItem.Index(index: item.IndexNumber ?? fallbackIndex, disk: item.ParentIndexNumber ?? 1),
-            playCount: item.UserData.PlayCount,
-            lufs: item.LUFS,
-            releaseDate: Date.parseDate(item.PremiereDate),
+            sortName: item.Name,
+            cover: Cover.convertFromJellyfin(
+                imageTags: item.ImageTags,
+                id: item.Id),
+            favorite: item.UserData.IsFavorite,
             album: album,
             artists: item.ArtistItems.map {
-                ItemArtist(id: $0.Id, name: $0.Name)
+                ReducedArtist(id: $0.Id, name: $0.Name)
             },
-            downloaded: false,
-            favorite: item.UserData.IsFavorite)
+            lufs: item.LUFS,
+            index: Index(index: item.IndexNumber ?? fallbackIndex, disk: item.ParentIndexNumber ?? 1),
+            playCount: item.UserData.PlayCount,
+            releaseDate: Date.parseDate(item.PremiereDate))
     }
 }

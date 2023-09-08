@@ -9,10 +9,14 @@ import Foundation
 import SwiftUI
 
 protocol LibraryDataProvider {
-    func getAllSongs(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [SongItem]
+    func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
     
-    func getRecentAlbums() async throws -> [AlbumItem]
-    func getAlbumItems(id: String) async throws -> [SongItem]
+    func getRecentAlbums() async throws -> [Album]
+    func getAlbumTracks(id: String) async throws -> [Track]
+    func getAlbums(limit: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
+    
+    func getArtists(albumOnly: Bool) async throws -> [Artist]
+    func getArtistAlbums(id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
 }
 
 struct LibraryDataProviderDefault: EnvironmentKey {

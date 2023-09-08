@@ -11,14 +11,14 @@ import SwiftUI
 
 extension NowPlayingSheet {
     struct Cover: View {
-        let item: SongItem
+        let track: Track
         let namespace: Namespace.ID
         @Binding var playing: Bool
         
         var body: some View {
             Spacer()
             
-            ItemImage(cover: item.cover)
+            ItemImage(cover: track.cover)
                 .scaleEffect(playing ? 1 : 0.8)
                 .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
             
@@ -26,12 +26,12 @@ extension NowPlayingSheet {
             
             HStack {
                 VStack(alignment: .leading) {
-                    Text(item.name)
+                    Text(track.name)
                         .bold()
                         .lineLimit(1)
                         .foregroundStyle(.primary)
                         .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
-                    Text(item.artists.map { $0.name }.joined(separator: ", "))
+                    Text(track.artists.map { $0.name }.joined(separator: ", "))
                         .lineLimit(1)
                         .foregroundStyle(.secondary)
                         .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
@@ -40,7 +40,7 @@ extension NowPlayingSheet {
                 
                 Spacer()
                 
-                MenuButton(item: item)
+                MenuButton(track: track)
                     .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
             }
             .padding(.vertical)
@@ -52,22 +52,22 @@ extension NowPlayingSheet {
 
 extension NowPlayingSheet {
     struct SmallTitle: View {
-        let item: SongItem
+        let track: Track
         let namespace: Namespace.ID
         
         var body: some View {
             HStack() {
-                ItemImage(cover: item.cover)
+                ItemImage(cover: track.cover)
                     .frame(width: 60, height: 60)
                     .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
                 
                 VStack(alignment: .leading) {
-                    Text(item.name)
+                    Text(track.name)
                         .lineLimit(1)
                         .font(.headline)
                         .foregroundStyle(.primary)
                         .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
-                    Text(item.artists.map { $0.name }.joined(separator: ", "))
+                    Text(track.artists.map { $0.name }.joined(separator: ", "))
                         .lineLimit(1)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -76,7 +76,7 @@ extension NowPlayingSheet {
                 
                 Spacer()
                 
-                MenuButton(item: item)
+                MenuButton(track: track)
                     .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
             }
             .padding(.top, 40)
@@ -88,7 +88,7 @@ extension NowPlayingSheet {
 
 extension NowPlayingSheet {
     struct MenuButton: View {
-        let item: SongItem
+        let track: Track
         
         var body: some View {
             Menu {

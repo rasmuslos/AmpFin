@@ -12,11 +12,11 @@ struct NowPlayingSheet: View {
     @Environment(\.presentationMode) var presentationMode
     @Namespace var namespace
     
-    let item: SongItem
+    let track: Track
     @Binding var playing: Bool
     
     @State var controlsVisible = true
-    @State var currentTab = Tab.queue {
+    @State var currentTab = Tab.cover {
         didSet {
             if currentTab != .lyrics {
                 controlsVisible = true
@@ -27,14 +27,14 @@ struct NowPlayingSheet: View {
     var body: some View {
         VStack {
             if currentTab == .cover {
-                Cover(item: item, namespace: namespace, playing: $playing)
+                Cover(track: track, namespace: namespace, playing: $playing)
             } else {
-                SmallTitle(item: item, namespace: namespace)
+                SmallTitle(track: track, namespace: namespace)
                 
                 if currentTab == .lyrics {
-                    LyricsContainer(item: item, controlsVisible: $controlsVisible)
+                    LyricsContainer(track: track, controlsVisible: $controlsVisible)
                 } else if currentTab == .queue {
-                    Queue(item: item, namespace: namespace)
+                    Queue(track: track, namespace: namespace)
                 }
             }
             
@@ -42,7 +42,7 @@ struct NowPlayingSheet: View {
                 Controls(playing: $playing, currentTab: $currentTab)
             }
         }
-        .background(BackgroundImage(cover: item.cover))
+        .background(BackgroundImage(cover: track.cover))
         .padding(.horizontal, 30)
         .ignoresSafeArea(edges: .bottom)
         .preferredColorScheme(.dark)
@@ -60,12 +60,11 @@ struct NowPlayingSheet: View {
 
 extension NowPlayingSheet {
     struct BackgroundImage: View {
-        let cover: ItemCover?
+        let cover: Item.Cover?
         
         @State var imageOffset: CGFloat = 1
         
         var body: some View {
-            // TODO: scale & random (moving) offset
             ItemImage(cover: cover)
                 .offset(x: imageOffset * 50, y: imageOffset * -50)
                 .rotationEffect(.degrees(imageOffset * 30))
@@ -93,7 +92,7 @@ extension NowPlayingSheet {
 
 #Preview {
     Text(":)")
-        .fullScreenCover(item: .constant(SongItem.fixture)) {
-            NowPlayingSheet(item: $0, playing: .constant(false))
+        .fullScreenCover(item: .constant(Track.fixture)) {
+            NowPlayingSheet(track: $0, playing: .constant(false))
         }
 }
