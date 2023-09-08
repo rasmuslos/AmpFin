@@ -81,7 +81,6 @@ extension AlbumView {
         func body(content: Content) -> some View {
             content
                 .font(.system(size: 20))
-                .imageScale(.large)
                 .symbolVariant(.circle.fill)
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(

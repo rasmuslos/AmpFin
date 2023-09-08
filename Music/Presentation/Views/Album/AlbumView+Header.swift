@@ -15,6 +15,8 @@ extension AlbumView {
         @Binding var navbarVisible: Bool
         @Binding var imageColors: ImageColors
         
+        let startPlayback: (_ shuffle: Bool) -> ()
+        
         var body: some View {
             ZStack(alignment: .top) {
                 GeometryReader { reader in
@@ -59,12 +61,12 @@ extension AlbumView {
                     HStack {
                         Group {
                             Button {
-                                
+                                startPlayback(false)
                             } label: {
                                 Label("Play", systemImage: "play.fill")
                             }
                             Button {
-                                
+                                startPlayback(true)
                             } label: {
                                 Label("Shuffle", systemImage: "shuffle")
                             }

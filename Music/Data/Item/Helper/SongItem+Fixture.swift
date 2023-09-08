@@ -13,7 +13,7 @@ extension SongItem {
         id: "2f4456f908e6fdb022c31884a30c4fd1",
         name: "Panic Station",
         cover: ItemCover(type: .remote, url: URL(string: "https://i.discogs.com/5jht64qo-yxm2ShGhAPrph06N_UUOHmR6MuQx4T2l4A/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM5MjUz/MjUtMTM3MjY3OTcz/OC03MTMzLmpwZWc.jpeg")!),
-        index: 3,
+        index: SongItem.Index(index: 3, disk: 1),
         playCount: 9,
         lufs: nil,
         releaseDate: Date(), 

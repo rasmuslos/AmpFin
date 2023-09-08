@@ -12,7 +12,7 @@ struct SongItem: Item {
     let name: String
     var cover: ItemCover?
     
-    let index: Int
+    let index: Index
     let playCount: Int
     
     let lufs: Float?
@@ -28,6 +28,18 @@ struct SongItem: Item {
         let id: String
         let name: String
         let artists: [ItemArtist]
+    }
+    struct Index: Comparable {
+        let index: Int
+        let disk: Int
+        
+        static func < (lhs: SongItem.Index, rhs: SongItem.Index) -> Bool {
+            if lhs.disk == rhs.disk {
+                return lhs.index < rhs.index
+            } else {
+                return lhs.disk < rhs.disk
+            }
+        }
     }
     
     typealias Lyrics = [Double: String?]

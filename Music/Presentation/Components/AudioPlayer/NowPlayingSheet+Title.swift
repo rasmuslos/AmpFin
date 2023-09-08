@@ -98,7 +98,7 @@ extension NowPlayingSheet {
                 Label("Option 4", systemImage: "command")
             } label: {
                 Image(systemName: "ellipsis")
-                    .imageScale(.large)
+                    .font(.system(size: 24))
                     .symbolVariant(.circle.fill)
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.white, .gray.opacity(0.25))

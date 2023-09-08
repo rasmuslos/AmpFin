@@ -15,7 +15,7 @@ extension AlbumItem {
             sortName: item.SortName,
             overview: item.Overview,
             genres: item.Genres,
-            releaseDate: item.PremiereDate != nil ? try? Date(item.PremiereDate!, strategy: .dateTime) : nil,
+            releaseDate: Date.parseDate(item.PremiereDate),
             artists: item.AlbumArtists.map {
                 ItemArtist(id: $0.Id, name: $0.Name)
             },

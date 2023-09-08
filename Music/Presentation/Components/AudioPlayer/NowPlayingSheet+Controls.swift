@@ -14,8 +14,8 @@ extension NowPlayingSheet {
         @Binding var currentTab: Tab
         
         @State var duration: Double = AudioPlayer.shared.duration()
-        @State var currentTime: Double = 0
-        @State var playedPercentage: Double = 0
+        @State var currentTime: Double = AudioPlayer.shared.currentTime()
+        @State var playedPercentage: Double = (AudioPlayer.shared.currentTime() / AudioPlayer.shared.duration()) * 100
         
         var body: some View {
             VStack {
@@ -63,8 +63,8 @@ extension NowPlayingSheet {
                     .font(.system(size: 34))
                     .foregroundStyle(.primary)
                 }
-                .padding(.top, 45)
-                .padding(.bottom, 75)
+                .padding(.top, 30)
+                .padding(.bottom, 60)
                 
                 VolumeSlider()
                 
@@ -76,24 +76,30 @@ extension NowPlayingSheet {
                     }
                     Spacer()
                     AirPlayView()
-                        .frame(width: 44)
+                        .frame(width: 45)
                         .padding(.vertical, -100)
                     Spacer()
                     Button {
                         setActiveTab(.queue)
                     } label: {
                         Image(systemName: "list.dash")
+                            .foregroundStyle(currentTab == .queue ? .accent.opacity(0.75) : .primary.opacity(0.75))
                     }
                 }
                 .bold()
                 .font(.system(size: 20))
                 .foregroundStyle(.primary.opacity(0.75))
-                .frame(height: 44)
+                .frame(height: 45)
                 .padding(.horizontal, 45)
-                .padding(.vertical, 25)
+                .padding(.top, 35)
+                .padding(.bottom, 40)
             }
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.PositionUpdated), perform: { _ in
                 withAnimation {
+                    if duration == 0 {
+                        duration = AudioPlayer.shared.duration()
+                    }
+                    
                     currentTime = AudioPlayer.shared.currentTime()
                     playedPercentage = (currentTime / duration) * 100
                 }

@@ -77,7 +77,7 @@ extension JellyfinClient {
             0: nil,
         ]
         response.Lyrics.forEach { element in
-            let start = Double(element.Start / 10_000_000)
+            let start = Double(element.Start) / 10_000_000
             var text: String? = element.Text.trimmingCharacters(in: .whitespacesAndNewlines)
             
             if text == "" {

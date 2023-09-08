@@ -16,7 +16,7 @@ struct NowPlayingSheet: View {
     @Binding var playing: Bool
     
     @State var controlsVisible = true
-    @State var currentTab = Tab.lyrics {
+    @State var currentTab = Tab.queue {
         didSet {
             if currentTab != .lyrics {
                 controlsVisible = true
@@ -33,6 +33,8 @@ struct NowPlayingSheet: View {
                 
                 if currentTab == .lyrics {
                     LyricsContainer(item: item, controlsVisible: $controlsVisible)
+                } else if currentTab == .queue {
+                    Queue(item: item, namespace: namespace)
                 }
             }
             

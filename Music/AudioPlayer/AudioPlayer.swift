@@ -63,10 +63,12 @@ extension AudioPlayer {
     }
     
     func duration() -> Double {
-        audioPlayer.currentItem?.duration.seconds ?? 0
+        let duration = audioPlayer.currentItem?.duration.seconds ?? 0
+        return duration.isFinite ? duration : 0
     }
     func currentTime() -> Double {
-        audioPlayer.currentTime().seconds
+        let currentTime = audioPlayer.currentTime().seconds
+        return currentTime.isFinite ? currentTime : 0
     }
 }
 
@@ -149,10 +151,60 @@ extension AudioPlayer {
             }
         }
         
-        audioPlayer.removeAllItems()
+        audioPlayer.items().enumerated().forEach { index, item in
+            if index != 0 {
+                audioPlayer.remove(item)
+            }
+        }
         populateQueue()
         
         notifyQueueChanged()
+    }
+    
+    func removeItem(index: Int) -> SongItem? {
+        if queue.count < index + 1 {
+            notifyQueueChanged()
+            return nil
+        }
+        
+        audioPlayer.remove(audioPlayer.items()[index + 1])
+        let item = queue.remove(at: index)
+        
+        notifyQueueChanged()
+        return item
+    }
+    func addItem(_ item: SongItem, index: Int) {
+        queue.insert(item, at: index)
+        audioPlayer.insert(getAVPlayerItem(item), after: audioPlayer.items()[index])
+        
+        notifyQueueChanged()
+    }
+    
+    func moveItem(from: Int, to: Int) {
+        if let item = removeItem(index: from) {
+            addItem(item, index: to)
+        }
+        
+        notifyQueueChanged()
+    }
+    
+    func skip(to: Int) {
+        if queue.count < to + 1 {
+            notifyQueueChanged()
+            return
+        }
+        
+        let id = queue[to].id
+        while(nowPlaying?.id != id) {
+            playNextItem()
+        }
+    }
+    func restoreHistory(index: Int) {
+        for _ in index...history.count {
+            if history.count > 0 {
+                playPreviousItem()
+            }
+        }
     }
     
     private func itemDidFinished() {

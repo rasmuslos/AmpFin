@@ -24,9 +24,14 @@ extension NowPlayingSheet {
                         LazyVStack {
                             ForEach(Array(lyrics.keys.sorted(by: <).enumerated()), id: \.offset) { index, key in
                                 LyricLine(index: index, text: lyrics[key]!, activeLineIndex: $activeLineIndex)
+                                    .onTapGesture {
+                                        AudioPlayer.shared.seek(seconds: Array(lyrics.keys.sorted(by: <))[index])
+                                        activeLineIndex = index
+                                    }
                             }
                         }
                         .padding(.vertical, 25)
+                        .safeAreaPadding(.bottom, 175)
                     } else {
                         ProgressView()
                             .padding(.vertical, 50)
@@ -45,7 +50,7 @@ extension NowPlayingSheet {
                 )
                 .onChange(of: activeLineIndex) {
                     withAnimation(.spring) {
-                        proxy.scrollTo(activeLineIndex, anchor: controlsVisible ? .top : .center)
+                        proxy.scrollTo(activeLineIndex, anchor: .top)
                     }
                 }
                 .simultaneousGesture(
@@ -68,7 +73,7 @@ extension NowPlayingSheet {
         }
         
         func updateLyricsIndex() {
-            if let lyrics = lyrics, lyrics.count > activeLineIndex {
+            if let lyrics = lyrics, lyrics.count > activeLineIndex + 1 {
                 let seconds = Array(lyrics.keys).sorted(by: <)[activeLineIndex + 1]
                 
                 if seconds < AudioPlayer.shared.currentTime() {
@@ -98,45 +103,38 @@ extension NowPlayingSheet {
                 if let text = text {
                     Text(text)
                         .font(.system(size: 35))
-                        .padding(.vertical, 10)
-                } else {
-                    if active {
-                        HStack {
-                            Circle()
-                                .frame(width: 15)
-                                .scaleEffect(pulse)
-                            Circle()
-                                .frame(width: 15)
-                                .scaleEffect(pulse)
-                            Circle()
-                                .frame(width: 15)
-                                .scaleEffect(pulse)
-                        }
-                        .padding(.leading, pulse)
-                        .padding(.vertical, 10)
+                    
+                    Spacer()
+                } else if active {
+                    HStack {
+                        Circle()
+                            .frame(width: 15)
+                            .scaleEffect(pulse)
+                        Circle()
+                            .frame(width: 15)
+                            .scaleEffect(pulse)
+                        Circle()
+                            .frame(width: 15)
+                            .scaleEffect(pulse)
                     }
+                    .padding(.leading, pulse * 2)
+                    
+                    Spacer()
                 }
-                
-                Spacer()
             }
             .fontWeight(.heavy)
             .foregroundStyle(.white.opacity(active ? 0.9 : 0.25))
             .blur(radius: active ? 0 : 2)
             .tag(activeLineIndex)
             .animation(.spring, value: active)
-            .offset(y: 25 + determineAdditionalOffset())
-            .animation(.spring(duration: 0.5, bounce: 0.5).delay(active ? 0.25 : Double(index - activeLineIndex) / 10), value: activeLineIndex)
+            .animation(.easeInOut(duration: 0.5).delay(active ? 0.25 : Double(index - activeLineIndex) / 5), value: activeLineIndex)
             .onAppear {
                 withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
-                    // TODO: better
-                    pulse = 1.2 * pulse
+                    pulse *= 1.2
                 }
             }
-            /*
-            .onTapGesture {
-                activeLineIndex = index
-            }
-             */
+            .padding(.vertical, 10)
+            .offset(y: 25 + determineAdditionalOffset())
         }
         
         func determineAdditionalOffset() -> CGFloat {
@@ -147,7 +145,7 @@ extension NowPlayingSheet {
             }
             
             switch delta {
-            case 0, 1, 2, 3, 4, 5:
+            case 0, 1, 2, 3, 4, 5, 6, 7, 8:
                 return CGFloat(delta * 25);
             default:
                 return 150;

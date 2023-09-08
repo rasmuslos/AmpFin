@@ -16,7 +16,7 @@ struct SongListItem: View {
         
         HStack {
             if album != nil {
-                Text(String(item.index))
+                Text(String(item.index.index))
                     .frame(width: 23)
                     // .padding(.horizontal, 7)
             } else {

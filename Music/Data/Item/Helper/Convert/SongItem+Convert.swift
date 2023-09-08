@@ -20,10 +20,10 @@ extension SongItem {
             id: item.Id,
             name: item.Name,
             cover: ItemCover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id),
-            index: item.IndexNumber ?? fallbackIndex,
+            index: SongItem.Index(index: item.IndexNumber ?? fallbackIndex, disk: item.ParentIndexNumber ?? 1),
             playCount: item.UserData.PlayCount,
             lufs: item.LUFS,
-            releaseDate: item.PremiereDate != nil ? try? Date(item.PremiereDate!, strategy: .dateTime) : nil,
+            releaseDate: Date.parseDate(item.PremiereDate),
             album: album,
             artists: item.ArtistItems.map {
                 ItemArtist(id: $0.Id, name: $0.Name)

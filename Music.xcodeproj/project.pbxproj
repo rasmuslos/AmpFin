@@ -25,6 +25,8 @@
 		3A234E202AA8E8A000197AA7 /* SongList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E1F2AA8E8A000197AA7 /* SongList.swift */; };
 		3A234E232AA8EA3900197AA7 /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E222AA8EA3900197AA7 /* PlayerModel.swift */; };
 		3A234E262AA8EAB700197AA7 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E252AA8EAB700197AA7 /* AudioPlayer.swift */; };
+		3A2AA35A2AAACA030051B21B /* Date+Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2AA3592AAACA030051B21B /* Date+Parse.swift */; };
+		3A6565D72AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */; };
 		3A750FB62AA8FE6B003E4BC9 /* AlbumItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A750FB52AA8FE6B003E4BC9 /* AlbumItem.swift */; };
 		3A750FB82AA9002A003E4BC9 /* ItemCover+Convert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A750FB72AA9002A003E4BC9 /* ItemCover+Convert.swift */; };
 		3A750FBB2AA900ED003E4BC9 /* AlbumItem+Convert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A750FBA2AA900ED003E4BC9 /* AlbumItem+Convert.swift */; };
@@ -89,6 +91,8 @@
 		3A234E1F2AA8E8A000197AA7 /* SongList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongList.swift; sourceTree = "<group>"; };
 		3A234E222AA8EA3900197AA7 /* PlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
 		3A234E252AA8EAB700197AA7 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		3A2AA3592AAACA030051B21B /* Date+Parse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Parse.swift"; sourceTree = "<group>"; };
+		3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingSheet+Queue.swift"; sourceTree = "<group>"; };
 		3A750FB52AA8FE6B003E4BC9 /* AlbumItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumItem.swift; sourceTree = "<group>"; };
 		3A750FB72AA9002A003E4BC9 /* ItemCover+Convert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCover+Convert.swift"; sourceTree = "<group>"; };
 		3A750FBA2AA900ED003E4BC9 /* AlbumItem+Convert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumItem+Convert.swift"; sourceTree = "<group>"; };
@@ -316,6 +320,7 @@
 				3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
 				3A8B99462AAA091A004AAA7B /* MPVolumeView+Volume.swift */,
+				3A2AA3592AAACA030051B21B /* Date+Parse.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -339,6 +344,7 @@
 				3A8B993D2AA9FE02004AAA7B /* NowPlayingSheet+Title.swift */,
 				3A8B993F2AAA0085004AAA7B /* NowPlayingSheet+Controls.swift */,
 				3AF815DC2AAA1A80004BA444 /* NowPlayingSheet+Lyrics.swift */,
+				3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */,
 			);
 			path = AudioPlayer;
 			sourceTree = "<group>";
@@ -533,6 +539,7 @@
 				3A234E0F2AA8D8E400197AA7 /* JellyfinClient+Song.swift in Sources */,
 				3A234E262AA8EAB700197AA7 /* AudioPlayer.swift in Sources */,
 				3A234DFD2AA884FF00197AA7 /* LibraryView+Links.swift in Sources */,
+				3A6565D72AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift in Sources */,
 				3AEB32332AA7EC3C00853210 /* LoginView.swift in Sources */,
 				3AEB32402AA7FFF100853210 /* NavigationRoot+Library.swift in Sources */,
 				3A8B99382AA9DBBE004AAA7B /* JellyfinClient+Progress.swift in Sources */,
@@ -569,6 +576,7 @@
 				3A234E122AA8D91000197AA7 /* SongItem+Convert.swift in Sources */,
 				3A750FB62AA8FE6B003E4BC9 /* AlbumItem.swift in Sources */,
 				3A234E0A2AA88DD300197AA7 /* Item.swift in Sources */,
+				3A2AA35A2AAACA030051B21B /* Date+Parse.swift in Sources */,
 				3A234E232AA8EA3900197AA7 /* PlayerModel.swift in Sources */,
 				3ADE8EA02AA93D39009826A3 /* AlbumView+Toolbar.swift in Sources */,
 				3A8B99402AAA0085004AAA7B /* NowPlayingSheet+Controls.swift in Sources */,

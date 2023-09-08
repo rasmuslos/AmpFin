@@ -18,6 +18,7 @@ extension JellyfinClient {
         
         let PremiereDate: String?
         let IndexNumber: Int?
+        let ParentIndexNumber: Int?
         
         let UserData: UserData
         let ArtistItems: [JellyfinArtist]
