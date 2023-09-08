@@ -38,13 +38,3 @@ class OfflineAlbum {
         self.trackCount = trackCount
     }
 }
-
-// MARK: Helper
-
-extension OfflineAlbum {
-    func filterPredicate() -> Predicate<OfflineTrack> {
-        #Predicate { track in
-            track.album.id == id
-        }
-    }
-}

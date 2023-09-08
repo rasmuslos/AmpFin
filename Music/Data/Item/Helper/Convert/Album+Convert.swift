@@ -9,7 +9,7 @@ import Foundation
 
 extension Album {
     static func convertFromJellyfin(_ item: JellyfinClient.JellyfinAlbum) -> Album {
-        return Album(
+        Album(
             id: item.Id,
             name: item.Name,
             sortName: item.SortName,
@@ -24,5 +24,19 @@ extension Album {
                     name: $0.Name)
             },
             playCount: item.UserData.PlayCount)
+    }
+    
+    static func convertFromOffline(_ offline: OfflineAlbum) -> Album {
+        Album(
+            id: offline.id,
+            name: offline.name,
+            sortName: offline.sortName,
+            cover: offline.cover,
+            favorite: offline.favorite,
+            overview: offline.overview,
+            genres: offline.genres,
+            releaseDate: offline.releaseDate,
+            artists: offline.artists,
+            playCount: -1)
     }
 }

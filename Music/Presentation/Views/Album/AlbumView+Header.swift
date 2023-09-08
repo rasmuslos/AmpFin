@@ -43,15 +43,13 @@ extension AlbumView {
                         .font(.headline)
                         .foregroundStyle(imageColors.isLight ? .black : .white)
                     
-                    if let first = album.artists.first {
-                        NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
-                            Text(album.artists.map { $0.name }.joined(separator: ", "))
-                                .lineLimit(1)
-                                .font(.subheadline)
-                                .foregroundStyle(imageColors.detail)
-                        }
-                        .buttonStyle(.plain)
-                    }
+                    // if let first = album.artists.first {
+                    // TODO: add link here, fuck navigation links
+                        Text(album.artists.map { $0.name }.joined(separator: ", "))
+                            .lineLimit(1)
+                            .font(.subheadline)
+                            .foregroundStyle(imageColors.detail)
+                    // }
                     
                     HStack {
                         if let releaseDate = album.releaseDate {

@@ -11,6 +11,8 @@ struct TrackListRow: View {
     let track: Track
     var album: Album? = nil
     
+    @State var downloaded = false
+    
     var body: some View {
         let showArtist = album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
         
@@ -40,6 +42,14 @@ struct TrackListRow: View {
             .padding(.horizontal, 5)
             
             Spacer()
+            
+            if downloaded {
+                Image(systemName: "arrow.down.circle.fill")
+                    .imageScale(.small)
+                    .padding(.horizontal, 4)
+                    .foregroundStyle(.secondary)
+            }
+            
             Menu {
                 
             } label: {
@@ -64,5 +74,20 @@ struct TrackListRow: View {
             }
             .tint(.blue)
         }
+        .task(checkDownload)
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.DownloadUpdated)) { _ in
+            Task.detached {
+                await checkDownload()
+            }
+        }
+    }
+}
+
+// MARK: Helper
+
+extension TrackListRow {
+    @Sendable
+    func checkDownload() async {
+        downloaded = await track.isDownloaded()
     }
 }

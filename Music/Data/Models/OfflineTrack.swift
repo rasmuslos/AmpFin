@@ -12,27 +12,27 @@ import SwiftData
 class OfflineTrack {
     @Attribute(.unique) let id: String
     let name: String
-    let cover: Item.Cover
     
     let index: Track.Index
     let releaseDate: Date?
     
-    let album: OfflineAlbum
+    @Relationship
+    var album: OfflineAlbum!
     let artists: [Item.ReducedArtist]
     
     var favorite: Bool
     var downloadId: Int?
     
-    init(id: String, name: String, cover: Item.Cover, index: Track.Index, releaseDate: Date?, album: OfflineAlbum, artists: [Item.ReducedArtist], favorite: Bool, downloadId: Int?) {
+    init(id: String, name: String, index: Track.Index, releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, downloadId: Int?) {
         self.id = id
         self.name = name
-        self.cover = cover
         self.index = index
         self.releaseDate = releaseDate
-        self.album = album
         self.artists = artists
         self.favorite = favorite
         self.downloadId = downloadId
+        
+        self.album = nil
     }
 }
 

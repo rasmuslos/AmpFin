@@ -22,6 +22,7 @@ extension Item.Cover {
             URLQueryItem(name: "fillWidth", value: String(size)),
             URLQueryItem(name: "quality", value: String(quality)),
             URLQueryItem(name: "tag", value: imageTag),
+            // TODO: i hope this will become necessary: URLQueryItem(name: "token", value: JellyfinClient.shared.token),
         ])
     }
 }

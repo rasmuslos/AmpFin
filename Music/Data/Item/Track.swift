@@ -47,3 +47,15 @@ class Track: Item {
     
     typealias Lyrics = [Double: String?]
 }
+
+// MARK: Downloads
+
+extension Track {
+    func isDownloaded() async -> Bool {
+        if let track = await OfflineManager.shared.getOfflineTrackById(id) {
+            return track.isDownloaded()
+        } else {
+            return false
+        }
+    }
+}

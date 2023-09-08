@@ -9,8 +9,7 @@ import SwiftUI
 
 struct LibraryView: View {
     @Environment(\.defaultMinListRowHeight) var minRowHeight
-    
-    let dataProvider: LibraryDataProvider
+    @Environment(\.libraryDataProvider) var dataProvider
     
     @State var recentAlbums: [Album]?
     
@@ -21,7 +20,6 @@ struct LibraryView: View {
             }
             .listStyle(.plain)
             .navigationTitle("Library")
-            .environment(\.libraryDataProvider, dataProvider)
             .frame(height: CGFloat(Links.count) * minRowHeight)
             
             if let recentAlbums = recentAlbums, recentAlbums.count > 0 {
@@ -58,6 +56,6 @@ extension LibraryView {
 
 #Preview {
     NavigationStack {
-        LibraryView(dataProvider: OnlineLibraryDataProivder())
+        LibraryView()
     }
 }

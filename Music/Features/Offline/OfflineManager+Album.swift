@@ -8,18 +8,103 @@
 import Foundation
 import SwiftData
 
+// MARK: Downloader
+
 extension OfflineManager {
-    func getAlbumTracks(_ album: OfflineAlbum) async throws -> [OfflineTrack] {
-        let tracks = FetchDescriptor<OfflineTrack>(predicate: album.filterPredicate())
-        return try await PersistenceManager.shared.modelContainer.mainContext.fetch(tracks)
+    func downloadAlbum(_ album: Album) async throws {
+        var offlineAlbum: OfflineAlbum
+        let tracks = try await JellyfinClient.shared.getAlbumTracks(id: album.id)
+        
+        if let existing = try await getOfflineAlbum(albumId: album.id) {
+            offlineAlbum = existing
+        } else {
+            offlineAlbum = try await createOfflineAlbum(album, trackCount: tracks.count)
+        }
+        
+        let album = offlineAlbum
+        
+        tracks.forEach { track in
+            Task.detached {
+                await downloadTrack(track, album: album)
+            }
+        }
     }
     
-    func isAlbumComplete(_ album: OfflineAlbum) async -> Bool {
-        let tracks = (try? await getAlbumTracks(album)) ?? []
-        return album.trackCount == tracks.count
+    @MainActor
+    func getOfflineAlbum(albumId: String) throws -> OfflineAlbum? {
+        var album = FetchDescriptor(predicate: #Predicate<OfflineAlbum> { $0.id == albumId })
+        album.fetchLimit = 1
+        
+        return try PersistenceManager.shared.modelContainer.mainContext.fetch(album).first
     }
+    
+    @MainActor
+    func createOfflineAlbum(_ album: Album, trackCount: Int) async throws -> OfflineAlbum {
+        if let cover = album.cover {
+            try await DownloadManager.shared.downloadAlbumCover(albumId: album.id, cover: cover)
+        }
+        
+        let offlineAlbum = OfflineAlbum(
+            id: album.id,
+            name: album.name,
+            sortName: album.sortName,
+            cover: album.cover,
+            overview: album.overview,
+            genres: album.genres,
+            releaseDate: album.releaseDate,
+            artists: album.artists,
+            favorite: album.favorite,
+            trackCount: trackCount)
+        
+        PersistenceManager.shared.modelContainer.mainContext.insert(offlineAlbum)
+        NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: nil)
+        
+        return offlineAlbum
+    }
+    
+    @MainActor
+    func deleteOfflineAlbum(_ album: OfflineAlbum) throws {
+        let tracks = try getAlbumTracks(album)
+        for track in tracks {
+            deleteOfflineTrack(track)
+        }
+        
+        try DownloadManager.shared.deleteAlbumCover(albumId: album.id)
+        PersistenceManager.shared.modelContainer.mainContext.delete(album)
+    }
+}
+
+// MARK: Album tracks
+
+extension OfflineManager {
+    @MainActor
+    func getAlbumTracks(_ album: OfflineAlbum) throws -> [OfflineTrack] {
+        // this is so incredibly stupid... whoever thought of this goes straight to hell
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
+        return tracks.filter { $0.album.id == album.id }
+    }
+    
     func isAlbumDownloadInProgress(_ album: OfflineAlbum) async -> Bool {
         let tracks = (try? await getAlbumTracks(album)) ?? []
         return tracks.reduce(false) { $1.isDownloaded() ? $0 : true }
+    }
+}
+
+// MARK: Getter
+
+extension OfflineManager {
+    @MainActor
+    func getRecentAlbums() throws -> [Album] {
+        var descriptor = FetchDescriptor<OfflineAlbum>()
+        descriptor.fetchLimit = 20
+        
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
+        return tracks.map(Album.convertFromOffline)
+    }
+    
+    @MainActor
+    func getAllAlbums() throws -> [Album] {
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
+        return tracks.map(Album.convertFromOffline)
     }
 }

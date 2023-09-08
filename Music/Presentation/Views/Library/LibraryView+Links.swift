@@ -9,7 +9,7 @@ import SwiftUI
 
 extension LibraryView {
     struct Links: View {
-        static let count = 5
+        static let count = 4
         
         var body: some View {
             Group {

@@ -8,8 +8,8 @@
 import Foundation
 
 class DownloadManager: NSObject {
-    private var documentsURL: URL!
-    private var urlSession: URLSession!
+    private(set) var documentsURL: URL!
+    private(set) var urlSession: URLSession!
     
     override private init() {
         super.init()
@@ -20,13 +20,14 @@ class DownloadManager: NSObject {
         
         urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
         documentsURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        
+        try! FileManager.default.createDirectory(at: documentsURL.appending(path: "covers"), withIntermediateDirectories: true)
+        try! FileManager.default.createDirectory(at: documentsURL.appending(path: "tracks"), withIntermediateDirectories: true)
     }
 }
 
-// MARK: Handler
+// MARK: Singleton
 
-extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        
-    }
+extension DownloadManager {
+    static let shared = DownloadManager()
 }

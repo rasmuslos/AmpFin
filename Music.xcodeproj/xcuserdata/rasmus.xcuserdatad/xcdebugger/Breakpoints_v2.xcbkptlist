@@ -3,22 +3,4 @@
    uuid = "11E30F2D-19C9-4786-975D-29694F36C6AF"
    type = "1"
    version = "2.0">
-   <Breakpoints>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "834B9EFA-0BCA-4DF5-AD6B-7F01D93E6497"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../var/folders/7l/ktvqdx_92pzf37t8r9k7b4lr0000gn/T/swift-generated-sources/@__swiftmacro_5Music12OfflineAlbumC7artists18_PersistedPropertyfMa_.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1"
-            endingLineNumber = "1"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-   </Breakpoints>
 </Bucket>
