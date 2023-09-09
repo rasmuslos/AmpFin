@@ -73,7 +73,6 @@
 		3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */; };
 		3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3ADE8E932AA9275C009826A3 /* UIImageColors */; };
 		3ADE8E982AA92B47009826A3 /* Color+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */; };
-		3ADE8E9B2AA9346A009826A3 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 3ADE8E9A2AA9346A009826A3 /* SwiftUIIntrospect */; };
 		3ADE8E9D2AA93A2F009826A3 /* Date+Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */; };
 		3ADE8EA02AA93D39009826A3 /* AlbumView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E9F2AA93D39009826A3 /* AlbumView+Toolbar.swift */; };
 		3ADE8EA22AA93D61009826A3 /* AlbumView+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA12AA93D61009826A3 /* AlbumView+Colors.swift */; };
@@ -193,7 +192,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */,
-				3ADE8E9B2AA9346A009826A3 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +270,7 @@
 				3A234E162AA8E0A300197AA7 /* Items */,
 				3A8B99432AAA089F004AAA7B /* Sliders */,
 				3ADE8EA52AA94637009826A3 /* AudioPlayer */,
+				3A98A02C2AABA35700EA84CF /* ReusableViews */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -294,6 +293,13 @@
 				3A8B99392AA9F21C004AAA7B /* NSNotification+Player.swift */,
 			);
 			path = AudioPlayer;
+			sourceTree = "<group>";
+		};
+		3A260CA82AAC9A4C00616677 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		3A3DA6622AAB2BB40091211A /* Artist */ = {
@@ -507,7 +513,6 @@
 			children = (
 				3AEB32272AA7EC3C00853210 /* Views */,
 				3A234E132AA8DBB900197AA7 /* Components */,
-				3A98A02C2AABA35700EA84CF /* ReusableViews */,
 				3AEB323C2AA7FF4500853210 /* Navigation */,
 				3AEB32252AA7EC3C00853210 /* Styles */,
 				3AEB32392AA7F63200853210 /* Core */,
@@ -531,6 +536,7 @@
 				3A234DF92AA883D900197AA7 /* Library */,
 				3ADE8E9E2AA93CC4009826A3 /* Album */,
 				3A3DA6692AAB2DCD0091211A /* Artist */,
+				3A260CA82AAC9A4C00616677 /* Search */,
 				3AEB32282AA7EC3C00853210 /* Account */,
 			);
 			path = Views;
@@ -592,7 +598,6 @@
 			name = Music;
 			packageProductDependencies = (
 				3ADE8E932AA9275C009826A3 /* UIImageColors */,
-				3ADE8E9A2AA9346A009826A3 /* SwiftUIIntrospect */,
 			);
 			productName = JellyfinMusic;
 			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* Music.app */;
@@ -624,7 +629,6 @@
 			mainGroup = 3ABAFCA12AA7D6C40011BFD6;
 			packageReferences = (
 				3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */,
-				3ADE8E992AA9346A009826A3 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 3ABAFCAB2AA7D6C40011BFD6 /* Products */;
 			projectDirPath = "";
@@ -965,14 +969,6 @@
 				minimumVersion = 2.2.0;
 			};
 		};
-		3ADE8E992AA9346A009826A3 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.12.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -980,11 +976,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */;
 			productName = UIImageColors;
-		};
-		3ADE8E9A2AA9346A009826A3 /* SwiftUIIntrospect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3ADE8E992AA9346A009826A3 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = SwiftUIIntrospect;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

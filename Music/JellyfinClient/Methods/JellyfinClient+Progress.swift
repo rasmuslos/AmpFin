@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: Progress
+
 extension JellyfinClient {
     func reportPlaybackStopped(trackId: String) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing/stopped", method: "POST", body: [
@@ -28,5 +30,13 @@ extension JellyfinClient {
             "ItemId": trackId,
             "PositionTicks": 0,
         ]))
+    }
+}
+
+// MARK: Favorite
+
+extension JellyfinClient {
+    func setFavorite(itemId: String, favorite: Bool) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "FavoriteItems/\(itemId)", method: favorite ? "POST" : "DELETE", userPrefix: true))
     }
 }

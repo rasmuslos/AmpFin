@@ -7,6 +7,7 @@
 
 import Foundation
 
+@Observable
 class Item: Identifiable {
     let id: String
     let name: String
@@ -21,6 +22,11 @@ class Item: Identifiable {
         self.sortName = sortName
         self.cover = cover
         self.favorite = favorite
+    }
+    
+    func setFavorite(favorite: Bool) async throws {
+        try await JellyfinClient.shared.setFavorite(itemId: id, favorite: favorite)
+        self.favorite = true
     }
     
     struct Cover: Codable {

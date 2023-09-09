@@ -17,15 +17,24 @@ protocol LibraryDataProvider {
     
     func getArtists(albumOnly: Bool) async throws -> [Artist]
     func getArtistAlbums(id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
+    
+    func getArtistById(_ artistId: String) async throws -> Artist?
 }
 
 struct LibraryDataProviderDefault: EnvironmentKey {
     static var defaultValue: LibraryDataProvider = OnlineLibraryDataProivder()
+}
+struct LibraryOnlineProviderDefault: EnvironmentKey {
+    static var defaultValue: Bool = true
 }
 
 extension EnvironmentValues {
     var libraryDataProvider: LibraryDataProvider {
         get { self[LibraryDataProviderDefault.self] }
         set { self[LibraryDataProviderDefault.self] = newValue }
+    }
+    var libraryOnline: Bool {
+        get { self[LibraryOnlineProviderDefault.self] }
+        set { self[LibraryOnlineProviderDefault.self] = newValue }
     }
 }

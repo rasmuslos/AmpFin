@@ -10,6 +10,7 @@ import SwiftUI
 extension AlbumView {
     struct ToolbarModifier: ViewModifier {
         @Environment(\.presentationMode) var presentationMode
+        @Environment(\.libraryOnline) var libraryOnline
         
         let album: Album
         
@@ -56,12 +57,12 @@ extension AlbumView {
                     ToolbarItem(placement: .primaryAction) {
                         HStack {
                             Button {
-                                Task.detached {
-                                    if downloaded == .none {
+                                if downloaded == .none {
+                                    Task {
                                         try! await OfflineManager.shared.downloadAlbum(album)
-                                    } else if downloaded == .downloaded, let offlineAlbum = try? await OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
-                                        try! await OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
                                     }
+                                } else if downloaded == .downloaded, let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
+                                    try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
                                 }
                             } label: {
                                 switch downloaded {
@@ -76,8 +77,30 @@ extension AlbumView {
                             }
                             .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
                             Menu {
-                                Label("Option 1", systemImage: "command")
-                                Label("Option 1", systemImage: "command")
+                                Button {
+                                    Task {
+                                        try? await album.setFavorite(favorite: !album.favorite)
+                                    }
+                                } label: {
+                                    Label("Favorite", systemImage: album.favorite ? "heart.fill" : "heart")
+                                }
+                                
+                                if let first = album.artists.first {
+                                    NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
+                                        Label("Go to artist", systemImage: "music.mic")
+                                    }
+                                    .disabled(!libraryOnline)
+                                }
+                                
+                                Divider()
+                                
+                                Button(role: .destructive) {
+                                    if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
+                                        try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
+                                    }
+                                } label: {
+                                    Label("Force delete", systemImage: "trash.fill")
+                                }
                             } label: {
                                 // for some reason it did show the label...
                                 Image(systemName: "ellipsis")

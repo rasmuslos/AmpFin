@@ -122,6 +122,18 @@ extension JellyfinClient {
     }
 }
 
+// MARK: Get artist by id
+
+extension JellyfinClient {
+    func getArtistById(_ artistId: String) async throws -> Artist? {
+        if let artist = try await request(ClientRequest<JellyfinFullArtist?>(path: "Items/\(artistId)", method: "GET", userPrefix: true)) {
+            return Artist.convertFromJellyfin(artist)
+        } else {
+            return nil
+        }
+    }
+}
+
 // MARK: Item sorting
 
 extension JellyfinClient {

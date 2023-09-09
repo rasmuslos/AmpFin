@@ -8,17 +8,33 @@
 import SwiftUI
 
 struct ArtistLoadView: View {
+    @Environment(\.libraryDataProvider) var dataProvider
+    
     let artistId: String
     
     @State var artist: Artist?
+    @State var failed = false
+    
+    init(artistId: String, artist: Artist? = nil, failed: Bool = false) {
+        self.artistId = artistId
+    }
     
     // TODO: LOAD
     
     var body: some View {
-        if let artist = artist {
+        if failed {
+            ErrorView()
+        } else if let artist = artist {
             ArtistView(artist: artist)
         } else {
             LoadingView()
+                .task {
+                    if let artist = try? await dataProvider.getArtistById(artistId) {
+                        self.artist = artist
+                    } else {
+                        self.failed = true
+                    }
+                }
         }
     }
 }

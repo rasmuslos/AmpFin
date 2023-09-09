@@ -27,7 +27,20 @@ struct ArtistView: View {
         .navigationTitle(artist.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            SortSelector(sortOrder: $sortOrder)
+            ToolbarItem(placement: .topBarTrailing) {
+                SortSelector(sortOrder: $sortOrder)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    Task {
+                        try? await artist.setFavorite(favorite: !artist.favorite)
+                    }
+                } label: {
+                    Label("Favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
+                }
+            }
         }
         .toolbar {
             ToolbarItem(placement: .principal) {

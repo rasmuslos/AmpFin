@@ -391,10 +391,8 @@ extension AudioPlayer {
         }
     }
     private func notifyQueueChanged() {
-        DispatchQueue.main.sync {
-            NotificationCenter.default.post(name: NSNotification.QueueUpdated, object: nil)
-            NotificationCenter.default.post(name: NSNotification.TrackChange, object: nil)
-        }
+        NotificationCenter.default.post(name: NSNotification.QueueUpdated, object: nil)
+        NotificationCenter.default.post(name: NSNotification.TrackChange, object: nil)
     }
 }
 

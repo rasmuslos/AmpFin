@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIIntrospect
 
 struct AlbumView: View {
     @Environment(\.libraryDataProvider) var dataProvider

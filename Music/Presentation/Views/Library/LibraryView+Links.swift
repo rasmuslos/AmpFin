@@ -11,6 +11,8 @@ extension LibraryView {
     struct Links: View {
         static let count = 4
         
+        @Environment(\.libraryOnline) var libraryOnline
+        
         var body: some View {
             Group {
                 NavigationLink(destination: TracksView()) {
@@ -19,12 +21,15 @@ extension LibraryView {
                 NavigationLink(destination: AlbumsView()) {
                     Label("Albums", systemImage: "square.stack")
                 }
+                
                 NavigationLink(destination: ArtistsView(albumOnly: true)) {
                     Label("Album Artists", systemImage: "music.mic")
                 }
+                .disabled(!libraryOnline)
                 NavigationLink(destination: ArtistsView(albumOnly: false)) {
                     Label("Artists", systemImage: "mic.fill")
                 }
+                .disabled(!libraryOnline)
                 /*
                  Not really possible without knowing the library id
                  

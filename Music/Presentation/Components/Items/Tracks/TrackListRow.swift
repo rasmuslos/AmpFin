@@ -74,6 +74,16 @@ struct TrackListRow: View {
             }
             .tint(.blue)
         }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button {
+                Task {
+                    try? await track.setFavorite(favorite: !track.favorite)
+                }
+            } label: {
+                Label("Favorite", systemImage: track.favorite ? "heart.fill" : "heart")
+            }
+            .tint(.red)
+        }
         .task(checkDownload)
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.DownloadUpdated)) { _ in
             Task.detached {

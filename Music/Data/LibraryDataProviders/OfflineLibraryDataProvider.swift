@@ -66,5 +66,7 @@ struct OfflineLibraryDataProvider: LibraryDataProvider {
         return []
     }
     
-    
+    func getArtistById(_ artistId: String) async throws -> Artist? {
+        return nil
+    }
 }
