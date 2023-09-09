@@ -55,7 +55,7 @@ extension NowPlayingSheet {
             List {
                 if showHistory {
                     ForEach(Array(histroy.enumerated()), id: \.offset) { index, track in
-                        QueueTrackRow(track: track)
+                        QueueTrackRow(track: track, draggable: false)
                             .onTapGesture {
                                 AudioPlayer.shared.restoreHistory(index: index)
                             }
@@ -65,7 +65,7 @@ extension NowPlayingSheet {
                     .defaultScrollAnchor(.bottom)
                 } else {
                     ForEach(Array(queue.enumerated()), id: \.offset) { index, track in
-                        QueueTrackRow(track: track)
+                        QueueTrackRow(track: track, draggable: true)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
                                     let _ = AudioPlayer.shared.removeItem(index: index)
@@ -126,6 +126,7 @@ extension NowPlayingSheet {
 extension NowPlayingSheet {
     struct QueueTrackRow: View {
         let track: Track
+        let draggable: Bool
         
         var body: some View {
             HStack {
@@ -145,6 +146,12 @@ extension NowPlayingSheet {
                 .padding(.horizontal, 10)
                 
                 Spacer()
+                
+                if draggable {
+                    Image(systemName: "line.3.horizontal")
+                        .imageScale(.large)
+                        .foregroundStyle(.secondary)
+                }
             }
             .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
             .listRowBackground(Color.clear)

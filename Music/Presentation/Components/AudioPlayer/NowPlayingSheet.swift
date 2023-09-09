@@ -29,7 +29,7 @@ struct NowPlayingSheet: View {
             if currentTab == .cover {
                 Cover(track: track, namespace: namespace, playing: $playing)
             } else {
-                SmallTitle(track: track, namespace: namespace)
+                SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                 
                 if currentTab == .lyrics {
                     LyricsContainer(track: track, controlsVisible: $controlsVisible)

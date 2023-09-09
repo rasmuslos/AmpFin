@@ -134,7 +134,7 @@ extension NowPlayingSheet {
             .blur(radius: active ? 0 : 2)
             .tag(activeLineIndex)
             .animation(.spring, value: active)
-            .animation(.easeInOut(duration: 0.5).delay(active ? 0.25 : Double(index - activeLineIndex) / 5), value: activeLineIndex)
+            .animation(.easeInOut(duration: 0.5).delay(active ? 0.25 : Double(index - activeLineIndex) / 7), value: activeLineIndex)
             .onAppear {
                 withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
                     pulse *= 1.2

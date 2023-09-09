@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SortSelector: View {
+    @Environment(\.libraryOnline) var libraryOnline
+    
     @Binding var sortOrder: JellyfinClient.ItemSortOrder {
         didSet {
             UserDefaults.standard.set(sortOrder.rawValue, forKey: "sortOrder")
@@ -16,7 +18,7 @@ struct SortSelector: View {
     
     var body: some View {
         Menu {
-            ForEach(JellyfinClient.ItemSortOrder.allCases, id: \.hashValue) { option in
+            ForEach(filter(), id: \.hashValue) { option in
                 Button {
                     sortOrder = option
                 } label: {
@@ -55,6 +57,14 @@ extension SortSelector {
             return "Released"
         case .runtime:
             return "Runtime"
+        }
+    }
+    
+    func filter() -> [JellyfinClient.ItemSortOrder] {
+        if libraryOnline {
+            return JellyfinClient.ItemSortOrder.allCases
+        } else {
+            return JellyfinClient.ItemSortOrder.allCases.filter { $0 != .added && $0 != .released && $0 != .plays && $0 != .runtime }
         }
     }
     

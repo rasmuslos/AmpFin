@@ -103,6 +103,7 @@ extension AudioPlayer {
         }
     }
     func stopPlayback() {
+        setPlaying(false)
         audioPlayer.removeAllItems()
         
         queue = []
@@ -382,7 +383,6 @@ extension AudioPlayer {
 extension AudioPlayer {
     private func getAVPlayerItem(_ track: Track) async -> AVPlayerItem {
         if await track.isDownloaded() {
-            print(DownloadManager.shared.getTrackUrl(trackId: track.id))
             return AVPlayerItem(url: DownloadManager.shared.getTrackUrl(trackId: track.id))
         } else {
             return AVPlayerItem(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "stream").appending(queryItems: [

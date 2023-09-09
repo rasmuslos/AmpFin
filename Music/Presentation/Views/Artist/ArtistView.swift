@@ -39,6 +39,7 @@ struct ArtistView: View {
                     }
                 } label: {
                     Label("Favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
+                        .contentTransition(.symbolEffect(.replace))
                 }
             }
         }

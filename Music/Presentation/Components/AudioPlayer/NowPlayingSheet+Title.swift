@@ -54,12 +54,16 @@ extension NowPlayingSheet {
     struct SmallTitle: View {
         let track: Track
         let namespace: Namespace.ID
+        @Binding var currentTab: Tab
         
         var body: some View {
             HStack() {
                 ItemImage(cover: track.cover)
                     .frame(width: 60, height: 60)
                     .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
+                    .onTapGesture {
+                        currentTab = .cover
+                    }
                 
                 VStack(alignment: .leading) {
                     Text(track.name)
@@ -91,16 +95,15 @@ extension NowPlayingSheet {
         let track: Track
         
         var body: some View {
-            Menu {
-                Label("Option 1", systemImage: "command")
-                Label("Option 2", systemImage: "command")
-                Label("Option 3", systemImage: "command")
-                Label("Option 4", systemImage: "command")
+            Button {
+                Task.detached {
+                    try? await track.setFavorite(favorite: !track.favorite)
+                }
             } label: {
-                Image(systemName: "ellipsis")
+                Image(systemName: track.favorite ? "heart.fill" : "heart")
                     .font(.system(size: 24))
-                    .symbolVariant(.circle.fill)
                     .symbolRenderingMode(.palette)
+                    .contentTransition(.symbolEffect(.replace))
                     .foregroundStyle(.white, .gray.opacity(0.25))
             }
         }

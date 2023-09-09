@@ -18,26 +18,17 @@ struct TrackList: View {
             TrackListButtons() {
                 startPlayback(index: 0, shuffle: $0)
             }
+            .searchable(text: $search, prompt: "Search")
+            .listRowSeparator(.hidden)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         
         ForEach(Array(filter().enumerated()), id: \.offset) { index, track in
-            Button {
+            TrackListRow(track: track, album: album) {
                 startPlayback(index: index, shuffle: false)
-            } label: {
-                TrackListRow(track: track, album: album)
             }
-            .buttonStyle(.plain)
             .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
             .padding(.horizontal)
-        }
-        
-        if album == nil {
-            // .searchable adds padding... for some reason
-            Color.clear
-                .searchable(text: $search, prompt: "Search")
-                .listRowSeparator(.hidden)
-                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                .frame(height: 0)
         }
     }
 }
@@ -49,10 +40,14 @@ extension TrackList {
         var filtered = tracks
         
         if search != "" {
-            filtered = filtered.filter { $0.name.contains(search) || $0.album.name.contains(search) }
+            filtered = filtered.filter { $0.name.lowercased().contains(search.lowercased()) || $0.album.name.lowercased().contains(search.lowercased()) }
         }
         
-        return filtered.sorted { $0.index < $1.index }
+        if album != nil {
+            return filtered.sorted { $0.index < $1.index }
+        } else {
+            return filtered
+        }
     }
     
     private func startPlayback(index: Int, shuffle: Bool) {

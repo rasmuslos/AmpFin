@@ -20,15 +20,16 @@ struct SearchView: View {
     var body: some View {
         NavigationStack {
             List {
+                ProviderPicker(selection: $library)
+                
                 if tracks.count > 0 {
                     Section("Tracks") {
                         ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
-                            TrackListRow(track: track)
-                                .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-                                .padding(.horizontal)
-                                .onTapGesture {
-                                    AudioPlayer.shared.startPlayback(tracks: tracks, startIndex: index, shuffle: false)
-                                }
+                            TrackListRow(track: track) {
+                                AudioPlayer.shared.startPlayback(tracks: tracks, startIndex: index, shuffle: false)
+                            }
+                            .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
+                            .padding(.horizontal)
                         }
                     }
                 }
@@ -63,7 +64,6 @@ struct SearchView: View {
                 }
             }
             // Online / Offline
-            .modifier(PickerModifier(selection: $library))
             .onChange(of: library) {
                 task?.cancel()
                 

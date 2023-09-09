@@ -8,21 +8,18 @@
 import SwiftUI
 
 extension SearchView {
-    struct PickerModifier: ViewModifier {
+    struct ProviderPicker: View {
         @Binding var selection: Tab
         
-        func body(content: Content) -> some View {
-            content.safeAreaInset(edge: .top) {
-                Picker("Library", selection: $selection) {
-                    Text("Jellyfin")
-                        .tag(Tab.online)
-                    Text("Downloaded")
-                        .tag(Tab.offline)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
-                .background(.ultraThickMaterial)
+        var body: some View {
+            Picker("Library", selection: $selection) {
+                Text("Jellyfin")
+                    .tag(Tab.online)
+                Text("Downloaded")
+                    .tag(Tab.offline)
             }
+            .pickerStyle(SegmentedPickerStyle())
+            .listRowSeparator(.hidden)
         }
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct TrackListRow: View {
     let track: Track
     var album: Album? = nil
+    let startPlayback: () -> ()
     
     @State var downloaded = false
     
@@ -17,31 +18,36 @@ struct TrackListRow: View {
         let showArtist = album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
         
         HStack {
-            if album != nil {
-                Text(String(track.index.index))
-                    .frame(width: 23)
-                // .padding(.horizontal, 7)
-            } else {
-                ItemImage(cover: track.cover)
-                    .frame(width: 45)
-            }
-            
-            VStack(alignment: .leading) {
-                Text(track.name)
-                    .lineLimit(1)
-                    .font(.headline)
-                    .padding(.vertical, showArtist ? 0 : 6)
-                
-                if showArtist {
-                    Text(track.artists.map { $0.name }.joined(separator: ", "))
-                        .lineLimit(1)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+            Button {
+                startPlayback()
+            } label: {
+                if album != nil {
+                    Text(String(track.index.index))
+                        .frame(width: 23)
+                    // .padding(.horizontal, 7)
+                } else {
+                    ItemImage(cover: track.cover)
+                        .frame(width: 45)
                 }
+                
+                VStack(alignment: .leading) {
+                    Text(track.name)
+                        .lineLimit(1)
+                        .font(.headline)
+                        .padding(.vertical, showArtist ? 0 : 6)
+                    
+                    if showArtist {
+                        Text(track.artists.map { $0.name }.joined(separator: ", "))
+                            .lineLimit(1)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(.horizontal, 5)
+                
+                Spacer()
             }
-            .padding(.horizontal, 5)
-            
-            Spacer()
+            .buttonStyle(.plain)
             
             if downloaded {
                 Image(systemName: "arrow.down.circle.fill")
@@ -56,11 +62,21 @@ struct TrackListRow: View {
                 
                 Divider()
                 
+                if album == nil {
+                    NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
+                        Label("View album", systemImage: "square.stack")
+                    }
+                }
+                
+                Divider()
+                
                 FavoriteButton(track: track)
             } label: {
                 Image(systemName: "ellipsis")
                     .renderingMode(.original)
                     .foregroundStyle(Color(UIColor.label))
+                    .padding(.vertical, 10)
+                    .padding(.leading, 0)
             }
         }
         .swipeActions(edge: .leading, allowsFullSwipe: true) {

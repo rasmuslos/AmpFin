@@ -87,7 +87,7 @@ extension AlbumView {
                                 
                                 if let first = album.artists.first {
                                     NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
-                                        Label("Go to artist", systemImage: "music.mic")
+                                        Label("View artist", systemImage: "music.mic")
                                     }
                                     .disabled(!libraryOnline)
                                 }

@@ -14,12 +14,13 @@ struct AlbumsView: View {
     @State var errored = false
     
     @State var sortOrder = SortSelector.getSortOrder()
+    @State var search: String = ""
     
     var body: some View {
         VStack {
-            if let albums = albums {
+            if albums != nil {
                 ScrollView {
-                    AlbumGrid(albums: albums)
+                    AlbumGrid(albums: filter())
                         .padding()
                 }
             } else if errored {
@@ -29,6 +30,7 @@ struct AlbumsView: View {
             }
         }
         .navigationTitle("Albums")
+        .searchable(text: $search, prompt: "Search")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(sortOrder: $sortOrder)
@@ -51,6 +53,18 @@ extension AlbumsView {
             albums = try await dataProvider.getAlbums(limit: -1, sortOrder: sortOrder, ascending: true)
         } catch {
             errored = true
+        }
+    }
+    
+    private func filter() -> [Album] {
+        if let albums = albums {
+            if search == "" {
+                return albums
+            } else {
+                return albums.filter { $0.name.lowercased().contains(search.lowercased()) }
+            }
+        } else {
+            return []
         }
     }
 }
