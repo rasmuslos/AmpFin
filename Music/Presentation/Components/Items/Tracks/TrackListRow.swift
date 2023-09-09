@@ -20,7 +20,7 @@ struct TrackListRow: View {
             if album != nil {
                 Text(String(track.index.index))
                     .frame(width: 23)
-                    // .padding(.horizontal, 7)
+                // .padding(.horizontal, 7)
             } else {
                 ItemImage(cover: track.cover)
                     .frame(width: 45)
@@ -51,7 +51,12 @@ struct TrackListRow: View {
             }
             
             Menu {
+                PlayNextButton(track: track)
+                PlayLastButton(track: track)
                 
+                Divider()
+                
+                FavoriteButton(track: track)
             } label: {
                 Image(systemName: "ellipsis")
                     .renderingMode(.original)
@@ -59,6 +64,30 @@ struct TrackListRow: View {
             }
         }
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            PlayNextButton(track: track)
+        }
+        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+            PlayLastButton(track: track)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            FavoriteButton(track: track)
+        }
+        .task(checkDownload)
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.DownloadUpdated)) { _ in
+            Task.detached {
+                await checkDownload()
+            }
+        }
+    }
+}
+
+// MARK: Buttons
+
+extension TrackListRow {
+    struct PlayNextButton: View {
+        let track: Track
+        
+        var body: some View {
             Button {
                 AudioPlayer.shared.queueTrack(track, index: 0)
             } label: {
@@ -66,7 +95,11 @@ struct TrackListRow: View {
             }
             .tint(.orange)
         }
-        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+    }
+    struct PlayLastButton: View {
+        let track: Track
+        
+        var body: some View {
             Button {
                 AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
             } label: {
@@ -74,7 +107,12 @@ struct TrackListRow: View {
             }
             .tint(.blue)
         }
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+    }
+    
+    struct FavoriteButton: View {
+        let track: Track
+        
+        var body: some View {
             Button {
                 Task {
                     try? await track.setFavorite(favorite: !track.favorite)
@@ -83,12 +121,6 @@ struct TrackListRow: View {
                 Label("Favorite", systemImage: track.favorite ? "heart.fill" : "heart")
             }
             .tint(.red)
-        }
-        .task(checkDownload)
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.DownloadUpdated)) { _ in
-            Task.detached {
-                await checkDownload()
-            }
         }
     }
 }

@@ -134,6 +134,53 @@ extension JellyfinClient {
     }
 }
 
+// MARK: Get album by id
+
+extension JellyfinClient {
+    func getAlbumById(_ albumId: String) async throws -> Album? {
+        if let album = try await request(ClientRequest<JellyfinAlbum?>(path: "Items/\(albumId)", method: "GET", query: [
+            URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
+        ], userPrefix: true)) {
+            return Album.convertFromJellyfin(album)
+        } else {
+            return nil
+        }
+    }
+}
+
+// MARK: Search
+
+extension JellyfinClient {
+    func searchTracks(query: String) async throws -> [Track] {
+        let tracks = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: [
+            URLQueryItem(name: "searchTerm", value: query),
+            URLQueryItem(name: "Limit", value: "20"),
+            URLQueryItem(name: "IncludeItemTypes", value: "Audio"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
+        ], userPrefix: true))
+        return tracks.Items.map { Track.convertFromJellyfin($0, fallbackIndex: 0) }
+    }
+    func searchAlbums(query: String) async throws -> [Album] {
+        let tracks = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: [
+            URLQueryItem(name: "searchTerm", value: query),
+            URLQueryItem(name: "Limit", value: "20"),
+            URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate,AlbumArtists,People"),
+        ], userPrefix: true))
+        return tracks.Items.map(Album.convertFromJellyfin)
+    }
+}
+
 // MARK: Item sorting
 
 extension JellyfinClient {

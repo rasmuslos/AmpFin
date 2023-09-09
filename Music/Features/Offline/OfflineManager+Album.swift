@@ -47,7 +47,7 @@ extension OfflineManager {
         let offlineAlbum = OfflineAlbum(
             id: album.id,
             name: album.name,
-            sortName: album.sortName,
+            sortName: album.sortName?.lowercased() ?? album.name.lowercased(),
             cover: album.cover,
             overview: album.overview,
             genres: album.genres,
@@ -99,12 +99,32 @@ extension OfflineManager {
         descriptor.fetchLimit = 20
         
         let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
-        return tracks.map(Album.convertFromOffline)
+        return tracks.map(Album.convertFromOffline).reversed()
     }
     
     @MainActor
     func getAllAlbums() throws -> [Album] {
         let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
         return tracks.map(Album.convertFromOffline)
+    }
+    
+    @MainActor
+    func getAlbumById(_ albumId: String) throws -> Album? {
+        var descriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate { $0.id == albumId })
+        descriptor.fetchLimit = 1
+        
+        if let album = try? PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first {
+            return Album.convertFromOffline(album)
+        } else {
+            return nil
+        }
+    }
+    
+    @MainActor func searchAlbums(query: String) throws -> [Album] {
+        var descriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate { $0.sortName.contains(query) })
+        descriptor.fetchLimit = 20
+        
+        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
+        return albums.map(Album.convertFromOffline)
     }
 }

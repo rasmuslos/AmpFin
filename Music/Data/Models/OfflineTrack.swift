@@ -12,6 +12,7 @@ import SwiftData
 class OfflineTrack {
     @Attribute(.unique) let id: String
     let name: String
+    let sortName: String
     
     let index: Track.Index
     let releaseDate: Date?
@@ -23,9 +24,10 @@ class OfflineTrack {
     var favorite: Bool
     var downloadId: Int?
     
-    init(id: String, name: String, index: Track.Index, releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, downloadId: Int?) {
+    init(id: String, name: String, sortName: String, index: Track.Index, releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, downloadId: Int?) {
         self.id = id
         self.name = name
+        self.sortName = sortName
         self.index = index
         self.releaseDate = releaseDate
         self.artists = artists

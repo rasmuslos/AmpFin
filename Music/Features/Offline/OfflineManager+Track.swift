@@ -24,6 +24,7 @@ extension OfflineManager {
         let offlineItem = OfflineTrack(
             id: track.id,
             name: track.name,
+            sortName: track.sortName?.lowercased() ?? track.name.lowercased(),
             index: track.index,
             releaseDate: track.releaseDate,
             artists: track.artists,
@@ -67,6 +68,14 @@ extension OfflineManager {
     @MainActor
     func getAllTracks() throws -> [Track] {
         let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
+        return tracks.map(Track.convertFromOffline)
+    }
+    
+    @MainActor func searchTracks(query: String) throws -> [Track] {
+        var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.sortName.contains(query) })
+        descriptor.fetchLimit = 20
+        
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
         return tracks.map(Track.convertFromOffline)
     }
 }

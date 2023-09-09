@@ -1,30 +1,30 @@
 //
-//  ArtistLoadView.swift
+//  AlbumLoadView.swift
 //  Music
 //
-//  Created by Rasmus Krämer on 08.09.23.
+//  Created by Rasmus Krämer on 09.09.23.
 //
 
 import SwiftUI
 
-struct ArtistLoadView: View {
+struct AlbumLoadView: View {
     @Environment(\.libraryDataProvider) var dataProvider
     
-    let artistId: String
+    let albumId: String
     
-    @State var artist: Artist?
+    @State var album: Album?
     @State var failed = false
     
     var body: some View {
         if failed {
             ErrorView()
-        } else if let artist = artist {
-            ArtistView(artist: artist)
+        } else if let album = album {
+            AlbumView(album: album)
         } else {
             LoadingView()
                 .task {
-                    if let artist = try? await dataProvider.getArtistById(artistId) {
-                        self.artist = artist
+                    if let album = try? await dataProvider.getAlbumById(albumId) {
+                        self.album = album
                     } else {
                         self.failed = true
                     }
