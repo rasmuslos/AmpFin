@@ -27,10 +27,12 @@ extension AlbumView {
                             .foregroundStyle(imageColors.background)
                             .offset(y: -offset)
                             .frame(height: offset)
-                            .onChange(of: offset) {
-                                navbarVisible = offset < -350
-                            }
                     }
+                    
+                    Color.clear
+                        .onChange(of: offset) {
+                            navbarVisible = offset < -350
+                        }
                 }
                 .frame(height: 0)
                 
