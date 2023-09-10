@@ -34,7 +34,8 @@ struct NowPlayingSheet: View {
                 if currentTab == .lyrics {
                     LyricsContainer(track: track, controlsVisible: $controlsVisible)
                 } else if currentTab == .queue {
-                    Queue(track: track, namespace: namespace)
+                    Queue()
+                        .padding(.horizontal, -30)
                 }
             }
             
@@ -47,7 +48,7 @@ struct NowPlayingSheet: View {
         .ignoresSafeArea(edges: .bottom)
         .preferredColorScheme(.dark)
         .gesture(
-            DragGesture().onEnded { value in
+            DragGesture(minimumDistance: 150).onEnded { value in
                 if value.location.y - value.startLocation.y > 150 {
                     presentationMode.wrappedValue.dismiss()
                 }

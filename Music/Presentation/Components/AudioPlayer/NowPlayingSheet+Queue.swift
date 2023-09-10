@@ -11,13 +11,8 @@ import SwiftUI
 
 extension NowPlayingSheet {
     struct Queue: View {
-        let track: Track
-        let namespace: Namespace.ID
-        
         @State var histroy = AudioPlayer.shared.history
         @State var queue = AudioPlayer.shared.queue
-        
-        @State var nowPlaying = AudioPlayer.shared.nowPlaying!
         @State var shuffled = AudioPlayer.shared.shuffled
         
         @State var showHistory = false
@@ -51,6 +46,7 @@ extension NowPlayingSheet {
             }
             .padding(.top, 10)
             .padding(.bottom, -10)
+            .padding(.horizontal, 30)
             
             List {
                 if showHistory {
@@ -66,33 +62,29 @@ extension NowPlayingSheet {
                 } else {
                     ForEach(Array(queue.enumerated()), id: \.offset) { index, track in
                         QueueTrackRow(track: track, draggable: true)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button(role: .destructive) {
-                                    let _ = AudioPlayer.shared.removeItem(index: index)
-                                } label: {
-                                    Label("Delete", systemImage: "trash.fill")
-                                }
-                            }
                             .onTapGesture {
                                 AudioPlayer.shared.skip(to: index)
                             }
                             .padding(.top, index == 0 ? 15 : 0)
                             .padding(.bottom, (index == queue.count - 1) ? 15 : 0)
-                            .padding(.bottom, (index == queue.count - 1) ? 15 : 0)
                     }
                     .onMove { from, to in
-                        from.forEach {
-                            AudioPlayer.shared.moveTrack(from: $0, to: to)
+                        Task.detached {
+                            from.forEach {
+                                AudioPlayer.shared.moveTrack(from: $0, to: to)
+                            }
                         }
                     }
-                    .defaultScrollAnchor(.top)
+                    .onDelete { indexSet in
+                        indexSet.forEach {
+                            let _ = AudioPlayer.shared.removeItem(index: $0)
+                        }
+                    }
                 }
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            // move drag indicator
-            // .padding(.trailing, -20)
-            // .environment(\.editMode, .constant(.active))
+            // this is required because swiftui sucks ass
             .mask(
                 VStack(spacing: 0) {
                     LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
@@ -104,16 +96,11 @@ extension NowPlayingSheet {
                         .frame(height: 40)
                 }
             )
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
-                withAnimation {
-                    nowPlaying = AudioPlayer.shared.nowPlaying!
-                }
-            })
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.QueueUpdated), perform: { _ in
+                histroy = AudioPlayer.shared.history
+                queue = AudioPlayer.shared.queue
+                
                 withAnimation {
-                    histroy = AudioPlayer.shared.history
-                    queue = AudioPlayer.shared.queue
-                    
                     shuffled = AudioPlayer.shared.shuffled
                 }
             })
@@ -153,9 +140,9 @@ extension NowPlayingSheet {
                         .foregroundStyle(.secondary)
                 }
             }
-            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
-            .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .listRowInsets(.init(top: 5, leading: 30, bottom: 5, trailing: 30))
         }
     }
 }

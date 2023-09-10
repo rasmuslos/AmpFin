@@ -19,7 +19,7 @@ struct AlbumView: View {
     var body: some View {
         List {
             Header(album: album, navbarVisible: $navbarVisible, imageColors: $imageColors) { shuffle in
-                AudioPlayer.shared.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle)
+                AudioPlayer.shared.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffle)
             }
             .navigationTitle(album.name)
             .navigationBarTitleDisplayMode(.inline)

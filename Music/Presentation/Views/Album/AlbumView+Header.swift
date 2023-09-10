@@ -22,13 +22,15 @@ extension AlbumView {
                 GeometryReader { reader in
                     let offset = reader.frame(in: .global).minY
                     
-                    Rectangle()
-                        .foregroundStyle(imageColors.background)
-                        .offset(y: -offset)
-                        .frame(height: offset)
-                        .onChange(of: offset) {
-                            navbarVisible = offset < -350
-                        }
+                    if offset > 0 {
+                        Rectangle()
+                            .foregroundStyle(imageColors.background)
+                            .offset(y: -offset)
+                            .frame(height: offset)
+                            .onChange(of: offset) {
+                                navbarVisible = offset < -350
+                            }
+                    }
                 }
                 .frame(height: 0)
                 
@@ -62,16 +64,15 @@ extension AlbumView {
                     
                     HStack {
                         Group {
-                            Button {
-                                startPlayback(false)
-                            } label: {
-                                Label("Play", systemImage: "play.fill")
-                            }
-                            Button {
-                                startPlayback(true)
-                            } label: {
-                                Label("Shuffle", systemImage: "shuffle")
-                            }
+                            // why not buttons? because swiftui is a piece of shit
+                            Label("Play", systemImage: "play.fill")
+                                .onTapGesture {
+                                    startPlayback(false)
+                                }
+                            Label("Shuffle", systemImage: "shuffle")
+                                .onTapGesture {
+                                    startPlayback(true)
+                                }
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)

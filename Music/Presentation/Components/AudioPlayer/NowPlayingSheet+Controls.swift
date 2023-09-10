@@ -56,6 +56,7 @@ extension NowPlayingSheet {
                             AudioPlayer.shared.setPlaying(!AudioPlayer.shared.isPlaying())
                         } label: {
                             Image(systemName: playing ? "pause.fill" : "play.fill")
+                                .frame(height: 50)
                                 .font(.system(size: 47))
                                 .padding(.horizontal, 50)
                                 .contentTransition(.symbolEffect(.replace))

@@ -77,6 +77,10 @@ extension AudioPlayer {
 
 extension AudioPlayer {
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
+        if tracks.count == 0 {
+            return
+        }
+        
         Task {
             stopPlayback()
             
@@ -103,7 +107,10 @@ extension AudioPlayer {
         }
     }
     func stopPlayback() {
-        setPlaying(false)
+        if isPlaying() {
+            setPlaying(false)
+        }
+        
         audioPlayer.removeAllItems()
         
         queue = []
@@ -182,7 +189,7 @@ extension AudioPlayer {
         return track
     }
     func queueTrack(_ track: Track, index: Int, addToUnalteredQueue: Bool = true) {
-        if queue.count == 0 {
+        if queue.count == 0 && nowPlaying == nil {
             startPlayback(tracks: [track], startIndex: 0, shuffle: false)
         } else {
             Task {
@@ -198,7 +205,12 @@ extension AudioPlayer {
     func moveTrack(from: Int, to: Int) {
         if let track = removeItem(index: from) {
             unalteredQueue.removeAll { $0.id == track.id }
-            queueTrack(track, index: to)
+            
+            if from < to {
+                queueTrack(track, index: to - 1)
+            } else {
+                queueTrack(track, index: to)
+            }
         }
         
         notifyQueueChanged()
@@ -242,6 +254,7 @@ extension AudioPlayer {
             }
         } else {
             updateAudioSession(active: false)
+            setPlaying(false)
         }
         
         notifyQueueChanged()
@@ -255,7 +268,7 @@ extension AudioPlayer {
     }
 }
 
-// MARK: Reporting
+// MARK: Observers
 
 extension AudioPlayer {
     private func setupTimeObserver() {
@@ -275,10 +288,28 @@ extension AudioPlayer {
     }
     private func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleItemDidPlayToEndTime), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
     }
     
     @objc private func handleItemDidPlayToEndTime() {
         trackDidFinish()
+    }
+    @objc func handleInterruption(notification: Notification) {
+        guard let userInfo = notification.userInfo, let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+            return
+        }
+        
+        switch type {
+        case .began:
+            setPlaying(false)
+        case .ended:
+            guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+            if options.contains(.shouldResume) {
+                setPlaying(true)
+            }
+        default: ()
+        }
     }
 }
 

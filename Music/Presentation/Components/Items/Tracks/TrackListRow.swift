@@ -24,6 +24,7 @@ struct TrackListRow: View {
                 if album != nil {
                     Text(String(track.index.index))
                         .frame(width: 23)
+                        .fontDesign(.rounded)
                     // .padding(.horizontal, 7)
                 } else {
                     ItemImage(cover: track.cover)
