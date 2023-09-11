@@ -39,7 +39,7 @@ extension Track {
             id: offline.id,
             name: offline.name,
             sortName: nil,
-            cover: offline.album.cover,
+            cover: Item.Cover(type: .local, url: DownloadManager.shared.getAlbumCoverUrl(albumId: offline.album.id)),
             favorite: offline.favorite,
             album: ReducedAlbum(
                 id: offline.album.id,

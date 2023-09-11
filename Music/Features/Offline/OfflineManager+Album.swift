@@ -48,7 +48,6 @@ extension OfflineManager {
             id: album.id,
             name: album.name,
             sortName: album.sortName?.lowercased() ?? album.name.lowercased(),
-            cover: album.cover,
             overview: album.overview,
             genres: album.genres,
             releaseDate: album.releaseDate,

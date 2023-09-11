@@ -31,7 +31,7 @@ extension Album {
             id: offline.id,
             name: offline.name,
             sortName: offline.sortName,
-            cover: offline.cover,
+            cover: Item.Cover(type: .local, url: DownloadManager.shared.getAlbumCoverUrl(albumId: offline.id)),
             favorite: offline.favorite,
             overview: offline.overview,
             genres: offline.genres,

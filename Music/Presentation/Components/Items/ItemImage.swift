@@ -25,7 +25,7 @@ struct ItemImage: View {
     
     var body: some View {
         if let cover = cover {
-            if cover.type == .remote {
+            if cover.type == .remote || cover.type == .local {
                 AsyncImage(url: cover.url) { phase in
                     if let image = phase.image {
                         image

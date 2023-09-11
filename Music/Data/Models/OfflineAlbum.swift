@@ -10,11 +10,9 @@ import SwiftData
 
 @Model
 class OfflineAlbum {
-    let id: String
+    @Attribute(.unique) let id: String
     let name: String
-    
     let sortName: String
-    var cover: Item.Cover?
     
     let overview: String?
     let genres: [String]
@@ -25,11 +23,10 @@ class OfflineAlbum {
     var favorite: Bool
     var trackCount: Int
     
-    init(id: String, name: String, sortName: String, cover: Item.Cover? = nil, overview: String?, genres: [String], releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, trackCount: Int) {
+    init(id: String, name: String, sortName: String, overview: String?, genres: [String], releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, trackCount: Int) {
         self.id = id
         self.name = name
         self.sortName = sortName
-        self.cover = cover
         self.overview = overview
         self.genres = genres
         self.releaseDate = releaseDate
