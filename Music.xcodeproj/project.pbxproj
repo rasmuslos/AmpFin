@@ -278,7 +278,7 @@
 				3A234E162AA8E0A300197AA7 /* Items */,
 				3A8B99432AAA089F004AAA7B /* Sliders */,
 				3ADE8EA52AA94637009826A3 /* AudioPlayer */,
-				3A98A02C2AABA35700EA84CF /* ReusableViews */,
+				3A98A02C2AABA35700EA84CF /* Fallback */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -404,13 +404,13 @@
 			path = Sections;
 			sourceTree = "<group>";
 		};
-		3A98A02C2AABA35700EA84CF /* ReusableViews */ = {
+		3A98A02C2AABA35700EA84CF /* Fallback */ = {
 			isa = PBXGroup;
 			children = (
 				3A98A02D2AABA36600EA84CF /* LoadingView.swift */,
 				3A98A02F2AABA37B00EA84CF /* ErrorView.swift */,
 			);
-			path = ReusableViews;
+			path = Fallback;
 			sourceTree = "<group>";
 		};
 		3A98A0332AABA48D00EA84CF /* Features */ = {

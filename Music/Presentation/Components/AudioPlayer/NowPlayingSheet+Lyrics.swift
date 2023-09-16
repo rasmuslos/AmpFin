@@ -23,11 +23,13 @@ extension NowPlayingSheet {
                     if let lyrics = lyrics {
                         LazyVStack {
                             ForEach(Array(lyrics.keys.sorted(by: <).enumerated()), id: \.offset) { index, key in
-                                LyricLine(index: index, text: lyrics[key]!, activeLineIndex: $activeLineIndex)
-                                    .onTapGesture {
-                                        AudioPlayer.shared.seek(seconds: Array(lyrics.keys.sorted(by: <))[index])
-                                        activeLineIndex = index
-                                    }
+                                if index == activeLineIndex || lyrics[key]! != nil {
+                                    LyricLine(index: index, text: lyrics[key]!, activeLineIndex: $activeLineIndex)
+                                        .onTapGesture {
+                                            AudioPlayer.shared.seek(seconds: Array(lyrics.keys.sorted(by: <))[index])
+                                            activeLineIndex = index
+                                        }
+                                }
                             }
                         }
                         .padding(.vertical, 25)
@@ -112,7 +114,7 @@ extension NowPlayingSheet {
                         .font(.system(size: 35))
                     
                     Spacer()
-                } else if active {
+                } else {
                     HStack {
                         Circle()
                             .frame(width: 15)

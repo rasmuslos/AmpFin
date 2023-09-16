@@ -34,13 +34,13 @@ struct TrackListRow: View {
                 VStack(alignment: .leading) {
                     Text(track.name)
                         .lineLimit(1)
-                        .font(.headline)
+                        .font(.body)
                         .padding(.vertical, showArtist ? 0 : 6)
                     
                     if showArtist {
                         Text(track.artists.map { $0.name }.joined(separator: ", "))
                             .lineLimit(1)
-                            .font(.subheadline)
+                            .font(.callout)
                             .foregroundStyle(.secondary)
                     }
                 }

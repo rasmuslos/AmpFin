@@ -16,7 +16,9 @@ struct AlbumGridRow: View {
             
             Group {
                 Text(album.name)
+                    .font(.callout)
                 Text(album.artists.map { $0.name }.joined(separator: ", "))
+                    .font(.footnote)
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 7)
             }

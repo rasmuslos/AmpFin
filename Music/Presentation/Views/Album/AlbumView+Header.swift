@@ -50,7 +50,7 @@ extension AlbumView {
                     // fuck navigation links
                     Text(album.artists.map { $0.name }.joined(separator: ", "))
                         .lineLimit(1)
-                        .font(.subheadline)
+                        .font(.callout)
                         .foregroundStyle(imageColors.detail)
                     
                     HStack {
