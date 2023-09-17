@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A061A252AB7ADD0002F8B83 /* OfflineManager+Cleanup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A061A242AB7ADD0002F8B83 /* OfflineManager+Cleanup.swift */; };
 		3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */; };
 		3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFA2AA883EC00197AA7 /* LibraryView.swift */; };
 		3A234DFD2AA884FF00197AA7 /* LibraryView+Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */; };
@@ -87,7 +88,6 @@
 		3AEB322D2AA7EC3C00853210 /* JellyfinClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */; };
 		3AEB322E2AA7EC3C00853210 /* JellyfinClient+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321E2AA7EC3C00853210 /* JellyfinClient+Request.swift */; };
 		3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEB321F2AA7EC3C00853210 /* Assets.xcassets */; };
-		3AEB32302AA7EC3C00853210 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEB32212AA7EC3C00853210 /* Preview Assets.xcassets */; };
 		3AEB32312AA7EC3C00853210 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32232AA7EC3C00853210 /* ContentView.swift */; };
 		3AEB32322AA7EC3C00853210 /* LargeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32262AA7EC3C00853210 /* LargeButtonStyle.swift */; };
 		3AEB32332AA7EC3C00853210 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32292AA7EC3C00853210 /* LoginView.swift */; };
@@ -100,6 +100,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A061A242AB7ADD0002F8B83 /* OfflineManager+Cleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OfflineManager+Cleanup.swift"; sourceTree = "<group>"; };
 		3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
 		3A234DFA2AA883EC00197AA7 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView+Links.swift"; sourceTree = "<group>"; };
@@ -180,7 +181,6 @@
 		3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JellyfinClient.swift; sourceTree = "<group>"; };
 		3AEB321E2AA7EC3C00853210 /* JellyfinClient+Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JellyfinClient+Request.swift"; sourceTree = "<group>"; };
 		3AEB321F2AA7EC3C00853210 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3AEB32212AA7EC3C00853210 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3AEB32222AA7EC3C00853210 /* Music.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Music.entitlements; sourceTree = "<group>"; };
 		3AEB32232AA7EC3C00853210 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3AEB32262AA7EC3C00853210 /* LargeButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeButtonStyle.swift; sourceTree = "<group>"; };
@@ -380,6 +380,7 @@
 				3A98A0182AAB561300EA84CF /* OfflineManager.swift */,
 				3A98A0212AAB5C4800EA84CF /* OfflineManager+Album.swift */,
 				3A98A0272AAB608E00EA84CF /* OfflineManager+Track.swift */,
+				3A061A242AB7ADD0002F8B83 /* OfflineManager+Cleanup.swift */,
 				3A98A03A2AABCA4B00EA84CF /* NSNotification+Offline.swift */,
 			);
 			path = Offline;
@@ -495,7 +496,6 @@
 				3AEB322A2AA7EC3C00853210 /* Info.plist */,
 				3AEB32222AA7EC3C00853210 /* Music.entitlements */,
 				3AEB321F2AA7EC3C00853210 /* Assets.xcassets */,
-				3AEB32202AA7EC3C00853210 /* Preview Content */,
 			);
 			path = Music;
 			sourceTree = "<group>";
@@ -510,14 +510,6 @@
 				3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */,
 			);
 			path = JellyfinClient;
-			sourceTree = "<group>";
-		};
-		3AEB32202AA7EC3C00853210 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				3AEB32212AA7EC3C00853210 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		3AEB32242AA7EC3C00853210 /* Presentation */ = {
@@ -656,7 +648,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AEB32302AA7EC3C00853210 /* Preview Assets.xcassets in Resources */,
 				3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -730,6 +721,7 @@
 				3A98A03B2AABCA4B00EA84CF /* NSNotification+Offline.swift in Sources */,
 				3A8B993A2AA9F21C004AAA7B /* NSNotification+Player.swift in Sources */,
 				3A98A0262AAB603500EA84CF /* DownloadManager+Album.swift in Sources */,
+				3A061A252AB7ADD0002F8B83 /* OfflineManager+Cleanup.swift in Sources */,
 				3A8850662AA9165300456DDD /* TrackListButtons.swift in Sources */,
 				3A234E122AA8D91000197AA7 /* Track+Convert.swift in Sources */,
 				3A750FB62AA8FE6B003E4BC9 /* Album.swift in Sources */,
@@ -883,7 +875,6 @@
 				CODE_SIGN_ENTITLEMENTS = Music/Music.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Music/Preview Content\"";
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -922,7 +913,6 @@
 				CODE_SIGN_ENTITLEMENTS = Music/Music.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Music/Preview Content\"";
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

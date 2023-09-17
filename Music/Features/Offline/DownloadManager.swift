@@ -26,6 +26,8 @@ class DownloadManager: NSObject {
     }
 }
 
+// MARK: 
+
 // MARK: Singleton
 
 extension DownloadManager {

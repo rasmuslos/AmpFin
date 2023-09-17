@@ -12,9 +12,11 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         // Make sure the system does not delete the file
         let tmpLocation = documentsURL.appending(path: String(downloadTask.taskIdentifier))
         do {
+            try? FileManager.default.removeItem(at: tmpLocation)
             try FileManager.default.moveItem(at: location, to: tmpLocation)
         } catch {
             print("Error while moving file", error)
+            return
         }
         
         Task.detached { [self] in
@@ -22,6 +24,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                 let destination = getTrackUrl(trackId: track.id)
                 
                 do {
+                    try? FileManager.default.removeItem(at: destination)
                     try FileManager.default.moveItem(at: tmpLocation, to: destination)
                     track.downloadId = nil
                     

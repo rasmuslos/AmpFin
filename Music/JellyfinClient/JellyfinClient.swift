@@ -51,12 +51,10 @@ extension JellyfinClient {
 // MARK: Singleton
 
 extension JellyfinClient {
-    private static func getJellyfinApiClient() -> JellyfinClient {
+    private(set) static var shared = {
         JellyfinClient(
             serverUrl: UserDefaults.standard.url(forKey: "serverUrl"),
             token: UserDefaults.standard.string(forKey: "token"),
             userId: UserDefaults.standard.string(forKey: "userId"))
-    }
-    
-    private(set) static var shared = getJellyfinApiClient()
+    }()
 }

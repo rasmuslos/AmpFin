@@ -22,6 +22,8 @@ struct LoginView: View {
     
     var body: some View {
         VStack {
+            Spacer()
+            
             Image("Logo")
                 .resizable()
                 .aspectRatio(1, contentMode: .fit)
@@ -41,6 +43,12 @@ struct LoginView: View {
             }
             .buttonStyle(LargeButtonStyle())
             .padding()
+            
+            Spacer()
+            
+            Text("Devloped by Rasmus Krämer")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
         .sheet(isPresented: $loginSheetPresented, content: {
             switch loginFlowState {
@@ -67,6 +75,8 @@ struct LoginView: View {
                     } header: {
                         if let serverVersion = serverVersion {
                             Text("Server Version \(serverVersion)")
+                        } else {
+                            Text("Login")
                         }
                     } footer: {
                         if let errorText = errorText {
@@ -87,13 +97,6 @@ struct LoginView: View {
             }
         })
     }
-    
-    enum LoginFlowState {
-        case server
-        case serverLoading
-        case credentials
-        case credentialsLoading
-    }
 }
 
 // MARK: Functions
@@ -109,6 +112,8 @@ extension LoginView {
             } catch {
                 errorText = "Invalid server URL (Format: http(s)://host:port)"
                 loginFlowState = .server
+                
+                return
             }
             
             // Verify server
@@ -118,6 +123,8 @@ extension LoginView {
                 } catch {
                     errorText =  "Jellyfin server not found"
                     loginFlowState = .server
+                    
+                    return
                 }
                 
                 errorText = nil
@@ -139,6 +146,13 @@ extension LoginView {
                 }
             }
         }
+    }
+    
+    enum LoginFlowState {
+        case server
+        case serverLoading
+        case credentials
+        case credentialsLoading
     }
 }
 

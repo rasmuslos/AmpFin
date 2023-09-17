@@ -60,6 +60,12 @@ extension OfflineManager {
         
         NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: track.id)
     }
+    
+    @MainActor
+    func getUnfinishedDownloads() throws -> [OfflineTrack] {
+        var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId != nil })
+        return try PersistenceManager.shared.modelContainer.mainContext.fetch(track)
+    }
 }
 
 // MARK: Getter

@@ -20,6 +20,6 @@ extension DownloadManager {
     
     func getTrackUrl(trackId: String) -> URL {
         // the audio player refuses to stuff without an extension. but it can be wrong...
-        documentsURL.appending(path: "tracks").appending(path: "\(trackId).mp3")
+        documentsURL.appending(path: "tracks").appending(path: "\(trackId).flac")
     }
 }
