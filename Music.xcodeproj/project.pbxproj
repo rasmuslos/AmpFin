@@ -83,6 +83,8 @@
 		3ADE8EA22AA93D61009826A3 /* AlbumView+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA12AA93D61009826A3 /* AlbumView+Colors.swift */; };
 		3ADE8EA42AA94142009826A3 /* UINavigationController+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */; };
 		3ADE8EA72AA9464D009826A3 /* NowPlayingBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA62AA9464D009826A3 /* NowPlayingBarModifier.swift */; };
+		3AE1B0DC2ABCDA0A0052C8AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */; };
+		3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3AE1B0E22ABCDCE80052C8AA /* NukeUI */; };
 		3AEB322B2AA7EC3C00853210 /* MusicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321A2AA7EC3C00853210 /* MusicApp.swift */; };
 		3AEB322C2AA7EC3C00853210 /* JellyfinClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */; };
 		3AEB322D2AA7EC3C00853210 /* JellyfinClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */; };
@@ -176,6 +178,7 @@
 		3ADE8EA12AA93D61009826A3 /* AlbumView+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Colors.swift"; sourceTree = "<group>"; };
 		3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Gesture.swift"; sourceTree = "<group>"; };
 		3ADE8EA62AA9464D009826A3 /* NowPlayingBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingBarModifier.swift; sourceTree = "<group>"; };
+		3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AEB321A2AA7EC3C00853210 /* MusicApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicApp.swift; sourceTree = "<group>"; };
 		3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JellyfinClientError.swift; sourceTree = "<group>"; };
 		3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JellyfinClient.swift; sourceTree = "<group>"; };
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */,
+				3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +573,7 @@
 			children = (
 				3AEB321A2AA7EC3C00853210 /* MusicApp.swift */,
 				3AEB32232AA7EC3C00853210 /* ContentView.swift */,
+				3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -602,6 +607,7 @@
 			name = Music;
 			packageProductDependencies = (
 				3ADE8E932AA9275C009826A3 /* UIImageColors */,
+				3AE1B0E22ABCDCE80052C8AA /* NukeUI */,
 			);
 			productName = JellyfinMusic;
 			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* Music.app */;
@@ -633,6 +639,7 @@
 			mainGroup = 3ABAFCA12AA7D6C40011BFD6;
 			packageReferences = (
 				3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */,
+				3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = 3ABAFCAB2AA7D6C40011BFD6 /* Products */;
 			projectDirPath = "";
@@ -689,6 +696,7 @@
 				3A6F50AD2AACAFDF00FC8A29 /* AlbumLoadView.swift in Sources */,
 				3A8850622AA90D1200456DDD /* AlbumsView.swift in Sources */,
 				3AEB32422AA800C800853210 /* Navigation+Downloads.swift in Sources */,
+				3AE1B0DC2ABCDA0A0052C8AA /* AppDelegate.swift in Sources */,
 				3A234E1A2AA8E0C900197AA7 /* Track+Fixture.swift in Sources */,
 				3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */,
 				3AF815DD2AAA1A80004BA444 /* NowPlayingSheet+Lyrics.swift in Sources */,
@@ -975,6 +983,14 @@
 				minimumVersion = 2.2.0;
 			};
 		};
+		3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.1.6;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -982,6 +998,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */;
 			productName = UIImageColors;
+		};
+		3AE1B0E22ABCDCE80052C8AA /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

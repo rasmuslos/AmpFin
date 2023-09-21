@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     @State var isAuthorized = JellyfinClient.shared.isAuthorized
     
     var body: some View {

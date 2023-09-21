@@ -10,14 +10,15 @@ import SwiftData
 
 @main
 struct MusicApp: App {
+    init() {
+        Task.detached {
+            try? await OfflineManager.shared.removeUnfinishedDownloads()
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .onAppear {
-                    Task.detached {
-                        try? await OfflineManager.shared.removeUnfinishedDownloads()
-                    }
-                }
         }
         .modelContainer(PersistenceManager.shared.modelContainer)
     }
