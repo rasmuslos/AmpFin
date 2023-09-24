@@ -44,7 +44,7 @@ extension JellyfinClient {
         if let body = clientRequest.body {
             do {
                 request.httpBody = try JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
-                // print(String(data: request.httpBody!, encoding: .ascii))
+                // print(url, String(data: request.httpBody!, encoding: .ascii))
                 
                 if request.value(forHTTPHeaderField: "Content-Type") == nil {
                     request.setValue("application/json", forHTTPHeaderField: "Content-Type")

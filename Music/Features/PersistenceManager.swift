@@ -13,6 +13,7 @@ struct PersistenceManager {
         let schema = Schema([
             OfflineTrack.self,
             OfflineAlbum.self,
+            OfflinePlay.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         

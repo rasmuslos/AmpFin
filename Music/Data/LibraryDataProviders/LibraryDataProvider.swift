@@ -10,6 +10,7 @@ import SwiftUI
 
 protocol LibraryDataProvider {
     func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
+    func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
     
     func getRecentAlbums() async throws -> [Album]
     func getAlbumTracks(id: String) async throws -> [Track]

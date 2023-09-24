@@ -11,9 +11,15 @@ struct OnlineLibraryDataProivder: LibraryDataProvider {
     func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
         try await JellyfinClient.shared.getAllTracks(sortOrder: sortOrder, ascending: ascending)
     }
+    func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        try await JellyfinClient.shared.getFavoriteTracks(sortOrder: sortOrder, ascending: ascending)
+    }
     
     func getRecentAlbums() async throws -> [Album] {
-        try await JellyfinClient.shared.getAlbums(limit: 20, sortOrder: .added, ascending: false)
+        // this is a great place to sync playbacks (async)
+        PlaybackReporter.syncPlaysToJellyfinServer()
+        
+        return try await JellyfinClient.shared.getAlbums(limit: 20, sortOrder: .added, ascending: false)
     }
     func getAlbumTracks(id: String) async throws -> [Track] {
         try await JellyfinClient.shared.getAlbumTracks(id: id)

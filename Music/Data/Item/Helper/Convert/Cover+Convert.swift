@@ -10,7 +10,7 @@ import Foundation
 extension Item.Cover {
     static func convertFromJellyfin(imageTags: JellyfinClient.ImageTags, id: String) -> Item.Cover? {
         if let primaryImageTag = imageTags.Primary {
-            return Item.Cover(type: .remote, url: constructCoverUrl(itemId: id, imageTag: primaryImageTag))
+            return Item.Cover(type: .jellyfin, url: constructCoverUrl(itemId: id, imageTag: primaryImageTag))
         }
         
         return nil

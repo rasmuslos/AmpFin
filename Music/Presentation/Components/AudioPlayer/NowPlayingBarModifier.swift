@@ -25,7 +25,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                 .frame(width: UIScreen.main.bounds.width + 100, height: 300)
                                 .offset(y: 130)
                                 .blur(radius: 25)
-                                .foregroundStyle(.ultraThickMaterial)
+                                .foregroundStyle(.regularMaterial)
                         }
                         .foregroundStyle(.ultraThinMaterial)
                     // add content
@@ -49,7 +49,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                     }
                                     
                                     Button {
-                                        AudioPlayer.shared.playNextTrack()
+                                        AudioPlayer.shared.advanceToNextTrack()
                                     } label: {
                                         Image(systemName: "forward.fill")
                                     }
@@ -59,6 +59,15 @@ struct NowPlayingBarModifier: ViewModifier {
                             }
                             .padding(.horizontal, 6)
                         }
+                    /*
+                        .contextMenu(menuItems: {
+                            Button {
+                                AudioPlayer.shared.stopPlayback()
+                            } label: {
+                                Text("Stop playback")
+                            }
+                        })
+                     */
                         .foregroundStyle(.primary)
                     // style bar
                         .padding(.horizontal, 15)

@@ -10,25 +10,25 @@ import Foundation
 // MARK: Progress
 
 extension JellyfinClient {
-    func reportPlaybackStopped(trackId: String) async throws {
-        let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing/stopped", method: "POST", body: [
+    func reportPlaybackStarted(trackId: String) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing", method: "POST", body: [
             "ItemId": trackId,
-            // "PositionTicks": positionSeconds * 10_000_000,
+            "PositionTicks": 0,
         ]))
     }
     
     func reportPlaybackProgress(trackId: String, positionSeconds: Double, paused: Bool) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing/progress", method: "POST", body: [
             "ItemId": trackId,
-            "PositionTicks": positionSeconds * 10_000_000,
             "IsPaused": paused,
+            "PositionTicks": Int64(positionSeconds * 10_000_000),
         ]))
     }
     
-    func reportPlaybackStarted(trackId: String) async throws {
-        let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing", method: "POST", body: [
+    func reportPlaybackStopped(trackId: String, positionSeconds: Double) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/Playing/Stopped", method: "POST", body: [
             "ItemId": trackId,
-            "PositionTicks": 0,
+            "PositionTicks": Int64(positionSeconds * 10_000_000),
         ]))
     }
 }

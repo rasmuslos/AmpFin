@@ -16,13 +16,7 @@ struct NowPlayingSheet: View {
     @Binding var playing: Bool
     
     @State var controlsVisible = true
-    @State var currentTab = Tab.cover {
-        didSet {
-            if currentTab != .lyrics {
-                controlsVisible = true
-            }
-        }
-    }
+    @State var currentTab = Tab.cover
     
     var body: some View {
         VStack {
@@ -54,6 +48,11 @@ struct NowPlayingSheet: View {
                 }
             }
         )
+        .onChange(of: currentTab) {
+            if currentTab == .cover {
+                controlsVisible = true
+            }
+        }
     }
 }
 
@@ -67,7 +66,7 @@ extension NowPlayingSheet {
         
         var body: some View {
             ItemImage(cover: cover)
-                .offset(x: imageOffset * 50, y: imageOffset * -50)
+                .offset(x: imageOffset * 25, y: imageOffset * -25)
                 .rotationEffect(.degrees(imageOffset * 30))
                 .frame(width: 1000, height: 1000)
                 .overlay(.black.opacity(0.25))

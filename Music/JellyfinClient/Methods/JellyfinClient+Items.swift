@@ -181,6 +181,25 @@ extension JellyfinClient {
     }
 }
 
+// MARK: Favorites
+
+extension JellyfinClient {
+    func getFavoriteTracks(sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        let response = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: [
+            URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
+            URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
+            URLQueryItem(name: "Filters", value: "IsFavorite"),
+            URLQueryItem(name: "IncludeItemTypes", value: "Audio"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
+        ]))
+        
+        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
+    }
+}
+
 // MARK: Item sorting
 
 extension JellyfinClient {

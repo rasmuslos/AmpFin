@@ -26,19 +26,17 @@ struct ItemImage: View {
     
     var body: some View {
         if let cover = cover {
-            if cover.type == .remote || cover.type == .local {
-                LazyImage(url: cover.url) { phase in
-                    if let image = phase.image {
-                        image
-                            .resizable()
-                            .clipped()
-                    } else {
-                        placeholder
-                    }
+            LazyImage(url: cover.url) { phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .clipped()
+                } else {
+                    placeholder
                 }
-                .aspectRatio(1, contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 7))
             }
+            .aspectRatio(1, contentMode: .fit)
+            .clipShape(RoundedRectangle(cornerRadius: 7))
         } else {
             placeholder
         }

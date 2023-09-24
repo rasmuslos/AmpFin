@@ -29,11 +29,28 @@ class Item: Identifiable {
         self.favorite = true
     }
     
-    struct Cover: Codable {
+    class Cover: Codable {
         let type: CoverType
-        let url: URL
+        var url: URL
+        
+        init(type: CoverType, url: URL) {
+            self.type = type
+            self.url = url
+        }
+        
+        func setSize(_ size: Int) -> Self {
+            if type == .jellyfin {
+                url = url.appending(queryItems: [
+                    URLQueryItem(name: "fillHeight", value: String(size)),
+                    URLQueryItem(name: "fillWidth", value: String(size)),
+                ])
+            }
+            
+            return self
+        }
         
         enum CoverType: Codable {
+            case jellyfin
             case local
             case remote
         }

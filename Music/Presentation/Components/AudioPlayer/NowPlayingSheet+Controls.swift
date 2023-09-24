@@ -48,7 +48,7 @@ extension NowPlayingSheet {
                 HStack {
                     Group {
                         Button {
-                            AudioPlayer.shared.playPreviousTrack()
+                            AudioPlayer.shared.backToPreviousItem()
                         } label: {
                             Image(systemName: "backward.fill")
                         }
@@ -62,7 +62,7 @@ extension NowPlayingSheet {
                                 .contentTransition(.symbolEffect(.replace))
                         }
                         Button {
-                            AudioPlayer.shared.playNextTrack()
+                            AudioPlayer.shared.advanceToNextTrack()
                         } label: {
                             Image(systemName: "forward.fill")
                         }

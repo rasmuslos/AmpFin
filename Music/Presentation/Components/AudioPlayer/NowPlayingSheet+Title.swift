@@ -18,8 +18,9 @@ extension NowPlayingSheet {
         var body: some View {
             Spacer()
             
-            ItemImage(cover: track.cover)
+            ItemImage(cover: track.cover?.setSize(800))
                 .scaleEffect(playing ? 1 : 0.8)
+                .animation(.spring(duration: 0.25, bounce: 0.5), value: playing)
                 .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
             
             Spacer()
@@ -62,7 +63,9 @@ extension NowPlayingSheet {
                     .frame(width: 60, height: 60)
                     .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
                     .onTapGesture {
-                        currentTab = .cover
+                        withAnimation {
+                            currentTab = .cover
+                        }
                     }
                 
                 VStack(alignment: .leading) {

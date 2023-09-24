@@ -9,7 +9,7 @@ import SwiftUI
 
 extension LibraryView {
     struct Links: View {
-        static let count = 4
+        static let count = 5
         
         @Environment(\.libraryOnline) var libraryOnline
         
@@ -21,6 +21,11 @@ extension LibraryView {
                 NavigationLink(destination: AlbumsView()) {
                     Label("Albums", systemImage: "square.stack")
                 }
+                
+                NavigationLink(destination: FavoritesView()) {
+                    Label("Favorites", systemImage: "heart")
+                }
+                .disabled(!libraryOnline)
                 
                 NavigationLink(destination: ArtistsView(albumOnly: true)) {
                     Label("Album Artists", systemImage: "music.mic")

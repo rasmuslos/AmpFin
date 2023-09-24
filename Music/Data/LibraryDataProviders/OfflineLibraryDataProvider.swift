@@ -28,6 +28,9 @@ struct OfflineLibraryDataProvider: LibraryDataProvider {
         
         return ascending ? tracks : tracks.reversed()
     }
+    func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        return []
+    }
     
     func getRecentAlbums() async throws -> [Album] {
         try await OfflineManager.shared.getRecentAlbums()

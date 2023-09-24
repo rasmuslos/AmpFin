@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3A061A252AB7ADD0002F8B83 /* OfflineManager+Cleanup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A061A242AB7ADD0002F8B83 /* OfflineManager+Cleanup.swift */; };
+		3A11013B2AC0362B004CF731 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A11013A2AC0362B004CF731 /* FavoritesView.swift */; };
+		3A11013D2AC042FF004CF731 /* PlaybackReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A11013C2AC042FF004CF731 /* PlaybackReporter.swift */; };
+		3A11013F2AC05210004CF731 /* OfflinePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A11013E2AC05210004CF731 /* OfflinePlay.swift */; };
 		3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */; };
 		3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFA2AA883EC00197AA7 /* LibraryView.swift */; };
 		3A234DFD2AA884FF00197AA7 /* LibraryView+Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */; };
@@ -103,6 +106,9 @@
 
 /* Begin PBXFileReference section */
 		3A061A242AB7ADD0002F8B83 /* OfflineManager+Cleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OfflineManager+Cleanup.swift"; sourceTree = "<group>"; };
+		3A11013A2AC0362B004CF731 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		3A11013C2AC042FF004CF731 /* PlaybackReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackReporter.swift; sourceTree = "<group>"; };
+		3A11013E2AC05210004CF731 /* OfflinePlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflinePlay.swift; sourceTree = "<group>"; };
 		3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
 		3A234DFA2AA883EC00197AA7 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView+Links.swift"; sourceTree = "<group>"; };
@@ -302,6 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				3A234E252AA8EAB700197AA7 /* AudioPlayer.swift */,
+				3A11013C2AC042FF004CF731 /* PlaybackReporter.swift */,
 				3A8B99392AA9F21C004AAA7B /* NSNotification+Player.swift */,
 			);
 			path = AudioPlayer;
@@ -395,6 +402,7 @@
 			children = (
 				3A98A01B2AAB564900EA84CF /* OfflineTrack.swift */,
 				3A98A01D2AAB573100EA84CF /* OfflineAlbum.swift */,
+				3A11013E2AC05210004CF731 /* OfflinePlay.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -405,6 +413,7 @@
 				3A234E042AA88D6000197AA7 /* TracksView.swift */,
 				3A8850612AA90D1200456DDD /* AlbumsView.swift */,
 				3A3DA6602AAB29470091211A /* ArtistsView.swift */,
+				3A11013A2AC0362B004CF731 /* FavoritesView.swift */,
 			);
 			path = Sections;
 			sourceTree = "<group>";
@@ -687,6 +696,7 @@
 				3A88505E2AA909EA00456DDD /* Album+Fixture.swift in Sources */,
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,
 				3A98A01C2AAB564900EA84CF /* OfflineTrack.swift in Sources */,
+				3A11013D2AC042FF004CF731 /* PlaybackReporter.swift in Sources */,
 				3ADE8EA72AA9464D009826A3 /* NowPlayingBarModifier.swift in Sources */,
 				3A234E1E2AA8E6F600197AA7 /* PlayButtonStyle.swift in Sources */,
 				3A98A03D2AABD6B500EA84CF /* OfflineLibraryDataProvider.swift in Sources */,
@@ -694,6 +704,7 @@
 				3A88505C2AA909CE00456DDD /* AlbumGridRow.swift in Sources */,
 				3A8B993C2AA9FCC6004AAA7B /* NowPlayingSheet.swift in Sources */,
 				3A6F50AD2AACAFDF00FC8A29 /* AlbumLoadView.swift in Sources */,
+				3A11013F2AC05210004CF731 /* OfflinePlay.swift in Sources */,
 				3A8850622AA90D1200456DDD /* AlbumsView.swift in Sources */,
 				3AEB32422AA800C800853210 /* Navigation+Downloads.swift in Sources */,
 				3AE1B0DC2ABCDA0A0052C8AA /* AppDelegate.swift in Sources */,
@@ -746,6 +757,7 @@
 				3AEB322D2AA7EC3C00853210 /* JellyfinClient.swift in Sources */,
 				3ADE8E9D2AA93A2F009826A3 /* Date+Get.swift in Sources */,
 				3A6F50AB2AACABEB00FC8A29 /* AlbumListRow.swift in Sources */,
+				3A11013B2AC0362B004CF731 /* FavoritesView.swift in Sources */,
 				3AEB322E2AA7EC3C00853210 /* JellyfinClient+Request.swift in Sources */,
 				3A234E072AA88DA600197AA7 /* JellyfinClient+Items.swift in Sources */,
 				3A8B993E2AA9FE02004AAA7B /* NowPlayingSheet+Title.swift in Sources */,

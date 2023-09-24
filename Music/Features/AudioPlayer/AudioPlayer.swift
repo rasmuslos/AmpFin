@@ -22,6 +22,8 @@ class AudioPlayer: NSObject {
     fileprivate var buffering: Bool = false
     fileprivate var nowPlayingInfo = [String: Any]()
     
+    fileprivate var playbackReporter: PlaybackReporter?
+    
     override init() {
         audioPlayer = AVQueuePlayer()
         
@@ -53,6 +55,7 @@ extension AudioPlayer {
         }
         
         updateNowPlayingStatus()
+        playbackReporter?.update(positionSeconds: currentTime(), paused: !playing, sheduled: false)
         NotificationCenter.default.post(name: NSNotification.PlayPause, object: nil)
     }
     public func isPlaying() -> Bool {
@@ -91,7 +94,7 @@ extension AudioPlayer {
             if shuffle {
                 tracks.shuffle()
             }
-            nowPlaying = tracks[startIndex]
+            setNowPlaying(track: tracks[startIndex])
             
             history = Array(tracks[0..<startIndex])
             queue = Array(tracks[startIndex + 1..<tracks.count])
@@ -108,6 +111,7 @@ extension AudioPlayer {
     }
     func stopPlayback() {
         if isPlaying() {
+            playbackReporter?.ended(positionSeconds: currentTime())
             setPlaying(false)
         }
         
@@ -116,26 +120,32 @@ extension AudioPlayer {
         queue = []
         unalteredQueue = []
         
-        playNextTrack()
+        advanceToNextTrack()
         history = []
         
         notifyQueueChanged()
         updateAudioSession(active: false)
     }
     
-    func playNextTrack() {
+    func advanceToNextTrack() {
+        playbackReporter?.ended(positionSeconds: currentTime())
         audioPlayer.advanceToNextItem()
         
         trackDidFinish()
         notifyQueueChanged()
         NotificationCenter.default.post(name: NSNotification.TrackChange, object: nil)
     }
-    func playPreviousTrack() {
-        
+    func backToPreviousItem() {
         Task {
+            if currentTime() > 5 {
+                seek(seconds: 0)
+                return
+            }
             if history.count < 1 {
                 return
             }
+            
+            playbackReporter?.ended(positionSeconds: currentTime())
             
             let previous = history.removeLast()
             let playerItem = await getAVPlayerItem(previous)
@@ -147,7 +157,7 @@ extension AudioPlayer {
             }
             
             audioPlayer.advanceToNextItem()
-            nowPlaying = previous
+            setNowPlaying(track: previous)
             setupNowPlayingMetadata()
             
             notifyQueueChanged()
@@ -175,7 +185,12 @@ extension AudioPlayer {
         notifyQueueChanged()
     }
     
-    func removeItem(index: Int) -> Track? {
+    func removeHistoryTrack(index: Int) {
+        history.remove(at: index)
+        notifyQueueChanged()
+    }
+    
+    func removeTrack(index: Int) -> Track? {
         if queue.count < index + 1 {
             notifyQueueChanged()
             return nil
@@ -183,7 +198,9 @@ extension AudioPlayer {
         
         audioPlayer.remove(audioPlayer.items()[index + 1])
         let track = queue.remove(at: index)
-        unalteredQueue.removeAll { $0.id == track.id }
+        if let index = unalteredQueue.firstIndex(where: { $0.id == track.id }) {
+            unalteredQueue.remove(at: index)
+        }
         
         notifyQueueChanged()
         return track
@@ -203,8 +220,10 @@ extension AudioPlayer {
     }
     
     func moveTrack(from: Int, to: Int) {
-        if let track = removeItem(index: from) {
-            unalteredQueue.removeAll { $0.id == track.id }
+        if let track = removeTrack(index: from) {
+            if let index = unalteredQueue.firstIndex(where: { $0.id == track.id }) {
+                unalteredQueue.remove(at: index)
+            }
             
             if from < to {
                 queueTrack(track, index: to - 1)
@@ -224,37 +243,30 @@ extension AudioPlayer {
         
         let id = queue[to].id
         while(nowPlaying?.id != id) {
-            playNextTrack()
+            advanceToNextTrack()
         }
     }
     func restoreHistory(index: Int) {
         for _ in index...history.count {
             if history.count > 0 {
-                playPreviousTrack()
+                advanceToNextTrack()
             }
         }
     }
     
     private func trackDidFinish() {
-        if let nowPlaying = nowPlaying {
-            Task.detached {
-                try? await JellyfinClient.shared.reportPlaybackStopped(trackId: nowPlaying.id)
-            }
-            
-            history.append(nowPlaying)
-        }
-        
-        
         if queue.count > 0 {
-            nowPlaying = queue.removeFirst()
-            setupNowPlayingMetadata()
-            
-            Task.detached {
-                try? await JellyfinClient.shared.reportPlaybackStarted(trackId: self.nowPlaying!.id)
+            if let nowPlaying = nowPlaying {
+                history.append(nowPlaying)
             }
+            
+            setNowPlaying(track: queue.removeFirst())
+            setupNowPlayingMetadata()
         } else {
             updateAudioSession(active: false)
             setPlaying(false)
+            
+            setNowPlaying(track: nil)
         }
         
         notifyQueueChanged()
@@ -277,18 +289,20 @@ extension AudioPlayer {
             buffering = !(audioPlayer.currentItem?.isPlaybackLikelyToKeepUp ?? false)
             
             NotificationCenter.default.post(name: NSNotification.PositionUpdated, object: nil)
+            playbackReporter?.update(positionSeconds: currentTime(), paused: !isPlaying(), sheduled: true)
             
-            let seconds = Int(currentTime())
-            if seconds % 20 == 0, let nowPlaying = nowPlaying {
-                Task.detached { [self] in
-                    try? await JellyfinClient.shared.reportPlaybackProgress(trackId: nowPlaying.id, positionSeconds: currentTime(), paused: !isPlaying())
-                }
+            if currentTime() > duration() - 10 {
+                playbackReporter?.ended(positionSeconds: duration())
             }
         }
     }
     private func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleItemDidPlayToEndTime), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [self] _ in
+            playbackReporter?.ended(positionSeconds: currentTime())
+        }
     }
     
     @objc private func handleItemDidPlayToEndTime() {
@@ -348,7 +362,7 @@ extension AudioPlayer {
                 return .commandFailed
             }
             
-            playNextTrack()
+            advanceToNextTrack()
             return .success
         }
         commandCenter.previousTrackCommand.isEnabled = true
@@ -357,7 +371,7 @@ extension AudioPlayer {
                 return .commandFailed
             }
             
-            playPreviousTrack()
+            backToPreviousItem()
             return .success
         }
     }
@@ -381,7 +395,7 @@ extension AudioPlayer {
 // MARK: Now Playing Widget
 
 extension AudioPlayer {
-    func setupNowPlayingMetadata() {
+    private func setupNowPlayingMetadata() {
         if let nowPlaying = nowPlaying {
             Task.detached { [self] in
                 nowPlayingInfo = [:]
@@ -391,16 +405,26 @@ extension AudioPlayer {
                 
                 MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
                 
-                if let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url), let image = UIImage(data: data) {
-                    let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { _ -> UIImage in image })
-                    nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
-                    
-                    MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+                if let cover = nowPlaying.cover, cover.type == .local {
+                    if let image = UIImage(contentsOfFile: cover.url.path()) {
+                        setNowPlayingArtwork(image: image)
+                    }
+                } else {
+                    if let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url), let image = UIImage(data: data) {
+                        setNowPlayingArtwork(image: image)
+                    }
                 }
             }
         }
     }
-    func updateNowPlayingStatus() {
+    private func setNowPlayingArtwork(image: UIImage) {
+        let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { _ -> UIImage in image })
+        nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
+    private func updateNowPlayingStatus() {
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration()
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime()
         
@@ -424,6 +448,14 @@ extension AudioPlayer {
     private func notifyQueueChanged() {
         NotificationCenter.default.post(name: NSNotification.QueueUpdated, object: nil)
         NotificationCenter.default.post(name: NSNotification.TrackChange, object: nil)
+    }
+    
+    private func setNowPlaying(track: Track?) {
+        nowPlaying = track
+        
+        if let track = track {
+            playbackReporter = PlaybackReporter(trackId: track.id)
+        }
     }
 }
 

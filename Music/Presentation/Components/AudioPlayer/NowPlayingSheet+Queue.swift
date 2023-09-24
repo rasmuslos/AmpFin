@@ -36,7 +36,7 @@ extension NowPlayingSheet {
                 .padding(.horizontal, 4)
                 
                 Button {
-                    withAnimation {
+                    withAnimation(.easeInOut(duration: 0.25)) {
                         showHistory.toggle()
                     }
                 } label: {
@@ -52,11 +52,29 @@ extension NowPlayingSheet {
                 if showHistory {
                     ForEach(Array(histroy.enumerated()), id: \.offset) { index, track in
                         QueueTrackRow(track: track, draggable: false)
+                            .padding(.top, index == 0 ? 15 : 0)
+                            .padding(.bottom, (index == histroy.count - 1) ? 15 : 0)
                             .onTapGesture {
                                 AudioPlayer.shared.restoreHistory(index: index)
                             }
-                            .padding(.top, index == 0 ? 15 : 0)
-                            .padding(.bottom, (index == histroy.count - 1) ? 15 : 0)
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button {
+                                    AudioPlayer.shared.queueTrack(track, index: 0)
+                                    AudioPlayer.shared.removeHistoryTrack(index: index)
+                                } label: {
+                                    Label("Play next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                                }
+                                .tint(.orange)
+                            }
+                            .swipeActions(edge: .leading) {
+                                Button {
+                                    AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
+                                    AudioPlayer.shared.removeHistoryTrack(index: index)
+                                } label: {
+                                    Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                                }
+                                .tint(.blue)
+                            }
                     }
                     .defaultScrollAnchor(.bottom)
                 } else {
@@ -77,7 +95,7 @@ extension NowPlayingSheet {
                     }
                     .onDelete { indexSet in
                         indexSet.forEach {
-                            let _ = AudioPlayer.shared.removeItem(index: $0)
+                            let _ = AudioPlayer.shared.removeTrack(index: $0)
                         }
                     }
                 }
@@ -123,11 +141,11 @@ extension NowPlayingSheet {
                 VStack(alignment: .leading) {
                     Text(track.name)
                         .lineLimit(1)
-                        .font(.headline)
+                        .font(.body)
                     
                     Text(track.artists.map { $0.name }.joined(separator: ", "))
                         .lineLimit(1)
-                        .font(.subheadline)
+                        .font(.callout)
                         .foregroundStyle(.secondary)
                 }
                 .padding(.horizontal, 10)

@@ -83,7 +83,7 @@ struct TrackListRow: View {
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             PlayNextButton(track: track)
         }
-        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+        .swipeActions(edge: .leading) {
             PlayLastButton(track: track)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
