@@ -19,7 +19,7 @@ extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
-        ]))
+        ], userPrefix: true))
         
         return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
@@ -43,7 +43,7 @@ extension JellyfinClient {
             query.append(URLQueryItem(name: "limit", value: String(limit)))
         }
         
-        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query))
+        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
         return response.Items.map(Album.convertFromJellyfin)
     }
 }
@@ -194,7 +194,7 @@ extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
-        ]))
+        ], userPrefix: true))
         
         return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }

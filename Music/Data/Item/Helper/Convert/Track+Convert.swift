@@ -9,13 +9,20 @@ import Foundation
 
 extension Track {
     static func convertFromJellyfin(_ item: JellyfinClient.JellyfinTrackItem, fallbackIndex: Int = 0) -> Track {
-        Track(
+        var cover: Item.Cover?
+        
+        // TODO: Remove this, too
+        if item.ImageTags.Primary != nil {
+            cover = Cover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id)
+        } else if let imageTag = item.AlbumPrimaryImageTag {
+            cover = Cover.convertFromJellyfin(imageTags: JellyfinClient.ImageTags.init(Primary: imageTag), id: item.AlbumId)
+        }
+        
+        return Track(
             id: item.Id,
             name: item.Name,
             sortName: item.Name,
-            cover: Cover.convertFromJellyfin(
-                imageTags: item.ImageTags,
-                id: item.Id),
+            cover: cover,
             favorite: item.UserData.IsFavorite,
             album: ReducedAlbum(
                 id: item.AlbumId,
@@ -50,5 +57,11 @@ extension Track {
             index: offline.index,
             playCount: -1,
             releaseDate: offline.releaseDate)
+    }
+    
+    // TODO: Remove when 10.9 gets released, as it is not required in this version
+    fileprivate struct TrackImage {
+        let id: String
+        let tag: String
     }
 }

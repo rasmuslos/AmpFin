@@ -29,6 +29,9 @@ extension JellyfinClient {
         
         let ImageTags: ImageTags
         
+        // TODO: remove
+        let AlbumPrimaryImageTag: String?
+        
         let LUFS: Float?
     }
 }
