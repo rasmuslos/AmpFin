@@ -19,8 +19,8 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             return
         }
         
-        Task.detached { [self] in
-            if let track = await OfflineManager.shared.getOfflineTrackByDownloadId(downloadTask.taskIdentifier) {
+        Task.detached { @MainActor [self] in
+            if let track = OfflineManager.shared.getOfflineTrackByDownloadId(downloadTask.taskIdentifier) {
                 let destination = getTrackUrl(trackId: track.id)
                 
                 do {
@@ -28,15 +28,14 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                     try FileManager.default.moveItem(at: tmpLocation, to: destination)
                     track.downloadId = nil
                     
-                    DispatchQueue.main.sync {
-                        NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: track.id)
-                    }
+                    NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: track.id)
                     print("Download finished", track.id, track.name)
                 } catch {
                     print("Error while moving track", track.id, track.name, error)
                 }
             } else {
                 print("Unknown download finished")
+                try FileManager.default.removeItem(at: tmpLocation)
             }
         }
     }
