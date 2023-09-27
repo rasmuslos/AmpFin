@@ -103,8 +103,8 @@ extension OfflineManager {
     
     @MainActor
     func getAllAlbums() throws -> [Album] {
-        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
-        return tracks.map(Album.convertFromOffline)
+        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
+        return albums.map(Album.convertFromOffline)
     }
     
     @MainActor

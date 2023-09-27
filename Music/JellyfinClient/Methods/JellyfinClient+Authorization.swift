@@ -48,3 +48,25 @@ extension JellyfinClient {
         }
     }
 }
+
+// MARK: Get user data
+
+extension JellyfinClient {
+    func getUserData() async throws -> (String, String, String, Bool) {
+        let response = try await request(ClientRequest<UserDataResponse>(path: "", method: "GET", userPrefix: true))
+        
+        return (
+            response.Name,
+            response.ServerId,
+            response.Id,
+            response.HasPassword
+        )
+    }
+    
+    struct UserDataResponse: Codable {
+        let Name: String
+        let ServerId: String
+        let Id: String
+        let HasPassword: Bool
+    }
+}

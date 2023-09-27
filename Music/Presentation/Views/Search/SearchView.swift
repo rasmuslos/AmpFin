@@ -77,6 +77,7 @@ struct SearchView: View {
                     dataProvider = OfflineLibraryDataProvider()
                 }
             }
+            .modifier(AccountToolbarButtonModifier())
         }
         .environment(\.libraryOnline, library == .online)
         .environment(\.libraryDataProvider, dataProvider)

@@ -10,11 +10,13 @@ import SwiftData
 
 @main
 struct MusicApp: App {
+    /*
     init() {
         Task.detached {
             try? await OfflineManager.shared.removeUnfinishedDownloads()
         }
     }
+     */
     
     var body: some Scene {
         WindowGroup {

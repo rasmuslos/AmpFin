@@ -24,12 +24,14 @@ class DownloadManager: NSObject {
         urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
         documentsURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         
+        createDirectories()
+    }
+    
+    func createDirectories() {
         try! FileManager.default.createDirectory(at: documentsURL.appending(path: "covers"), withIntermediateDirectories: true)
         try! FileManager.default.createDirectory(at: documentsURL.appending(path: "tracks"), withIntermediateDirectories: true)
     }
 }
-
-// MARK: 
 
 // MARK: Singleton
 

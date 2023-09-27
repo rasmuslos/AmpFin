@@ -49,6 +49,14 @@ extension JellyfinClient {
         UserDefaults.standard.set(userId, forKey: "userId")
         self.userId = userId
     }
+    
+    // this is a bad way of doing this, but it works
+    func logout() {
+        UserDefaults.standard.set(nil, forKey: "token")
+        UserDefaults.standard.set(nil, forKey: "userId")
+        
+        exit(0)
+    }
 }
 
 // MARK: Singleton

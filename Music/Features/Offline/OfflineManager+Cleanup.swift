@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 // MARK: Remove tracks
 
@@ -21,5 +22,22 @@ extension OfflineManager {
         for album in albums {
             try await OfflineManager.shared.deleteOfflineAlbum(album)
         }
+    }
+    
+    @MainActor
+    func deleteAllDownloads() async throws {
+        // Delete all albums (should remove all tracks, too)
+        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
+        for album in albums {
+            try deleteOfflineAlbum(album)
+        }
+        
+        // Ensure all tracks are deleted
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
+        for track in tracks {
+            deleteOfflineTrack(track)
+        }
+        
+        try DownloadManager.shared.cleanupDirectory()
     }
 }
