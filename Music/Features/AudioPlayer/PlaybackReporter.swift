@@ -7,18 +7,31 @@
 
 import Foundation
 import SwiftData
+import OSLog
 
 class PlaybackReporter {
+    static let logger = Logger(subsystem: "io.rfk.music", category: "Reporting")
+    
     let trackId: String
     
-    var endReported = false
+    var currentTime: Double = 0
     
     init(trackId: String) {
         self.trackId = trackId
-        reportPlaybackStart()
+        
+        Task.detached {
+            try? await JellyfinClient.shared.reportPlaybackStarted(trackId: trackId)
+        }
+    }
+    deinit {
+        PlaybackReporter.playbackStopped(trackId: trackId, currentTime: currentTime)
     }
     
     func update(positionSeconds: Double, paused: Bool, sheduled: Bool) {
+        if positionSeconds.isFinite && positionSeconds > 0 {
+            currentTime = positionSeconds
+        }
+        
         if sheduled {
             if paused {
                 return
@@ -29,38 +42,21 @@ class PlaybackReporter {
             }
         }
         
-        reportPlaybackProgress(positionSeconds: positionSeconds, paused: paused)
-    }
-    
-    func ended(positionSeconds: Double) {
-        if positionSeconds < 3 || endReported {
-            return
-        }
-        
-        endReported = true
-        reportPlaybackEnded(positionSeconds: positionSeconds)
-    }
-}
-
-// MARK: Helper
-
-extension PlaybackReporter {
-    private func reportPlaybackStart() {
-        Task.detached { [self] in
-            try? await JellyfinClient.shared.reportPlaybackStarted(trackId: trackId)
-        }
-    }
-    private func reportPlaybackProgress(positionSeconds: Double, paused: Bool) {
         Task.detached { [self] in
             try? await JellyfinClient.shared.reportPlaybackProgress(trackId: trackId, positionSeconds: positionSeconds, paused: paused)
         }
     }
-    private func reportPlaybackEnded(positionSeconds: Double) {
+}
+
+// MARK: Playback stop
+
+extension PlaybackReporter {
+    static func playbackStopped(trackId: String, currentTime: Double) {
         Task.detached { [self] in
             do {
-                try await JellyfinClient.shared.reportPlaybackStopped(trackId: trackId, positionSeconds: positionSeconds)
+                try await JellyfinClient.shared.reportPlaybackStopped(trackId: trackId, positionSeconds: currentTime)
             } catch {
-                await cacheReport(positionSeconds: positionSeconds)
+                await cacheReport(trackId: trackId, positionSeconds: currentTime)
             }
         }
     }
@@ -70,8 +66,8 @@ extension PlaybackReporter {
 
 extension PlaybackReporter {
     @MainActor
-    func cacheReport(positionSeconds: Double) {
-        let play = OfflinePlay(trackId: trackId, positionSeconds: positionSeconds)
+    static func cacheReport(trackId: String, positionSeconds: Double) {
+        let play = OfflinePlay(trackId: trackId, positionSeconds: positionSeconds, time: Date())
         PersistenceManager.shared.modelContainer.mainContext.insert(play)
     }
     
@@ -84,7 +80,7 @@ extension PlaybackReporter {
                     try await JellyfinClient.shared.reportPlaybackStopped(trackId: play.trackId, positionSeconds: play.positionSeconds)
                     PersistenceManager.shared.modelContainer.mainContext.delete(play)
                 } catch {
-                    print("error while syncing play to jellyfin server", play)
+                    logger.fault("Error while syncing play to Jellyfin server \(play.trackId) (\(play.positionSeconds)")
                 }
             }
         }

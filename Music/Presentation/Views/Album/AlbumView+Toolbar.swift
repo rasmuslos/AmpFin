@@ -94,12 +94,14 @@ extension AlbumView {
                                 
                                 Divider()
                                 
-                                Button(role: .destructive) {
-                                    if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
-                                        try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
+                                if downloaded != .none {
+                                    Button(role: .destructive) {
+                                        if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
+                                            try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
+                                        }
+                                    } label: {
+                                        Label("Force delete", systemImage: "trash.fill")
                                     }
-                                } label: {
-                                    Label("Force delete", systemImage: "trash.fill")
                                 }
                             } label: {
                                 // for some reason it did show the label...

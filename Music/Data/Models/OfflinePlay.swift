@@ -12,9 +12,11 @@ import SwiftData
 class OfflinePlay {
     let trackId: String
     let positionSeconds: Double
+    let time: Date
     
-    init(trackId: String, positionSeconds: Double) {
+    init(trackId: String, positionSeconds: Double, time: Date) {
         self.trackId = trackId
         self.positionSeconds = positionSeconds
+        self.time = time
     }
 }

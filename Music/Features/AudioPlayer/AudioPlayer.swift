@@ -8,6 +8,7 @@
 import Foundation
 import AVKit
 import MediaPlayer
+import OSLog
 
 class AudioPlayer: NSObject {
     fileprivate let audioPlayer: AVQueuePlayer
@@ -23,6 +24,8 @@ class AudioPlayer: NSObject {
     fileprivate var nowPlayingInfo = [String: Any]()
     
     fileprivate var playbackReporter: PlaybackReporter?
+    
+    let logger = Logger(subsystem: "io.rfk.music", category: "AudioPlayer")
     
     override init() {
         audioPlayer = AVQueuePlayer()
@@ -56,7 +59,9 @@ extension AudioPlayer {
         
         updateNowPlayingStatus()
         playbackReporter?.update(positionSeconds: currentTime(), paused: !playing, sheduled: false)
-        NotificationCenter.default.post(name: NSNotification.PlayPause, object: nil)
+        Task { @MainActor in
+            NotificationCenter.default.post(name: NSNotification.PlayPause, object: nil)
+        }
     }
     public func isPlaying() -> Bool {
         audioPlayer.rate > 0
@@ -111,7 +116,6 @@ extension AudioPlayer {
     }
     func stopPlayback() {
         if isPlaying() {
-            playbackReporter?.ended(positionSeconds: currentTime())
             setPlaying(false)
         }
         
@@ -120,7 +124,7 @@ extension AudioPlayer {
         queue = []
         unalteredQueue = []
         
-        advanceToNextTrack()
+        setNowPlaying(track: nil)
         history = []
         
         notifyQueueChanged()
@@ -128,12 +132,10 @@ extension AudioPlayer {
     }
     
     func advanceToNextTrack() {
-        playbackReporter?.ended(positionSeconds: currentTime())
         audioPlayer.advanceToNextItem()
         
         trackDidFinish()
         notifyQueueChanged()
-        NotificationCenter.default.post(name: NSNotification.TrackChange, object: nil)
     }
     func backToPreviousItem() {
         Task {
@@ -144,8 +146,6 @@ extension AudioPlayer {
             if history.count < 1 {
                 return
             }
-            
-            playbackReporter?.ended(positionSeconds: currentTime())
             
             let previous = history.removeLast()
             let playerItem = await getAVPlayerItem(previous)
@@ -263,10 +263,7 @@ extension AudioPlayer {
             setNowPlaying(track: queue.removeFirst())
             setupNowPlayingMetadata()
         } else {
-            updateAudioSession(active: false)
-            setPlaying(false)
-            
-            setNowPlaying(track: nil)
+            stopPlayback()
         }
         
         notifyQueueChanged()
@@ -288,11 +285,10 @@ extension AudioPlayer {
             updateNowPlayingStatus()
             buffering = !(audioPlayer.currentItem?.isPlaybackLikelyToKeepUp ?? false)
             
-            NotificationCenter.default.post(name: NSNotification.PositionUpdated, object: nil)
             playbackReporter?.update(positionSeconds: currentTime(), paused: !isPlaying(), sheduled: true)
             
-            if currentTime() > duration() - 10 {
-                playbackReporter?.ended(positionSeconds: duration())
+            Task { @MainActor in
+                NotificationCenter.default.post(name: NSNotification.PositionUpdated, object: nil)
             }
         }
     }
@@ -301,7 +297,7 @@ extension AudioPlayer {
         NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
         
         NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [self] _ in
-            playbackReporter?.ended(positionSeconds: currentTime())
+            setNowPlaying(track: nil)
         }
     }
     
@@ -380,14 +376,14 @@ extension AudioPlayer {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
         } catch {
-            print(error, "failed to setup audio session")
+            logger.fault("Failed to setup audio session")
         }
     }
     private func updateAudioSession(active: Bool) {
         do {
             try AVAudioSession.sharedInstance().setActive(active)
         } catch {
-            print(error, "failed to update audio session")
+            logger.fault("Failed to update audio session")
         }
     }
 }
@@ -446,8 +442,10 @@ extension AudioPlayer {
         }
     }
     private func notifyQueueChanged() {
-        NotificationCenter.default.post(name: NSNotification.QueueUpdated, object: nil)
-        NotificationCenter.default.post(name: NSNotification.TrackChange, object: nil)
+        Task { @MainActor in
+            NotificationCenter.default.post(name: NSNotification.QueueUpdated, object: nil)
+            NotificationCenter.default.post(name: NSNotification.TrackChange, object: nil)
+        }
     }
     
     private func setNowPlaying(track: Track?) {
@@ -455,6 +453,8 @@ extension AudioPlayer {
         
         if let track = track {
             playbackReporter = PlaybackReporter(trackId: track.id)
+        } else {
+            playbackReporter = nil
         }
     }
 }

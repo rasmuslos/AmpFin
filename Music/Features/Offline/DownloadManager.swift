@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import OSLog
 
 class DownloadManager: NSObject {
     private(set) var documentsURL: URL!
     private(set) var urlSession: URLSession!
+    
+    let logger = Logger(subsystem: "io.rfk.music", category: "Download")
     
     override private init() {
         super.init()

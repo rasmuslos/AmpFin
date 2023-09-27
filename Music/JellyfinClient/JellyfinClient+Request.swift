@@ -50,7 +50,7 @@ extension JellyfinClient {
                     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 }
             } catch {
-                print("Unable to encode body \(error)")
+                logger.fault("Unable to encode body: \(error.localizedDescription)")
                 throw JellyfinClientError.invalidHttpBody
             }
         }
@@ -65,7 +65,7 @@ extension JellyfinClient {
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            print(error)
+            logger.error("Error while requesting resource: \(error.localizedDescription)")
             throw JellyfinClientError.invalidResponse
         }
     }

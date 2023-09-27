@@ -15,7 +15,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             try? FileManager.default.removeItem(at: tmpLocation)
             try FileManager.default.moveItem(at: location, to: tmpLocation)
         } catch {
-            print("Error while moving file", error)
+            logger.fault("Error while moving tmp file: \(error.localizedDescription)")
             return
         }
         
@@ -29,12 +29,12 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                     track.downloadId = nil
                     
                     NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: track.id)
-                    print("Download finished", track.id, track.name)
+                    logger.info("Download finished: \(track.id) (\(track.name))")
                 } catch {
-                    print("Error while moving track", track.id, track.name, error)
+                    logger.fault("Error while moving track \(track.id) (\(track.name)): \(error.localizedDescription)")
                 }
             } else {
-                print("Unknown download finished")
+                logger.fault("Unknown download finished")
                 try FileManager.default.removeItem(at: tmpLocation)
             }
         }

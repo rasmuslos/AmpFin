@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import OSLog
 
 class JellyfinClient {
     private(set) var serverUrl: URL!
@@ -15,6 +16,8 @@ class JellyfinClient {
     
     private(set) var clientVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
     private(set) var clientName = UIDevice.current.name
+    
+    let logger = Logger(subsystem: "io.rfk.music", category: "Download")
     
     init(serverUrl: URL!, token: String?, userId: String?) {
         self.serverUrl = serverUrl

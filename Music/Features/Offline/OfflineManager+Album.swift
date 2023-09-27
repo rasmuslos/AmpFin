@@ -94,11 +94,11 @@ extension OfflineManager {
 extension OfflineManager {
     @MainActor
     func getRecentAlbums() throws -> [Album] {
-        var descriptor = FetchDescriptor<OfflineAlbum>()
-        descriptor.fetchLimit = 20
+        let descriptor = FetchDescriptor<OfflineAlbum>()
+        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
         
-        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
-        return tracks.map(Album.convertFromOffline).reversed()
+        // this is also stupid
+        return albums.suffix(20).map(Album.convertFromOffline).reversed()
     }
     
     @MainActor
