@@ -73,7 +73,7 @@ extension NowPlayingSheet {
                 .blur(radius: 80)
                 .onAppear {
                     withAnimation(.easeInOut(duration: 10).repeatForever(autoreverses: true)) {
-                        imageOffset *= Double.random(in: 2..<6)
+                        imageOffset *= Double.random(in: -6..<6)
                     }
                 }
         }

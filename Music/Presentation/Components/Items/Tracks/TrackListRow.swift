@@ -69,6 +69,12 @@ struct TrackListRow: View {
                     }
                 }
                 
+                if let artist = track.artists.first {
+                    NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
+                        Label("View artist", systemImage: "music.mic")
+                    }
+                }
+                
                 Divider()
                 
                 FavoriteButton(track: track)
@@ -106,7 +112,9 @@ extension TrackListRow {
         
         var body: some View {
             Button {
-                AudioPlayer.shared.queueTrack(track, index: 0)
+                Task {
+                    await AudioPlayer.shared.queueTrack(track, index: 0)
+                }
             } label: {
                 Label("Play next", systemImage: "text.line.first.and.arrowtriangle.forward")
             }
@@ -118,7 +126,9 @@ extension TrackListRow {
         
         var body: some View {
             Button {
-                AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
+                Task {
+                    await AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
+                }
             } label: {
                 Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
             }

@@ -27,6 +27,11 @@ struct ArtistView: View {
         .navigationTitle(artist.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("")
+            }
+        }
+        .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 SortSelector(sortOrder: $sortOrder)
             }
@@ -41,11 +46,6 @@ struct ArtistView: View {
                     Label("Favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
                         .contentTransition(.symbolEffect(.replace))
                 }
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("")
             }
         }
         .task(loadAlbums)

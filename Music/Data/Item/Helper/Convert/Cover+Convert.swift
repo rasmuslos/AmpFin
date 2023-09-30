@@ -16,7 +16,7 @@ extension Item.Cover {
         return nil
     }
     
-    static func constructItemCoverUrl(itemId: String, imageTag: String, size: Int = 400, quality: Int = 96) -> URL {
+    static func constructItemCoverUrl(itemId: String, imageTag: String, size: Int = 800, quality: Int = 96) -> URL {
         JellyfinClient.shared.serverUrl.appending(path: "Items").appending(path: itemId).appending(path: "Images").appending(path: "Primary").appending(queryItems: [
             URLQueryItem(name: "fillHeight", value: String(size)),
             URLQueryItem(name: "fillWidth", value: String(size)),

@@ -38,17 +38,6 @@ class Item: Identifiable {
             self.url = url
         }
         
-        func setSize(_ size: Int) -> Self {
-            if type == .jellyfin {
-                url = url.appending(queryItems: [
-                    URLQueryItem(name: "fillHeight", value: String(size)),
-                    URLQueryItem(name: "fillWidth", value: String(size)),
-                ])
-            }
-            
-            return self
-        }
-        
         enum CoverType: Codable {
             case jellyfin
             case local

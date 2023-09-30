@@ -18,7 +18,7 @@ extension NowPlayingSheet {
         var body: some View {
             Spacer()
             
-            ItemImage(cover: track.cover?.setSize(800))
+            ItemImage(cover: track.cover)
                 .scaleEffect(playing ? 1 : 0.8)
                 .animation(.spring(duration: 0.25, bounce: 0.5), value: playing)
                 .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)

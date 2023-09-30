@@ -20,12 +20,12 @@ struct AlbumListRow: View {
             VStack(alignment: .leading) {
                 Text(album.name)
                     .lineLimit(1)
-                    .font(.headline)
+                    .font(.body)
                 
                 if album.artists.count > 0 {
                     Text(album.artists.map { $0.name }.joined(separator: ", "))
                         .lineLimit(1)
-                        .font(.subheadline)
+                        .font(.callout)
                         .foregroundStyle(.secondary)
                 }
             }

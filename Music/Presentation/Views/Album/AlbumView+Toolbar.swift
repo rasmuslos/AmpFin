@@ -13,6 +13,7 @@ extension AlbumView {
         @Environment(\.libraryOnline) var libraryOnline
         
         let album: Album
+        let queueTracks: (_ next: Bool) -> ()
         
         @Binding var navbarVisible: Bool
         @Binding var imageColors: ImageColors
@@ -92,9 +93,9 @@ extension AlbumView {
                                     .disabled(!libraryOnline)
                                 }
                                 
-                                Divider()
-                                
                                 if downloaded != .none {
+                                    Divider()
+                                    
                                     Button(role: .destructive) {
                                         if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
                                             try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
@@ -102,6 +103,19 @@ extension AlbumView {
                                     } label: {
                                         Label("Force delete", systemImage: "trash.fill")
                                     }
+                                }
+                                
+                                Divider()
+                                
+                                Button {
+                                    queueTracks(true)
+                                } label: {
+                                    Label("Play next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                                }
+                                Button {
+                                    queueTracks(false)
+                                } label: {
+                                    Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
                                 }
                             } label: {
                                 // for some reason it did show the label...

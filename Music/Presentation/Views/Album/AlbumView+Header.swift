@@ -48,10 +48,12 @@ extension AlbumView {
                         .foregroundStyle(imageColors.isLight ? .black : .white)
                     
                     // fuck navigation links
-                    Text(album.artists.map { $0.name }.joined(separator: ", "))
-                        .lineLimit(1)
-                        .font(.callout)
-                        .foregroundStyle(imageColors.detail)
+                    HStack {
+                        Text(album.artists.map { $0.name }.joined(separator: ", "))
+                            .lineLimit(1)
+                            .font(.callout)
+                            .foregroundStyle(imageColors.detail)
+                    }
                     
                     HStack {
                         if let releaseDate = album.releaseDate {

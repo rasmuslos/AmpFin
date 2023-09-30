@@ -31,11 +31,24 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                     NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: track.id)
                     logger.info("Download finished: \(track.id) (\(track.name))")
                 } catch {
+                    try? FileManager.default.removeItem(at: tmpLocation)
                     logger.fault("Error while moving track \(track.id) (\(track.name)): \(error.localizedDescription)")
                 }
             } else {
                 logger.fault("Unknown download finished")
-                try FileManager.default.removeItem(at: tmpLocation)
+                try? FileManager.default.removeItem(at: tmpLocation)
+            }
+        }
+    }
+    
+    // Error handling
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        Task.detached { @MainActor [self] in
+            if let track = OfflineManager.shared.getOfflineTrackByDownloadId(task.taskIdentifier) {
+                try? OfflineManager.shared.deleteOfflineAlbum(track.album)
+                logger.fault("Error while downloading track \(track.id) (\(track.name): \(error?.localizedDescription ?? "?")")
+            } else {
+                logger.fault("Error while downloading unknown track: \(error?.localizedDescription ?? "?")")
             }
         }
     }

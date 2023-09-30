@@ -205,18 +205,27 @@ extension AudioPlayer {
         notifyQueueChanged()
         return track
     }
-    func queueTrack(_ track: Track, index: Int, addToUnalteredQueue: Bool = true) {
+    func queueTrack(_ track: Track, index: Int) async {
         if queue.count == 0 && nowPlaying == nil {
             startPlayback(tracks: [track], startIndex: 0, shuffle: false)
         } else {
-            Task {
-                unalteredQueue.insert(track, at: index)
-                queue.insert(track, at: index)
-                audioPlayer.insert(await getAVPlayerItem(track), after: audioPlayer.items()[index])
-            }
+            unalteredQueue.insert(track, at: index)
+            queue.insert(track, at: index)
+            audioPlayer.insert(await getAVPlayerItem(track), after: audioPlayer.items()[index])
         }
         
         notifyQueueChanged()
+    }
+    func queueTracks(_ tracks: [Track], index: Int) {
+        if queue.count == 0 && nowPlaying == nil {
+            startPlayback(tracks: tracks, startIndex: 0, shuffle: false)
+        } else {
+            Task {
+                for (i, track) in tracks.enumerated() {
+                    await queueTrack(track, index: index + i)
+                }
+            }
+        }
     }
     
     func moveTrack(from: Int, to: Int) {
@@ -225,10 +234,12 @@ extension AudioPlayer {
                 unalteredQueue.remove(at: index)
             }
             
-            if from < to {
-                queueTrack(track, index: to - 1)
-            } else {
-                queueTrack(track, index: to)
+            Task {
+                if from < to {
+                    await queueTrack(track, index: to - 1)
+                } else {
+                    await queueTrack(track, index: to)
+                }
             }
         }
         
