@@ -12,7 +12,7 @@ extension OfflineManager {
     @MainActor
     func downloadTrack(_ track: Track, album: OfflineAlbum) {
         if let existing = getOfflineTrackById(track.id) {
-            if existing.isDownloaded() {
+            if existing.downloadId == nil {
                 return
             }
             
@@ -38,6 +38,16 @@ extension OfflineManager {
     }
     
     @MainActor
+    func deleteOfflineTrack(_ track: OfflineTrack) {
+        DownloadManager.shared.deleteTrack(trackId: track.id)
+        PersistenceManager.shared.modelContainer.mainContext.delete(track)
+    }
+}
+
+// MARK: Getter
+
+extension OfflineManager {
+    @MainActor
     func getOfflineTrackById(_ id: String) -> OfflineTrack? {
         var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == id })
         track.fetchLimit = 1
@@ -54,21 +64,22 @@ extension OfflineManager {
     }
     
     @MainActor
-    func deleteOfflineTrack(_ track: OfflineTrack) {
-        DownloadManager.shared.deleteTrack(trackId: track.id)
-        PersistenceManager.shared.modelContainer.mainContext.delete(track)
-        
-        NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: track.id)
-    }
-    
-    @MainActor
     func getUnfinishedDownloads() throws -> [OfflineTrack] {
         let track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId != nil })
         return try PersistenceManager.shared.modelContainer.mainContext.fetch(track)
     }
+    
+    @MainActor
+    func getTrackOfflineStatus(trackId: String) -> Item.OfflineStatus {
+        if let track = getOfflineTrackById(trackId) {
+            return track.downloadId == nil ? .downloaded : .working
+        }
+        
+        return .none
+    }
 }
 
-// MARK: Getter
+// MARK: Provider
 
 extension OfflineManager {
     @MainActor

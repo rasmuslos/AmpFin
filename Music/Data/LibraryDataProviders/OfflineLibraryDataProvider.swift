@@ -37,7 +37,7 @@ struct OfflineLibraryDataProvider: LibraryDataProvider {
     }
     
     func getAlbumTracks(id: String) async throws -> [Track] {
-        if let album = try await OfflineManager.shared.getOfflineAlbum(albumId: id) {
+        if let album = await OfflineManager.shared.getOfflineAlbum(albumId: id) {
             return try await OfflineManager.shared.getAlbumTracks(album).map(Track.convertFromOffline)
         }
         

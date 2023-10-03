@@ -12,8 +12,6 @@ struct TrackListRow: View {
     var album: Album? = nil
     let startPlayback: () -> ()
     
-    @State var downloaded = false
-    
     var body: some View {
         let showArtist = album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
         
@@ -50,12 +48,7 @@ struct TrackListRow: View {
             }
             .buttonStyle(.plain)
             
-            if downloaded {
-                Image(systemName: "arrow.down.circle.fill")
-                    .imageScale(.small)
-                    .padding(.horizontal, 4)
-                    .foregroundStyle(.secondary)
-            }
+            DownloadIndicator(item: track)
             
             Menu {
                 PlayNextButton(track: track)
@@ -95,12 +88,6 @@ struct TrackListRow: View {
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             FavoriteButton(track: track)
         }
-        .task(checkDownload)
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.DownloadUpdated)) { _ in
-            Task.detached {
-                await checkDownload()
-            }
-        }
     }
 }
 
@@ -112,9 +99,7 @@ extension TrackListRow {
         
         var body: some View {
             Button {
-                Task {
-                    await AudioPlayer.shared.queueTrack(track, index: 0)
-                }
+                AudioPlayer.shared.queueTrack(track, index: 0)
             } label: {
                 Label("Play next", systemImage: "text.line.first.and.arrowtriangle.forward")
             }
@@ -126,9 +111,7 @@ extension TrackListRow {
         
         var body: some View {
             Button {
-                Task {
-                    await AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
-                }
+                AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
             } label: {
                 Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
             }
@@ -149,14 +132,5 @@ extension TrackListRow {
             }
             .tint(.red)
         }
-    }
-}
-
-// MARK: Helper
-
-extension TrackListRow {
-    @Sendable
-    func checkDownload() async {
-        downloaded = await track.isDownloaded()
     }
 }

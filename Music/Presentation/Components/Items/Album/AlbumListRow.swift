@@ -10,8 +10,6 @@ import SwiftUI
 struct AlbumListRow: View {
     let album: Album
     
-    @State var downloaded = false
-    
     var body: some View {
         HStack {
             ItemImage(cover: album.cover)
@@ -33,28 +31,8 @@ struct AlbumListRow: View {
             
             Spacer()
             
-            if downloaded {
-                Image(systemName: "arrow.down.circle.fill")
-                    .imageScale(.small)
-                    .padding(.horizontal, 4)
-                    .foregroundStyle(.secondary)
-            }
+            DownloadIndicator(item: album)
         }
-        .task(checkDownload)
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.DownloadUpdated)) { _ in
-            Task.detached {
-                await checkDownload()
-            }
-        }
-    }
-}
-
-// MARK: Helper
-
-extension AlbumListRow {
-    @Sendable
-    func checkDownload() async {
-        downloaded = await album.isOffline()
     }
 }
 

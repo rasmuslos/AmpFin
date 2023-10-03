@@ -43,12 +43,14 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
     
     // Error handling
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        Task.detached { @MainActor [self] in
-            if let track = OfflineManager.shared.getOfflineTrackByDownloadId(task.taskIdentifier) {
-                try? OfflineManager.shared.deleteOfflineAlbum(track.album)
-                logger.fault("Error while downloading track \(track.id) (\(track.name): \(error?.localizedDescription ?? "?")")
-            } else {
-                logger.fault("Error while downloading unknown track: \(error?.localizedDescription ?? "?")")
+        if let error = error {
+            Task.detached { @MainActor [self] in
+                if let track = OfflineManager.shared.getOfflineTrackByDownloadId(task.taskIdentifier) {
+                    try? OfflineManager.shared.deleteOfflineAlbum(track.album)
+                    logger.fault("Error while downloading track \(track.id) (\(track.name)): \(error.localizedDescription)")
+                } else {
+                    logger.fault("Error while downloading unknown track: \(error.localizedDescription)")
+                }
             }
         }
     }

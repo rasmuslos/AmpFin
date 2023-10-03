@@ -59,10 +59,8 @@ extension NowPlayingSheet {
                             }
                             .swipeActions(edge: .leading, allowsFullSwipe: true) {
                                 Button {
-                                    Task {
-                                        await AudioPlayer.shared.queueTrack(track, index: 0)
-                                        AudioPlayer.shared.removeHistoryTrack(index: index)
-                                    }
+                                    AudioPlayer.shared.queueTrack(track, index: 0)
+                                    AudioPlayer.shared.removeHistoryTrack(index: index)
                                 } label: {
                                     Label("Play next", systemImage: "text.line.first.and.arrowtriangle.forward")
                                 }
@@ -70,10 +68,8 @@ extension NowPlayingSheet {
                             }
                             .swipeActions(edge: .leading) {
                                 Button {
-                                    Task {
-                                        await AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
-                                        AudioPlayer.shared.removeHistoryTrack(index: index)
-                                    }
+                                    AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
+                                    AudioPlayer.shared.removeHistoryTrack(index: index)
                                 } label: {
                                     Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
                                 }

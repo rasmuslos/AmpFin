@@ -15,7 +15,7 @@ extension OfflineManager {
         var offlineAlbum: OfflineAlbum
         let tracks = try await JellyfinClient.shared.getAlbumTracks(id: album.id)
         
-        if let existing = try await getOfflineAlbum(albumId: album.id) {
+        if let existing = await getOfflineAlbum(albumId: album.id) {
             offlineAlbum = existing
         } else {
             offlineAlbum = try await createOfflineAlbum(album, trackCount: tracks.count)
@@ -28,14 +28,29 @@ extension OfflineManager {
                 await downloadTrack(track, album: album)
             }
         }
+        
+        NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: nil)
     }
     
     @MainActor
-    func getOfflineAlbum(albumId: String) throws -> OfflineAlbum? {
+    func getAlbumOfflineStatus(albumId: String) async -> Item.OfflineStatus {
+        if let album = getOfflineAlbum(albumId: albumId) {
+            return await isAlbumDownloadInProgress(album) ? .working : .downloaded
+        }
+        
+        return .none
+    }
+}
+
+// MARK: Get/Set/Delete
+
+extension OfflineManager {
+    @MainActor
+    func getOfflineAlbum(albumId: String) -> OfflineAlbum? {
         var album = FetchDescriptor(predicate: #Predicate<OfflineAlbum> { $0.id == albumId })
         album.fetchLimit = 1
         
-        return try PersistenceManager.shared.modelContainer.mainContext.fetch(album).first
+        return try? PersistenceManager.shared.modelContainer.mainContext.fetch(album).first
     }
     
     @MainActor
@@ -56,8 +71,6 @@ extension OfflineManager {
             trackCount: trackCount)
         
         PersistenceManager.shared.modelContainer.mainContext.insert(offlineAlbum)
-        NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: nil)
-        
         return offlineAlbum
     }
     
@@ -70,6 +83,8 @@ extension OfflineManager {
         
         try DownloadManager.shared.deleteAlbumCover(albumId: album.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(album)
+        
+        NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: nil)
     }
 }
 
@@ -85,11 +100,11 @@ extension OfflineManager {
     
     func isAlbumDownloadInProgress(_ album: OfflineAlbum) async -> Bool {
         let tracks = (try? await getAlbumTracks(album)) ?? []
-        return tracks.reduce(false) { $1.isDownloaded() ? $0 : true }
+        return tracks.reduce(false) { $1.downloadId == nil ? $0 : true }
     }
 }
 
-// MARK: Getter
+// MARK: Provider
 
 extension OfflineManager {
     @MainActor

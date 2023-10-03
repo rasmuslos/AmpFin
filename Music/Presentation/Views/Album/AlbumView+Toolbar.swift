@@ -18,8 +18,6 @@ extension AlbumView {
         @Binding var navbarVisible: Bool
         @Binding var imageColors: ImageColors
         
-        @State var downloaded = DownloadStatus.working
-        
         func body(content: Content) -> some View {
             content
                 .toolbarBackground(navbarVisible ? .visible : .hidden, for: .navigationBar)
@@ -58,15 +56,15 @@ extension AlbumView {
                     ToolbarItem(placement: .primaryAction) {
                         HStack {
                             Button {
-                                if downloaded == .none {
+                                if album.offline == .none {
                                     Task {
                                         try! await OfflineManager.shared.downloadAlbum(album)
                                     }
-                                } else if downloaded == .downloaded, let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
+                                } else if album.offline == .downloaded, let offlineAlbum = OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
                                     try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
                                 }
                             } label: {
-                                switch downloaded {
+                                switch album.offline {
                                 case .none:
                                     // and for some other reason this was blue when i used a label
                                     Image(systemName: "arrow.down")
@@ -93,7 +91,7 @@ extension AlbumView {
                                     .disabled(!libraryOnline)
                                 }
                                 
-                                if downloaded != .none {
+                                if album.offline != .none {
                                     Divider()
                                     
                                     Button(role: .destructive) {
@@ -125,35 +123,6 @@ extension AlbumView {
                         }
                     }
                 }
-                .task(checkDownload)
-                .onReceive(NotificationCenter.default.publisher(for: NSNotification.DownloadUpdated)) { _ in
-                    Task.detached {
-                        await checkDownload()
-                    }
-                }
-        }
-    }
-}
-
-// MARK: Download
-
-extension AlbumView.ToolbarModifier {
-    enum DownloadStatus {
-        case none
-        case working
-        case downloaded
-    }
-    
-    @Sendable
-    func checkDownload() async {
-        if let offlineAlbum = try? await OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
-            if await OfflineManager.shared.isAlbumDownloadInProgress(offlineAlbum) {
-                downloaded = .working
-            } else {
-                downloaded = .downloaded
-            }
-        } else {
-            downloaded = .none
         }
     }
 }

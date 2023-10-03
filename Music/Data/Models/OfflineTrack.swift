@@ -37,11 +37,3 @@ class OfflineTrack {
         self.album = nil
     }
 }
-
-// MARK: Helper
-
-extension OfflineTrack {
-    func isDownloaded() -> Bool {
-        downloadId == nil
-    }
-}

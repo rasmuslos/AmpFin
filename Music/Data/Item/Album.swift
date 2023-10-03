@@ -25,12 +25,10 @@ class Album: Item {
         
         super.init(id: id, name: name, sortName: sortName, cover: cover, favorite: favorite)
     }
-}
-
-// MARK: Offline
-
-extension Album {
-    func isOffline() async -> Bool {
-        (try? await OfflineManager.shared.getOfflineAlbum(albumId: id)) != nil
+    
+    override func checkOfflineStatus() {
+        Task.detached { [self] in
+            self.offline = await OfflineManager.shared.getAlbumOfflineStatus(albumId: id)
+        }
     }
 }

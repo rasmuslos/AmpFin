@@ -89,30 +89,28 @@ extension AudioPlayer {
             return
         }
         
-        Task {
-            stopPlayback()
-            
-            var tracks = tracks
-            unalteredQueue = tracks
-            
-            shuffled = shuffle
-            if shuffle {
-                tracks.shuffle()
-            }
-            setNowPlaying(track: tracks[startIndex])
-            
-            history = Array(tracks[0..<startIndex])
-            queue = Array(tracks[startIndex + 1..<tracks.count])
-            
-            audioPlayer.insert(await getAVPlayerItem(nowPlaying!), after: nil)
-            populateQueue()
-            
-            notifyQueueChanged()
-            
-            updateAudioSession(active: true)
-            setPlaying(true)
-            setupNowPlayingMetadata()
+        stopPlayback()
+        
+        var tracks = tracks
+        unalteredQueue = tracks
+        
+        shuffled = shuffle
+        if shuffle {
+            tracks.shuffle()
         }
+        setNowPlaying(track: tracks[startIndex])
+        
+        history = Array(tracks[0..<startIndex])
+        queue = Array(tracks[startIndex + 1..<tracks.count])
+        
+        audioPlayer.insert(getAVPlayerItem(nowPlaying!), after: nil)
+        populateQueue()
+        
+        notifyQueueChanged()
+        
+        updateAudioSession(active: true)
+        setPlaying(true)
+        setupNowPlayingMetadata()
     }
     func stopPlayback() {
         if isPlaying() {
@@ -139,30 +137,28 @@ extension AudioPlayer {
         notifyQueueChanged()
     }
     func backToPreviousItem() {
-        Task {
-            if currentTime() > 5 {
-                seek(seconds: 0)
-                return
-            }
-            if history.count < 1 {
-                return
-            }
-            
-            let previous = history.removeLast()
-            let playerItem = await getAVPlayerItem(previous)
-            audioPlayer.insert(playerItem, after: audioPlayer.currentItem)
-            
-            if let nowPlaying = nowPlaying {
-                queue.insert(nowPlaying, at: 0)
-                audioPlayer.insert(await getAVPlayerItem(nowPlaying), after: playerItem)
-            }
-            
-            audioPlayer.advanceToNextItem()
-            setNowPlaying(track: previous)
-            setupNowPlayingMetadata()
-            
-            notifyQueueChanged()
+        if currentTime() > 5 {
+            seek(seconds: 0)
+            return
         }
+        if history.count < 1 {
+            return
+        }
+        
+        let previous = history.removeLast()
+        let playerItem = getAVPlayerItem(previous)
+        audioPlayer.insert(playerItem, after: audioPlayer.currentItem)
+        
+        if let nowPlaying = nowPlaying {
+            queue.insert(nowPlaying, at: 0)
+            audioPlayer.insert(getAVPlayerItem(nowPlaying), after: playerItem)
+        }
+        
+        audioPlayer.advanceToNextItem()
+        setNowPlaying(track: previous)
+        setupNowPlayingMetadata()
+        
+        notifyQueueChanged()
     }
     
     func shuffle(_ shuffle: Bool) {
@@ -206,13 +202,13 @@ extension AudioPlayer {
         notifyQueueChanged()
         return track
     }
-    func queueTrack(_ track: Track, index: Int) async {
+    func queueTrack(_ track: Track, index: Int) {
         if queue.count == 0 && nowPlaying == nil {
             startPlayback(tracks: [track], startIndex: 0, shuffle: false)
         } else {
             unalteredQueue.insert(track, at: index)
             queue.insert(track, at: index)
-            audioPlayer.insert(await getAVPlayerItem(track), after: audioPlayer.items()[index])
+            audioPlayer.insert(getAVPlayerItem(track), after: audioPlayer.items()[index])
         }
         
         notifyQueueChanged()
@@ -221,10 +217,8 @@ extension AudioPlayer {
         if queue.count == 0 && nowPlaying == nil {
             startPlayback(tracks: tracks, startIndex: 0, shuffle: false)
         } else {
-            Task {
-                for (i, track) in tracks.enumerated() {
-                    await queueTrack(track, index: index + i)
-                }
+            for (i, track) in tracks.enumerated() {
+                queueTrack(track, index: index + i)
             }
         }
     }
@@ -235,12 +229,10 @@ extension AudioPlayer {
                 unalteredQueue.remove(at: index)
             }
             
-            Task {
-                if from < to {
-                    await queueTrack(track, index: to - 1)
-                } else {
-                    await queueTrack(track, index: to)
-                }
+            if from < to {
+                queueTrack(track, index: to - 1)
+            } else {
+                queueTrack(track, index: to)
             }
         }
         
@@ -281,10 +273,8 @@ extension AudioPlayer {
         notifyQueueChanged()
     }
     private func populateQueue() {
-        Task.detached { [self] in
-            for track in queue {
-                audioPlayer.insert(await getAVPlayerItem(track), after: nil)
-            }
+        for track in queue {
+            audioPlayer.insert(getAVPlayerItem(track), after: nil)
         }
     }
 }
@@ -308,8 +298,10 @@ extension AudioPlayer {
         NotificationCenter.default.addObserver(self, selector: #selector(handleItemDidPlayToEndTime), name: .AVPlayerItemDidPlayToEndTime, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
         
-        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [self] _ in
-            setNowPlaying(track: nil)
+        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [weak self] _ in
+            if let self = self {
+                self.setNowPlaying(track: nil)
+            }
         }
     }
     
@@ -449,8 +441,8 @@ extension AudioPlayer {
 // MARK: Helper
 
 extension AudioPlayer {
-    private func getAVPlayerItem(_ track: Track) async -> AVPlayerItem {
-        if await track.isDownloaded() {
+    private func getAVPlayerItem(_ track: Track) -> AVPlayerItem {
+        if track.offline == .downloaded {
             return AVPlayerItem(url: DownloadManager.shared.getTrackUrl(trackId: track.id))
         } else {
             return AVPlayerItem(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "stream").appending(queryItems: [

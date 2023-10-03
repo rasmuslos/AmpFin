@@ -27,11 +27,24 @@ class Track: Item {
         super.init(id: id, name: name, sortName: sortName, cover: cover, favorite: favorite)
     }
     
+    override func checkOfflineStatus() {
+        Task.detached { [self] in
+            self.offline = await OfflineManager.shared.getTrackOfflineStatus(trackId: id)
+        }
+    }
+}
+
+// MARK: Helper
+
+extension Track {
+    typealias Lyrics = [Double: String?]
+    
     struct ReducedAlbum {
         let id: String
         let name: String
         let artists: [ReducedArtist]
     }
+    
     struct Index: Comparable, Codable {
         let index: Int
         let disk: Int
@@ -42,20 +55,6 @@ class Track: Item {
             } else {
                 return lhs.disk < rhs.disk
             }
-        }
-    }
-    
-    typealias Lyrics = [Double: String?]
-}
-
-// MARK: Downloads
-
-extension Track {
-    func isDownloaded() async -> Bool {
-        if let track = await OfflineManager.shared.getOfflineTrackById(id) {
-            return track.isDownloaded()
-        } else {
-            return false
         }
     }
 }
