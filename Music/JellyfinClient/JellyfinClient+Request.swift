@@ -65,7 +65,7 @@ extension JellyfinClient {
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            logger.error("Error while requesting resource: \(error.localizedDescription)")
+            logger.fault("Error while requesting resource \(url): \(error.localizedDescription)")
             throw JellyfinClientError.invalidResponse
         }
     }

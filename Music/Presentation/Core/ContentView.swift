@@ -16,6 +16,10 @@ struct ContentView: View {
     var body: some View {
         if isAuthorized {
             NavigationRoot()
+                .onAppear {
+                    SpotlightDonator.donate()
+                    UserContext.updateContext()
+                }
         } else {
             LoginView() {
                 isAuthorized = true

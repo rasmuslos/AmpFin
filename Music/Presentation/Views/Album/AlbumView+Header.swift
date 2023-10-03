@@ -48,11 +48,13 @@ extension AlbumView {
                         .foregroundStyle(imageColors.isLight ? .black : .white)
                     
                     // fuck navigation links
-                    HStack {
-                        Text(album.artists.map { $0.name }.joined(separator: ", "))
-                            .lineLimit(1)
-                            .font(.callout)
-                            .foregroundStyle(imageColors.detail)
+                    if album.artists.count > 0 {
+                        HStack {
+                            Text(album.artists.map { $0.name }.joined(separator: ", "))
+                                .lineLimit(1)
+                                .font(.callout)
+                                .foregroundStyle(imageColors.detail)
+                        }
                     }
                     
                     HStack {

@@ -128,6 +128,7 @@ extension AudioPlayer {
         history = []
         
         notifyQueueChanged()
+        clearNowPlayingMetadata()
         updateAudioSession(active: false)
     }
     
@@ -436,6 +437,11 @@ extension AudioPlayer {
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime()
         
         MPNowPlayingInfoCenter.default().playbackState = isPlaying() ? .playing : .paused
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
+    private func clearNowPlayingMetadata() {
+        nowPlayingInfo = [:]
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
 }
