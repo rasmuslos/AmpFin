@@ -95,7 +95,7 @@ extension AlbumView {
                                     Divider()
                                     
                                     Button(role: .destructive) {
-                                        if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
+                                        if let offlineAlbum = OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
                                             try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
                                         }
                                     } label: {

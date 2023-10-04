@@ -38,8 +38,11 @@ struct AlbumView: View {
         // introspect does not work here
         .modifier(
             ToolbarModifier(album: album, queueTracks: { next in
-                AudioPlayer.shared.queueTracks(tracks, index: next ? 0 : AudioPlayer.shared.queue.count)
-            }, navbarVisible: $navbarVisible, imageColors: $imageColors))
+                AudioPlayer.shared.queueTracks(
+                    tracks.sorted { $0.index < $1.index },
+                    index: next ? 0 : AudioPlayer.shared.queue.count)
+            }, navbarVisible: $navbarVisible, imageColors: $imageColors)
+        )
         .modifier(NowPlayingBarSafeAreaModifier())
         .task {
             if let tracks = try? await dataProvider.getAlbumTracks(id: album.id) {

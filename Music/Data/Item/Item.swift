@@ -87,9 +87,7 @@ extension Item {
 extension Item {
     private func addObserver() {
         token = NotificationCenter.default.addObserver(forName: NSNotification.DownloadUpdated, object: nil, queue: nil) { [weak self] _ in
-            if let self = self {
-                self.checkOfflineStatus()
-            }
+            self?.checkOfflineStatus()
         }
     }
 }

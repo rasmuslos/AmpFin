@@ -10,7 +10,7 @@ import AVKit
 import MediaPlayer
 import OSLog
 
-class AudioPlayer: NSObject {
+class AudioPlayer {
     fileprivate let audioPlayer: AVQueuePlayer
     
     fileprivate(set) var history: [Track]
@@ -27,7 +27,7 @@ class AudioPlayer: NSObject {
     
     let logger = Logger(subsystem: "io.rfk.music", category: "AudioPlayer")
     
-    override init() {
+    init() {
         audioPlayer = AVQueuePlayer()
         
         history = []
@@ -35,8 +35,6 @@ class AudioPlayer: NSObject {
         queue = []
         
         unalteredQueue = []
-        
-        super.init()
         
         setupRemoteControls()
         setupTimeObserver()
@@ -295,34 +293,33 @@ extension AudioPlayer {
         }
     }
     private func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleItemDidPlayToEndTime), name: .AVPlayerItemDidPlayToEndTime, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
+        // The player is never discarded, so no removing of the observers is necessary
+        NotificationCenter.default.addObserver(forName: AVPlayerItem.didPlayToEndTimeNotification, object: nil, queue: nil) { [weak self] _ in
+            self?.trackDidFinish()
+        }
+        
+        NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), queue: nil) { [weak self] notification in
+            guard let userInfo = notification.userInfo, let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                return
+            }
+            
+            switch type {
+            case .began:
+                self?.setPlaying(false)
+            case .ended:
+                guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+                let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+                if options.contains(.shouldResume) {
+                    self?.setPlaying(true)
+                }
+            default: ()
+            }
+        }
         
         NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [weak self] _ in
             if let self = self {
                 self.setNowPlaying(track: nil)
             }
-        }
-    }
-    
-    @objc private func handleItemDidPlayToEndTime() {
-        trackDidFinish()
-    }
-    @objc func handleInterruption(notification: Notification) {
-        guard let userInfo = notification.userInfo, let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
-            return
-        }
-        
-        switch type {
-        case .began:
-            setPlaying(false)
-        case .ended:
-            guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
-            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
-            if options.contains(.shouldResume) {
-                setPlaying(true)
-            }
-        default: ()
         }
     }
 }
