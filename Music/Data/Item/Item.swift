@@ -17,7 +17,7 @@ class Item: Identifiable {
     var favorite: Bool
     var offline: OfflineStatus = .none
     
-    private var token: NSObjectProtocol!
+    private var tokens = [NSObjectProtocol]()
     
     init(id: String, name: String, sortName: String?, cover: Cover? = nil, favorite: Bool) {
         self.id = id
@@ -30,7 +30,9 @@ class Item: Identifiable {
         checkOfflineStatus()
     }
     deinit {
-        NotificationCenter.default.removeObserver(token!)
+        tokens.forEach {
+            NotificationCenter.default.removeObserver($0)
+        }
     }
     
     // Has to be here to be overwritable
@@ -86,8 +88,16 @@ extension Item {
 
 extension Item {
     private func addObserver() {
-        token = NotificationCenter.default.addObserver(forName: NSNotification.DownloadUpdated, object: nil, queue: nil) { [weak self] _ in
-            self?.checkOfflineStatus()
-        }
+        tokens.append(contentsOf: [
+            NotificationCenter.default.addObserver(forName: NSNotification.TrackDownloadStatusChanged, object: nil, queue: nil) { [weak self] notification in
+                // object did not work...
+                if let self = self, notification.userInfo?["trackId"] as? String == self.id {
+                    self.checkOfflineStatus()
+                }
+            },
+            NotificationCenter.default.addObserver(forName: NSNotification.AlbumDownloadStatusChanged, object: nil, queue: nil) { [weak self] _ in
+                self?.checkOfflineStatus()
+            }
+        ])
     }
 }

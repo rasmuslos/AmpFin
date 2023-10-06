@@ -35,11 +35,10 @@ struct AlbumsView: View {
         .toolbar {
             SortSelector(sortOrder: $sortOrder)
         }
+        .refreshable(action: loadAlbums)
         .task(loadAlbums)
         .onChange(of: sortOrder) {
-            Task {
-                await loadAlbums()
-            }
+            loadAlbums()
         }
     }
 }
@@ -48,11 +47,13 @@ struct AlbumsView: View {
 
 extension AlbumsView {
     @Sendable
-    func loadAlbums() async {
-        do {
-            albums = try await dataProvider.getAlbums(limit: -1, sortOrder: sortOrder, ascending: true)
-        } catch {
-            errored = true
+    func loadAlbums() {
+        Task.detached {
+            do {
+                albums = try await dataProvider.getAlbums(limit: -1, sortOrder: sortOrder, ascending: true)
+            } catch {
+                errored = true
+            }
         }
     }
     

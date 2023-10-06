@@ -23,12 +23,10 @@ extension AlbumView {
                     let offset = reader.frame(in: .global).minY
                     
                     if offset > 0 {
-                        /*
                         Rectangle()
                             .foregroundStyle(imageColors.background)
                             .offset(y: -offset)
                             .frame(height: offset)
-                         */
                     }
                     
                     Color.clear

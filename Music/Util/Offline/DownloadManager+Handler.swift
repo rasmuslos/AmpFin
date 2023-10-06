@@ -28,7 +28,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                     try FileManager.default.moveItem(at: tmpLocation, to: destination)
                     track.downloadId = nil
                     
-                    NotificationCenter.default.post(name: NSNotification.DownloadUpdated, object: track.id)
+                    NotificationCenter.default.post(name: NSNotification.TrackDownloadStatusChanged, object: track.id, userInfo: ["trackId": track.id])
                     logger.info("Download finished: \(track.id) (\(track.name))")
                 } catch {
                     try? FileManager.default.removeItem(at: tmpLocation)

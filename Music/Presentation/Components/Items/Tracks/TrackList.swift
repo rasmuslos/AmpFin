@@ -23,12 +23,40 @@ struct TrackList: View {
             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         
-        ForEach(Array(filter().enumerated()), id: \.offset) { index, track in
-            TrackListRow(track: track, album: album) {
-                startPlayback(index: index, shuffle: false)
+        let disks = getDisks()
+        
+        if album != nil, disks.count > 1 {
+            ForEach(disks.sorted(), id: \.hashValue) { disk in
+                Section {
+                    TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback)
+                } header: {
+                    Text("Disk \(disk)")
+                        .padding(.top, -20)
+                }
             }
-            .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-            .padding(.horizontal)
+        } else {
+            TrackSection(tracks: filter(tracks: tracks), album: album, startPlayback: startPlayback)
+        }
+    }
+}
+
+// MARK: Track section
+
+extension TrackList {
+    struct TrackSection: View {
+        let tracks: [Track]
+        let album: Album?
+        
+        let startPlayback: (Track) -> ()
+        
+        var body: some View {
+            ForEach(tracks) { track in
+                TrackListRow(track: track, album: album) {
+                    startPlayback(track)
+                }
+                .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
+                .padding(.horizontal)
+            }
         }
     }
 }
@@ -36,22 +64,38 @@ struct TrackList: View {
 // MARK: Helper
 
 extension TrackList {
-    private func filter() -> [Track] {
-        var filtered = tracks
+    private func filter(tracks: [Track]) -> [Track] {
+        var tracks = tracks
         
         if search != "" {
-            filtered = filtered.filter { $0.name.lowercased().contains(search.lowercased()) || $0.album.name.lowercased().contains(search.lowercased()) }
+            tracks = tracks.filter { $0.name.lowercased().contains(search.lowercased()) || $0.album.name.lowercased().contains(search.lowercased()) }
         }
         
         if album != nil {
-            return filtered.sorted { $0.index < $1.index }
+            return tracks.sorted { $0.index < $1.index }
         } else {
-            return filtered
+            return tracks
+        }
+    }
+    
+    private func getDisks() -> [Int] {
+        tracks.reduce([Int]()) {
+            if !$0.contains($1.index.disk) {
+                return $0 + [$1.index.disk]
+            }
+            
+            return $0
         }
     }
     
     private func startPlayback(index: Int, shuffle: Bool) {
-        AudioPlayer.shared.startPlayback(tracks: filter(), startIndex: index, shuffle: shuffle)
+        AudioPlayer.shared.startPlayback(tracks: filter(tracks: tracks), startIndex: index, shuffle: shuffle)
+    }
+    private func startPlayback(track: Track) {
+        let tracks = filter(tracks: tracks)
+        if let index = tracks.firstIndex(where: { $0.id == track.id }) {
+            AudioPlayer.shared.startPlayback(tracks: tracks, startIndex: index, shuffle: false)
+        }
     }
 }
 
