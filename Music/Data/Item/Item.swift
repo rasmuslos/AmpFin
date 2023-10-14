@@ -25,9 +25,6 @@ class Item: Identifiable {
         self.sortName = sortName
         self.cover = cover
         self.favorite = favorite
-        
-        addObserver()
-        checkOfflineStatus()
     }
     deinit {
         tokens.forEach {
@@ -38,6 +35,9 @@ class Item: Identifiable {
     // Has to be here to be overwritable
     public func checkOfflineStatus() {
         self.offline = .none
+    }
+    public func addObserver() -> [NSObjectProtocol] {
+        []
     }
 }
 
@@ -87,17 +87,10 @@ extension Item {
 // MARK: Offline
 
 extension Item {
-    private func addObserver() {
-        tokens.append(contentsOf: [
-            NotificationCenter.default.addObserver(forName: NSNotification.TrackDownloadStatusChanged, object: nil, queue: nil) { [weak self] notification in
-                // object did not work...
-                if let self = self, notification.userInfo?["trackId"] as? String == self.id {
-                    self.checkOfflineStatus()
-                }
-            },
-            NotificationCenter.default.addObserver(forName: NSNotification.AlbumDownloadStatusChanged, object: nil, queue: nil) { [weak self] _ in
-                self?.checkOfflineStatus()
-            }
-        ])
+    static let operationQueue = OperationQueue()
+    
+    func enableOfflineTracking() {
+        tokens = addObserver()
+        checkOfflineStatus()
     }
 }

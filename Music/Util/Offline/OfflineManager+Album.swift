@@ -29,7 +29,7 @@ extension OfflineManager {
             }
         }
         
-        NotificationCenter.default.post(name: NSNotification.AlbumDownloadStatusChanged, object: nil)
+        NotificationCenter.default.post(name: NSNotification.AlbumDownloadStatusChanged, object: album.id)
     }
     
     @MainActor
@@ -84,7 +84,7 @@ extension OfflineManager {
         try DownloadManager.shared.deleteAlbumCover(albumId: album.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(album)
         
-        NotificationCenter.default.post(name: NSNotification.AlbumDownloadStatusChanged, object: nil)
+        NotificationCenter.default.post(name: NSNotification.AlbumDownloadStatusChanged, object: album.id)
     }
 }
 

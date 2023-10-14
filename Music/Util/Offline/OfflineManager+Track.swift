@@ -35,12 +35,15 @@ extension OfflineManager {
         
         offlineItem.album = album
         downloadTask.resume()
+        
+        NotificationCenter.default.post(name: NSNotification.TrackDownloadStatusChanged, object: track.id)
     }
     
     @MainActor
     func deleteOfflineTrack(_ track: OfflineTrack) {
         DownloadManager.shared.deleteTrack(trackId: track.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(track)
+        NotificationCenter.default.post(name: NSNotification.TrackDownloadStatusChanged, object: track.id)
     }
 }
 

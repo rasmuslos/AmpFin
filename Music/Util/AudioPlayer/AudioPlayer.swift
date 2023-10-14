@@ -56,7 +56,7 @@ extension AudioPlayer {
         }
         
         updateNowPlayingStatus()
-        playbackReporter?.update(positionSeconds: currentTime(), paused: !playing, sheduled: false)
+        playbackReporter?.update(positionSeconds: currentTime(), paused: !playing, scheduled: false)
         Task { @MainActor in
             NotificationCenter.default.post(name: NSNotification.PlayPause, object: nil)
         }
@@ -83,7 +83,7 @@ extension AudioPlayer {
 
 extension AudioPlayer {
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
-        if tracks.count == 0 {
+        if tracks.isEmpty {
             return
         }
         
@@ -285,7 +285,7 @@ extension AudioPlayer {
             updateNowPlayingStatus()
             buffering = !(audioPlayer.currentItem?.isPlaybackLikelyToKeepUp ?? false)
             
-            playbackReporter?.update(positionSeconds: currentTime(), paused: !isPlaying(), sheduled: true)
+            playbackReporter?.update(positionSeconds: currentTime(), paused: !isPlaying(), scheduled: true)
             
             Task { @MainActor in
                 NotificationCenter.default.post(name: NSNotification.PositionUpdated, object: nil)

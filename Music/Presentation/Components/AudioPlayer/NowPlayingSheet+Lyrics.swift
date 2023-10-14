@@ -11,7 +11,6 @@ import SwiftUI
 
 extension NowPlayingSheet {
     struct LyricsContainer: View {
-        let track: Track
         @Binding var controlsVisible: Bool
         
         @State var lyrics: Track.Lyrics?
@@ -66,6 +65,8 @@ extension NowPlayingSheet {
             }
             .onAppear(perform: fetchLyrics)
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
+                lyrics = nil
+                activeLineIndex = 0
                 fetchLyrics()
             })
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.PositionUpdated), perform: { _ in
@@ -87,8 +88,10 @@ extension NowPlayingSheet {
         }
         
         func fetchLyrics() {
-            Task.detached {
-                lyrics = try? await JellyfinClient.shared.getLyrics(trackId: track.id)
+            if let trackId = AudioPlayer.shared.nowPlaying?.id {
+                Task.detached {
+                    lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId)
+                }
             }
         }
     }

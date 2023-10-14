@@ -27,12 +27,12 @@ class PlaybackReporter {
         PlaybackReporter.playbackStopped(trackId: trackId, currentTime: currentTime)
     }
     
-    func update(positionSeconds: Double, paused: Bool, sheduled: Bool) {
+    func update(positionSeconds: Double, paused: Bool, scheduled: Bool) {
         if positionSeconds.isFinite && positionSeconds > 0 {
             currentTime = positionSeconds
         }
         
-        if sheduled {
+        if scheduled {
             if paused {
                 return
             }

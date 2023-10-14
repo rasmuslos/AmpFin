@@ -31,4 +31,11 @@ class Album: Item {
             self.offline = await OfflineManager.shared.getAlbumOfflineStatus(albumId: id)
         }
     }
+    override func addObserver() -> [NSObjectProtocol] {
+        [NotificationCenter.default.addObserver(forName: NSNotification.AlbumDownloadStatusChanged, object: nil, queue: Item.operationQueue) { [weak self] notification in
+            if notification.object as? String == self?.id {
+                self?.checkOfflineStatus()
+            }
+        }]
+    }
 }

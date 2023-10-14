@@ -12,6 +12,7 @@ struct NowPlayingSheet: View {
     @Environment(\.presentationMode) var presentationMode
     @Namespace var namespace
     
+    // i have no fucking idea why this updates
     let track: Track
     @Binding var playing: Bool
     
@@ -26,7 +27,7 @@ struct NowPlayingSheet: View {
                 SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                 
                 if currentTab == .lyrics {
-                    LyricsContainer(track: track, controlsVisible: $controlsVisible)
+                    LyricsContainer(controlsVisible: $controlsVisible)
                 } else if currentTab == .queue {
                     Queue()
                         .padding(.horizontal, -30)
@@ -41,6 +42,12 @@ struct NowPlayingSheet: View {
         .padding(.horizontal, 30)
         .ignoresSafeArea(edges: .bottom)
         .preferredColorScheme(.dark)
+        .overlay(alignment: .top) {
+            Rectangle()
+                .foregroundStyle(.secondary)
+                .frame(width: 50, height: 7)
+                .clipShape(RoundedRectangle(cornerRadius: 10000))
+        }
         .gesture(
             DragGesture(minimumDistance: 150).onEnded { value in
                 if value.location.y - value.startLocation.y > 150 {

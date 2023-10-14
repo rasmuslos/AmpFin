@@ -86,7 +86,7 @@
 		3A98A03D2AABD6B500EA84CF /* OfflineLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98A03C2AABD6B500EA84CF /* OfflineLibraryDataProvider.swift */; };
 		3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */; };
 		3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3ADE8E932AA9275C009826A3 /* UIImageColors */; };
-		3ADE8E982AA92B47009826A3 /* Color+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */; };
+		3ADE8E982AA92B47009826A3 /* UIColor+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */; };
 		3ADE8E9D2AA93A2F009826A3 /* Date+Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */; };
 		3ADE8EA02AA93D39009826A3 /* AlbumView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E9F2AA93D39009826A3 /* AlbumView+Toolbar.swift */; };
 		3ADE8EA22AA93D61009826A3 /* AlbumView+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA12AA93D61009826A3 /* AlbumView+Colors.swift */; };
@@ -190,7 +190,7 @@
 		3A98A03C2AABD6B500EA84CF /* OfflineLibraryDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineLibraryDataProvider.swift; sourceTree = "<group>"; };
 		3ABAFCAA2AA7D6C40011BFD6 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Header.swift"; sourceTree = "<group>"; };
-		3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+IsLight.swift"; sourceTree = "<group>"; };
+		3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+IsLight.swift"; sourceTree = "<group>"; };
 		3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Get.swift"; sourceTree = "<group>"; };
 		3ADE8E9F2AA93D39009826A3 /* AlbumView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Toolbar.swift"; sourceTree = "<group>"; };
 		3ADE8EA12AA93D61009826A3 /* AlbumView+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Colors.swift"; sourceTree = "<group>"; };
@@ -491,7 +491,7 @@
 			children = (
 				3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */,
 				3A2AA3592AAACA030051B21B /* Date+Parse.swift */,
-				3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */,
+				3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */,
 				3A8B99462AAA091A004AAA7B /* MPVolumeView+Volume.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
 			);
@@ -634,6 +634,7 @@
 				3ABAFCA62AA7D6C40011BFD6 /* Sources */,
 				3ABAFCA72AA7D6C40011BFD6 /* Frameworks */,
 				3ABAFCA82AA7D6C40011BFD6 /* Resources */,
+				3A51594E2AD01FF600CD5680 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -696,12 +697,33 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3A51594E2AD01FF600CD5680 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    buildNumber=$(git rev-list --count head)\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3ABAFCA62AA7D6C40011BFD6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3ADE8E982AA92B47009826A3 /* Color+IsLight.swift in Sources */,
+				3ADE8E982AA92B47009826A3 /* UIColor+IsLight.swift in Sources */,
 				3A3AF1A42AC4517B00811D7D /* AccountToolbarButtonModifier.swift in Sources */,
 				3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */,
 				3A98A0372AABBBCB00EA84CF /* DownloadManager+Track.swift in Sources */,
@@ -926,10 +948,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Music/Music.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = DEVELOPMENT;
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Music/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -946,7 +969,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.rfk.Music-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -965,10 +988,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Music/Music.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = DEVELOPMENT;
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Music/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -985,7 +1009,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.rfk.Music-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;

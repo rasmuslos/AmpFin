@@ -25,12 +25,21 @@ class Track: Item {
         self.releaseDate = releaseDate
         
         super.init(id: id, name: name, sortName: sortName, cover: cover, favorite: favorite)
+        
+        enableOfflineTracking()
     }
     
     override func checkOfflineStatus() {
         Task.detached { [self] in
             self.offline = await OfflineManager.shared.getTrackOfflineStatus(trackId: id)
         }
+    }
+    override func addObserver() -> [NSObjectProtocol] {
+        [NotificationCenter.default.addObserver(forName: NSNotification.TrackDownloadStatusChanged, object: nil, queue: Item.operationQueue) { [weak self] notification in
+            if notification.object as? String == self?.id {
+                self?.checkOfflineStatus()
+            }
+        }]
     }
 }
 
