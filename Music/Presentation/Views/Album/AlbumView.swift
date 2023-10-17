@@ -29,7 +29,6 @@ struct AlbumView: View {
             
             if let overview = album.overview, overview.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                 Text(overview)
-                    .listRowSeparator(.hidden, edges: .bottom)
             }
             
             AdditionalAlbums(album: album)

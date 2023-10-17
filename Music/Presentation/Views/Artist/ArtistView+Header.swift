@@ -18,8 +18,8 @@ extension ArtistView {
                     .clipShape(RoundedRectangle(cornerRadius: 1000))
                 
                 Text(artist.name)
-                    .font(.title2)
                     .padding(.top, 7)
+                    .font(.title2)
             }
         }
     }

@@ -47,6 +47,15 @@ struct ArtistView: View {
                         .contentTransition(.symbolEffect(.replace))
                 }
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    Task {
+                        try? await artist.startInstantMix()
+                    }
+                } label: {
+                    Image(systemName: "play.circle.fill")
+                }
+            }
         }
         .task(loadAlbums)
         .onChange(of: sortOrder) {

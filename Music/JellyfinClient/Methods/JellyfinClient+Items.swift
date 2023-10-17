@@ -212,6 +212,18 @@ extension JellyfinClient {
     }
 }
 
+// MARK: Similar items
+
+extension JellyfinClient {
+    func getSimilarAlbums(albumId: String) async throws -> [Album] {
+        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items/\(albumId)/Similar", method: "GET", query: [
+            URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
+        ]))
+        
+        return response.Items.map(Album.convertFromJellyfin)
+    }
+}
+
 
 // MARK: Item sorting
 
