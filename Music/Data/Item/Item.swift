@@ -94,3 +94,12 @@ extension Item {
         checkOfflineStatus()
     }
 }
+
+// MARK: Mix
+
+extension Item {
+    func startInstantMix() async throws {
+        let tracks = try await JellyfinClient.shared.instantMix(itemId: id)
+        AudioPlayer.shared.startPlayback(tracks: tracks, startIndex: 0, shuffle: false)
+    }
+}

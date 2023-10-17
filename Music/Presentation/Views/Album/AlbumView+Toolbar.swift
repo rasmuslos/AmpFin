@@ -115,6 +115,14 @@ extension AlbumView {
                                 } label: {
                                     Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
                                 }
+                                Button {
+                                    Task {
+                                        try? await album.startInstantMix()
+                                    }
+                                } label: {
+                                    Label("Instant mix", systemImage: "compass.drawing")
+                                }
+                                .disabled(!libraryOnline)
                             } label: {
                                 // for some reason it did show the label...
                                 Image(systemName: "ellipsis")

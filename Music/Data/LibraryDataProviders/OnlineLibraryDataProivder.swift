@@ -39,7 +39,7 @@ struct OnlineLibraryDataProivder: LibraryDataProvider {
         try await JellyfinClient.shared.getArtistById(artistId)
     }
     func getArtistAlbums(id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
-        try await JellyfinClient.shared.getArtistAlbums(id: id, sortOrder: sortOrder, ascending: ascending)
+        try await JellyfinClient.shared.getArtistAlbums(artistId: id, sortOrder: sortOrder, ascending: ascending)
     }
     
     func searchTracks(query: String) async throws -> [Track] {

@@ -106,7 +106,7 @@ extension JellyfinClient {
 // MARK: Get artist albums
 
 extension JellyfinClient {
-    func getArtistAlbums(id: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Album] {
+    func getArtistAlbums(artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Album] {
         let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
@@ -115,7 +115,7 @@ extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
-            URLQueryItem(name: "AlbumArtistIds", value: id),
+            URLQueryItem(name: "AlbumArtistIds", value: artistId),
         ], userPrefix: true))
         
         return response.Items.map(Album.convertFromJellyfin)
@@ -199,6 +199,19 @@ extension JellyfinClient {
         return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
 }
+
+// MARK: Instant mix
+
+extension JellyfinClient {
+    func instantMix(itemId: String) async throws -> [Track] {
+        let response = try await request(ClientRequest<TracksItemResponse>(path: "Items/\(itemId)/InstantMix", method: "GET", query: [
+            URLQueryItem(name: "UserId", value: JellyfinClient.shared.userId),
+            URLQueryItem(name: "limit", value: "200"),
+        ]))
+        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
+    }
+}
+
 
 // MARK: Item sorting
 

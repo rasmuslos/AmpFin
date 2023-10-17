@@ -31,6 +31,9 @@ struct AlbumView: View {
                 Text(overview)
                     .listRowSeparator(.hidden, edges: .bottom)
             }
+            
+            AdditionalAlbums(album: album)
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)

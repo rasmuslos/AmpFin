@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TrackListRow: View {
+    @Environment(\.libraryOnline) var libraryOnline
+    
     let track: Track
     var album: Album? = nil
     let startPlayback: () -> ()
@@ -53,6 +55,15 @@ struct TrackListRow: View {
             Menu {
                 PlayNextButton(track: track)
                 PlayLastButton(track: track)
+                
+                Button {
+                    Task {
+                        try? await track.startInstantMix()
+                    }
+                } label: {
+                    Label("Instant mix", systemImage: "compass.drawing")
+                }
+                .disabled(!libraryOnline)
                 
                 Divider()
                 

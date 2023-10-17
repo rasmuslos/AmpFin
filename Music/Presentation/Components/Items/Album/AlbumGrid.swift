@@ -16,7 +16,7 @@ struct AlbumGrid: View {
                 NavigationLink {
                     AlbumView(album: album)
                 } label: {
-                    AlbumGridRow(album: album)
+                    AlbumCover(album: album)
                         .padding(.trailing, index % 2 == 0 ? 5 : 0)
                         .padding(.leading, index % 2 == 1 ? 5 : 0)
                 }

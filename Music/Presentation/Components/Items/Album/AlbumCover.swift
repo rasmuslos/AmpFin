@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AlbumGridRow: View {
+struct AlbumCover: View {
     let album: Album
     
     var body: some View {
@@ -25,15 +25,16 @@ struct AlbumGridRow: View {
             .lineLimit(1)
             .font(.system(size: 15))
         }
+        .modifier(AlbumContextMenuModifier(album: album))
     }
 }
 
 #Preview {
     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-        AlbumGridRow(album: Album.fixture)
-        AlbumGridRow(album: Album.fixture)
-        AlbumGridRow(album: Album.fixture)
-        AlbumGridRow(album: Album.fixture)
+        AlbumCover(album: Album.fixture)
+        AlbumCover(album: Album.fixture)
+        AlbumCover(album: Album.fixture)
+        AlbumCover(album: Album.fixture)
     }
     .padding()
 }
