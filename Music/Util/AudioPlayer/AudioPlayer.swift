@@ -68,6 +68,9 @@ extension AudioPlayer {
     public func seek(seconds: Double) {
         audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000))
     }
+    public func seek(seconds: Double) async {
+        await audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000))
+    }
     
     func duration() -> Double {
         let duration = audioPlayer.currentItem?.duration.seconds ?? 0
@@ -399,6 +402,8 @@ extension AudioPlayer {
                 
                 nowPlayingInfo[MPMediaItemPropertyTitle] = nowPlaying.name
                 nowPlayingInfo[MPMediaItemPropertyArtist] = nowPlaying.artists.map { $0.name }.joined(separator: ", ")
+                nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = nowPlaying.album.name
+                nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = nowPlaying.album.artists.map { $0.name }.joined(separator: ", ")
                 
                 MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
                 

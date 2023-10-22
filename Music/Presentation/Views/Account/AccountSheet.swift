@@ -53,6 +53,7 @@ struct AccountSheet: View {
                 Group {
                     Text(JellyfinClient.shared.serverUrl.absoluteString)
                     Text(JellyfinClient.shared.token)
+                        .privacySensitive()
                 }
                 .font(.footnote)
                 .foregroundStyle(.secondary)

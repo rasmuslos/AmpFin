@@ -36,6 +36,15 @@ extension OfflineManager {
         offlineItem.album = album
         downloadTask.resume()
         
+        Task.detached {
+            if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: track.id) {
+                Task.detached { @MainActor in
+                    let offlineLyrics = OfflineLyrics(trackId: track.id, lyrics: lyrics)
+                    PersistenceManager.shared.modelContainer.mainContext.insert(offlineLyrics)
+                }
+            }
+        }
+        
         NotificationCenter.default.post(name: NSNotification.TrackDownloadStatusChanged, object: track.id)
     }
     
@@ -79,6 +88,14 @@ extension OfflineManager {
         }
         
         return .none
+    }
+    
+    @MainActor
+    func getLyrics(trackId: String) -> OfflineLyrics? {
+        var lyrics = FetchDescriptor<OfflineLyrics>(predicate: #Predicate { $0.trackId == trackId })
+        lyrics.fetchLimit = 1
+        
+        return try? PersistenceManager.shared.modelContainer.mainContext.fetch(lyrics).first
     }
 }
 

@@ -15,6 +15,8 @@ extension JellyfinClient {
         var query: [URLQueryItem]?
         
         var userPrefix = false
+        // TODO: can be removed in 10.9
+        var userId = false
     }
     
     struct EmptyResponse: Decodable {}
@@ -28,8 +30,14 @@ extension JellyfinClient {
             url = serverUrl.appending(path: clientRequest.path)
         }
         
-        if let query = clientRequest.query {
+        if var query = clientRequest.query {
+            if clientRequest.userId {
+                query.append(URLQueryItem(name: "userId", value: userId))
+            }
+            
             url = url.appending(queryItems: query)
+        } else if clientRequest.userId {
+            url = url.appending(queryItems: [URLQueryItem(name: "userId", value: userId)])
         }
         
         var request = URLRequest(url: url)
@@ -66,6 +74,7 @@ extension JellyfinClient {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
             logger.fault("Error while requesting resource \(url): \(error.localizedDescription)")
+            print(error)
             throw JellyfinClientError.invalidResponse
         }
     }

@@ -15,19 +15,20 @@ extension AlbumView {
         @State var similar: [Album]?
         
         var body: some View {
-            if let alsoFromArtist = alsoFromArtist, !alsoFromArtist.isEmpty {
+            if let alsoFromArtist = alsoFromArtist, alsoFromArtist.count > 1 {
                 AlbumRow(title: "Also by \(album.artists.first?.name ?? "this artist")", albums: alsoFromArtist)
-            } else {
-                Color.clear
-                    .task(fetchAlbums)
-                    .refreshable(action: fetchAlbums)
-                    .listRowSeparator(.hidden)
-                    .frame(height: 0)
             }
             
             if let similar = similar, !similar.isEmpty {
                 AlbumRow(title: "Similar", albums: similar)
             }
+            
+            Color.clear
+                .frame(height: 0)
+                .listRowSeparator(.hidden)
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .task(fetchAlbums)
+                .refreshable(action: fetchAlbums)
         }
     }
 }

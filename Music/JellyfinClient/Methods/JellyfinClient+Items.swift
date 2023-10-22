@@ -96,8 +96,7 @@ extension JellyfinClient {
         let response = try await request(ClientRequest<ArtistItemsResponse>(path: albumOnly ? "Artists/AlbumArtists" : "Artists", method: "GET", query: [
             URLQueryItem(name: "SortBy", value: ItemSortOrder.name.rawValue),
             URLQueryItem(name: "SortOrder", value: "Ascending"),
-            // URLQueryItem(name: "Recursive", value: "true"),
-        ]))
+        ], userId: true))
         
         return response.Items.map(Artist.convertFromJellyfin)
     }
@@ -205,9 +204,8 @@ extension JellyfinClient {
 extension JellyfinClient {
     func instantMix(itemId: String) async throws -> [Track] {
         let response = try await request(ClientRequest<TracksItemResponse>(path: "Items/\(itemId)/InstantMix", method: "GET", query: [
-            URLQueryItem(name: "UserId", value: JellyfinClient.shared.userId),
             URLQueryItem(name: "limit", value: "200"),
-        ]))
+        ], userId: true))
         return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
 }
@@ -218,7 +216,7 @@ extension JellyfinClient {
     func getSimilarAlbums(albumId: String) async throws -> [Album] {
         let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items/\(albumId)/Similar", method: "GET", query: [
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
-        ]))
+        ], userId: true))
         
         return response.Items.map(Album.convertFromJellyfin)
     }

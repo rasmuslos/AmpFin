@@ -25,8 +25,10 @@ extension NowPlayingSheet {
                                 if index == activeLineIndex || lyrics[key]! != nil {
                                     LyricLine(index: index, text: lyrics[key]!, activeLineIndex: $activeLineIndex)
                                         .onTapGesture {
-                                            AudioPlayer.shared.seek(seconds: Array(lyrics.keys.sorted(by: <))[index])
-                                            activeLineIndex = index
+                                            Task.detached {
+                                                await AudioPlayer.shared.seek(seconds: Array(lyrics.keys.sorted(by: <))[index])
+                                                activeLineIndex = index
+                                            }
                                         }
                                 }
                             }
@@ -80,6 +82,7 @@ extension NowPlayingSheet {
             if let lyrics = lyrics, lyrics.count > activeLineIndex + 1 {
                 let seconds = Array(lyrics.keys).sorted(by: <)[activeLineIndex + 1]
                 
+                print(seconds, AudioPlayer.shared.currentTime())
                 if seconds < AudioPlayer.shared.currentTime() {
                     activeLineIndex += 1
                     updateLyricsIndex()
@@ -90,7 +93,11 @@ extension NowPlayingSheet {
         func fetchLyrics() {
             if let trackId = AudioPlayer.shared.nowPlaying?.id {
                 Task.detached {
-                    lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId)
+                    if let offlineLyrics = await OfflineManager.shared.getLyrics(trackId: trackId) {
+                        self.lyrics = offlineLyrics.lyrics
+                    } else if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId) {
+                        self.lyrics = lyrics
+                    }
                 }
             }
         }
