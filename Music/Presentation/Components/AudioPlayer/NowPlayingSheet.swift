@@ -26,12 +26,22 @@ struct NowPlayingSheet: View {
             } else {
                 SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                 
-                if currentTab == .lyrics {
-                    LyricsContainer(controlsVisible: $controlsVisible)
-                } else if currentTab == .queue {
-                    Queue()
-                        .padding(.horizontal, -30)
+                Group {
+                    if currentTab == .lyrics {
+                        LyricsContainer(controlsVisible: $controlsVisible)
+                    } else if currentTab == .queue {
+                        Queue()
+                            .padding(.horizontal, -30)
+                    }
                 }
+                .transition(.asymmetric(
+                    insertion:
+                            .push(from: .bottom).animation(.easeIn.delay(0.1))
+                            .combined(with: .opacity),
+                    removal:
+                            .push(from: .top).animation(.easeOut.logicallyComplete(after: 0.1))
+                            .combined(with: .opacity)
+                ))
             }
             
             if controlsVisible {

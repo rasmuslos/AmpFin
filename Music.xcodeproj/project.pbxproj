@@ -59,6 +59,7 @@
 		3A750FBD2AA9012C003E4BC9 /* JellyfinClient+Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A750FBC2AA9012C003E4BC9 /* JellyfinClient+Album.swift */; };
 		3A750FBF2AA90196003E4BC9 /* JellyfinClient+Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A750FBE2AA90196003E4BC9 /* JellyfinClient+Other.swift */; };
 		3A8256822AE25A24008CA5D7 /* OfflineLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8256812AE25A24008CA5D7 /* OfflineLyrics.swift */; };
+		3A82864A2AEC0D3400384BC9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3A8286492AEC0D3400384BC9 /* README.md */; };
 		3A88505C2AA909CE00456DDD /* AlbumCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88505B2AA909CE00456DDD /* AlbumCover.swift */; };
 		3A88505E2AA909EA00456DDD /* Album+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88505D2AA909EA00456DDD /* Album+Fixture.swift */; };
 		3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88505F2AA90CA200456DDD /* AlbumGrid.swift */; };
@@ -167,6 +168,7 @@
 		3A750FBC2AA9012C003E4BC9 /* JellyfinClient+Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JellyfinClient+Album.swift"; sourceTree = "<group>"; };
 		3A750FBE2AA90196003E4BC9 /* JellyfinClient+Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JellyfinClient+Other.swift"; sourceTree = "<group>"; };
 		3A8256812AE25A24008CA5D7 /* OfflineLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineLyrics.swift; sourceTree = "<group>"; };
+		3A8286492AEC0D3400384BC9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3A88505B2AA909CE00456DDD /* AlbumCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCover.swift; sourceTree = "<group>"; };
 		3A88505D2AA909EA00456DDD /* Album+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Album+Fixture.swift"; sourceTree = "<group>"; };
 		3A88505F2AA90CA200456DDD /* AlbumGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumGrid.swift; sourceTree = "<group>"; };
@@ -476,9 +478,9 @@
 		3ABAFCA12AA7D6C40011BFD6 = {
 			isa = PBXGroup;
 			children = (
+				3A8286492AEC0D3400384BC9 /* README.md */,
 				3AEB32192AA7EC3C00853210 /* Music */,
 				3ABAFCAB2AA7D6C40011BFD6 /* Products */,
-				3ABAFCC02AA7D84B0011BFD6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -488,13 +490,6 @@
 				3ABAFCAA2AA7D6C40011BFD6 /* Music.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		3ABAFCC02AA7D84B0011BFD6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		3ADE8E952AA92B03009826A3 /* Extensions */ = {
@@ -703,6 +698,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A82864A2AEC0D3400384BC9 /* README.md in Resources */,
 				3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -971,6 +967,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Music/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AmpFin;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -1011,6 +1009,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Music/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AmpFin;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

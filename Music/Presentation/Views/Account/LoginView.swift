@@ -31,7 +31,7 @@ struct LoginView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .padding(.bottom, 50)
             
-            Text("Welcome to Music")
+            Text("Welcome to AmpFin")
                 .font(.headline)
             Text("Please login to get started")
                 .font(.subheadline)

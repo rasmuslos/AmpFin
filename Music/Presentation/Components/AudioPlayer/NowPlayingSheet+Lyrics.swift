@@ -82,7 +82,6 @@ extension NowPlayingSheet {
             if let lyrics = lyrics, lyrics.count > activeLineIndex + 1 {
                 let seconds = Array(lyrics.keys).sorted(by: <)[activeLineIndex + 1]
                 
-                print(seconds, AudioPlayer.shared.currentTime())
                 if seconds < AudioPlayer.shared.currentTime() {
                     activeLineIndex += 1
                     updateLyricsIndex()

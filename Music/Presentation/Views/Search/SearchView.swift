@@ -15,7 +15,7 @@ struct SearchView: View {
     @State var albums = [Album]()
     
     @State var library: Tab = .online
-    @State var dataProvider: LibraryDataProvider = OnlineLibraryDataProivder()
+    @State var dataProvider: LibraryDataProvider = OnlineLibraryDataProvider()
     
     var body: some View {
         NavigationStack {
@@ -54,14 +54,7 @@ struct SearchView: View {
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)
             .onChange(of: query) {
-                task?.cancel()
-                task = Task.detached {
-                    // I guess this runs in parallel?
-                    (tracks, albums) = (try? await (
-                        dataProvider.searchTracks(query: query.lowercased()),
-                        dataProvider.searchAlbums(query: query.lowercased())
-                    )) ?? ([], [])
-                }
+                fetchSearchResults()
             }
             // Online / Offline
             .onChange(of: library) {
@@ -72,15 +65,30 @@ struct SearchView: View {
                 
                 switch library {
                 case .online:
-                    dataProvider = OnlineLibraryDataProivder()
+                    dataProvider = OnlineLibraryDataProvider()
                 case .offline:
                     dataProvider = OfflineLibraryDataProvider()
                 }
+                
+                fetchSearchResults()
             }
             .modifier(AccountToolbarButtonModifier())
         }
         .environment(\.libraryOnline, library == .online)
         .environment(\.libraryDataProvider, dataProvider)
+    }
+}
+
+extension SearchView {
+    private func fetchSearchResults() {
+        task?.cancel()
+        task = Task.detached {
+            // I guess this runs in parallel?
+            (tracks, albums) = (try? await (
+                dataProvider.searchTracks(query: query.lowercased()),
+                dataProvider.searchAlbums(query: query.lowercased())
+            )) ?? ([], [])
+        }
     }
 }
 

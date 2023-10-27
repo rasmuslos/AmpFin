@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OnlineLibraryDataProivder: LibraryDataProvider {
+struct OnlineLibraryDataProvider: LibraryDataProvider {
     func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
         try await JellyfinClient.shared.getAllTracks(sortOrder: sortOrder, ascending: ascending)
     }

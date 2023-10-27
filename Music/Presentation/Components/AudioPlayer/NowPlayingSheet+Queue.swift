@@ -11,7 +11,7 @@ import SwiftUI
 
 extension NowPlayingSheet {
     struct Queue: View {
-        @State var histroy = AudioPlayer.shared.history
+        @State var history = AudioPlayer.shared.history
         @State var queue = AudioPlayer.shared.queue
         @State var shuffled = AudioPlayer.shared.shuffled
         
@@ -50,10 +50,10 @@ extension NowPlayingSheet {
             
             List {
                 if showHistory {
-                    ForEach(Array(histroy.enumerated()), id: \.offset) { index, track in
+                    ForEach(Array(history.enumerated()), id: \.offset) { index, track in
                         QueueTrackRow(track: track, draggable: false)
                             .padding(.top, index == 0 ? 15 : 0)
-                            .padding(.bottom, (index == histroy.count - 1) ? 15 : 0)
+                            .padding(.bottom, (index == history.count - 1) ? 15 : 0)
                             .onTapGesture {
                                 AudioPlayer.shared.restoreHistory(index: index)
                             }
@@ -80,6 +80,7 @@ extension NowPlayingSheet {
                 } else {
                     ForEach(Array(queue.enumerated()), id: \.offset) { index, track in
                         QueueTrackRow(track: track, draggable: true)
+                            .id(UUID())
                             .onTapGesture {
                                 AudioPlayer.shared.skip(to: index)
                             }
@@ -87,10 +88,8 @@ extension NowPlayingSheet {
                             .padding(.bottom, (index == queue.count - 1) ? 15 : 0)
                     }
                     .onMove { from, to in
-                        Task.detached {
-                            from.forEach {
-                                AudioPlayer.shared.moveTrack(from: $0, to: to)
-                            }
+                        from.forEach {
+                            AudioPlayer.shared.moveTrack(from: $0, to: to)
                         }
                     }
                     .onDelete { indexSet in
@@ -102,7 +101,7 @@ extension NowPlayingSheet {
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            // this is required because swiftui sucks ass
+            // this is required because SwiftUI sucks ass
             .mask(
                 VStack(spacing: 0) {
                     LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
@@ -115,7 +114,7 @@ extension NowPlayingSheet {
                 }
             )
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.QueueUpdated), perform: { _ in
-                histroy = AudioPlayer.shared.history
+                history = AudioPlayer.shared.history
                 queue = AudioPlayer.shared.queue
                 
                 withAnimation {

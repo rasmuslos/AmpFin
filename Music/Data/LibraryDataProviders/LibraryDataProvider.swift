@@ -26,7 +26,7 @@ protocol LibraryDataProvider {
 }
 
 struct LibraryDataProviderDefault: EnvironmentKey {
-    static var defaultValue: LibraryDataProvider = OnlineLibraryDataProivder()
+    static var defaultValue: LibraryDataProvider = OnlineLibraryDataProvider()
 }
 struct LibraryOnlineProviderDefault: EnvironmentKey {
     static var defaultValue: Bool = true
