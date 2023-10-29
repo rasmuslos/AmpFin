@@ -68,7 +68,7 @@ extension TrackList {
         var tracks = tracks
         
         if search != "" {
-            tracks = tracks.filter { $0.name.lowercased().contains(search.lowercased()) || $0.album.name.lowercased().contains(search.lowercased()) }
+            tracks = tracks.filter { $0.name.lowercased().contains(search.lowercased()) || ($0.album.name?.lowercased() ?? "").contains(search.lowercased()) }
         }
         
         if album != nil {

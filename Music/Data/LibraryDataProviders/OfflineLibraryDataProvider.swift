@@ -14,7 +14,7 @@ struct OfflineLibraryDataProvider: LibraryDataProvider {
             case .name:
                 return $0.name < $1.name
             case .album:
-                return $0.album.name < $1.album.name
+                return $0.album.name ?? "?" < $1.album.name ?? "?"
             case .albumArtist:
                 return $0.album.artists.first?.name ?? "?" < $1.album.artists.first?.name ?? "?"
             case .artist:

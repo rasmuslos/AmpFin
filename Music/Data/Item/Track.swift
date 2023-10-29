@@ -50,7 +50,7 @@ extension Track {
     
     struct ReducedAlbum {
         let id: String
-        let name: String
+        let name: String?
         let artists: [ReducedArtist]
     }
     

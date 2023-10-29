@@ -23,7 +23,7 @@ extension JellyfinClient {
         let UserData: UserData
         let ArtistItems: [JellyfinArtist]
         
-        let Album: String
+        let Album: String?
         let AlbumId: String
         let AlbumArtists: [JellyfinArtist]
         
