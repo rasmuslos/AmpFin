@@ -133,6 +133,13 @@ extension AudioPlayer {
     }
     
     func advanceToNextTrack() {
+        if queue.count == 0 {
+            restoreHistory(index: 0)
+            setPlaying(false)
+            
+            return
+        }
+        
         audioPlayer.advanceToNextItem()
         
         trackDidFinish()
@@ -204,13 +211,21 @@ extension AudioPlayer {
         notifyQueueChanged()
         return track
     }
-    func queueTrack(_ track: Track, index: Int) {
+    func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool = true) {
         if queue.count == 0 && nowPlaying == nil {
             startPlayback(tracks: [track], startIndex: 0, shuffle: false)
         } else {
-            unalteredQueue.insert(track, at: index)
+            if updateUnalteredQueue {
+                unalteredQueue.insert(track, at: index)
+            }
+            
             queue.insert(track, at: index)
-            audioPlayer.insert(getAVPlayerItem(track), after: audioPlayer.items()[index])
+            
+            if audioPlayer.items().count > 0 {
+                audioPlayer.insert(getAVPlayerItem(track), after: audioPlayer.items()[index])
+            } else {
+                audioPlayer.insert(getAVPlayerItem(track), after: nil)
+            }
         }
         
         notifyQueueChanged()
@@ -253,23 +268,29 @@ extension AudioPlayer {
         }
     }
     func restoreHistory(index: Int) {
-        for _ in index...history.count {
-            if history.count > 0 {
-                advanceToNextTrack()
-            }
+        let amount = history.count - index
+        for track in history.suffix(amount).reversed() {
+            queueTrack(track, index: 0, updateUnalteredQueue: false)
         }
+        
+        history.removeLast(amount)
+        advanceToNextTrack()
+        
+        // add the item that was playing back to the queue
+        queueTrack(history.removeLast(), index: queue.count)
     }
     
     private func trackDidFinish() {
+        if let nowPlaying = nowPlaying {
+            history.append(nowPlaying)
+        }
+        
         if queue.count > 0 {
-            if let nowPlaying = nowPlaying {
-                history.append(nowPlaying)
-            }
-            
             setNowPlaying(track: queue.removeFirst())
             setupNowPlayingMetadata()
         } else {
-            stopPlayback()
+            restoreHistory(index: 0)
+            setPlaying(false)
         }
         
         notifyQueueChanged()
@@ -299,6 +320,7 @@ extension AudioPlayer {
     private func setupObservers() {
         // The player is never discarded, so no removing of the observers is necessary
         NotificationCenter.default.addObserver(forName: AVPlayerItem.didPlayToEndTimeNotification, object: nil, queue: nil) { [weak self] _ in
+            // TODO: Repeat
             self?.trackDidFinish()
         }
         
