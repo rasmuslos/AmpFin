@@ -51,6 +51,7 @@ extension AudioPlayer {
     func setPlaying(_ playing: Bool) {
         if playing {
             audioPlayer.play()
+            updateAudioSession(active: true)
         } else {
             audioPlayer.pause()
         }

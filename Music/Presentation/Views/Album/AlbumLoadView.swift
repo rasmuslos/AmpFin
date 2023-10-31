@@ -22,6 +22,7 @@ struct AlbumLoadView: View {
             AlbumView(album: album)
         } else {
             LoadingView()
+                .navigationBarBackButtonHidden()
                 .task {
                     if let album = try? await dataProvider.getAlbumById(albumId) {
                         self.album = album

@@ -23,12 +23,12 @@ extension AlbumView {
                 AlbumRow(title: "Similar", albums: similar)
             }
             
+            // i hate this so much
             Color.clear
                 .frame(height: 0)
                 .listRowSeparator(.hidden)
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                 .task(fetchAlbums)
-                .refreshable(action: fetchAlbums)
         }
     }
 }
