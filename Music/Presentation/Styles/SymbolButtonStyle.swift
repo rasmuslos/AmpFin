@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SymbolButtonStyle: ButtonStyle {
-    @Binding var active: Bool
+    var active: Bool
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -27,7 +27,7 @@ struct SymbolButtonStyle: ButtonStyle {
     } label: {
         Image(systemName: "shuffle")
     }
-    .buttonStyle(SymbolButtonStyle(active: .constant(false)))
+    .buttonStyle(SymbolButtonStyle(active: false))
 }
 
 
@@ -37,5 +37,5 @@ struct SymbolButtonStyle: ButtonStyle {
     } label: {
         Image(systemName: "shuffle")
     }
-    .buttonStyle(SymbolButtonStyle(active: .constant(true)))
+    .buttonStyle(SymbolButtonStyle(active: true))
 }

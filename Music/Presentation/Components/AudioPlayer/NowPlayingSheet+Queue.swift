@@ -13,7 +13,9 @@ extension NowPlayingSheet {
     struct Queue: View {
         @State var history = AudioPlayer.shared.history
         @State var queue = AudioPlayer.shared.queue
+        
         @State var shuffled = AudioPlayer.shared.shuffled
+        @State var repeatMode = AudioPlayer.shared.repeatMode
         
         @State var showHistory = false
         
@@ -26,13 +28,29 @@ extension NowPlayingSheet {
                 Spacer()
                 
                 Button {
-                    withAnimation {
-                        AudioPlayer.shared.shuffle(!shuffled)
+                    if repeatMode == .none {
+                        AudioPlayer.shared.setRepeatMode(.queue)
+                    } else if repeatMode == .queue {
+                        AudioPlayer.shared.setRepeatMode(.track)
+                    } else if repeatMode == .track {
+                        AudioPlayer.shared.setRepeatMode(.none)
                     }
+                } label: {
+                    if repeatMode == .track {
+                        Image(systemName: "repeat.1")
+                    } else if repeatMode == .none || repeatMode == .queue {
+                        Image(systemName: "repeat")
+                    }
+                }
+                .buttonStyle(SymbolButtonStyle(active: repeatMode != .none))
+                .padding(.horizontal, 4)
+                
+                Button {
+                    AudioPlayer.shared.shuffle(!shuffled)
                 } label: {
                     Image(systemName: "shuffle")
                 }
-                .buttonStyle(SymbolButtonStyle(active: $shuffled))
+                .buttonStyle(SymbolButtonStyle(active: shuffled))
                 .padding(.horizontal, 4)
                 
                 Button {
@@ -42,7 +60,7 @@ extension NowPlayingSheet {
                 } label: {
                     Image(systemName: "calendar.day.timeline.leading")
                 }
-                .buttonStyle(SymbolButtonStyle(active: $showHistory))
+                .buttonStyle(SymbolButtonStyle(active: showHistory))
             }
             .padding(.top, 10)
             .padding(.bottom, -10)
@@ -113,12 +131,13 @@ extension NowPlayingSheet {
                         .frame(height: 40)
                 }
             )
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.QueueUpdated), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.queueUpdated), perform: { _ in
                 history = AudioPlayer.shared.history
                 queue = AudioPlayer.shared.queue
                 
                 withAnimation {
                     shuffled = AudioPlayer.shared.shuffled
+                    repeatMode = AudioPlayer.shared.repeatMode
                 }
             })
         }

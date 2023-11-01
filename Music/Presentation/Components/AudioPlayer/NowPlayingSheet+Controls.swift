@@ -17,6 +17,9 @@ extension NowPlayingSheet {
             }
         }
         
+        @State var buffering: Bool = AudioPlayer.shared.buffering
+        @State var quality: String?
+        
         @State var duration: Double = AudioPlayer.shared.duration()
         @State var currentTime: Double = AudioPlayer.shared.currentTime()
         @State var playedPercentage: Double = (AudioPlayer.shared.currentTime() / AudioPlayer.shared.duration()) * 100
@@ -32,14 +35,25 @@ extension NowPlayingSheet {
                     .padding(.vertical, 10)
                     
                     HStack {
-                        Text(Duration.seconds(currentTime).formatted(.time(pattern: .minuteSecond)))
-                        /*
-                         Spacer()
-                         Text("FLAC 1453")
-                         .foregroundStyle(.secondary)
-                         */
+                        Group {
+                            if buffering {
+                                ProgressView()
+                                    .scaleEffect(0.5)
+                            } else {
+                                Text(Duration.seconds(currentTime).formatted(.time(pattern: .minuteSecond)))
+                            }
+                        }
+                        .frame(width: 65, alignment: .leading)
+                        
+                        if let quality = quality {
+                            Spacer()
+                            Text(quality)
+                                .foregroundStyle(.secondary)
+                        }
                         Spacer()
+                        
                         Text(Duration.seconds(duration).formatted(.time(pattern: .minuteSecond)))
+                            .frame(width: 65, alignment: .trailing)
                     }
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -94,7 +108,7 @@ extension NowPlayingSheet {
                     } label: {
                         Image(systemName: "list.dash")
                     }
-                    .buttonStyle(SymbolButtonStyle(active: $queueTabActive))
+                    .buttonStyle(SymbolButtonStyle(active: queueTabActive))
                 }
                 .bold()
                 .font(.system(size: 20))
@@ -103,21 +117,44 @@ extension NowPlayingSheet {
                 .padding(.top, 35)
                 .padding(.bottom, 40)
             }
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.PositionUpdated), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.positionUpdated), perform: { _ in
                 withAnimation {
                     duration = AudioPlayer.shared.duration()
                     currentTime = AudioPlayer.shared.currentTime()
                     playedPercentage = (currentTime / duration) * 100
                 }
             })
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
+                fetchQuality()
+            })
+            .onAppear(perform: fetchQuality)
         }
         
+        // this has to be here for reasons that are beyond me
         func setActiveTab(_ tab: Tab) {
             withAnimation(.easeInOut(duration: 0.25)) {
                 if currentTab == tab {
                     currentTab = .cover
                 } else {
                     currentTab = tab
+                }
+            }
+        }
+    }
+}
+
+// MARK: Helper
+
+extension NowPlayingSheet.Controls {
+    func fetchQuality() {
+        Task.detached {
+            if let data = await AudioPlayer.shared.getTrackData() {
+                withAnimation {
+                    if data.1 == 0 {
+                        quality = data.0.uppercased()
+                    } else {
+                        quality = "\(data.0.uppercased()) \(data.1.rounded())"
+                    }
                 }
             }
         }

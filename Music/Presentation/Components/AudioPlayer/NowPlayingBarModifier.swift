@@ -82,12 +82,12 @@ struct NowPlayingBarModifier: ViewModifier {
                         }
                 }
             }
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
                 withAnimation {
                     currentTrack = AudioPlayer.shared.nowPlaying
                 }
             })
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.PlayPause), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playPause), perform: { _ in
                 withAnimation {
                     playing = AudioPlayer.shared.isPlaying()
                 }
@@ -101,7 +101,7 @@ struct NowPlayingBarSafeAreaModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .safeAreaPadding(.bottom, isVisible ? 75 : 0)
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
                 withAnimation {
                     isVisible = AudioPlayer.shared.nowPlaying != nil
                 }

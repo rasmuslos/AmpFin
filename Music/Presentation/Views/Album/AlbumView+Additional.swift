@@ -40,7 +40,7 @@ extension AlbumView.AdditionalAlbums {
     func fetchAlbums() {
         Task.detached {
             if let artist = album.artists.first {
-                alsoFromArtist = try? await JellyfinClient.shared.getArtistAlbums(artistId: artist.id, sortOrder: .released, ascending: false)
+                alsoFromArtist = try? await JellyfinClient.shared.getArtistAlbums(artistId: artist.id, sortOrder: .released, ascending: false).filter { $0.id != album.id }
             }
         }
         Task.detached {

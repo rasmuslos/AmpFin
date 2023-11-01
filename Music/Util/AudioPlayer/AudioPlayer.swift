@@ -20,7 +20,9 @@ class AudioPlayer {
     fileprivate var unalteredQueue: [Track]
     
     fileprivate(set) var shuffled: Bool = false
-    fileprivate var buffering: Bool = false
+    fileprivate(set) var repeatMode: RepeatMode = .none
+    
+    fileprivate(set) var buffering: Bool = false
     fileprivate var nowPlayingInfo = [String: Any]()
     
     fileprivate var playbackReporter: PlaybackReporter?
@@ -59,7 +61,7 @@ extension AudioPlayer {
         updateNowPlayingStatus()
         playbackReporter?.update(positionSeconds: currentTime(), paused: !playing, scheduled: false)
         Task { @MainActor in
-            NotificationCenter.default.post(name: NSNotification.PlayPause, object: nil)
+            NotificationCenter.default.post(name: Self.playPause, object: nil)
         }
     }
     public func isPlaying() -> Bool {
@@ -95,6 +97,8 @@ extension AudioPlayer {
         
         var tracks = tracks
         unalteredQueue = tracks
+        
+        repeatMode = .none
         
         shuffled = shuffle
         if shuffle {
@@ -135,7 +139,9 @@ extension AudioPlayer {
     func advanceToNextTrack() {
         if queue.count == 0 {
             restoreHistory(index: 0)
-            setPlaying(false)
+            if repeatMode != .queue {
+                setPlaying(false)
+            }
             
             return
         }
@@ -191,6 +197,11 @@ extension AudioPlayer {
         notifyQueueChanged()
     }
     
+    func setRepeatMode(_ repeatMode: RepeatMode) {
+        self.repeatMode = repeatMode
+        notifyQueueChanged()
+    }
+    
     func removeHistoryTrack(index: Int) {
         history.remove(at: index)
         notifyQueueChanged()
@@ -226,6 +237,8 @@ extension AudioPlayer {
             } else {
                 audioPlayer.insert(getAVPlayerItem(track), after: nil)
             }
+            
+            print(audioPlayer.items())
         }
         
         notifyQueueChanged()
@@ -274,10 +287,13 @@ extension AudioPlayer {
         }
         
         history.removeLast(amount)
-        advanceToNextTrack()
         
-        // add the item that was playing back to the queue
-        queueTrack(history.removeLast(), index: queue.count)
+        if let nowPlaying = nowPlaying {
+            queueTrack(nowPlaying, index: queue.count)
+        }
+        
+        advanceToNextTrack()
+        history.removeLast()
     }
     
     private func trackDidFinish() {
@@ -290,11 +306,14 @@ extension AudioPlayer {
             setupNowPlayingMetadata()
         } else {
             restoreHistory(index: 0)
-            setPlaying(false)
+            if repeatMode != .queue {
+                setPlaying(false)
+            }
         }
         
         notifyQueueChanged()
     }
+    
     private func populateQueue() {
         for track in queue {
             audioPlayer.insert(getAVPlayerItem(track), after: nil)
@@ -313,15 +332,21 @@ extension AudioPlayer {
             playbackReporter?.update(positionSeconds: currentTime(), paused: !isPlaying(), scheduled: true)
             
             Task { @MainActor in
-                NotificationCenter.default.post(name: NSNotification.PositionUpdated, object: nil)
+                NotificationCenter.default.post(name: Self.positionUpdated, object: nil)
             }
         }
     }
     private func setupObservers() {
         // The player is never discarded, so no removing of the observers is necessary
         NotificationCenter.default.addObserver(forName: AVPlayerItem.didPlayToEndTimeNotification, object: nil, queue: nil) { [weak self] _ in
-            // TODO: Repeat
-            self?.trackDidFinish()
+            if self?.repeatMode == .track, let nowPlaying = self?.nowPlaying, let item = self?.getAVPlayerItem(nowPlaying) {
+                // i tried really good things here, but only this stupid thing works
+                self?.audioPlayer.removeAllItems()
+                self?.audioPlayer.insert(item, after: nil)
+                self?.populateQueue()
+            } else {
+                self?.trackDidFinish()
+            }
         }
         
         NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), queue: nil) { [weak self] notification in
@@ -466,6 +491,18 @@ extension AudioPlayer {
 // MARK: Helper
 
 extension AudioPlayer {
+    func getTrackData() async -> (String, Float)? {
+        let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
+        let format = await track?.getMediaFormat()
+        let bitrate = try? await track?.load(.estimatedDataRate)
+        
+        if let format = format, let bitrate = bitrate {
+            return (format, bitrate)
+        }
+        
+        return nil
+    }
+    
     private func getAVPlayerItem(_ track: Track) -> AVPlayerItem {
         if track.offline == .downloaded {
             return AVPlayerItem(url: DownloadManager.shared.getTrackUrl(trackId: track.id))
@@ -477,8 +514,8 @@ extension AudioPlayer {
     }
     private func notifyQueueChanged() {
         Task { @MainActor in
-            NotificationCenter.default.post(name: NSNotification.QueueUpdated, object: nil)
-            NotificationCenter.default.post(name: NSNotification.TrackChange, object: nil)
+            NotificationCenter.default.post(name: AudioPlayer.queueUpdated, object: nil)
+            NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
         }
     }
     
@@ -490,6 +527,12 @@ extension AudioPlayer {
         } else {
             playbackReporter = nil
         }
+    }
+    
+    enum RepeatMode: Int, Equatable {
+        case none = 0
+        case track = 1
+        case queue = 2
     }
 }
 

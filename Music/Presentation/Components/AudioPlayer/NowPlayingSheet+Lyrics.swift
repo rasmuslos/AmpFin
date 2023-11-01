@@ -66,12 +66,12 @@ extension NowPlayingSheet {
                     }))
             }
             .onAppear(perform: fetchLyrics)
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.TrackChange), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
                 lyrics = nil
                 activeLineIndex = 0
                 fetchLyrics()
             })
-            .onReceive(NotificationCenter.default.publisher(for: NSNotification.PositionUpdated), perform: { _ in
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.positionUpdated), perform: { _ in
                 updateLyricsIndex()
             })
         }
@@ -79,13 +79,15 @@ extension NowPlayingSheet {
         // MARK: Helper
         
         func updateLyricsIndex() {
-            if let lyrics = lyrics, lyrics.count > activeLineIndex + 1 {
-                let seconds = Array(lyrics.keys).sorted(by: <)[activeLineIndex + 1]
-                
-                if seconds < AudioPlayer.shared.currentTime() {
-                    activeLineIndex += 1
-                    updateLyricsIndex()
+            if let lyrics = lyrics, !lyrics.isEmpty {
+                let currentTime = AudioPlayer.shared.currentTime()
+                if let index = Array(lyrics.keys).sorted(by: <).lastIndex(where: { $0 <= currentTime }) {
+                    activeLineIndex = index
+                } else {
+                    activeLineIndex = 0
                 }
+            } else {
+                activeLineIndex = 0
             }
         }
         
@@ -97,6 +99,7 @@ extension NowPlayingSheet {
                     } else if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId) {
                         self.lyrics = lyrics
                     }
+                 
                 }
             }
         }
