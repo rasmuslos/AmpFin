@@ -48,7 +48,12 @@ extension NowPlayingSheet {
                         if let quality = quality {
                             Spacer()
                             Text(quality)
+                                .font(.caption2)
                                 .foregroundStyle(.secondary)
+                                .padding(.vertical, 4)
+                                .padding(.horizontal, 8)
+                                .background(.ultraThinMaterial)
+                                .clipShape(RoundedRectangle(cornerRadius: 3))
                         }
                         Spacer()
                         
@@ -119,6 +124,7 @@ extension NowPlayingSheet {
             }
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.positionUpdated), perform: { _ in
                 withAnimation {
+                    buffering = AudioPlayer.shared.buffering
                     duration = AudioPlayer.shared.duration()
                     currentTime = AudioPlayer.shared.currentTime()
                     playedPercentage = (currentTime / duration) * 100
@@ -153,9 +159,11 @@ extension NowPlayingSheet.Controls {
                     if data.1 == 0 {
                         quality = data.0.uppercased()
                     } else {
-                        quality = "\(data.0.uppercased()) \(data.1.rounded())"
+                        quality = "\(data.0.uppercased()) \(data.1)"
                     }
                 }
+            } else {
+                quality = nil
             }
         }
     }

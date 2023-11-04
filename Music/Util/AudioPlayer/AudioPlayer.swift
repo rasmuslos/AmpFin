@@ -301,15 +301,18 @@ extension AudioPlayer {
             history.append(nowPlaying)
         }
         
-        if queue.count > 0 {
-            setNowPlaying(track: queue.removeFirst())
-            setupNowPlayingMetadata()
-        } else {
-            restoreHistory(index: 0)
-            if repeatMode != .queue {
-                setPlaying(false)
-            }
+        if queue.count <= 0 {
+            audioPlayer.removeAllItems()
+            
+            queue = history
+            history = []
+            
+            populateQueue()
+            setPlaying(repeatMode != .none)
         }
+        
+        setNowPlaying(track: queue.removeFirst())
+        setupNowPlayingMetadata()
         
         notifyQueueChanged()
     }
@@ -491,13 +494,17 @@ extension AudioPlayer {
 // MARK: Helper
 
 extension AudioPlayer {
-    func getTrackData() async -> (String, Float)? {
+    func getTrackData() async -> (String, Int)? {
         let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
         let format = await track?.getMediaFormat()
         let bitrate = try? await track?.load(.estimatedDataRate)
         
-        if let format = format, let bitrate = bitrate {
-            return (format, bitrate)
+        if var format = format, let bitrate = bitrate {
+            while format.starts(with: ".") {
+                format.removeFirst()
+            }
+            
+            return (format, Int((bitrate / 1000).rounded()))
         }
         
         return nil
