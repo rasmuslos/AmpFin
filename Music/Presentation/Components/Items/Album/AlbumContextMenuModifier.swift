@@ -12,6 +12,9 @@ struct AlbumContextMenuModifier: ViewModifier {
     
     let album: Album
     
+    // this prevents the album from fetching its offline status prematurely
+    @State var showDownloadButton = false
+    
     func body(content: Content) -> some View {
         content
             .contextMenu {
@@ -41,10 +44,29 @@ struct AlbumContextMenuModifier: ViewModifier {
                     }
                     .disabled(!libraryOnline)
                 }
+                
+                Divider()
+                
+                if showDownloadButton {
+                    if album.offline == .none {
+                        Button {
+                            Task {
+                                try! await OfflineManager.shared.downloadAlbum(album)
+                            }
+                        } label: {
+                            Label("Download", systemImage: "arrow.down")
+                        }
+                    } else if album.offline == .downloaded, let offlineAlbum = OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
+                        Button {
+                            try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
+                        } label: {
+                            Label("Remove download", systemImage: "xmark")
+                        }
+                    }
+                }
             } preview: {
                 VStack(alignment: .leading) {
                     ItemImage(cover: album.cover)
-                        .frame(width: 250)
                         .padding(.bottom, 10)
                     
                     Text(album.name)
@@ -54,8 +76,17 @@ struct AlbumContextMenuModifier: ViewModifier {
                             .foregroundStyle(.secondary)
                     }
                 }
+                .frame(width: 250)
                 .padding()
                 .background(.ultraThickMaterial)
+                .onAppear {
+                    showDownloadButton = true
+                }
             }
     }
+}
+
+#Preview {
+    Text(":)")
+        .modifier(AlbumContextMenuModifier(album: Album.fixture))
 }

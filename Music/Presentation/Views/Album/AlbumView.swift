@@ -52,8 +52,6 @@ struct AlbumView: View {
             }
         }
         .onAppear {
-            album.enableOfflineTracking()
-            
             Task.detached {
                 if let imageColors = await getImageColors() {
                     withAnimation {

@@ -34,9 +34,6 @@ struct AlbumListRow: View {
             DownloadIndicator(item: album)
         }
         .modifier(AlbumContextMenuModifier(album: album))
-        .onAppear {
-            album.enableOfflineTracking()
-        }
     }
 }
 

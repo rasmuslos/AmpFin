@@ -25,13 +25,11 @@ class Track: Item {
         self.releaseDate = releaseDate
         
         super.init(id: id, name: name, sortName: sortName, cover: cover, favorite: favorite)
-        
-        enableOfflineTracking()
     }
     
     override func checkOfflineStatus() {
         Task.detached { [self] in
-            self.offline = await OfflineManager.shared.getTrackOfflineStatus(trackId: id)
+            self._offline = await OfflineManager.shared.getTrackOfflineStatus(trackId: id)
         }
     }
     override func addObserver() -> [NSObjectProtocol] {

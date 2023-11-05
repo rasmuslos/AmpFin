@@ -28,7 +28,7 @@ class Album: Item {
     
     override func checkOfflineStatus() {
         Task.detached { [self] in
-            self.offline = await OfflineManager.shared.getAlbumOfflineStatus(albumId: id)
+            self._offline = await OfflineManager.shared.getAlbumOfflineStatus(albumId: id)
         }
     }
     override func addObserver() -> [NSObjectProtocol] {
