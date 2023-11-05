@@ -81,12 +81,12 @@ extension AlbumView {
                                         try? await album.setFavorite(favorite: !album.favorite)
                                     }
                                 } label: {
-                                    Label("Favorite", systemImage: album.favorite ? "heart.fill" : "heart")
+                                    Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
                                 }
                                 
                                 if let first = album.artists.first {
                                     NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
-                                        Label("View artist", systemImage: "music.mic")
+                                        Label("artist.view", systemImage: "music.mic")
                                     }
                                     .disabled(!libraryOnline)
                                 }
@@ -99,7 +99,7 @@ extension AlbumView {
                                             try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
                                         }
                                     } label: {
-                                        Label("Force delete", systemImage: "trash.fill")
+                                        Label("download.delete.force", systemImage: "trash.fill")
                                     }
                                 }
                                 
@@ -108,19 +108,19 @@ extension AlbumView {
                                 Button {
                                     queueTracks(true)
                                 } label: {
-                                    Label("Play next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                                    Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
                                 }
                                 Button {
                                     queueTracks(false)
                                 } label: {
-                                    Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                                    Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                                 }
                                 Button {
                                     Task {
                                         try? await album.startInstantMix()
                                     }
                                 } label: {
-                                    Label("Instant mix", systemImage: "compass.drawing")
+                                    Label("queue.mix", systemImage: "compass.drawing")
                                 }
                                 .disabled(!libraryOnline)
                             } label: {

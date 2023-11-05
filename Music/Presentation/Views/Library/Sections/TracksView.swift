@@ -28,7 +28,7 @@ struct TracksView: View {
                 LoadingView()
             }
         }
-        .navigationTitle("Tracks")
+        .navigationTitle("title.tracks")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(sortOrder: $sortOrder)

@@ -15,13 +15,13 @@ struct TrackListButtons: View {
             Button {
                 startPlayback(false)
             } label: {
-                Label("Play", systemImage: "play.fill")
+                Label("queue.play", systemImage: "play.fill")
             }
             .buttonStyle(PlayButtonStyle())
             Button {
                 startPlayback(true)
             } label: {
-                Label("Shuffle", systemImage: "shuffle")
+                Label("queue.shuffle", systemImage: "shuffle")
             }
             .buttonStyle(PlayButtonStyle())
         }

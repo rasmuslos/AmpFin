@@ -16,29 +16,29 @@ extension LibraryView {
         var body: some View {
             Group {
                 NavigationLink(destination: TracksView()) {
-                    Label("Tracks", systemImage: "music.note")
+                    Label("title.tracks", systemImage: "music.note")
                 }
                 NavigationLink(destination: AlbumsView()) {
-                    Label("Albums", systemImage: "square.stack")
+                    Label("title.albums", systemImage: "square.stack")
                 }
                 
                 NavigationLink(destination: FavoritesView()) {
-                    Label("Favorites", systemImage: "heart")
+                    Label("title.favorites", systemImage: "heart")
                 }
                 .disabled(!libraryOnline)
                 
                 NavigationLink(destination: ArtistsView(albumOnly: true)) {
-                    Label("Album Artists", systemImage: "music.mic")
+                    Label("title.albumArtists", systemImage: "music.mic")
                 }
                 .disabled(!libraryOnline)
                 NavigationLink(destination: ArtistsView(albumOnly: false)) {
-                    Label("Artists", systemImage: "mic.fill")
+                    Label("title.artists", systemImage: "mic.fill")
                 }
                 .disabled(!libraryOnline)
                 /*
                  Not really possible without knowing the library id
                  
-                NavigationLink(destination: Text("oof")) {
+                NavigationLink(destination: Text(":)")) {
                     Label("Genres", systemImage: "guitars")
                 }
                  */

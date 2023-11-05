@@ -38,14 +38,14 @@ struct AccountSheet: View {
                 Button(role: .destructive) {
                     JellyfinClient.shared.logout()
                 } label: {
-                    Text("Logout")
+                    Text("account.logout")
                 }
                 Button(role: .destructive) {
                     Task {
                         try await OfflineManager.shared.deleteAllDownloads()
                     }
                 } label: {
-                    Text("Delete all downloads")
+                    Text("account.deleteDownloads")
                 }
             }
             
@@ -58,14 +58,14 @@ struct AccountSheet: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             } header: {
-                Text("Server")
+                Text("account.server")
             }
             
             // quite ironic that this code is bad
             Section {
                 HStack {
                     Spacer()
-                    Text("Devloped by Rasmus Krämer")
+                    Text("developedBy")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Spacer()

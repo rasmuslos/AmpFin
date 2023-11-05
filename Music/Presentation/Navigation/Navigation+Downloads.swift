@@ -17,7 +17,7 @@ extension NavigationRoot {
             .environment(\.libraryDataProvider, OfflineLibraryDataProvider())
             .modifier(NowPlayingBarModifier())
             .tabItem {
-                Label("Downloads", systemImage: "arrow.down")
+                Label("tab.downloads", systemImage: "arrow.down")
             }
         }
     }

@@ -61,7 +61,7 @@ struct TrackListRow: View {
                         try? await track.startInstantMix()
                     }
                 } label: {
-                    Label("Instant mix", systemImage: "compass.drawing")
+                    Label("queue.mix", systemImage: "compass.drawing")
                 }
                 .disabled(!libraryOnline)
                 
@@ -69,13 +69,13 @@ struct TrackListRow: View {
                 
                 if album == nil {
                     NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
-                        Label("View album", systemImage: "square.stack")
+                        Label("album.view", systemImage: "square.stack")
                     }
                 }
                 
                 if let artist = track.artists.first {
                     NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
-                        Label("View artist", systemImage: "music.mic")
+                        Label("artist.view", systemImage: "music.mic")
                     }
                 }
                 
@@ -112,7 +112,7 @@ extension TrackListRow {
             Button {
                 AudioPlayer.shared.queueTrack(track, index: 0)
             } label: {
-                Label("Play next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
             }
             .tint(.orange)
         }
@@ -124,7 +124,7 @@ extension TrackListRow {
             Button {
                 AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
             } label: {
-                Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
             }
             .tint(.blue)
         }
@@ -139,7 +139,7 @@ extension TrackListRow {
                     try? await track.setFavorite(favorite: !track.favorite)
                 }
             } label: {
-                Label("Favorite", systemImage: track.favorite ? "heart.fill" : "heart")
+                Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
             }
             .tint(.red)
         }

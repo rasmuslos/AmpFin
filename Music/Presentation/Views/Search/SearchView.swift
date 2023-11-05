@@ -23,7 +23,7 @@ struct SearchView: View {
                 ProviderPicker(selection: $library)
                 
                 if tracks.count > 0 {
-                    Section("Tracks") {
+                    Section("section.tracks") {
                         ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
                             TrackListRow(track: track) {
                                 AudioPlayer.shared.startPlayback(tracks: tracks, startIndex: index, shuffle: false)
@@ -35,7 +35,7 @@ struct SearchView: View {
                 }
                 
                 if albums.count > 0 {
-                    Section("Albums") {
+                    Section("section.albums") {
                         ForEach(albums) { album in
                             NavigationLink(destination: AlbumView(album: album)) {
                                 AlbumListRow(album: album)
@@ -47,10 +47,10 @@ struct SearchView: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Search")
+            .navigationTitle("title.search")
             .modifier(NowPlayingBarSafeAreaModifier())
             // Query
-            .searchable(text: $query, prompt: "Serach Tracks / Albums")
+            .searchable(text: $query, prompt: "search.placeholder")
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)
             .onChange(of: query) {

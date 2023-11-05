@@ -13,7 +13,7 @@ extension NavigationRoot {
             SearchView()
                 .modifier(NowPlayingBarModifier())
             .tabItem {
-                Label("Serach", systemImage: "magnifyingglass")
+                Label("tab.search", systemImage: "magnifyingglass")
             }
         }
     }

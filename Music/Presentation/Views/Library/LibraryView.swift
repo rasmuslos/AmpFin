@@ -19,12 +19,12 @@ struct LibraryView: View {
                 Links()
             }
             .listStyle(.plain)
-            .navigationTitle("Library")
+            .navigationTitle("title.library")
             .frame(height: CGFloat(Links.count) * minRowHeight)
             
             if let recentAlbums = recentAlbums, recentAlbums.count > 0 {
                 HStack {
-                    Text("Recently added")
+                    Text("home.recentlyAdded", comment: "Albums recently added to the Jellyfin server")
                         .font(.headline)
                     Spacer()
                 }

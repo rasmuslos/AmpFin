@@ -29,8 +29,8 @@ struct AlbumsView: View {
                 LoadingView()
             }
         }
-        .navigationTitle("Albums")
-        .searchable(text: $search, prompt: "Search")
+        .navigationTitle("title.albums")
+        .searchable(text: $search, prompt: "search.albums")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(sortOrder: $sortOrder)

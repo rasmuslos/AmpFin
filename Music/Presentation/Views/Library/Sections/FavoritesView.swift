@@ -28,7 +28,7 @@ struct FavoritesView: View {
                 LoadingView()
             }
         }
-        .navigationTitle("Favorites")
+        .navigationTitle("title.favorites")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(sortOrder: $sortOrder)

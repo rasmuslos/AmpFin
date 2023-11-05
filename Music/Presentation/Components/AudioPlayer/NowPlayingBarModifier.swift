@@ -59,15 +59,6 @@ struct NowPlayingBarModifier: ViewModifier {
                             }
                             .padding(.horizontal, 6)
                         }
-                    /*
-                        .contextMenu(menuItems: {
-                            Button {
-                                AudioPlayer.shared.stopPlayback()
-                            } label: {
-                                Text("Stop playback")
-                            }
-                        })
-                     */
                         .foregroundStyle(.primary)
                     // style bar
                         .padding(.horizontal, 15)

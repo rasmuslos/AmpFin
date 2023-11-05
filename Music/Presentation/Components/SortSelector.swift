@@ -32,7 +32,7 @@ struct SortSelector: View {
                 }
             }
         } label: {
-            Label("Sort", systemImage: "arrow.up.arrow.down.circle.fill")
+            Image(systemName: "arrow.up.arrow.down.circle.fill")
         }
     }
 }

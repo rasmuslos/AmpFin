@@ -21,7 +21,7 @@ extension NowPlayingSheet {
         
         var body: some View {
             HStack {
-                Text(showHistory ? "History" : "Queue")
+                Text(showHistory ? "queue.history" : "queue.queue")
                     .font(.headline)
                     .foregroundStyle(.primary)
                 
@@ -80,7 +80,7 @@ extension NowPlayingSheet {
                                     AudioPlayer.shared.queueTrack(track, index: 0)
                                     AudioPlayer.shared.removeHistoryTrack(index: index)
                                 } label: {
-                                    Label("Play next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                                    Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
                                 }
                                 .tint(.orange)
                             }
@@ -89,7 +89,7 @@ extension NowPlayingSheet {
                                     AudioPlayer.shared.queueTrack(track, index: AudioPlayer.shared.queue.count)
                                     AudioPlayer.shared.removeHistoryTrack(index: index)
                                 } label: {
-                                    Label("Play last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                                    Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                                 }
                                 .tint(.blue)
                             }

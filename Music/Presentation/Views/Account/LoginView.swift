@@ -18,7 +18,7 @@ struct LoginView: View {
     @State var password = ""
     
     @State var serverVersion: String?
-    @State var errorText: String?
+    @State var loginError: LoginError?
     
     var body: some View {
         VStack {
@@ -31,22 +31,22 @@ struct LoginView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .padding(.bottom, 50)
             
-            Text("Welcome to AmpFin")
+            Text("login.welcome")
                 .font(.headline)
-            Text("Please login to get started")
+            Text("login.text")
                 .font(.subheadline)
             
             Button {
                 loginSheetPresented.toggle()
             } label: {
-                Text("Login with Jellyfin")
+                Text("login.promt")
             }
             .buttonStyle(LargeButtonStyle())
             .padding()
             
             Spacer()
             
-            Text("Devloped by Rasmus Krämer")
+            Text("developedBy")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -56,13 +56,13 @@ struct LoginView: View {
                 Form {
                     Section {
                         if loginFlowState == .server {
-                            TextField("Server URL", text: $server)
+                            TextField("login.server", text: $server)
                                 .keyboardType(.URL)
                                 .autocorrectionDisabled()
                                 .textInputAutocapitalization(.never)
                         } else if loginFlowState == .credentials {
-                            TextField("Username", text: $username)
-                            SecureField("Password", text: $password)
+                            TextField("login.username", text: $username)
+                            SecureField("login.password", text: $password)
                                 .autocorrectionDisabled()
                                 .textInputAutocapitalization(.never)
                         }
@@ -70,26 +70,35 @@ struct LoginView: View {
                         Button {
                             flowStep()
                         } label: {
-                            Text("Next")
+                            Text("login.next")
                         }
                     } header: {
                         if let serverVersion = serverVersion {
-                            Text("Server Version \(serverVersion)")
+                            Text("login.version \(serverVersion)")
                         } else {
-                            Text("Login")
+                            Text("login.title")
                         }
                     } footer: {
-                        if let errorText = errorText {
-                            Text(errorText)
-                                .foregroundStyle(.red)
+                        Group {
+                            switch loginError {
+                            case .server:
+                                Text("login.error.server")
+                            case .url:
+                                Text("login.error.url")
+                            case .failed:
+                                Text("login.error.failed")
+                            case nil:
+                                Text("")
+                            }
                         }
+                        .foregroundStyle(.red)
                     }
                 }
                 .onSubmit(flowStep)
             case .serverLoading, .credentialsLoading:
                 VStack {
                     ProgressView()
-                    Text("Loading")
+                    Text("login.loading")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .padding()
@@ -110,7 +119,7 @@ extension LoginView {
             do {
                 try JellyfinClient.shared.setServerUrl(server)
             } catch {
-                errorText = "Invalid server URL (Format: http(s)://host:port)"
+                loginError = .url
                 loginFlowState = .server
                 
                 return
@@ -121,13 +130,13 @@ extension LoginView {
                 do {
                     serverVersion = try await JellyfinClient.shared.getServerPublicVersion()
                 } catch {
-                    errorText =  "Jellyfin server not found"
+                    loginError = .server
                     loginFlowState = .server
                     
                     return
                 }
                 
-                errorText = nil
+                loginError = nil
                 loginFlowState = .credentials
             }
         } else if loginFlowState == .credentials {
@@ -141,7 +150,7 @@ extension LoginView {
                     JellyfinClient.shared.setUserId(userId)
                     callback()
                 } catch {
-                    errorText = "Login failed"
+                    loginError = .failed
                     loginFlowState = .credentials
                 }
             }
@@ -153,6 +162,11 @@ extension LoginView {
         case serverLoading
         case credentials
         case credentialsLoading
+    }
+    enum LoginError {
+        case server
+        case url
+        case failed
     }
 }
 

@@ -12,10 +12,10 @@ extension SearchView {
         @Binding var selection: Tab
         
         var body: some View {
-            Picker("Library", selection: $selection) {
-                Text("Jellyfin")
+            Picker("search.library", selection: $selection) {
+                Text("search.jellyfin", comment: "Search the Jellyfin server")
                     .tag(Tab.online)
-                Text("Downloaded")
+                Text("search.downloaded", comment: "Search the downloaded content")
                     .tag(Tab.offline)
             }
             .pickerStyle(SegmentedPickerStyle())

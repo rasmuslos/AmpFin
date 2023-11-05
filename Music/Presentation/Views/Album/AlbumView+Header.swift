@@ -71,11 +71,11 @@ extension AlbumView {
                     HStack {
                         Group {
                             // why not buttons? because swiftui is a piece of shit
-                            Label("Play", systemImage: "play.fill")
+                            Label("queue.play", systemImage: "play.fill")
                                 .onTapGesture {
                                     startPlayback(false)
                                 }
-                            Label("Shuffle", systemImage: "shuffle")
+                            Label("queue.shuffle", systemImage: "shuffle")
                                 .onTapGesture {
                                     startPlayback(true)
                                 }

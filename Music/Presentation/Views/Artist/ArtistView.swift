@@ -43,7 +43,7 @@ struct ArtistView: View {
                         try? await artist.setFavorite(favorite: !artist.favorite)
                     }
                 } label: {
-                    Label("Favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
+                    Label("favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
                         .contentTransition(.symbolEffect(.replace))
                 }
             }

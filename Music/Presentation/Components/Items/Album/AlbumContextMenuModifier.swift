@@ -23,24 +23,24 @@ struct AlbumContextMenuModifier: ViewModifier {
                         try? await album.setFavorite(favorite: !album.favorite)
                     }
                 } label: {
-                    Label("Favorite", systemImage: album.favorite ? "heart.fill" : "heart")
+                    Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
                 }
                 Button {
                     Task {
                         try? await album.startInstantMix()
                     }
                 } label: {
-                    Label("Instant mix", systemImage: "compass.drawing")
+                    Label("queue.mix", systemImage: "compass.drawing")
                 }
                 
                 Divider()
                 
                 NavigationLink(destination: AlbumView(album: album)) {
-                    Label("View album", systemImage: "square.stack")
+                    Label("album.view", systemImage: "square.stack")
                 }
                 if let first = album.artists.first {
                     NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
-                        Label("View artist", systemImage: "music.mic")
+                        Label("artist.view", systemImage: "music.mic")
                     }
                     .disabled(!libraryOnline)
                 }
@@ -54,13 +54,13 @@ struct AlbumContextMenuModifier: ViewModifier {
                                 try! await OfflineManager.shared.downloadAlbum(album)
                             }
                         } label: {
-                            Label("Download", systemImage: "arrow.down")
+                            Label("download.download", systemImage: "arrow.down")
                         }
                     } else if album.offline == .downloaded, let offlineAlbum = OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
                         Button {
                             try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
                         } label: {
-                            Label("Remove download", systemImage: "xmark")
+                            Label("download.remove", systemImage: "xmark")
                         }
                     }
                 }

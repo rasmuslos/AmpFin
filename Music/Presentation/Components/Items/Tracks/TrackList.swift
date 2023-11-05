@@ -18,7 +18,7 @@ struct TrackList: View {
             TrackListButtons() {
                 startPlayback(index: 0, shuffle: $0)
             }
-            .searchable(text: $search, prompt: "Search")
+            .searchable(text: $search, prompt: "search.tracks")
             .listRowSeparator(.hidden)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
@@ -30,7 +30,7 @@ struct TrackList: View {
                 Section {
                     TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback)
                 } header: {
-                    Text("Disk \(disk)")
+                    Text("tracks.disk \(disk)")
                         .padding(.top, -20)
                 }
             }

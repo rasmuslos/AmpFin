@@ -26,7 +26,7 @@ struct ArtistsView: View {
                 LoadingView()
             }
         }
-        .navigationTitle(albumOnly ? "Album Artists" : "Artists")
+        .navigationTitle(albumOnly ? "title.albumArtists" : "title.artists")
         .modifier(NowPlayingBarSafeAreaModifier())
         .task(loadArtists)
     }

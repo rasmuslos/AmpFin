@@ -17,7 +17,7 @@ extension NavigationRoot {
             .environment(\.libraryDataProvider, OnlineLibraryDataProvider())
             .modifier(NowPlayingBarModifier())
             .tabItem {
-                Label("Library", systemImage: "rectangle.stack.fill")
+                Label("tab.libarary", systemImage: "rectangle.stack.fill")
             }
         }
     }
