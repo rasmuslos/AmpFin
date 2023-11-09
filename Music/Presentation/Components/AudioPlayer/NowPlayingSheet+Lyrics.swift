@@ -16,6 +16,9 @@ extension NowPlayingSheet {
         @State var lyrics: Track.Lyrics?
         @State var activeLineIndex: Int = 0
         
+        @State var scrolling: Bool = false
+        @State var scrollTimeout: Task<(), Error>? = nil
+        
         var body: some View {
             ScrollViewReader { proxy in
                 ScrollView(showsIndicators: false) {
@@ -23,7 +26,7 @@ extension NowPlayingSheet {
                         LazyVStack {
                             ForEach(Array(lyrics.keys.sorted(by: <).enumerated()), id: \.offset) { index, key in
                                 if index == activeLineIndex || lyrics[key]! != nil {
-                                    LyricLine(index: index, text: lyrics[key]!, activeLineIndex: $activeLineIndex)
+                                    LyricLine(index: index, text: lyrics[key]!, activeLineIndex: $activeLineIndex, scrolling: $scrolling)
                                         .onTapGesture {
                                             Task.detached {
                                                 await AudioPlayer.shared.seek(seconds: Array(lyrics.keys.sorted(by: <))[index])
@@ -52,18 +55,41 @@ extension NowPlayingSheet {
                     }
                 )
                 .onChange(of: activeLineIndex) {
+                    if scrolling {
+                        return
+                    }
+                    
                     withAnimation(.spring) {
                         proxy.scrollTo(activeLineIndex, anchor: .top)
                     }
                 }
-                .simultaneousGesture(
-                    DragGesture().onChanged({ gesture in
-                        if 0 < gesture.translation.height {
-                            controlsVisible = true
-                        } else {
-                            controlsVisible = false
-                        }
-                    }))
+                .onChange(of: scrolling) {
+                    if scrolling {
+                        return
+                    }
+                    
+                    withAnimation(.spring) {
+                        proxy.scrollTo(activeLineIndex, anchor: .top)
+                    }
+                }
+                .gesture(
+                    DragGesture()
+                        .onChanged({ gesture in
+                            if 0 < gesture.translation.height {
+                                controlsVisible = true
+                            } else {
+                                controlsVisible = false
+                            }
+                            
+                            scrolling = true
+                            
+                            scrollTimeout?.cancel()
+                            scrollTimeout = Task.detached { @Sendable in
+                                try? await Task.sleep(nanoseconds: UInt64(5 * NSEC_PER_SEC))
+                                scrolling = false
+                            }
+                        })
+                )
             }
             .onAppear(perform: fetchLyrics)
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
@@ -99,7 +125,6 @@ extension NowPlayingSheet {
                     } else if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId) {
                         self.lyrics = lyrics
                     }
-                 
                 }
             }
         }
@@ -114,6 +139,7 @@ extension NowPlayingSheet {
         let text: String?
         
         @Binding var activeLineIndex: Int
+        @Binding var scrolling: Bool
         
         @State var pulse: CGFloat = 1
         
@@ -123,7 +149,7 @@ extension NowPlayingSheet {
             HStack {
                 if let text = text {
                     Text(text)
-                        .font(.system(size: 35))
+                        .font(.system(size: 33))
                     
                     Spacer()
                 } else {
@@ -145,10 +171,10 @@ extension NowPlayingSheet {
             }
             .fontWeight(.heavy)
             .foregroundStyle(.white.opacity(active ? 0.9 : 0.25))
-            .blur(radius: active ? 0 : 2)
+            .blur(radius: active || scrolling ? 0 : 2)
             .tag(activeLineIndex)
             .animation(.spring, value: active)
-            .animation(.easeInOut(duration: 0.3).delay(active ? 0.25 : Double(index - activeLineIndex) / 7), value: activeLineIndex)
+            .animation(.easeInOut(duration: 0.3), value: activeLineIndex)
             .onAppear {
                 withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
                     pulse *= 1.2
@@ -160,17 +186,7 @@ extension NowPlayingSheet {
         
         func determineAdditionalOffset() -> CGFloat {
             let delta = index - activeLineIndex
-            
-            if delta < 0 {
-                return 0
-            }
-            
-            switch delta {
-            case 0, 1, 2, 3, 4, 5, 6, 7, 8:
-                return CGFloat(delta * 25);
-            default:
-                return 150;
-            }
+            return delta > 0 ? 15 : 0
         }
     }
 }
