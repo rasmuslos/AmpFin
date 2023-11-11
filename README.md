@@ -13,5 +13,3 @@ A native Jellyfin music client for iOS 17 written using SwiftUI and SwiftData. T
 | Library | Album | Player | Queue |
 | ------------- | ------------- | ------------- | ------------- |
 | <img src="/Screenshots/Library.png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Album.png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player.png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Queue.png?raw=true" alt="Queue" width="200"/> 
-
-More screenshots [here](https://github.com/rasmuslos/music/tree/main/Screenshots)
