@@ -101,6 +101,7 @@
 		3ADE8EA72AA9464D009826A3 /* NowPlayingBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA62AA9464D009826A3 /* NowPlayingBarModifier.swift */; };
 		3AE1B0DC2ABCDA0A0052C8AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */; };
 		3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3AE1B0E22ABCDCE80052C8AA /* NukeUI */; };
+		3AE322E12AFF7421002D70CC /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3AE322E02AFF7421002D70CC /* Intents.intentdefinition */; };
 		3AEB322B2AA7EC3C00853210 /* MusicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321A2AA7EC3C00853210 /* MusicApp.swift */; };
 		3AEB322C2AA7EC3C00853210 /* JellyfinClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */; };
 		3AEB322D2AA7EC3C00853210 /* JellyfinClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */; };
@@ -211,6 +212,7 @@
 		3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Gesture.swift"; sourceTree = "<group>"; };
 		3ADE8EA62AA9464D009826A3 /* NowPlayingBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingBarModifier.swift; sourceTree = "<group>"; };
 		3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3AE322E02AFF7421002D70CC /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		3AEB321A2AA7EC3C00853210 /* MusicApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicApp.swift; sourceTree = "<group>"; };
 		3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JellyfinClientError.swift; sourceTree = "<group>"; };
 		3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JellyfinClient.swift; sourceTree = "<group>"; };
@@ -545,6 +547,7 @@
 				3AEB322A2AA7EC3C00853210 /* Info.plist */,
 				3AEB32222AA7EC3C00853210 /* Music.entitlements */,
 				3AEB321F2AA7EC3C00853210 /* Assets.xcassets */,
+				3AE322E02AFF7421002D70CC /* Intents.intentdefinition */,
 				3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */,
 			);
 			path = Music;
@@ -841,6 +844,7 @@
 				3A234E012AA8861400197AA7 /* LibraryDataProvider.swift in Sources */,
 				3A8850642AA90E4600456DDD /* AlbumView.swift in Sources */,
 				3A750FBD2AA9012C003E4BC9 /* JellyfinClient+Album.swift in Sources */,
+				3AE322E12AFF7421002D70CC /* Intents.intentdefinition in Sources */,
 				3A8B99472AAA091A004AAA7B /* MPVolumeView+Volume.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

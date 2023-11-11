@@ -299,6 +299,7 @@ extension AudioPlayer {
     private func trackDidFinish() {
         if let nowPlaying = nowPlaying {
             history.append(nowPlaying)
+            UserContext.donateTrack(nowPlaying, shuffle: shuffled, repeatMode: repeatMode)
         }
         
         if queue.count <= 0 {
@@ -458,14 +459,8 @@ extension AudioPlayer {
                 
                 MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
                 
-                if let cover = nowPlaying.cover, cover.type == .local {
-                    if let image = UIImage(contentsOfFile: cover.url.path()) {
-                        setNowPlayingArtwork(image: image)
-                    }
-                } else {
-                    if let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url), let image = UIImage(data: data) {
-                        setNowPlayingArtwork(image: image)
-                    }
+                if let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url), let image = UIImage(data: data) {
+                    setNowPlayingArtwork(image: image)
                 }
             }
         }

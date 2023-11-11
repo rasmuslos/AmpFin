@@ -9,6 +9,8 @@ import SwiftUI
 
 extension AlbumView {
     struct AdditionalAlbums: View {
+        @Environment(\.libraryDataProvider) var dataProvider
+        
         let album: Album
         
         @State var alsoFromArtist: [Album]?
@@ -38,6 +40,10 @@ extension AlbumView {
 extension AlbumView.AdditionalAlbums {
     @Sendable
     func fetchAlbums() {
+        if dataProvider as? OfflineLibraryDataProvider != nil {
+            return
+        }
+        
         Task.detached {
             if let artist = album.artists.first {
                 alsoFromArtist = try? await JellyfinClient.shared.getArtistAlbums(artistId: artist.id, sortOrder: .released, ascending: false).filter { $0.id != album.id }

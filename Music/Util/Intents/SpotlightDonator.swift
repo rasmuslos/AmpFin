@@ -21,6 +21,8 @@ struct SpotlightDonator {
             return
         }
         
+        let index = CSSearchableIndex(name: "tracks", protectionClass: .completeUntilFirstUserAuthentication)
+        
         Task.detached {
             if let tracks = try? await JellyfinClient.shared.getAllTracks(sortOrder: .album, ascending: false) {
                 logger.info("Indexing \(tracks.count) tracks")
@@ -38,7 +40,7 @@ struct SpotlightDonator {
                 }
                 
                 do {
-                    try await CSSearchableIndex.default().indexSearchableItems(items)
+                    try await index.indexSearchableItems(items)
                 } catch {
                     logger.fault("Failed to index spotlight items: \(error.localizedDescription)")
                 }
