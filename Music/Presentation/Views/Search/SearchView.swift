@@ -74,7 +74,6 @@ struct SearchView: View {
             }
             .modifier(AccountToolbarButtonModifier())
         }
-        .environment(\.libraryOnline, library == .online)
         .environment(\.libraryDataProvider, dataProvider)
     }
 }

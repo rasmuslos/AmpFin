@@ -10,6 +10,7 @@ import SwiftUI
 extension AlbumView {
     struct ToolbarModifier: ViewModifier {
         @Environment(\.presentationMode) var presentationMode
+        @Environment(\.libraryDataProvider) var dataProvider
         @Environment(\.libraryOnline) var libraryOnline
         
         let album: Album
@@ -86,24 +87,14 @@ extension AlbumView {
                                     Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
                                 }
                                 
-                                if let first = album.artists.first {
-                                    NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
-                                        Label("artist.view", systemImage: "music.mic")
+                                Button {
+                                    Task {
+                                        try? await album.startInstantMix()
                                     }
-                                    .disabled(!libraryOnline)
+                                } label: {
+                                    Label("queue.mix", systemImage: "compass.drawing")
                                 }
-                                
-                                if album.offline != .none {
-                                    Divider()
-                                    
-                                    Button(role: .destructive) {
-                                        if let offlineAlbum = OfflineManager.shared.getOfflineAlbum(albumId: album.id) {
-                                            try! OfflineManager.shared.deleteOfflineAlbum(offlineAlbum)
-                                        }
-                                    } label: {
-                                        Label("download.delete.force", systemImage: "trash.fill")
-                                    }
-                                }
+                                .disabled(!libraryOnline)
                                 
                                 Divider()
                                 
@@ -117,14 +108,15 @@ extension AlbumView {
                                 } label: {
                                     Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                                 }
-                                Button {
-                                    Task {
-                                        try? await album.startInstantMix()
+                                
+                                Divider()
+                                
+                                if let first = album.artists.first {
+                                    NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
+                                        Label("artist.view", systemImage: "music.mic")
                                     }
-                                } label: {
-                                    Label("queue.mix", systemImage: "compass.drawing")
+                                    .disabled(!dataProvider.supportsArtistLookup)
                                 }
-                                .disabled(!libraryOnline)
                             } label: {
                                 // for some reason it did show the label...
                                 Image(systemName: "ellipsis")

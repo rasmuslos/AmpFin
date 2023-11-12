@@ -8,6 +8,10 @@
 import Foundation
 
 struct OnlineLibraryDataProvider: LibraryDataProvider {
+    var supportsArtistLookup: Bool = true
+    var supportsFavoritesLookup: Bool = true
+    var supportsAdvancedFilters: Bool = true
+    
     func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
         try await JellyfinClient.shared.getAllTracks(sortOrder: sortOrder, ascending: ascending)
     }

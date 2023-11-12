@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AlbumContextMenuModifier: ViewModifier {
+    @Environment(\.libraryDataProvider) var dataProvider
     @Environment(\.libraryOnline) var libraryOnline
     
     let album: Album
@@ -32,6 +33,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                 } label: {
                     Label("queue.mix", systemImage: "compass.drawing")
                 }
+                .disabled(!libraryOnline)
                 
                 Divider()
                 
@@ -42,7 +44,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                     NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
                         Label("artist.view", systemImage: "music.mic")
                     }
-                    .disabled(!libraryOnline)
+                    .disabled(!dataProvider.supportsArtistLookup)
                 }
                 
                 Divider()

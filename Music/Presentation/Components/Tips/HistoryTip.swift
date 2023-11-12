@@ -1,5 +1,5 @@
 //
-//  DownloadTip.swift
+//  HistoryTip.swift
 //  Music
 //
 //  Created by Rasmus Krämer on 12.11.23.
@@ -8,13 +8,13 @@
 import SwiftUI
 import TipKit
 
-struct DownloadTip: Tip {
+struct HistoryTip: Tip {
     var title: Text {
-        Text("tip.download.title")
+        Text("tip.history.title")
     }
     
     var message: Text? {
-        Text("tip.download.message")
+        Text("tip.history.message")
     }
     
     var options: [TipOption] = [

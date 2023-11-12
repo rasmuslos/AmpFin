@@ -9,6 +9,10 @@ import Foundation
 import SwiftUI
 
 protocol LibraryDataProvider {
+    var supportsArtistLookup: Bool { get }
+    var supportsFavoritesLookup: Bool { get }
+    var supportsAdvancedFilters: Bool { get }
+    
     func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
     func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
     

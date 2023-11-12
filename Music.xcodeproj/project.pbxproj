@@ -50,6 +50,8 @@
 		3A3DA66B2AAB2DDA0091211A /* ArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3DA66A2AAB2DDA0091211A /* ArtistView.swift */; };
 		3A3DA66D2AAB2EAE0091211A /* ArtistView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3DA66C2AAB2EAE0091211A /* ArtistView+Header.swift */; };
 		3A3EA5A72ACC206500600BC5 /* DownloadIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */; };
+		3A3F11382B01090C00E205DA /* JellyfinClient+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F11372B01090C00E205DA /* JellyfinClient+Notifications.swift */; };
+		3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F11392B010FB600E205DA /* HistoryTip.swift */; };
 		3A3FEECD2AF7A3C8001F8AA0 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */; };
 		3A6565D72AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */; };
 		3A6F50A72AACA3D600FC8A29 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6F50A62AACA3D600FC8A29 /* SearchView.swift */; };
@@ -165,6 +167,8 @@
 		3A3DA66A2AAB2DDA0091211A /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 		3A3DA66C2AAB2EAE0091211A /* ArtistView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArtistView+Header.swift"; sourceTree = "<group>"; };
 		3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadIndicator.swift; sourceTree = "<group>"; };
+		3A3F11372B01090C00E205DA /* JellyfinClient+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JellyfinClient+Notifications.swift"; sourceTree = "<group>"; };
+		3A3F11392B010FB600E205DA /* HistoryTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTip.swift; sourceTree = "<group>"; };
 		3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingSheet+Queue.swift"; sourceTree = "<group>"; };
 		3A6F50A62AACA3D600FC8A29 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -363,6 +367,7 @@
 			isa = PBXGroup;
 			children = (
 				3A2B932E2B00C7A700638AE9 /* LyricsTip.swift */,
+				3A3F11392B010FB600E205DA /* HistoryTip.swift */,
 				3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */,
 				3A2B93322B00D28700638AE9 /* InstantMixTip.swift */,
 			);
@@ -576,8 +581,9 @@
 				3A234E0D2AA8D8D800197AA7 /* Items */,
 				3AEB32382AA7EF6000853210 /* Methods */,
 				3AEB321D2AA7EC3C00853210 /* JellyfinClient.swift */,
-				3AEB321E2AA7EC3C00853210 /* JellyfinClient+Request.swift */,
 				3AEB321C2AA7EC3C00853210 /* JellyfinClientError.swift */,
+				3AEB321E2AA7EC3C00853210 /* JellyfinClient+Request.swift */,
+				3A3F11372B01090C00E205DA /* JellyfinClient+Notifications.swift */,
 			);
 			path = JellyfinClient;
 			sourceTree = "<group>";
@@ -780,6 +786,7 @@
 				3A36A5A02ADEF99700D83BE7 /* AlbumView+Additional.swift in Sources */,
 				3AEB32332AA7EC3C00853210 /* LoginView.swift in Sources */,
 				3AEB32402AA7FFF100853210 /* NavigationRoot+Library.swift in Sources */,
+				3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */,
 				3A8B99382AA9DBBE004AAA7B /* JellyfinClient+Progress.swift in Sources */,
 				3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */,
 				3A29A78B2AF2EC0500E58C75 /* AVAssetTrack+Format.swift in Sources */,
@@ -837,6 +844,7 @@
 				3A234E122AA8D91000197AA7 /* Track+Convert.swift in Sources */,
 				3A750FB62AA8FE6B003E4BC9 /* Album.swift in Sources */,
 				3A36A59E2ADEF8BA00D83BE7 /* AlbumRow.swift in Sources */,
+				3A3F11382B01090C00E205DA /* JellyfinClient+Notifications.swift in Sources */,
 				3A3AF1A82AC4583100811D7D /* DownloadManager+Cleanup.swift in Sources */,
 				3A234E0A2AA88DD300197AA7 /* Item.swift in Sources */,
 				3A2AA35A2AAACA030051B21B /* Date+Parse.swift in Sources */,

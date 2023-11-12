@@ -12,7 +12,9 @@ import TipKit
 @main
 struct MusicApp: App {
     init() {
-        try? Tips.configure()
+        try? Tips.configure([
+            .displayFrequency(.daily)
+        ])
     }
     
     var body: some Scene {

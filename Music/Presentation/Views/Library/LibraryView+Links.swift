@@ -11,7 +11,7 @@ extension LibraryView {
     struct Links: View {
         static let count = 5
         
-        @Environment(\.libraryOnline) var libraryOnline
+        @Environment(\.libraryDataProvider) var dataProvider
         
         var body: some View {
             Group {
@@ -25,16 +25,16 @@ extension LibraryView {
                 NavigationLink(destination: FavoritesView()) {
                     Label("title.favorites", systemImage: "heart")
                 }
-                .disabled(!libraryOnline)
+                .disabled(!dataProvider.supportsFavoritesLookup)
                 
                 NavigationLink(destination: ArtistsView(albumOnly: true)) {
                     Label("title.albumArtists", systemImage: "music.mic")
                 }
-                .disabled(!libraryOnline)
+                .disabled(!dataProvider.supportsArtistLookup)
                 NavigationLink(destination: ArtistsView(albumOnly: false)) {
                     Label("title.artists", systemImage: "mic.fill")
                 }
-                .disabled(!libraryOnline)
+                .disabled(!dataProvider.supportsArtistLookup)
                 /*
                  Not really possible without knowing the library id
                  

@@ -13,7 +13,6 @@ extension NavigationRoot {
             NavigationStack {
                 LibraryView()
             }
-            .environment(\.libraryOnline, true)
             .environment(\.libraryDataProvider, OnlineLibraryDataProvider())
             .modifier(NowPlayingBarModifier())
             .tabItem {

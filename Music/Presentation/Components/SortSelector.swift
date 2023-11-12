@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SortSelector: View {
-    @Environment(\.libraryOnline) var libraryOnline
+    @Environment(\.libraryDataProvider) var dataProvider
     
     @Binding var sortOrder: JellyfinClient.ItemSortOrder {
         didSet {
@@ -61,7 +61,7 @@ extension SortSelector {
     }
     
     func filter() -> [JellyfinClient.ItemSortOrder] {
-        if libraryOnline {
+        if dataProvider.supportsAdvancedFilters {
             return JellyfinClient.ItemSortOrder.allCases
         } else {
             return JellyfinClient.ItemSortOrder.allCases.filter { $0 != .added && $0 != .released && $0 != .plays && $0 != .runtime }

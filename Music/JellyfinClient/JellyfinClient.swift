@@ -28,6 +28,13 @@ class JellyfinClient {
     lazy private(set) var isAuthorized = {
         self.token != nil
     }()
+    public var isOnline: Bool = false {
+        didSet {
+            Task { @MainActor in
+                NotificationCenter.default.post(name: Self.onlineStatusChanged, object: nil, userInfo: nil)
+            }
+        }
+    }
 }
 
 // MARK: Setter

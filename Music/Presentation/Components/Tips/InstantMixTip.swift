@@ -16,4 +16,8 @@ struct InstantMixTip: Tip {
     var message: Text? {
         Text("tip.mix.message")
     }
+    
+    var options: [TipOption] = [
+        MaxDisplayCount(5)
+    ]
 }

@@ -16,4 +16,8 @@ struct LyricsTip: Tip {
     var message: Text? {
         Text("tip.lyrics.message")
     }
+    
+    var options: [TipOption] = [
+        IgnoresDisplayFrequency(true)
+    ]
 }

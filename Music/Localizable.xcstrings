@@ -113,22 +113,6 @@
         }
       }
     },
-    "download.delete.force" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entfernen erzwingen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Force delete download"
-          }
-        }
-      }
-    },
     "download.download" : {
       "localizations" : {
         "de" : {
@@ -447,6 +431,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Welcome to AmpFin"
+          }
+        }
+      }
+    },
+    "offline.description" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es kann keine Verbindung zu deinem Jellyfin server hergestellt werden. Überprüfe deine Verbindung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection to your Jellyfin server cannot be established. Please check your connection."
+          }
+        }
+      }
+    },
+    "offline.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server nicht erreichbar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server unavailable"
+          }
+        }
+      }
+    },
+    "playback.stop" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergabe beenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop playback"
           }
         }
       }
@@ -773,6 +805,38 @@
         }
       }
     },
+    "tip.history.message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um den aktuellen Hörverlauf zu sehen drück auf den Knopf neben dem Shuffle-Icon"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To access your current listening history tap the button next to the shuffle icon"
+          }
+        }
+      }
+    },
+    "tip.history.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hörverlauf ansehen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View history"
+          }
+        }
+      }
+    },
     "tip.lyrics.message" : {
       "localizations" : {
         "de" : {
@@ -810,13 +874,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Instant Mix"
+            "value" : "Generiere eine dynamische Playlist basierend auf dem Song den du auswählst"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Instant mix"
+            "value" : "Generate a dynamic playlist based on the track you select"
           }
         }
       }
@@ -826,13 +890,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generiere eine dynamische Playlist basierend auf dem Song den du auswählst"
+            "value" : "Instant Mix"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generate a dynamic playlist based on the track you select"
+            "value" : "Instant mix"
           }
         }
       }

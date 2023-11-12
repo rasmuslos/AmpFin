@@ -42,6 +42,7 @@ extension JellyfinClient {
         
         var request = URLRequest(url: url)
         request.httpMethod = clientRequest.method
+        request.timeoutInterval = 15
         
         if let token = token {
             request.addValue("MediaBrowser Client=\"Music\", Device=\"iOS\", DeviceId=\"\(clientName)\", Version=\"\(clientVersion)\", Token=\"\(token)\"", forHTTPHeaderField: "X-Emby-Authorization")
@@ -67,14 +68,32 @@ extension JellyfinClient {
             let (data, _) = try await URLSession.shared.data(for: request)
             // print(clientRequest.path, String.init(data: data, encoding: .utf8))
             
+            isOnline = true
+            
             if T.self == EmptyResponse.self {
                 return EmptyResponse() as! T
             }
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            logger.fault("Error while requesting resource \(url): \(error.localizedDescription)")
-            print(error)
+            if let error = error as? URLError {
+                let errorCode = error.code
+                
+                // i guess error codes are combined but i have no idea
+                
+                if errorCode == .appTransportSecurityRequiresSecureConnection || errorCode == .callIsActive || errorCode == .cannotConnectToHost || errorCode == .cannotFindHost || errorCode == .cannotLoadFromNetwork || errorCode == .clientCertificateRejected || errorCode == .clientCertificateRequired || errorCode == .dataNotAllowed || errorCode == .dnsLookupFailed || errorCode == .internationalRoamingOff || errorCode == .serverCertificateUntrusted || errorCode == .serverCertificateHasBadDate || errorCode == .serverCertificateNotYetValid || errorCode == .serverCertificateHasUnknownRoot || errorCode == .secureConnectionFailed || errorCode == .timedOut {
+                    logger.fault("Server appears to unreachable while requesting resource \(url): \(error.errorCode) \(error.localizedDescription)")
+                    isOnline = false
+                } else {
+                    logger.fault("Error while requesting resource \(url): \(error.errorCode) \(error.localizedDescription)")
+                }
+            } else if let error = error as? DecodingError {
+                logger.fault("Error while decoding response \(url)")
+                print(error)
+            } else {
+                logger.fault("Unexpected error while requesting resource \(url): \(error.localizedDescription)")
+            }
+            
             throw JellyfinClientError.invalidResponse
         }
     }

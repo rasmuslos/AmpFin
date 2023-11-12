@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 // MARK: Container
 
@@ -96,6 +97,11 @@ extension NowPlayingSheet {
                     }
                     .defaultScrollAnchor(.bottom)
                 } else {
+                    TipView(HistoryTip())
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .padding(.top, 20)
+                    
                     ForEach(Array(queue.enumerated()), id: \.offset) { index, track in
                         QueueTrackRow(track: track, draggable: true)
                             .id(UUID())

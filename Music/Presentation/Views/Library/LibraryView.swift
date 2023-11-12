@@ -10,6 +10,7 @@ import SwiftUI
 struct LibraryView: View {
     @Environment(\.defaultMinListRowHeight) var minRowHeight
     @Environment(\.libraryDataProvider) var dataProvider
+    @Environment(\.libraryOnline) var online
     
     @State var recentAlbums: [Album]?
     
@@ -32,7 +33,10 @@ struct LibraryView: View {
                 .padding(.top)
                 
                 AlbumGrid(albums: recentAlbums)
-                .padding(.horizontal)
+                    .padding(.horizontal)
+            } else if !online {
+                ContentUnavailableView("offline.title", systemImage: "network.slash", description: Text("offline.description"))
+                    .padding(.top, 100)
             }
             
             Spacer()

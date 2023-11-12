@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TrackListRow: View {
+    @Environment(\.libraryDataProvider) var dataProvider
     @Environment(\.libraryOnline) var libraryOnline
     
     let track: Track
@@ -56,6 +57,10 @@ struct TrackListRow: View {
                 PlayNextButton(track: track)
                 PlayLastButton(track: track)
                 
+                Divider()
+                
+                FavoriteButton(track: track)
+                
                 Button {
                     Task {
                         try? await track.startInstantMix()
@@ -76,12 +81,9 @@ struct TrackListRow: View {
                 if let artist = track.artists.first {
                     NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
                         Label("artist.view", systemImage: "music.mic")
+                            .disabled(!dataProvider.supportsArtistLookup)
                     }
                 }
-                
-                Divider()
-                
-                FavoriteButton(track: track)
             } label: {
                 Image(systemName: "ellipsis")
                     .renderingMode(.original)
