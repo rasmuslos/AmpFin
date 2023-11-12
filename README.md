@@ -1,12 +1,11 @@
 # AmpFin
-A native Jellyfin music client for iOS 17 written using SwiftUI and SwiftData. This app was created in like 5 days, so it is not the most feature-rich application, but it works perfectly fine and supports
+Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin media server meticulously crafted for iOS 17, utilizing the power of SwiftUI. AmpFin offers a seamless and intuitive user experience, ensuring optimal performance and functionality.
 
-- Online & Offline Playback
-- View Artists
-- View Albums
-- Search your library
-- Time-synced lyrics (requires Jellyfin 10.9 [unstable])
-- Queue including history
+- Online & Offline Playback: Enjoy your favorite tunes anytime, whether you're connected or offline.
+- Explore Artists: Dive into your music collection effortlessly by browsing through artists.
+- Discover Albums: Navigate through your albums with ease, enhancing your music exploration.
+- Search Your Library: Quickly find your favorite tracks with our intuitive library search feature.
+- Queue with History: Take control of your playback experience by creating queues and accessing your listening history.
 
 ## Screenshots
 

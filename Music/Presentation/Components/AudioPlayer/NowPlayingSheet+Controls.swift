@@ -101,6 +101,7 @@ extension NowPlayingSheet {
                         Image(systemName: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
                     }
                     .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
+                    .popoverTip(LyricsTip(), arrowEdge: .bottom)
                     
                     Spacer()
                     AirPlayView()

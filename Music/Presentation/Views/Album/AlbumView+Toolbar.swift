@@ -74,7 +74,9 @@ extension AlbumView {
                                     Image(systemName: "xmark.circle.fill")
                                 }
                             }
+                            .popoverTip(DownloadTip())
                             .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
+                            
                             Menu {
                                 Button {
                                     Task {

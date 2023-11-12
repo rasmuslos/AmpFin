@@ -31,6 +31,9 @@
 		3A234E262AA8EAB700197AA7 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E252AA8EAB700197AA7 /* AudioPlayer.swift */; };
 		3A29A78B2AF2EC0500E58C75 /* AVAssetTrack+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29A78A2AF2EC0500E58C75 /* AVAssetTrack+Format.swift */; };
 		3A2AA35A2AAACA030051B21B /* Date+Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2AA3592AAACA030051B21B /* Date+Parse.swift */; };
+		3A2B932F2B00C7A700638AE9 /* LyricsTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B932E2B00C7A700638AE9 /* LyricsTip.swift */; };
+		3A2B93312B00C9DA00638AE9 /* DownloadTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */; };
+		3A2B93332B00D28700638AE9 /* InstantMixTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B93322B00D28700638AE9 /* InstantMixTip.swift */; };
 		3A36A59E2ADEF8BA00D83BE7 /* AlbumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A59D2ADEF8BA00D83BE7 /* AlbumRow.swift */; };
 		3A36A5A02ADEF99700D83BE7 /* AlbumView+Additional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */; };
 		3A36A5A22ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */; };
@@ -143,6 +146,9 @@
 		3A234E252AA8EAB700197AA7 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		3A29A78A2AF2EC0500E58C75 /* AVAssetTrack+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAssetTrack+Format.swift"; sourceTree = "<group>"; };
 		3A2AA3592AAACA030051B21B /* Date+Parse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Parse.swift"; sourceTree = "<group>"; };
+		3A2B932E2B00C7A700638AE9 /* LyricsTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsTip.swift; sourceTree = "<group>"; };
+		3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTip.swift; sourceTree = "<group>"; };
+		3A2B93322B00D28700638AE9 /* InstantMixTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantMixTip.swift; sourceTree = "<group>"; };
 		3A36A59D2ADEF8BA00D83BE7 /* AlbumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumRow.swift; sourceTree = "<group>"; };
 		3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Additional.swift"; sourceTree = "<group>"; };
 		3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumContextMenuModifier.swift; sourceTree = "<group>"; };
@@ -313,6 +319,7 @@
 			children = (
 				3A234E142AA8DBC900197AA7 /* SortSelector.swift */,
 				3A8850652AA9165300456DDD /* TrackListButtons.swift */,
+				3A2B932D2B00C79D00638AE9 /* Tips */,
 				3A234E162AA8E0A300197AA7 /* Items */,
 				3A8B99432AAA089F004AAA7B /* Sliders */,
 				3ADE8EA52AA94637009826A3 /* AudioPlayer */,
@@ -350,6 +357,16 @@
 				3A6F50A82AACA48400FC8A29 /* SearchView+Picker.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		3A2B932D2B00C79D00638AE9 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				3A2B932E2B00C7A700638AE9 /* LyricsTip.swift */,
+				3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */,
+				3A2B93322B00D28700638AE9 /* InstantMixTip.swift */,
+			);
+			path = Tips;
 			sourceTree = "<group>";
 		};
 		3A3DA6622AAB2BB40091211A /* Artist */ = {
@@ -832,15 +849,18 @@
 				3A234E0C2AA88F1C00197AA7 /* Track.swift in Sources */,
 				3A750FBF2AA90196003E4BC9 /* JellyfinClient+Other.swift in Sources */,
 				3AEB322D2AA7EC3C00853210 /* JellyfinClient.swift in Sources */,
+				3A2B932F2B00C7A700638AE9 /* LyricsTip.swift in Sources */,
 				3ADE8E9D2AA93A2F009826A3 /* Date+Get.swift in Sources */,
 				3A6F50AB2AACABEB00FC8A29 /* AlbumListRow.swift in Sources */,
 				3A11013B2AC0362B004CF731 /* FavoritesView.swift in Sources */,
 				3AEB322E2AA7EC3C00853210 /* JellyfinClient+Request.swift in Sources */,
 				3A234E072AA88DA600197AA7 /* JellyfinClient+Items.swift in Sources */,
 				3A8B993E2AA9FE02004AAA7B /* NowPlayingSheet+Title.swift in Sources */,
+				3A2B93312B00C9DA00638AE9 /* DownloadTip.swift in Sources */,
 				3A8256822AE25A24008CA5D7 /* OfflineLyrics.swift in Sources */,
 				3A98A01E2AAB573100EA84CF /* OfflineAlbum.swift in Sources */,
 				3A3DA6642AAB2BC10091211A /* ArtistList.swift in Sources */,
+				3A2B93332B00D28700638AE9 /* InstantMixTip.swift in Sources */,
 				3A234E012AA8861400197AA7 /* LibraryDataProvider.swift in Sources */,
 				3A8850642AA90E4600456DDD /* AlbumView.swift in Sources */,
 				3A750FBD2AA9012C003E4BC9 /* JellyfinClient+Album.swift in Sources */,

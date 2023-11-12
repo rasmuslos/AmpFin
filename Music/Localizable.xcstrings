@@ -741,6 +741,102 @@
         }
       }
     },
+    "tip.download.message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lade das Album herunter und höre es unterwegs an"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download this album and listen to it while on the go"
+          }
+        }
+      }
+    },
+    "tip.download.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alben herunterladen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download albums"
+          }
+        }
+      }
+    },
+    "tip.lyrics.message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronisierte Lyrics sind nur mit dem instabilen Jellyfin-Server verfügbar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrics are available only when using the unstable version of the Jellyfin server"
+          }
+        }
+      }
+    },
+    "tip.lyrics.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronisierte Lyrics"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time synced lyrics"
+          }
+        }
+      }
+    },
+    "tip.mix.message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instant Mix"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instant mix"
+          }
+        }
+      }
+    },
+    "tip.mix.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generiere eine dynamische Playlist basierend auf dem Song den du auswählst"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate a dynamic playlist based on the track you select"
+          }
+        }
+      }
+    },
     "title.albumArtists" : {
       "localizations" : {
         "de" : {

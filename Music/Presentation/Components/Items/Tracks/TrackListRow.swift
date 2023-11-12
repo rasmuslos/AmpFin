@@ -89,6 +89,7 @@ struct TrackListRow: View {
                     .padding(.vertical, 10)
                     .padding(.leading, 0)
             }
+            .popoverTip(InstantMixTip())
         }
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             PlayNextButton(track: track)

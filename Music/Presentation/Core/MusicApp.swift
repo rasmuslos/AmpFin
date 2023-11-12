@@ -7,16 +7,13 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 @main
 struct MusicApp: App {
-    /*
     init() {
-        Task.detached {
-            try? await OfflineManager.shared.removeUnfinishedDownloads()
-        }
+        try? Tips.configure()
     }
-     */
     
     var body: some Scene {
         WindowGroup {
