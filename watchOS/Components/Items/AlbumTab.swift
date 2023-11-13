@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import UIKit
 import MusicKit
 import TipKit
+import UIImageColors
 
 struct AlbumTab: View {
     let album: Album
+    
+    @State var backgroundColor: Color?
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -30,7 +34,7 @@ struct AlbumTab: View {
                     .padding(.top)
                     .multilineTextAlignment(.center)
                     .ignoresSafeArea(edges: .bottom)
-                    .containerBackground(.accent.gradient, for: .tabView)
+                    .containerBackground(backgroundColor?.gradient ?? Color.accentColor.gradient, for: .tabView)
                 }
             }
             .buttonStyle(.plain)
@@ -38,10 +42,20 @@ struct AlbumTab: View {
                 .onEnded { _ in
                     startPlayback(shuffle: false)
                 })
-            .simultaneousGesture(LongPressGesture()
+            .simultaneousGesture(LongPressGesture(maximumDistance: 1)
                 .onEnded { _ in
                     startPlayback(shuffle: true)
                 })
+            .onAppear {
+                Task.detached {
+                    if let cover = album.cover, let data = try? Data(contentsOf: cover.url) {
+                        let image = UIImage(data: data)
+                        if let colors = image?.getColors(quality: .lowest) {
+                            backgroundColor = Color(colors.background)
+                        }
+                    }
+                }
+            }
             
             /*
             TipView(ShuffleTip())
@@ -51,7 +65,7 @@ struct AlbumTab: View {
     }
 }
 
-// MARK: playback
+// MARK: Playback
 
 extension AlbumTab {
     private func startPlayback(shuffle: Bool) {

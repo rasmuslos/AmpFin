@@ -26,10 +26,16 @@ public class AudioPlayer {
     public fileprivate(set) var shuffled: Bool = false
     public fileprivate(set) var repeatMode: RepeatMode = .none
     
-    public fileprivate(set) var buffering: Bool = false
     fileprivate var nowPlayingInfo = [String: Any]()
-    
     fileprivate var playbackReporter: PlaybackReporter?
+    
+    public fileprivate(set) var buffering: Bool = false {
+        didSet {
+            Task { @MainActor in
+                NotificationCenter.default.post(name: Self.playPause, object: nil)
+            }
+        }
+    }
     
     let logger = Logger(subsystem: "io.rfk.music", category: "AudioPlayer")
     

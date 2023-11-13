@@ -73,6 +73,8 @@
 		3AB897A72B029A9400AF783D /* MusicKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB897A62B029A9400AF783D /* MusicKit */; };
 		3AB897A92B029EB400AF783D /* MusicKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB897A82B029EB400AF783D /* MusicKit */; };
 		3AB897AB2B02A03D00AF783D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AB897AA2B02A03D00AF783D /* Assets.xcassets */; };
+		3AC21B062B02DD15008E82D4 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC21B052B02DD15008E82D4 /* UIImageColors */; };
+		3AC21B092B02E26D008E82D4 /* Navigation+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC21B082B02E26D008E82D4 /* Navigation+Home.swift */; };
 		3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */; };
 		3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3ADE8E932AA9275C009826A3 /* UIImageColors */; };
 		3ADE8E982AA92B47009826A3 /* UIColor+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */; };
@@ -190,6 +192,7 @@
 		3AB897A42B02970100AF783D /* MusicKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MusicKit; sourceTree = "<group>"; };
 		3AB897AA2B02A03D00AF783D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3ABAFCAA2AA7D6C40011BFD6 /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AC21B082B02E26D008E82D4 /* Navigation+Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation+Home.swift"; sourceTree = "<group>"; };
 		3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Header.swift"; sourceTree = "<group>"; };
 		3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+IsLight.swift"; sourceTree = "<group>"; };
 		3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Get.swift"; sourceTree = "<group>"; };
@@ -222,6 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AC21B062B02DD15008E82D4 /* UIImageColors in Frameworks */,
 				3AB897A92B029EB400AF783D /* MusicKit in Frameworks */,
 				3AAC76912B02C6AA00E337C1 /* NukeUI in Frameworks */,
 			);
@@ -445,6 +449,7 @@
 				3AAC76792B02BD6400E337C1 /* Util */,
 				3AAC76832B02C4D300E337C1 /* Views */,
 				3AAC76862B02C51200E337C1 /* Components */,
+				3AC21B072B02E25C008E82D4 /* Navigation */,
 				3AB897A32B0296C400AF783D /* Core */,
 				3AB897AA2B02A03D00AF783D /* Assets.xcassets */,
 				3AAC767F2B02C0EE00E337C1 /* Localizable.xcstrings */,
@@ -457,7 +462,6 @@
 			children = (
 				3AB897952B02969100AF783D /* ContentView.swift */,
 				3AAC76722B02B23400E337C1 /* AppDelegate.swift */,
-				3AAC76812B02C29A00E337C1 /* NavigationRoot.swift */,
 				3AB897932B02969100AF783D /* watchOSApp.swift */,
 			);
 			path = Core;
@@ -489,6 +493,15 @@
 				3AB897912B02969100AF783D /* watchOS.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		3AC21B072B02E25C008E82D4 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				3AAC76812B02C29A00E337C1 /* NavigationRoot.swift */,
+				3AC21B082B02E26D008E82D4 /* Navigation+Home.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		3ADE8E952AA92B03009826A3 /* Extensions */ = {
@@ -635,6 +648,7 @@
 			packageProductDependencies = (
 				3AB897A82B029EB400AF783D /* MusicKit */,
 				3AAC76902B02C6AA00E337C1 /* NukeUI */,
+				3AC21B052B02DD15008E82D4 /* UIImageColors */,
 			);
 			productName = "watchOS Watch App";
 			productReference = 3AB897912B02969100AF783D /* watchOS.app */;
@@ -769,6 +783,7 @@
 				3AAC768B2B02C58700E337C1 /* ErrorView.swift in Sources */,
 				3AF025D72B02CC5F00C846DE /* NowPlayingModifier.swift in Sources */,
 				3AB897942B02969100AF783D /* watchOSApp.swift in Sources */,
+				3AC21B092B02E26D008E82D4 /* Navigation+Home.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1179,6 +1194,11 @@
 		3AB897A82B029EB400AF783D /* MusicKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MusicKit;
+		};
+		3AC21B052B02DD15008E82D4 /* UIImageColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */;
+			productName = UIImageColors;
 		};
 		3ADE8E932AA9275C009826A3 /* UIImageColors */ = {
 			isa = XCSwiftPackageProductDependency;

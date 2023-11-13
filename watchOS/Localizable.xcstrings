@@ -41,6 +41,16 @@
         }
       }
     },
+    "section.library" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library"
+          }
+        }
+      }
+    },
     "tip.shuffle.message" : {
       "localizations" : {
         "en" : {

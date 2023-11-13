@@ -10,13 +10,16 @@ import WatchKit
 import MusicKit
 
 struct NavigationRoot: View {
-    @State var navigationPath = NavigationPath()
+    @State var navigationPath = NavigationPath([LibraryNavigationDestination()])
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            LibraryView()
+            Home()
                 .navigationDestination(for: NowPlayingNavigationDestination.self) { _ in
                     NowPlayingView()
+                }
+                .navigationDestination(for: LibraryNavigationDestination.self) { _ in
+                    LibraryView()
                 }
         }
         .onReceive(NotificationCenter.default.publisher(for: ConnectivityViewModel.nowPlayingActivityStarted)) { _ in
@@ -32,6 +35,8 @@ struct NavigationRoot: View {
 
 extension NavigationRoot {
     struct NowPlayingNavigationDestination: Hashable {
+    }
+    struct LibraryNavigationDestination: Hashable {
     }
 }
 
