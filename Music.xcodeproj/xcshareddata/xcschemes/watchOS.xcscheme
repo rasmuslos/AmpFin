@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3AB897902B02969100AF783D"
+               BuildableName = "watchOS.app"
+               BlueprintName = "watchOS"
+               ReferencedContainer = "container:Music.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
                BuildableName = "iOS.app"
                BlueprintName = "iOS"
@@ -43,9 +57,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
-            BuildableName = "iOS.app"
-            BlueprintName = "iOS"
+            BlueprintIdentifier = "3AB897902B02969100AF783D"
+            BuildableName = "watchOS.app"
+            BlueprintName = "watchOS"
             ReferencedContainer = "container:Music.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -60,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
-            BuildableName = "iOS.app"
-            BlueprintName = "iOS"
+            BlueprintIdentifier = "3AB897902B02969100AF783D"
+            BuildableName = "watchOS.app"
+            BlueprintName = "watchOS"
             ReferencedContainer = "container:Music.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
