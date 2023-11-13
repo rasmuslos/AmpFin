@@ -121,6 +121,10 @@ extension AudioPlayer {
         updateAudioSession(active: true)
         setPlaying(true)
         setupNowPlayingMetadata()
+        
+        Task { @MainActor in
+            NotificationCenter.default.post(name: Self.playbackStarted, object: nil)
+        }
     }
     public func stopPlayback() {
         if isPlaying() {

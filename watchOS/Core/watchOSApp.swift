@@ -7,10 +7,18 @@
 
 import SwiftUI
 import WatchKit
-import Intents
+import TipKit
 
 @main
 struct watchOS_Watch_AppApp: App {
+    @WKApplicationDelegateAdaptor var appDelegate: AppDelegate
+    
+    init() {
+        try? Tips.configure([
+            .displayFrequency(.daily)
+        ])
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -12,6 +12,8 @@ import MusicKit
 struct ContentView: View {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    let connectivityModel = ConnectivityViewModel()
+    
     @State var online = JellyfinClient.shared.isOnline
     @State var isAuthorized = JellyfinClient.shared.isAuthorized
     

@@ -6,47 +6,32 @@
 //
 
 import SwiftUI
-import UIKit
 import WatchKit
-import Intents
+import MusicKit
 
 struct ContentView: View {
-    @WKApplicationDelegateAdaptor var delegateAdaptor: DelegateAdaptor
-    @WKExtensionDelegateAdaptor var extensionAdaptor: ExtensionAdaptor
+    let connectivityModel = ConnectivityViewModel()
+    
+    @State var authorized = JellyfinClient.shared.isAuthorized
     
     var body: some View {
-        NowPlayingView()
-            .onAppear {
-                print("Hello")
+        if authorized {
+            NavigationRoot()
+        } else {
+            ProgressView() {
+                Text("login.waiting")
+                    .font(.caption)
             }
-    }
-}
-
-class DelegateAdaptor: NSObject, WKApplicationDelegate {
-    func handleRemoteNowPlayingActivity() {
-        print("now playing 1")
-    }
-    
-    func handle(_ userActivity: NSUserActivity) {
-        print(userActivity, "ua1")
-    }
-    
-    func handleUserActivity(_ userInfo: [AnyHashable : Any]?) {
-        print(userInfo, "ua1.2")
-    }
-}
-    
-class ExtensionAdaptor: NSObject, WKExtensionDelegate {
-    func handleRemoteNowPlayingActivity() {
-        print("now playing 2")
-    }
-    
-    func handle(_ userActivity: NSUserActivity) {
-        print(userActivity, "ua2")
-    }
-    
-    func handleUserActivity(_ userInfo: [AnyHashable : Any]?) {
-        print(userInfo, "ua2.2")
+            .foregroundStyle(.secondary)
+            /*
+            .onAppear {
+                try! JellyfinClient.shared.setServerUrl("http://127.0.0.1:8096")
+                JellyfinClient.shared.setUserId("42b2e9298731480f8d1b29ae4d4e1d20")
+                JellyfinClient.shared.setToken("bdb3ccbc43cf48628ada771fe99b75ee")
+            }
+             */
+            // TODO: notification
+        }
     }
 }
 

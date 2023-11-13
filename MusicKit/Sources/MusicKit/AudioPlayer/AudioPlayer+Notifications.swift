@@ -8,6 +8,7 @@
 import Foundation
 
 extension AudioPlayer {
+    public static let playbackStarted = Notification.Name.init("io.rfk.music.player.started")
     public static let queueUpdated = Notification.Name.init("io.rfk.music.player.queue.updated")
     
     public static let playPause = Notification.Name.init("io.rfk.music.player.playPause")
