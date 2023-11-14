@@ -13,10 +13,6 @@ struct ShuffleTip: Tip {
         Text("tip.shuffle.title")
     }
     
-    var message: Text? {
-        Text("tip.shuffle.message")
-    }
-    
     var options: [TipOption] = [
         MaxDisplayCount(5)
     ]

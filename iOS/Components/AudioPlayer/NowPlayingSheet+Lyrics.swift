@@ -73,7 +73,7 @@ extension NowPlayingSheet {
                         proxy.scrollTo(activeLineIndex, anchor: .top)
                     }
                 }
-                .gesture(
+                .simultaneousGesture(
                     DragGesture()
                         .onChanged({ gesture in
                             if 0 < gesture.translation.height {

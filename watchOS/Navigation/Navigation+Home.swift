@@ -11,10 +11,23 @@ extension NavigationRoot {
     struct Home: View {
         var body: some View {
             List {
+                NavigationLink(value: ListenNowNavigationDestination()) {
+                    Label("section.listenNow", systemImage: "rectangle.stack.fill")
+                }
+                
                 NavigationLink(value: LibraryNavigationDestination()) {
                     Label("section.library", systemImage: "rectangle.stack.fill")
                 }
+                NavigationLink(value: DownloadsNavigationDestination()) {
+                    Label("section.downloads", systemImage: "rectangle.stack.fill")
+                }
+                
+                NavigationLink(value: SearchNavigationDestination()) {
+                    Label("section.search", systemImage: "rectangle.stack.fill")
+                }
             }
+            .navigationTitle("title.home")
+            .modifier(NowPlayingModifier())
         }
     }
 }

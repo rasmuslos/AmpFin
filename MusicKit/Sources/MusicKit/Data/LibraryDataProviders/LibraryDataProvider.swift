@@ -17,6 +17,8 @@ public protocol LibraryDataProvider {
     func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
     
     func getRecentAlbums() async throws -> [Album]
+    func getRecommendedAlbums() async throws -> [Album]
+    
     func getAlbumTracks(id: String) async throws -> [Track]
     func getAlbumById(_ albumId: String) async throws -> Album?
     func getAlbums(limit: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
@@ -30,7 +32,7 @@ public protocol LibraryDataProvider {
 }
 
 struct LibraryDataProviderDefault: EnvironmentKey {
-    static var defaultValue: LibraryDataProvider = OnlineLibraryDataProvider()
+    static var defaultValue: LibraryDataProvider = MockLibraryDataProvider()
 }
 struct LibraryOnlineProviderDefault: EnvironmentKey {
     static var defaultValue: Bool = true

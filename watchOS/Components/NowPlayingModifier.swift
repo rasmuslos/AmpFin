@@ -18,12 +18,19 @@ struct NowPlayingModifier: ViewModifier {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink(value: NavigationRoot.NowPlayingNavigationDestination()) {
                         Image(systemName: "waveform")
-                            .symbolEffect(.variableColor.dimInactiveLayers.iterative, value: playing)
+                            .symbolEffect(.variableColor.dimInactiveLayers.iterative, isActive: playing)
                     }
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playPause), perform: { _ in
                 playing = AudioPlayer.shared.isPlaying()
             })
+    }
+}
+
+#Preview {
+    NavigationStack {
+        Text(":)")
+            .modifier(NowPlayingModifier())
     }
 }

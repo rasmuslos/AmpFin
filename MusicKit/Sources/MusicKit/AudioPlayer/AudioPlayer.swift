@@ -251,8 +251,6 @@ extension AudioPlayer {
             } else {
                 audioPlayer.insert(getAVPlayerItem(track), after: nil)
             }
-            
-            print(audioPlayer.items())
         }
         
         notifyQueueChanged()

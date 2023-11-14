@@ -222,6 +222,23 @@ public extension JellyfinClient {
     }
 }
 
+// MARK: Get random items
+
+public extension JellyfinClient {
+    func getRandomAlbums(limit: Int = 20) async throws -> [Album] {
+        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: [
+            URLQueryItem(name: "SortBy", value: "IsFavoriteOrLiked,Random"),
+            URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
+            URLQueryItem(name: "Limit", value: String(limit)),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
+        ], userPrefix: true))
+        
+        return response.Items.map(Album.convertFromJellyfin)
+    }
+}
 
 // MARK: Item sorting
 
