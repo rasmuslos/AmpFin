@@ -52,7 +52,6 @@ public class AudioPlayer {
         setupTimeObserver()
         setupObservers()
         
-        setupAudioSession()
         updateAudioSession(active: false)
     }
 }
@@ -124,6 +123,7 @@ extension AudioPlayer {
         
         notifyQueueChanged()
         
+        setupAudioSession()
         updateAudioSession(active: true)
         setPlaying(true)
         setupNowPlayingMetadata()
@@ -446,17 +446,25 @@ extension AudioPlayer {
     
     private func setupAudioSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: .longFormAudio, options: [])
         } catch {
             logger.fault("Failed to setup audio session")
         }
     }
     private func updateAudioSession(active: Bool) {
+        #if os(watchOS)
+        AVAudioSession.sharedInstance().activate { success, error in
+            if error != nil {
+                self.logger.fault("Failed to update audio session")
+            }
+        }
+        #else
         do {
             try AVAudioSession.sharedInstance().setActive(active)
         } catch {
             logger.fault("Failed to update audio session")
         }
+        #endif
     }
 }
 
@@ -498,6 +506,10 @@ extension AudioPlayer {
     private func updateNowPlayingStatus() {
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration()
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime()
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackProgress] = currentTime() / duration()
+        
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackQueueIndex] = history.count
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackQueueCount] = queue.count
         
         MPNowPlayingInfoCenter.default().playbackState = isPlaying() ? .playing : .paused
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
@@ -532,9 +544,18 @@ extension AudioPlayer {
         if track.offline == .downloaded {
             return AVPlayerItem(url: DownloadManager.shared.getTrackUrl(trackId: track.id))
         } else {
+            #if os(watchOS)
+            return AVPlayerItem(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "stream.aac").appending(queryItems: [
+                URLQueryItem(name: "profile", value: "28"),
+                URLQueryItem(name: "audioCodec", value: "aac"),
+                URLQueryItem(name: "audioBitRate", value: "128000"),
+                URLQueryItem(name: "audioSampleRate", value: "44100"),
+            ]))
+            #else
             return AVPlayerItem(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "stream").appending(queryItems: [
                 URLQueryItem(name: "static", value: "true")
             ]))
+            #endif
         }
     }
     private func notifyQueueChanged() {

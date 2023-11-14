@@ -139,6 +139,7 @@
 		3A2B932E2B00C7A700638AE9 /* LyricsTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsTip.swift; sourceTree = "<group>"; };
 		3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTip.swift; sourceTree = "<group>"; };
 		3A2B93322B00D28700638AE9 /* InstantMixTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantMixTip.swift; sourceTree = "<group>"; };
+		3A2F5A3A2B03596B009F359C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3A36A59D2ADEF8BA00D83BE7 /* AlbumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumRow.swift; sourceTree = "<group>"; };
 		3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Additional.swift"; sourceTree = "<group>"; };
 		3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumContextMenuModifier.swift; sourceTree = "<group>"; };
@@ -451,6 +452,7 @@
 				3AAC76862B02C51200E337C1 /* Components */,
 				3AC21B072B02E25C008E82D4 /* Navigation */,
 				3AB897A32B0296C400AF783D /* Core */,
+				3A2F5A3A2B03596B009F359C /* Info.plist */,
 				3AB897AA2B02A03D00AF783D /* Assets.xcassets */,
 				3AAC767F2B02C0EE00E337C1 /* Localizable.xcstrings */,
 			);
@@ -881,6 +883,7 @@
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = watchOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = watchOS;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = io.rfk.ampfin;
@@ -910,6 +913,7 @@
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = watchOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = watchOS;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = io.rfk.ampfin;

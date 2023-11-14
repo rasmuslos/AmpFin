@@ -45,7 +45,7 @@ extension JellyfinClient {
         request.timeoutInterval = 15
         
         if let token = token {
-            request.addValue("MediaBrowser Client=\"Music\", Device=\"iOS\", DeviceId=\"\(clientName)\", Version=\"\(clientVersion)\", Token=\"\(token)\"", forHTTPHeaderField: "X-Emby-Authorization")
+            request.addValue("MediaBrowser Client=\"Music\", Device=\"\(deviceType)\", DeviceId=\"\(clientName)\", Version=\"\(clientVersion)\", Token=\"\(token)\"", forHTTPHeaderField: "X-Emby-Authorization")
         } else {
             request.addValue("MediaBrowser Client=\"Music\", Device=\"iOS\", DeviceId=\"\(clientName)\", Version=\"\(clientVersion)\", Token=\"\"", forHTTPHeaderField: "X-Emby-Authorization")
         }

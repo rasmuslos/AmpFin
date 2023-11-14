@@ -26,6 +26,14 @@ public class JellyfinClient {
     public private(set) var clientName = "unknown"
     #endif
     
+    #if os(iOS)
+    public let deviceType = "iOS"
+    #elseif os(watchOS)
+    public let deviceType = "watchOS"
+    #else
+    public let deviceType = "unknown"
+    #endif
+    
     let logger = Logger(subsystem: "io.rfk.music", category: "Download")
     
     init(serverUrl: URL!, token: String?, userId: String?) {
