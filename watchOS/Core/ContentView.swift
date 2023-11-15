@@ -8,10 +8,9 @@
 import SwiftUI
 import WatchKit
 import MusicKit
+import ConnectivityKit
 
 struct ContentView: View {
-    let connectivityModel = ConnectivityViewModel()
-    
     @State var authorized = JellyfinClient.shared.isAuthorized
     
     var body: some View {
@@ -23,14 +22,9 @@ struct ContentView: View {
                     .font(.caption)
             }
             .foregroundStyle(.secondary)
-            /*
-            .onAppear {
-                try! JellyfinClient.shared.setServerUrl("http://127.0.0.1:8096")
-                JellyfinClient.shared.setUserId("42b2e9298731480f8d1b29ae4d4e1d20")
-                JellyfinClient.shared.setToken("bdb3ccbc43cf48628ada771fe99b75ee")
-            }
-             */
-            // TODO: notification
+            .onReceive(NotificationCenter.default.publisher(for: ConnectivityKit.authenticated), perform: { _ in
+                authorized = true
+            })
         }
     }
 }

@@ -3,12 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		3A11013B2AC0362B004CF731 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A11013A2AC0362B004CF731 /* FavoritesView.swift */; };
+		3A1369FA2B0535F4005F2EBF /* MusicKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A1369F92B0535F4005F2EBF /* MusicKit */; };
+		3A1369FC2B053612005F2EBF /* MusicKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A1369FB2B053612005F2EBF /* MusicKit */; };
 		3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */; };
+		3A2240302B0537A20073591B /* ConnectivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A22402F2B0537A20073591B /* ConnectivityKit */; };
+		3A2240322B053B540073591B /* ConnectivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A2240312B053B540073591B /* ConnectivityKit */; };
 		3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFA2AA883EC00197AA7 /* LibraryView.swift */; };
 		3A234DFD2AA884FF00197AA7 /* LibraryView+Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */; };
 		3A234E052AA88D6000197AA7 /* TracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E042AA88D6000197AA7 /* TracksView.swift */; };
@@ -64,10 +68,6 @@
 		3A98A0302AABA37B00EA84CF /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98A02F2AABA37B00EA84CF /* ErrorView.swift */; };
 		3A98A0322AABA3DF00EA84CF /* ArtistLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98A0312AABA3DF00EA84CF /* ArtistLoadView.swift */; };
 		3AAC76732B02B23400E337C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC76722B02B23400E337C1 /* AppDelegate.swift */; };
-		3AAC76762B02B51B00E337C1 /* ConnectivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC76752B02B51B00E337C1 /* ConnectivityViewModel.swift */; };
-		3AAC76782B02B68000E337C1 /* Connectivity+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC76772B02B68000E337C1 /* Connectivity+ViewModel.swift */; };
-		3AAC767C2B02BD7A00E337C1 /* Connectivity+MessageTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC767B2B02BD7A00E337C1 /* Connectivity+MessageTypes.swift */; };
-		3AAC767E2B02BDC000E337C1 /* Connectivity+MessageTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC767D2B02BDC000E337C1 /* Connectivity+MessageTypes.swift */; };
 		3AAC76802B02C0EE00E337C1 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3AAC767F2B02C0EE00E337C1 /* Localizable.xcstrings */; };
 		3AAC76822B02C29A00E337C1 /* NavigationRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC76812B02C29A00E337C1 /* NavigationRoot.swift */; };
 		3AAC76852B02C4E600E337C1 /* ListenNowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC76842B02C4E600E337C1 /* ListenNowView.swift */; };
@@ -76,11 +76,10 @@
 		3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC768C2B02C68600E337C1 /* ItemImage.swift */; };
 		3AAC768F2B02C69F00E337C1 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC768E2B02C69F00E337C1 /* ItemImage.swift */; };
 		3AAC76912B02C6AA00E337C1 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3AAC76902B02C6AA00E337C1 /* NukeUI */; };
+		3AB622372B0529C7003612C2 /* NowPlayingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB622362B0529C7003612C2 /* NowPlayingOptions.swift */; };
 		3AB897942B02969100AF783D /* watchOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB897932B02969100AF783D /* watchOSApp.swift */; };
 		3AB897962B02969100AF783D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB897952B02969100AF783D /* ContentView.swift */; };
 		3AB8979E2B02969200AF783D /* watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3AB897912B02969100AF783D /* watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3AB897A72B029A9400AF783D /* MusicKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB897A62B029A9400AF783D /* MusicKit */; };
-		3AB897A92B029EB400AF783D /* MusicKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB897A82B029EB400AF783D /* MusicKit */; };
 		3AB897AB2B02A03D00AF783D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AB897AA2B02A03D00AF783D /* Assets.xcassets */; };
 		3AC21B062B02DD15008E82D4 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC21B052B02DD15008E82D4 /* UIImageColors */; };
 		3AC21B092B02E26D008E82D4 /* Navigation+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC21B082B02E26D008E82D4 /* Navigation+Home.swift */; };
@@ -104,7 +103,6 @@
 		3AEB323E2AA7FFA100853210 /* NavigationRoot+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB323D2AA7FFA100853210 /* NavigationRoot+Search.swift */; };
 		3AEB32402AA7FFF100853210 /* NavigationRoot+Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB323F2AA7FFF100853210 /* NavigationRoot+Library.swift */; };
 		3AEB32422AA800C800853210 /* Navigation+Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32412AA800C800853210 /* Navigation+Downloads.swift */; };
-		3AF025D52B02CAF500C846DE /* Connectivity+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF025D42B02CAF500C846DE /* Connectivity+Notifications.swift */; };
 		3AF025D72B02CC5F00C846DE /* NowPlayingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF025D62B02CC5F00C846DE /* NowPlayingModifier.swift */; };
 		3AF025DA2B02CD4200C846DE /* AlbumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF025D92B02CD4200C846DE /* AlbumRow.swift */; };
 		3AF025DD2B02D27500C846DE /* ShuffleTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF025DC2B02D27500C846DE /* ShuffleTip.swift */; };
@@ -137,6 +135,7 @@
 
 /* Begin PBXFileReference section */
 		3A11013A2AC0362B004CF731 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		3A136A4B2B0536F0005F2EBF /* MusicKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MusicKit; sourceTree = "<group>"; };
 		3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
 		3A234DFA2AA883EC00197AA7 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView+Links.swift"; sourceTree = "<group>"; };
@@ -184,6 +183,7 @@
 		3A8850612AA90D1200456DDD /* AlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsView.swift; sourceTree = "<group>"; };
 		3A8850632AA90E4600456DDD /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
 		3A8850652AA9165300456DDD /* TrackListButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListButtons.swift; sourceTree = "<group>"; };
+		3A8887082B05371E00F1F5D3 /* ConnectivityKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ConnectivityKit; sourceTree = "<group>"; };
 		3A8B993B2AA9FCC5004AAA7B /* NowPlayingSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingSheet.swift; sourceTree = "<group>"; };
 		3A8B993D2AA9FE02004AAA7B /* NowPlayingSheet+Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingSheet+Title.swift"; sourceTree = "<group>"; };
 		3A8B993F2AAA0085004AAA7B /* NowPlayingSheet+Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingSheet+Controls.swift"; sourceTree = "<group>"; };
@@ -194,10 +194,6 @@
 		3A98A02F2AABA37B00EA84CF /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		3A98A0312AABA3DF00EA84CF /* ArtistLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistLoadView.swift; sourceTree = "<group>"; };
 		3AAC76722B02B23400E337C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3AAC76752B02B51B00E337C1 /* ConnectivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityViewModel.swift; sourceTree = "<group>"; };
-		3AAC76772B02B68000E337C1 /* Connectivity+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Connectivity+ViewModel.swift"; sourceTree = "<group>"; };
-		3AAC767B2B02BD7A00E337C1 /* Connectivity+MessageTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Connectivity+MessageTypes.swift"; sourceTree = "<group>"; };
-		3AAC767D2B02BDC000E337C1 /* Connectivity+MessageTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Connectivity+MessageTypes.swift"; sourceTree = "<group>"; };
 		3AAC767F2B02C0EE00E337C1 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		3AAC76812B02C29A00E337C1 /* NavigationRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRoot.swift; sourceTree = "<group>"; };
 		3AAC76842B02C4E600E337C1 /* ListenNowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenNowView.swift; sourceTree = "<group>"; };
@@ -205,10 +201,10 @@
 		3AAC768A2B02C58700E337C1 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		3AAC768C2B02C68600E337C1 /* ItemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemImage.swift; sourceTree = "<group>"; };
 		3AAC768E2B02C69F00E337C1 /* ItemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemImage.swift; sourceTree = "<group>"; };
+		3AB622362B0529C7003612C2 /* NowPlayingOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingOptions.swift; sourceTree = "<group>"; };
 		3AB897912B02969100AF783D /* watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AB897932B02969100AF783D /* watchOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOSApp.swift; sourceTree = "<group>"; };
 		3AB897952B02969100AF783D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		3AB897A42B02970100AF783D /* MusicKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MusicKit; sourceTree = "<group>"; };
 		3AB897AA2B02A03D00AF783D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3ABAFCAA2AA7D6C40011BFD6 /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AC21B082B02E26D008E82D4 /* Navigation+Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation+Home.swift"; sourceTree = "<group>"; };
@@ -232,7 +228,6 @@
 		3AEB323D2AA7FFA100853210 /* NavigationRoot+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Search.swift"; sourceTree = "<group>"; };
 		3AEB323F2AA7FFF100853210 /* NavigationRoot+Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Library.swift"; sourceTree = "<group>"; };
 		3AEB32412AA800C800853210 /* Navigation+Downloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation+Downloads.swift"; sourceTree = "<group>"; };
-		3AF025D42B02CAF500C846DE /* Connectivity+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Connectivity+Notifications.swift"; sourceTree = "<group>"; };
 		3AF025D62B02CC5F00C846DE /* NowPlayingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingModifier.swift; sourceTree = "<group>"; };
 		3AF025D92B02CD4200C846DE /* AlbumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumRow.swift; sourceTree = "<group>"; };
 		3AF025DC2B02D27500C846DE /* ShuffleTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleTip.swift; sourceTree = "<group>"; };
@@ -244,8 +239,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A1369FC2B053612005F2EBF /* MusicKit in Frameworks */,
 				3AC21B062B02DD15008E82D4 /* UIImageColors in Frameworks */,
-				3AB897A92B029EB400AF783D /* MusicKit in Frameworks */,
+				3A2240302B0537A20073591B /* ConnectivityKit in Frameworks */,
 				3AAC76912B02C6AA00E337C1 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -254,8 +250,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AB897A72B029A9400AF783D /* MusicKit in Frameworks */,
+				3A1369FA2B0535F4005F2EBF /* MusicKit in Frameworks */,
 				3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */,
+				3A2240322B053B540073591B /* ConnectivityKit in Frameworks */,
 				3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,38 +428,10 @@
 		3A98A0332AABA48D00EA84CF /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				3AAC76742B02B50700E337C1 /* Watch */,
 				3A6FC1F52ACC0BE30070301B /* Intents */,
 				3ADE8E952AA92B03009826A3 /* Extensions */,
 			);
 			path = Util;
-			sourceTree = "<group>";
-		};
-		3AAC76742B02B50700E337C1 /* Watch */ = {
-			isa = PBXGroup;
-			children = (
-				3AAC76752B02B51B00E337C1 /* ConnectivityViewModel.swift */,
-				3AAC767D2B02BDC000E337C1 /* Connectivity+MessageTypes.swift */,
-			);
-			path = Watch;
-			sourceTree = "<group>";
-		};
-		3AAC76792B02BD6400E337C1 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				3AAC767A2B02BD6C00E337C1 /* Connectivity */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		3AAC767A2B02BD6C00E337C1 /* Connectivity */ = {
-			isa = PBXGroup;
-			children = (
-				3AAC76772B02B68000E337C1 /* Connectivity+ViewModel.swift */,
-				3AAC767B2B02BD7A00E337C1 /* Connectivity+MessageTypes.swift */,
-				3AF025D42B02CAF500C846DE /* Connectivity+Notifications.swift */,
-			);
-			path = Connectivity;
 			sourceTree = "<group>";
 		};
 		3AAC76832B02C4D300E337C1 /* Views */ = {
@@ -477,10 +446,10 @@
 		3AAC76862B02C51200E337C1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				3AF025D62B02CC5F00C846DE /* NowPlayingModifier.swift */,
 				3AF025DB2B02D26900C846DE /* Tips */,
 				3AF025D82B02CD3400C846DE /* Items */,
 				3AAC76872B02C56000E337C1 /* Fallback */,
+				3AB622352B0529AD003612C2 /* NowPlaying */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -494,10 +463,18 @@
 			path = Fallback;
 			sourceTree = "<group>";
 		};
+		3AB622352B0529AD003612C2 /* NowPlaying */ = {
+			isa = PBXGroup;
+			children = (
+				3AF025D62B02CC5F00C846DE /* NowPlayingModifier.swift */,
+				3AB622362B0529C7003612C2 /* NowPlayingOptions.swift */,
+			);
+			path = NowPlaying;
+			sourceTree = "<group>";
+		};
 		3AB897922B02969100AF783D /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
-				3AAC76792B02BD6400E337C1 /* Util */,
 				3AAC76832B02C4D300E337C1 /* Views */,
 				3AAC76862B02C51200E337C1 /* Components */,
 				3AC21B072B02E25C008E82D4 /* Navigation */,
@@ -532,7 +509,8 @@
 				3A8286492AEC0D3400384BC9 /* README.md */,
 				3AEB32192AA7EC3C00853210 /* iOS */,
 				3AB897922B02969100AF783D /* watchOS */,
-				3AB897A42B02970100AF783D /* MusicKit */,
+				3A136A4B2B0536F0005F2EBF /* MusicKit */,
+				3A8887082B05371E00F1F5D3 /* ConnectivityKit */,
 				3ABAFCAB2AA7D6C40011BFD6 /* Products */,
 				3AB897A52B029A9400AF783D /* Frameworks */,
 			);
@@ -692,6 +670,7 @@
 				3AB8978D2B02969100AF783D /* Sources */,
 				3AB8978E2B02969100AF783D /* Frameworks */,
 				3AB8978F2B02969100AF783D /* Resources */,
+				3AB6223C2B05317E003612C2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -699,9 +678,10 @@
 			);
 			name = watchOS;
 			packageProductDependencies = (
-				3AB897A82B029EB400AF783D /* MusicKit */,
 				3AAC76902B02C6AA00E337C1 /* NukeUI */,
 				3AC21B052B02DD15008E82D4 /* UIImageColors */,
+				3A1369FB2B053612005F2EBF /* MusicKit */,
+				3A22402F2B0537A20073591B /* ConnectivityKit */,
 			);
 			productName = "watchOS Watch App";
 			productReference = 3AB897912B02969100AF783D /* watchOS.app */;
@@ -726,7 +706,8 @@
 			packageProductDependencies = (
 				3ADE8E932AA9275C009826A3 /* UIImageColors */,
 				3AE1B0E22ABCDCE80052C8AA /* NukeUI */,
-				3AB897A62B029A9400AF783D /* MusicKit */,
+				3A1369F92B0535F4005F2EBF /* MusicKit */,
+				3A2240312B053B540073591B /* ConnectivityKit */,
 			);
 			productName = JellyfinMusic;
 			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* iOS.app */;
@@ -763,6 +744,7 @@
 			packageReferences = (
 				3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */,
 				3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */,
+				3A1369F82B0535F4005F2EBF /* XCLocalSwiftPackageReference "MusicKit" */,
 			);
 			productRefGroup = 3ABAFCAB2AA7D6C40011BFD6 /* Products */;
 			projectDirPath = "";
@@ -815,6 +797,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    buildNumber=$(git rev-list --count head)\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nfi\n";
 		};
+		3AB6223C2B05317E003612C2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    buildNumber=$(git rev-list --count head)\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -823,7 +823,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AAC76852B02C4E600E337C1 /* ListenNowView.swift in Sources */,
-				3AAC767C2B02BD7A00E337C1 /* Connectivity+MessageTypes.swift in Sources */,
 				3A592C9B2B03F22F00F553D9 /* LibraryView+Artists.swift in Sources */,
 				3A592C992B03F06600F553D9 /* LibraryView+Favorites.swift in Sources */,
 				3AAC768F2B02C69F00E337C1 /* ItemImage.swift in Sources */,
@@ -833,12 +832,11 @@
 				3AF025DD2B02D27500C846DE /* ShuffleTip.swift in Sources */,
 				3A592C922B03E92600F553D9 /* ItemRow.swift in Sources */,
 				3A592C972B03EF0300F553D9 /* LibraryView+Albums.swift in Sources */,
-				3AAC76782B02B68000E337C1 /* Connectivity+ViewModel.swift in Sources */,
 				3A592C892B03AF7100F553D9 /* AlbumList.swift in Sources */,
 				3A592C8B2B03E2BA00F553D9 /* Navigation+Destinations.swift in Sources */,
 				3AAC76822B02C29A00E337C1 /* NavigationRoot.swift in Sources */,
-				3AF025D52B02CAF500C846DE /* Connectivity+Notifications.swift in Sources */,
 				3AAC76892B02C56B00E337C1 /* LoadingView.swift in Sources */,
+				3AB622372B0529C7003612C2 /* NowPlayingOptions.swift in Sources */,
 				3AB897962B02969100AF783D /* ContentView.swift in Sources */,
 				3A592C952B03EB4600F553D9 /* LibraryView+Tracks.swift in Sources */,
 				3AAC768B2B02C58700E337C1 /* ErrorView.swift in Sources */,
@@ -891,7 +889,6 @@
 				3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */,
 				3A234E152AA8DBC900197AA7 /* SortSelector.swift in Sources */,
 				3A3DA66D2AAB2EAE0091211A /* ArtistView+Header.swift in Sources */,
-				3AAC767E2B02BDC000E337C1 /* Connectivity+MessageTypes.swift in Sources */,
 				3A6F50A72AACA3D600FC8A29 /* SearchView.swift in Sources */,
 				3A234E182AA8E0AD00197AA7 /* TrackListRow.swift in Sources */,
 				3A6F50A92AACA48400FC8A29 /* SearchView+Picker.swift in Sources */,
@@ -905,7 +902,6 @@
 				3A3DA6612AAB29470091211A /* ArtistsView.swift in Sources */,
 				3ADE8EA02AA93D39009826A3 /* AlbumView+Toolbar.swift in Sources */,
 				3A3DA66B2AAB2DDA0091211A /* ArtistView.swift in Sources */,
-				3AAC76762B02B51B00E337C1 /* ConnectivityViewModel.swift in Sources */,
 				3A3DA6682AAB2CDA0091211A /* ArtistListRow.swift in Sources */,
 				3A8B99402AAA0085004AAA7B /* NowPlayingSheet+Controls.swift in Sources */,
 				3A2B932F2B00C7A700638AE9 /* LyricsTip.swift in Sources */,
@@ -939,12 +935,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = DEVELOPMENT;
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = watchOS/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = watchOS;
+				INFOPLIST_KEY_CFBundleDisplayName = AmpFin;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = io.rfk.ampfin;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -969,12 +965,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = DEVELOPMENT;
 				DEVELOPMENT_TEAM = N8AA4S3S96;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = watchOS/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = watchOS;
+				INFOPLIST_KEY_CFBundleDisplayName = AmpFin;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = io.rfk.ampfin;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1226,6 +1222,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		3A1369F82B0535F4005F2EBF /* XCLocalSwiftPackageReference "MusicKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MusicKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1246,18 +1249,27 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3A1369F92B0535F4005F2EBF /* MusicKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MusicKit;
+		};
+		3A1369FB2B053612005F2EBF /* MusicKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A1369F82B0535F4005F2EBF /* XCLocalSwiftPackageReference "MusicKit" */;
+			productName = MusicKit;
+		};
+		3A22402F2B0537A20073591B /* ConnectivityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConnectivityKit;
+		};
+		3A2240312B053B540073591B /* ConnectivityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConnectivityKit;
+		};
 		3AAC76902B02C6AA00E337C1 /* NukeUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeUI;
-		};
-		3AB897A62B029A9400AF783D /* MusicKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MusicKit;
-		};
-		3AB897A82B029EB400AF783D /* MusicKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MusicKit;
 		};
 		3AC21B052B02DD15008E82D4 /* UIImageColors */ = {
 			isa = XCSwiftPackageProductDependency;

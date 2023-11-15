@@ -7,6 +7,7 @@
 
 import Foundation
 
-extension ConnectivityViewModel {
+public extension ConnectivityKit {
+    static let authenticated = NSNotification.Name("io.rfk.music.login.authenticated")
     static let nowPlayingActivityStarted = NSNotification.Name("io.rfk.music.nowPlaying.started")
 }

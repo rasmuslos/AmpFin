@@ -311,6 +311,7 @@ extension AudioPlayer {
     private func trackDidFinish() {
         if let nowPlaying = nowPlaying {
             history.append(nowPlaying)
+            // TODO: this
             // UserContext.donateTrack(nowPlaying, shuffle: shuffled, repeatMode: repeatMode)
         }
         

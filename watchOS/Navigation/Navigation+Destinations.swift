@@ -8,9 +8,6 @@
 import Foundation
 
 extension NavigationRoot {
-    struct NowPlayingNavigationDestination: Hashable {
-    }
-    
     struct ListenNowNavigationDestination: Hashable {
     }
     

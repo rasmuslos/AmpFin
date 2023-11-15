@@ -8,6 +8,7 @@
 import SwiftUI
 import WatchKit
 import TipKit
+import ConnectivityKit
 
 @main
 struct watchOS_Watch_AppApp: App {
@@ -17,6 +18,8 @@ struct watchOS_Watch_AppApp: App {
         try? Tips.configure([
             .displayFrequency(.daily)
         ])
+        
+        ConnectivityKit.shared.setup()
     }
     
     var body: some Scene {

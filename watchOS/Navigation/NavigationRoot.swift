@@ -16,9 +16,6 @@ struct NavigationRoot: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Home()
-                .navigationDestination(for: NowPlayingNavigationDestination.self) { _ in
-                    NowPlayingView()
-                }
                 .navigationDestination(for: ListenNowNavigationDestination.self) { _ in
                     ListenNowView()
                 }
@@ -41,12 +38,6 @@ struct NavigationRoot: View {
                 }
         }
         .environment(\.libraryDataProvider, dataProvider)
-        .onReceive(NotificationCenter.default.publisher(for: ConnectivityViewModel.nowPlayingActivityStarted)) { _ in
-            navigationPath.append(NowPlayingNavigationDestination())
-        }
-        .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playbackStarted), perform: { _ in
-            navigationPath.append(NowPlayingNavigationDestination())
-        })
     }
 }
 

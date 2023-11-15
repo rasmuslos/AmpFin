@@ -6,9 +6,10 @@
 //
 
 import WatchKit
+import ConnectivityKit
 
 class AppDelegate: NSObject, WKApplicationDelegate {
     func handleRemoteNowPlayingActivity() {
-        NotificationCenter.default.post(name: ConnectivityViewModel.nowPlayingActivityStarted, object: nil)
+        NotificationCenter.default.post(name: ConnectivityKit.nowPlayingActivityStarted, object: nil)
     }
 }
