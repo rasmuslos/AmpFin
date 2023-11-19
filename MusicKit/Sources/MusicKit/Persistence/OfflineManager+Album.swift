@@ -11,7 +11,7 @@ import SwiftData
 // MARK: Downloader
 
 public extension OfflineManager {
-    func downloadAlbum(_ album: Album) async throws {
+    func download(_ album: Album) async throws {
         var offlineAlbum: OfflineAlbum
         let tracks = try await JellyfinClient.shared.getAlbumTracks(id: album.id)
         
@@ -25,7 +25,7 @@ public extension OfflineManager {
         
         tracks.forEach { track in
             Task.detached {
-                await downloadTrack(track, album: album)
+                await download(track, album: album)
             }
         }
         
@@ -87,7 +87,7 @@ extension OfflineManager {
     func deleteOfflineAlbum(_ album: OfflineAlbum) throws {
         let tracks = try getAlbumTracks(album)
         for track in tracks {
-            deleteOfflineTrack(track)
+            delete(track)
         }
         
         try DownloadManager.shared.deleteAlbumCover(albumId: album.id)
@@ -132,7 +132,7 @@ public extension OfflineManager {
     }
     
     @MainActor
-    func getAlbumById(_ albumId: String) throws -> Album? {
+    func getAlbum(albumId: String) -> Album? {
         var descriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate { $0.id == albumId })
         descriptor.fetchLimit = 1
         

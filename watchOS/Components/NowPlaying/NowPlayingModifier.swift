@@ -40,11 +40,14 @@ struct NowPlayingModifier: ViewModifier {
                         }
                     }
                     .sheet(isPresented: $optionsPresented, content: {
-                        Text("a")
+                        OptionsSheet()
                     })
             })
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playPause), perform: { _ in
                 playing = AudioPlayer.shared.isPlaying()
+            })
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
+                optionsPresented = false
             })
             .onReceive(NotificationCenter.default.publisher(for: ConnectivityKit.nowPlayingActivityStarted)) { _ in
                 nowPlayingSheetPresented = true

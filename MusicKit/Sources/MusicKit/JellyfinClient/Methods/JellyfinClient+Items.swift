@@ -199,6 +199,23 @@ public extension JellyfinClient {
     }
 }
 
+public extension JellyfinClient {
+    func getFavoriteAlbums(sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Album] {
+        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: [
+            URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
+            URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
+            URLQueryItem(name: "Filters", value: "IsFavorite"),
+            URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
+        ], userPrefix: true))
+        
+        return response.Items.map(Album.convertFromJellyfin)
+    }
+}
+
 // MARK: Instant mix
 
 public extension JellyfinClient {

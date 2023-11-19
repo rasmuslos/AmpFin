@@ -11,7 +11,7 @@ import TipKit
 import ConnectivityKit
 
 @main
-struct watchOS_Watch_AppApp: App {
+struct watchOSApp: App {
     @WKApplicationDelegateAdaptor var appDelegate: AppDelegate
     
     init() {

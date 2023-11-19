@@ -66,7 +66,7 @@ extension AlbumView {
                             .lineLimit(1)
                     }
                     .font(.caption)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(.tertiary)
                     .padding(.bottom)
                     
                     HStack {

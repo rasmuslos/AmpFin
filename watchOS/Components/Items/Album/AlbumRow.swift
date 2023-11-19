@@ -14,8 +14,6 @@ import UIImageColors
 struct AlbumTab: View {
     let album: Album
     
-    @State var backgroundColor: Color?
-    
     var body: some View {
         Button {
             
@@ -55,19 +53,14 @@ struct AlbumTab: View {
         }
         .buttonStyle(.plain)
         .padding(10)
-        .background(.gray.opacity(0.25))
-        .background((backgroundColor ?? Color.accentColor).gradient.opacity(0.3))
+        .background(.white.opacity(0.25))
+        .background {
+            ItemImage(cover: album.cover)
+                .scaleEffect(3)
+                .blur(radius: 30)
+        }
         .background(.thinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .onAppear {
-            Task.detached {
-                if let cover = album.cover, let data = try? Data(contentsOf: cover.url), let image = UIImage(data: data), let colors = image.getColors(quality: .low) {
-                    withAnimation {
-                        backgroundColor = Color(colors.background)
-                    }
-                }
-            }
-        }
     }
 }
 

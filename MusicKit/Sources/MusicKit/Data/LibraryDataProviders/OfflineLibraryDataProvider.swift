@@ -51,7 +51,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         throw JellyfinClientError.invalidResponse
     }
     public func getAlbumById(_ albumId: String) async throws -> Album? {
-        try await OfflineManager.shared.getAlbumById(albumId)
+        await OfflineManager.shared.getAlbum(albumId: albumId)
     }
     public func getAlbums(limit: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
         let albums = try await OfflineManager.shared.getAllAlbums().sorted {

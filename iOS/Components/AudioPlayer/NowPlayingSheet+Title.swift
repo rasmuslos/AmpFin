@@ -101,14 +101,14 @@ extension NowPlayingSheet {
         var body: some View {
             Button {
                 Task.detached {
-                    try? await track.setFavorite(favorite: !track.favorite)
+                    await track.setFavorite(favorite: !track.favorite)
                 }
             } label: {
                 Image(systemName: track.favorite ? "heart.fill" : "heart")
                     .font(.system(size: 24))
                     .symbolRenderingMode(.palette)
                     .contentTransition(.symbolEffect(.replace))
-                    .foregroundStyle(.white, .gray.opacity(0.25))
+                    .foregroundStyle(.white)
             }
         }
     }

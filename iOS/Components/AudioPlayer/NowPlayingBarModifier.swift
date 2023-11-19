@@ -80,7 +80,7 @@ struct NowPlayingBarModifier: ViewModifier {
                     .contextMenu {
                         Button {
                             Task {
-                                try? await currentTrack.setFavorite(favorite: !currentTrack.favorite)
+                                await currentTrack.setFavorite(favorite: !currentTrack.favorite)
                             }
                         } label: {
                             Label("favorite", systemImage: currentTrack.favorite ? "heart.fill" : "heart")
@@ -94,19 +94,6 @@ struct NowPlayingBarModifier: ViewModifier {
                             Label("queue.mix", systemImage: "compass.drawing")
                         }
                         .disabled(!libraryOnline)
-                        
-                        Divider()
-                        
-                        NavigationLink(destination: AlbumLoadView(albumId: currentTrack.album.id)) {
-                            Label("album.view", systemImage: "square.stack")
-                        }
-                        
-                        if let artist = currentTrack.artists.first {
-                            NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
-                                Label("artist.view", systemImage: "music.mic")
-                            }
-                            .disabled(!dataProvider.supportsArtistLookup)
-                        }
                         
                         Divider()
                         

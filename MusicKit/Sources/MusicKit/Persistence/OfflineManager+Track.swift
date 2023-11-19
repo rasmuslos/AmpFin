@@ -10,13 +10,13 @@ import SwiftData
 
 extension OfflineManager {
     @MainActor
-    func downloadTrack(_ track: Track, album: OfflineAlbum) {
-        if let existing = getOfflineTrackById(track.id) {
+    func download(_ track: Track, album: OfflineAlbum) {
+        if let existing = getOfflineTrack(trackId: track.id) {
             if existing.downloadId == nil {
                 return
             }
             
-            deleteOfflineTrack(existing)
+            delete(existing)
         }
         
         let downloadTask = DownloadManager.shared.downloadTrack(track: track)
@@ -49,26 +49,26 @@ extension OfflineManager {
     }
     
     @MainActor
-    func deleteOfflineTrack(_ track: OfflineTrack) {
+    func delete(_ track: OfflineTrack) {
         DownloadManager.shared.deleteTrack(trackId: track.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(track)
         NotificationCenter.default.post(name: OfflineManager.trackDownloadStatusChanged, object: track.id)
     }
 }
 
-// MARK: Getter
+// MARK: Get/Set
 
 extension OfflineManager {
     @MainActor
-    func getOfflineTrackById(_ id: String) -> OfflineTrack? {
-        var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == id })
+    func getOfflineTrack(trackId: String) -> OfflineTrack? {
+        var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
         track.fetchLimit = 1
         
         return try? PersistenceManager.shared.modelContainer.mainContext.fetch(track).first
     }
     
     @MainActor
-    func getOfflineTrackByDownloadId(_ taskId: Int) -> OfflineTrack? {
+    func getOfflineTrack(taskId: Int) -> OfflineTrack? {
         var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId == taskId })
         track.fetchLimit = 1
         
@@ -83,7 +83,7 @@ extension OfflineManager {
     
     @MainActor
     func getTrackOfflineStatus(trackId: String) -> Item.OfflineStatus {
-        if let track = getOfflineTrackById(trackId) {
+        if let track = getOfflineTrack(trackId: trackId) {
             return track.downloadId == nil ? .downloaded : .working
         }
         

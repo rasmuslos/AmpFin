@@ -20,7 +20,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         }
         
         Task.detached { @MainActor [self] in
-            if let track = OfflineManager.shared.getOfflineTrackByDownloadId(downloadTask.taskIdentifier) {
+            if let track = OfflineManager.shared.getOfflineTrack(taskId: downloadTask.taskIdentifier) {
                 let destination = getTrackUrl(trackId: track.id)
                 
                 do {
@@ -48,7 +48,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let error = error {
             Task.detached { @MainActor [self] in
-                if let track = OfflineManager.shared.getOfflineTrackByDownloadId(task.taskIdentifier) {
+                if let track = OfflineManager.shared.getOfflineTrack(taskId: task.taskIdentifier) {
                     try? OfflineManager.shared.deleteOfflineAlbum(track.album)
                     logger.fault("Error while downloading track \(track.id) (\(track.name)): \(error.localizedDescription)")
                 } else {

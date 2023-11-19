@@ -21,7 +21,8 @@ struct ItemImage: View {
         }
         Spacer()
     }
-        .background(.gray.opacity(0.2))
+        .background(.white.opacity(0.25))
+        .background(.ultraThickMaterial)
         .aspectRatio(1, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: 7))
     

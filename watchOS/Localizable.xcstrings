@@ -4,9 +4,6 @@
     ":)" : {
 
     },
-    "a" : {
-
-    },
     "error.unavailable.text" : {
       "localizations" : {
         "en" : {
@@ -27,7 +24,7 @@
         }
       }
     },
-    "Hello, World!" : {
+    "favorite" : {
 
     },
     "login.waiting" : {

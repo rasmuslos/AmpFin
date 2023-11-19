@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "music.png",
+      "filename" : "music_watch.png",
       "idiom" : "universal",
       "platform" : "watchos",
       "size" : "1024x1024"

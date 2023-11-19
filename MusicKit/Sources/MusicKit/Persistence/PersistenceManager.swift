@@ -11,10 +11,12 @@ import SwiftData
 public struct PersistenceManager {
     public let modelContainer: ModelContainer = {
         let schema = Schema([
-            OfflinePlay.self,
             OfflineTrack.self,
             OfflineAlbum.self,
             OfflineLyrics.self,
+            
+            OfflinePlay.self,
+            OfflineFavorite.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         

@@ -35,7 +35,7 @@ public extension OfflineManager {
         // Ensure all tracks are deleted
         let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
         for track in tracks {
-            deleteOfflineTrack(track)
+            delete(track)
         }
         
         try DownloadManager.shared.cleanupDirectory()

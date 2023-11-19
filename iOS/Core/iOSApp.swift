@@ -12,7 +12,7 @@ import MusicKit
 import ConnectivityKit
 
 @main
-struct MusicApp: App {
+struct iOSApp: App {
     init() {
         try? Tips.configure([
             .displayFrequency(.daily)

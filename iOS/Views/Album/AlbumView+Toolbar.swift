@@ -60,7 +60,7 @@ extension AlbumView {
                             Button {
                                 if album.offline == .none {
                                     Task {
-                                        try! await OfflineManager.shared.downloadAlbum(album)
+                                        try! await OfflineManager.shared.download(album)
                                     }
                                 } else if album.offline == .downloaded {
                                     try! OfflineManager.shared.deleteOfflineAlbum(albumId: album.id)
@@ -76,13 +76,14 @@ extension AlbumView {
                                     Image(systemName: "xmark.circle.fill")
                                 }
                             }
-                            .popoverTip(DownloadTip())
+                            // funny thing, this crashed the app
+                            // .popoverTip(DownloadTip())
                             .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
                             
                             Menu {
                                 Button {
                                     Task {
-                                        try? await album.setFavorite(favorite: !album.favorite)
+                                        await album.setFavorite(favorite: !album.favorite)
                                     }
                                 } label: {
                                     Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")

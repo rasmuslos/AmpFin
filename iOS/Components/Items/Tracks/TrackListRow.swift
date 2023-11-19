@@ -140,7 +140,7 @@ extension TrackListRow {
         var body: some View {
             Button {
                 Task {
-                    try? await track.setFavorite(favorite: !track.favorite)
+                    await track.setFavorite(favorite: !track.favorite)
                 }
             } label: {
                 Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")

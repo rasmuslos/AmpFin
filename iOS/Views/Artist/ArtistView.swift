@@ -41,7 +41,7 @@ struct ArtistView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     Task {
-                        try? await artist.setFavorite(favorite: !artist.favorite)
+                        await artist.setFavorite(favorite: !artist.favorite)
                     }
                 } label: {
                     Label("favorite", systemImage: artist.favorite ? "heart.fill" : "heart")

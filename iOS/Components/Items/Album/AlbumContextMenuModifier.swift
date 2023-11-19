@@ -22,7 +22,7 @@ struct AlbumContextMenuModifier: ViewModifier {
             .contextMenu {
                 Button {
                     Task {
-                        try? await album.setFavorite(favorite: !album.favorite)
+                        await album.setFavorite(favorite: !album.favorite)
                     }
                 } label: {
                     Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
@@ -54,7 +54,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                     if album.offline == .none {
                         Button {
                             Task {
-                                try! await OfflineManager.shared.downloadAlbum(album)
+                                try! await OfflineManager.shared.download(album)
                             }
                         } label: {
                             Label("download.download", systemImage: "arrow.down")

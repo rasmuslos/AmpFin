@@ -18,7 +18,7 @@ extension JellyfinClient {
         let SortName: String?
         
         let Overview: String?
-        let Genres: [String]
+        let Genres: [String]?
         
         let PremiereDate: String?
         let AlbumArtists: [JellyfinArtist]

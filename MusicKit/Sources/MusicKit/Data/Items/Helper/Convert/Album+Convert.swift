@@ -16,7 +16,7 @@ extension Album {
             cover: Cover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id),
             favorite: item.UserData.IsFavorite,
             overview: item.Overview,
-            genres: item.Genres,
+            genres: item.Genres ?? [],
             releaseDate: Date.parseDate(item.PremiereDate),
             artists: item.AlbumArtists.map {
                 ReducedArtist(

@@ -97,9 +97,21 @@ extension Item {
 // MARK: Favorite
 
 extension Item {
-    public func setFavorite(favorite: Bool) async throws {
-        try await JellyfinClient.shared.setFavorite(itemId: id, favorite: favorite)
-        self.favorite = true
+    @MainActor
+    public func setFavorite(favorite: Bool) async {
+        self.favorite = favorite
+        
+        if let offlineTrack = OfflineManager.shared.getOfflineTrack(trackId: id) {
+            offlineTrack.favorite = favorite
+        } else if let offlineAlbum = OfflineManager.shared.getOfflineAlbum(albumId: id) {
+            offlineAlbum.favorite = favorite
+        }
+        
+        do {
+            try await JellyfinClient.shared.setFavorite(itemId: id, favorite: favorite)
+        } catch {
+            OfflineManager.shared.createOfflineFavorite(itemId: id, favorite: favorite)
+        }
     }
 }
 

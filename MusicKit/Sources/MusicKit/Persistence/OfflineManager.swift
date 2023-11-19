@@ -7,8 +7,14 @@
 
 import Foundation
 import SwiftData
+import OSLog
 
 public struct OfflineManager {
+    let logger = Logger(subsystem: "io.rfk.music", category: "Offline")
+    
+    private init() {
+        updateOfflineFavorites()
+    }
 }
 
 // MARK: Error
