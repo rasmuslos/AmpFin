@@ -23,3 +23,9 @@ public extension DownloadManager {
         documentsURL.appending(path: "tracks").appending(path: "\(trackId).flac")
     }
 }
+
+extension DownloadManager {
+    func isTrackDownloaded(trackId: String) -> Bool {
+        FileManager.default.fileExists(atPath: getTrackUrl(trackId: trackId).relativePath)
+    }
+}

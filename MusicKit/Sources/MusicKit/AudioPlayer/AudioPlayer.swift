@@ -540,11 +540,11 @@ extension AudioPlayer {
     }
     
     private func getAVPlayerItem(_ track: Track) -> AVPlayerItem {
-        if track.offline == .downloaded {
+        if DownloadManager.shared.isTrackDownloaded(trackId: track.id) {
             return AVPlayerItem(url: DownloadManager.shared.getTrackUrl(trackId: track.id))
         } else {
             #if os(watchOS)
-            return AVPlayerItem(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "stream.aac").appending(queryItems: [
+            return AVPlayerItem(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "stream").appending(queryItems: [
                 URLQueryItem(name: "profile", value: "28"),
                 URLQueryItem(name: "audioCodec", value: "aac"),
                 URLQueryItem(name: "audioBitRate", value: "128000"),

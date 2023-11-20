@@ -118,7 +118,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Downloaden"
+            "value" : "Heruntenladen"
           }
         },
         "en" : {
@@ -730,7 +730,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Downloads"
+            "value" : "Heruntergeladen"
           }
         },
         "en" : {
