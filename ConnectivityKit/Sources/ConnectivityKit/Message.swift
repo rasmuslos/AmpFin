@@ -13,6 +13,7 @@ typealias Payload = [String: Any]
 
 enum MessageType: Int {
     case authentication = 1
+    case nowPlaying = 2
 }
 
 enum ConnectivityError: Error {
@@ -26,15 +27,18 @@ protocol SendableMessage: ConnectivityMessage {
     func getMessage() -> Message
     func action()
     
+    func reply() -> Payload?
+    func replyHandler(payload: Payload)
+    
     static func parse(payload: Payload) throws -> Self
 }
 
 extension SendableMessage {
-    func replyHandler(payload: Payload) {
-    }
-    
     func reply() -> Payload? {
         nil
+    }
+    
+    func replyHandler(payload: Payload) {
     }
 }
 
@@ -60,10 +64,13 @@ struct Message {
         return payload
     }
     static func parse(payload: Payload) throws -> SendableMessage {
+        // TODO: Make this more extensible
         if let code = payload["type"] as? Int, let type = MessageType(rawValue: code) {
             switch type {
             case .authentication:
                 return try AuthenticationMessage.parse(payload: payload)
+            case .nowPlaying:
+                return try NowPlayingMessage.parse(payload: payload)
             }
         }
         

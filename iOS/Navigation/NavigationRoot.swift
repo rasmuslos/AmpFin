@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreSpotlight
+import MusicKit
 
 struct NavigationRoot: View {
     @State var activeTab: Tab = Self.getLastActiveTab()
@@ -20,12 +21,33 @@ struct NavigationRoot: View {
             SearchTab()
                 .tag(Tab.search)
         }
+        .onReceive(NotificationCenter.default.publisher(for: Self.navigateArtistNotification)) { notification in
+            if let id = notification.object as? String {
+                withAnimation {
+                    activeTab = .library
+                }
+                
+                NotificationCenter.default.post(name: Self.navigateNotification, object: nil, userInfo: [
+                    "artistId": id,
+                ])
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Self.navigateAlbumNotification)) { notification in
+            if let id = notification.object as? String {
+                if OfflineManager.shared.getAlbum(albumId: id) != nil {
+                    activeTab = .downloads
+                } else {
+                    activeTab = .library
+                }
+                
+                NotificationCenter.default.post(name: Self.navigateNotification, object: nil, userInfo: [
+                    "albumId": id,
+                ])
+            }
+        }
         .onChange(of: activeTab) {
             setLastActiveTab()
         }
-        .onContinueUserActivity(CSSearchableItemActionType, perform: { userActivity in
-            print(userActivity)
-        })
     }
 }
 

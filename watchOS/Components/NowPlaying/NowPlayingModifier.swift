@@ -49,12 +49,12 @@ struct NowPlayingModifier: ViewModifier {
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
                 optionsPresented = false
             })
-            .onReceive(NotificationCenter.default.publisher(for: ConnectivityKit.nowPlayingActivityStarted)) { _ in
-                nowPlayingSheetPresented = true
-            }
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playbackStarted), perform: { _ in
                 nowPlayingSheetPresented = true
             })
+            .onReceive(NotificationCenter.default.publisher(for: ConnectivityKit.nowPlayingActivityStarted)) { _ in
+                nowPlayingSheetPresented = true
+            }
     }
 }
 

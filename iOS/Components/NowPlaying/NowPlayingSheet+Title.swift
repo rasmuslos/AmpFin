@@ -22,7 +22,7 @@ extension NowPlayingSheet {
             ItemImage(cover: track.cover)
                 .scaleEffect(playing ? 1 : 0.8)
                 .animation(.spring(duration: 0.25, bounce: 0.5), value: playing)
-                .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
+                .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading)
             
             Spacer()
             
@@ -32,18 +32,16 @@ extension NowPlayingSheet {
                         .bold()
                         .lineLimit(1)
                         .foregroundStyle(.primary)
-                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
-                    Text(track.artists.map { $0.name }.joined(separator: ", "))
-                        .lineLimit(1)
-                        .foregroundStyle(.secondary)
-                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
+                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading)
+                    ArtistsMenu(track: track)
+                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading)
                 }
                 .font(.system(size: 18))
                 
                 Spacer()
                 
-                MenuButton(track: track)
-                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
+                FavoriteButton(track: track)
+                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topLeading)
             }
             .padding(.vertical)
         }
@@ -62,7 +60,7 @@ extension NowPlayingSheet {
             HStack() {
                 ItemImage(cover: track.cover)
                     .frame(width: 60, height: 60)
-                    .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
+                    .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading)
                     .onTapGesture {
                         withAnimation {
                             currentTab = .cover
@@ -74,28 +72,26 @@ extension NowPlayingSheet {
                         .lineLimit(1)
                         .font(.headline)
                         .foregroundStyle(.primary)
-                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
-                    Text(track.artists.map { $0.name }.joined(separator: ", "))
-                        .lineLimit(1)
+                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading)
+                    ArtistsMenu(track: track)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
+                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading)
                 }
                 
                 Spacer()
                 
-                MenuButton(track: track)
-                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topLeading, isSource: true)
+                FavoriteButton(track: track)
+                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topLeading)
             }
             .padding(.top, 40)
         }
     }
 }
 
-// MARK: Menu Button
+// MARK: favorite button
 
 extension NowPlayingSheet {
-    struct MenuButton: View {
+    struct FavoriteButton: View {
         let track: Track
         
         var body: some View {
@@ -110,6 +106,37 @@ extension NowPlayingSheet {
                     .contentTransition(.symbolEffect(.replace))
                     .foregroundStyle(.white)
             }
+        }
+    }
+}
+
+// MARK: artist menu
+
+extension NowPlayingSheet {
+    struct ArtistsMenu: View {
+        let track: Track
+        
+        var body: some View {
+            Menu {
+                Button {
+                    NotificationCenter.default.post(name: NavigationRoot.navigateAlbumNotification, object: track.album.id)
+                } label: {
+                    Label("album.view", systemImage: "square.stack")
+                }
+                
+                if let artistId = track.artists.first?.id {
+                    Button {
+                        NotificationCenter.default.post(name: NavigationRoot.navigateArtistNotification, object: artistId)
+                    } label: {
+                        Label("artist.view", systemImage: "music.mic")
+                    }
+                }
+            } label: {
+                Text(track.artists.map { $0.name }.joined(separator: ", "))
+                    .lineLimit(1)
+            }
+            .foregroundStyle(.secondary)
+            .padding(.vertical, -9)
         }
     }
 }

@@ -25,12 +25,12 @@ extension AlbumView {
                 .padding(.horizontal)
                 .task(fetchAlbums)
             
-            if let alsoFromArtist = alsoFromArtist, alsoFromArtist.count > 1 {
-                AlbumRow(title: "Also by \(album.artists.first?.name ?? "this artist")", albums: alsoFromArtist)
+            if let alsoFromArtist = alsoFromArtist, alsoFromArtist.count > 1, let first = album.artists.first {
+                AlbumRow(title: String(localized: "album.similar \(first.name)"), albums: alsoFromArtist)
             }
             
             if let similar = similar, !similar.isEmpty {
-                AlbumRow(title: "Similar", albums: similar)
+                AlbumRow(title: String(localized: "album.similar"), albums: similar)
             }
         }
     }

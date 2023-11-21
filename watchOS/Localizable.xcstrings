@@ -25,7 +25,14 @@
       }
     },
     "favorite" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorite"
+          }
+        }
+      }
     },
     "login.waiting" : {
       "localizations" : {

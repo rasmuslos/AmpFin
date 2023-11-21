@@ -65,6 +65,38 @@
         }
       }
     },
+    "album.similar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ähnlich"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar"
+          }
+        }
+      }
+    },
+    "album.similar %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auch von %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Also by %@"
+          }
+        }
+      }
+    },
     "album.view" : {
       "localizations" : {
         "de" : {

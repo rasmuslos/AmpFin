@@ -98,6 +98,22 @@ struct NowPlayingBarModifier: ViewModifier {
                         Divider()
                         
                         Button {
+                            NotificationCenter.default.post(name: NavigationRoot.navigateAlbumNotification, object: currentTrack.album.id)
+                        } label: {
+                            Label("album.view", systemImage: "square.stack")
+                        }
+                        
+                        if let artistId = currentTrack.artists.first?.id {
+                            Button {
+                                NotificationCenter.default.post(name: NavigationRoot.navigateArtistNotification, object: artistId)
+                            } label: {
+                                Label("artist.view", systemImage: "music.mic")
+                            }
+                        }
+                        
+                        Divider()
+                        
+                        Button {
                             AudioPlayer.shared.stopPlayback()
                         } label: {
                             Label("playback.stop", systemImage: "xmark")
@@ -130,6 +146,11 @@ struct NowPlayingBarModifier: ViewModifier {
                     playing = AudioPlayer.shared.isPlaying()
                 }
             })
+            .onReceive(NotificationCenter.default.publisher(for: NavigationRoot.navigateNotification)) { _ in
+                withAnimation {
+                    nowPlayingSheetPresented = false
+                }
+            }
     }
 }
 
@@ -149,7 +170,9 @@ struct NowPlayingBarSafeAreaModifier: ViewModifier {
 
 #Preview {
     NavigationStack {
-        Text(":)")
+        Rectangle()
+            .foregroundStyle(.red)
+            .ignoresSafeArea()
     }
     .modifier(NowPlayingBarModifier(playing: true, currentTrack: Track.fixture))
 }

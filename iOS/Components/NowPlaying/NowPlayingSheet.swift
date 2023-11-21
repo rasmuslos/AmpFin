@@ -102,9 +102,9 @@ extension NowPlayingSheet {
 
 extension NowPlayingSheet {
     enum Tab {
-    case cover
-    case lyrics
-    case queue
+        case cover
+        case lyrics
+        case queue
     }
 }
 

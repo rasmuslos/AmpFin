@@ -16,6 +16,7 @@ struct LibraryView: View {
     @State var recentAlbums: [Album]?
     
     var body: some View {
+        
         ScrollView {
             List {
                 Links()

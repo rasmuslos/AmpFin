@@ -50,6 +50,7 @@ struct SearchView: View {
             .listStyle(.plain)
             .navigationTitle("title.search")
             .modifier(NowPlayingBarSafeAreaModifier())
+            .modifier(AccountToolbarButtonModifier())
             // Query
             .searchable(text: $query, prompt: "search.placeholder")
             .autocorrectionDisabled()
@@ -73,7 +74,7 @@ struct SearchView: View {
                 
                 fetchSearchResults()
             }
-            .modifier(AccountToolbarButtonModifier())
+            .onAppear(perform: fetchSearchResults)
         }
         .environment(\.libraryDataProvider, dataProvider)
     }

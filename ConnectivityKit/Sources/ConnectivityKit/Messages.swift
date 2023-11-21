@@ -29,8 +29,6 @@ public struct AuthenticationMessage: SendableMessage {
         ])
     }
     func action() {
-        print("d")
-        
         #if os(watchOS)
         try! JellyfinClient.shared.setServerUrl(server)
         JellyfinClient.shared.setUserId(userId)
@@ -48,5 +46,50 @@ public struct AuthenticationMessage: SendableMessage {
         } else {
             throw ConnectivityError.parseFailed
         }
+    }
+}
+
+// MARK: Now playing
+
+public struct NowPlayingMessage: SendableMessage {
+    let callback: ((_ trackId: String, _ name: String, _ artist: String, _ cover: URL?, _ favorite: Bool) -> Void)?
+    
+    public init(callback: ((_: String, _: String, _: String, _: URL?, _: Bool) -> Void)?) {
+        self.callback = callback
+    }
+    
+    func getMessage() -> Message {
+        Message(type: .nowPlaying, payload: [:])
+    }
+    
+    func action() {
+    }
+    
+    static func parse(payload: Payload) throws -> NowPlayingMessage {
+        return NowPlayingMessage(callback: nil)
+    }
+    
+    func replyHandler(payload: Payload) {
+        if let trackId = payload["trackId"] as? String,
+           let name = payload["name"] as? String,
+           let artist = payload["artist"] as? String,
+           let cover = payload["cover"] as? String,
+           let favorite = payload["favorite"] as? Bool {
+            callback?(trackId, name, artist, URL(string: cover), favorite)
+        }
+    }
+    
+    func reply() -> Payload? {
+        if let nowPlaying = AudioPlayer.shared.nowPlaying {
+            return [
+                "trackId": nowPlaying.id,
+                "name": nowPlaying.name,
+                "artist": nowPlaying.artists.map { $0.name }.joined(separator: ", "),
+                "cover": nowPlaying.cover?.url.absoluteString as Any,
+                "favorite": nowPlaying.favorite,
+            ]
+        }
+        
+        return nil
     }
 }
