@@ -41,6 +41,16 @@ public class Track: Item {
     }
 }
 
+// MARK: Convenience
+
+extension Track {
+    public var artistName: String {
+        get {
+            artists.map { $0.name }.joined(separator: String(localized: "artists.separator"))
+        }
+    }
+}
+
 // MARK: Helper
 
 extension Track {
@@ -50,6 +60,12 @@ extension Track {
         public let id: String
         public let name: String?
         public let artists: [ReducedArtist]
+        
+        public var artistName: String {
+            get {
+                artists.map { $0.name }.joined(separator: String(localized: "artists.separator"))
+            }
+        }
     }
     
     public struct Index: Comparable, Codable {

@@ -74,7 +74,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                     
                     Text(album.name)
                     if !album.artists.isEmpty {
-                        Text(album.artists.map { $0.name }.joined(separator: ", "))
+                        Text(album.artistName)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }

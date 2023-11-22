@@ -425,19 +425,11 @@ extension AudioPlayer {
         
         commandCenter.nextTrackCommand.isEnabled = true
         commandCenter.nextTrackCommand.addTarget { [unowned self] event in
-            if queue.count == 0 {
-                return .commandFailed
-            }
-            
             advanceToNextTrack()
             return .success
         }
         commandCenter.previousTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.addTarget { [unowned self] event in
-            if history.count == 0 {
-                return .commandFailed
-            }
-            
             backToPreviousItem()
             return .success
         }
@@ -476,9 +468,9 @@ extension AudioPlayer {
                 nowPlayingInfo = [:]
                 
                 nowPlayingInfo[MPMediaItemPropertyTitle] = nowPlaying.name
-                nowPlayingInfo[MPMediaItemPropertyArtist] = nowPlaying.artists.map { $0.name }.joined(separator: ", ")
+                nowPlayingInfo[MPMediaItemPropertyArtist] = nowPlaying.artistName
                 nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = nowPlaying.album.name
-                nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = nowPlaying.album.artists.map { $0.name }.joined(separator: ", ")
+                nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = nowPlaying.album.artistName
                 
                 MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
                 

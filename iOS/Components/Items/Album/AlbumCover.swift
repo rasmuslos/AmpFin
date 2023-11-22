@@ -18,7 +18,7 @@ struct AlbumCover: View {
             Group {
                 Text(album.name)
                     .font(.callout)
-                Text(album.artists.map { $0.name }.joined(separator: ", "))
+                Text(album.artistName)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 7)

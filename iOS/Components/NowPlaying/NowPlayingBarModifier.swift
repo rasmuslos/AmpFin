@@ -125,7 +125,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             
                             Text(currentTrack.name)
                             if !currentTrack.artists.isEmpty {
-                                Text(currentTrack.artists.map { $0.name }.joined(separator: ", "))
+                                Text(currentTrack.artistName)
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }

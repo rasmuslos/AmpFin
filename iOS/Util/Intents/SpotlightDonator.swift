@@ -32,7 +32,7 @@ struct SpotlightDonator {
                 for track in tracks {
                     let attributes = CSSearchableItemAttributeSet(contentType: .audio)
                     attributes.title = track.name
-                    attributes.artist = track.artists.map { $0.name }.joined(separator: ", ")
+                    attributes.artist = track.artistName
                     attributes.album = track.album.name
                     attributes.playCount = track.playCount as NSNumber
                     

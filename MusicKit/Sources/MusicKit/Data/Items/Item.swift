@@ -51,7 +51,6 @@ public class Item: Identifiable {
         }
     }
     
-    // Has to be here to be overwritable
     func checkOfflineStatus() {
         self._offline = Item.OfflineStatus.none
     }

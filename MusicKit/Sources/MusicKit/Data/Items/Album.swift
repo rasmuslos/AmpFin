@@ -39,3 +39,13 @@ public class Album: Item {
         }]
     }
 }
+
+// MARK: Convenience
+
+extension Album {
+    public var artistName: String {
+        get {
+            artists.map { $0.name }.joined(separator: String(localized: "artists.separator"))
+        }
+    }
+}

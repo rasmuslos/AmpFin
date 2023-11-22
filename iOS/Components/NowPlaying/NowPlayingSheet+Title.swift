@@ -132,7 +132,7 @@ extension NowPlayingSheet {
                     }
                 }
             } label: {
-                Text(track.artists.map { $0.name }.joined(separator: ", "))
+                Text(track.artistName)
                     .lineLimit(1)
             }
             .foregroundStyle(.secondary)

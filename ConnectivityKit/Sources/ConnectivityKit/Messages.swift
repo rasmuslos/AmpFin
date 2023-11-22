@@ -84,7 +84,7 @@ public struct NowPlayingMessage: SendableMessage {
             return [
                 "trackId": nowPlaying.id,
                 "name": nowPlaying.name,
-                "artist": nowPlaying.artists.map { $0.name }.joined(separator: ", "),
+                "artist": nowPlaying.artistName,
                 "cover": nowPlaying.cover?.url.absoluteString as Any,
                 "favorite": nowPlaying.favorite,
             ]

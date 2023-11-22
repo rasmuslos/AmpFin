@@ -22,7 +22,7 @@ struct AlbumListRow: View {
                     .font(.body)
                 
                 if album.artists.count > 0 {
-                    Text(album.artists.map { $0.name }.joined(separator: ", "))
+                    Text(album.artistName)
                         .lineLimit(1)
                         .font(.callout)
                         .foregroundStyle(.secondary)

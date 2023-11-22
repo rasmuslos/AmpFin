@@ -27,9 +27,9 @@ struct ItemRow: View {
                 
                 Group {
                     if let track = item as? Track {
-                        Text(track.artists.map { $0.name }.joined(separator: ", "))
+                        Text(track.artistName)
                     } else if let album = item as? Album {
-                        Text(album.artists.map { $0.name }.joined(separator: ", "))
+                        Text(album.artistName)
                     }
                 }
                 .font(.caption2)

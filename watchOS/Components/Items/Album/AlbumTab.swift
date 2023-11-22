@@ -41,7 +41,7 @@ struct AlbumTab: View {
                             .font(.caption)
                             .padding(.top)
                             .lineLimit(1)
-                        Text(album.artists.map { $0.name }.joined(separator: ", "))
+                        Text(album.artistName)
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                             .lineLimit(1)

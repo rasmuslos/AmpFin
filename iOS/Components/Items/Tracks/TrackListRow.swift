@@ -40,7 +40,7 @@ struct TrackListRow: View {
                         .padding(.vertical, showArtist ? 0 : 6)
                     
                     if showArtist {
-                        Text(track.artists.map { $0.name }.joined(separator: ", "))
+                        Text(track.artistName)
                             .lineLimit(1)
                             .font(.callout)
                             .foregroundStyle(.secondary)

@@ -34,7 +34,7 @@ struct UserContext {
             title: track.name,
             type: .song,
             artwork: artwork, 
-            artist: track.artists.map { $0.name }.joined(separator: ", "))
+            artist: track.artistName)
         
         let intent = INPlayMediaIntent(
             mediaItems: [mediaItem],

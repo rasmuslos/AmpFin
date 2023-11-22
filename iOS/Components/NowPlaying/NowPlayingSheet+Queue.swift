@@ -168,7 +168,7 @@ extension NowPlayingSheet {
                         .lineLimit(1)
                         .font(.body)
                     
-                    Text(track.artists.map { $0.name }.joined(separator: ", "))
+                    Text(track.artistName)
                         .lineLimit(1)
                         .font(.callout)
                         .foregroundStyle(.secondary)

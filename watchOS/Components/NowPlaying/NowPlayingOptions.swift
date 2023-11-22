@@ -23,7 +23,7 @@ extension NowPlayingModifier {
         var body: some View {
             if let track = AudioPlayer.shared.nowPlaying {
                 VStack {
-                    Cover(name: track.name, artist: track.artists.map { $0.name }.joined(separator: ", "), cover: track.cover)
+                    Cover(name: track.name, artist: track.artistName, cover: track.cover)
                     
                     Button {
                         Task {
