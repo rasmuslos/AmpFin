@@ -35,14 +35,22 @@ struct NavigationRoot: View {
         .onReceive(NotificationCenter.default.publisher(for: Self.navigateAlbumNotification)) { notification in
             if let id = notification.object as? String {
                 if OfflineManager.shared.getAlbum(albumId: id) != nil {
-                    activeTab = .downloads
+                    withAnimation {
+                        activeTab = .downloads
+                    }
+                    
+                    NotificationCenter.default.post(name: Self.navigateNotification, object: nil, userInfo: [
+                        "offlineAlbumId": id,
+                    ])
                 } else {
-                    activeTab = .library
+                    withAnimation {
+                        activeTab = .library
+                    }
+                    
+                    NotificationCenter.default.post(name: Self.navigateNotification, object: nil, userInfo: [
+                        "albumId": id,
+                    ])
                 }
-                
-                NotificationCenter.default.post(name: Self.navigateNotification, object: nil, userInfo: [
-                    "albumId": id,
-                ])
             }
         }
         .onChange(of: activeTab) {
