@@ -7,6 +7,12 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 - **Search Your Library**: Quickly find your favorite tracks with our intuitive library search feature.
 - **Queue with History**: Take control of your playback experience by creating queues and accessing your listening history.
 
+## Roadmap
+
+- Better ConnectivityKit messages
+- watchOS app
+- Siri / Intents integration
+
 ## Screenshots
 
 | Library | Album | Player | Queue |
