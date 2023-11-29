@@ -12,6 +12,8 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 - Better ConnectivityKit messages
 - watchOS app
 - Siri / Intents integration
+- Rework downloads
+- Playlist support
 
 ## Screenshots
 
