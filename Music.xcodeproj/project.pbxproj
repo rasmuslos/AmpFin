@@ -81,7 +81,6 @@
 		3AB622372B0529C7003612C2 /* NowPlayingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB622362B0529C7003612C2 /* NowPlayingOptions.swift */; };
 		3AB897942B02969100AF783D /* watchOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB897932B02969100AF783D /* watchOSApp.swift */; };
 		3AB897962B02969100AF783D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB897952B02969100AF783D /* ContentView.swift */; };
-		3AB8979E2B02969200AF783D /* watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3AB897912B02969100AF783D /* watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3AB897AB2B02A03D00AF783D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AB897AA2B02A03D00AF783D /* Assets.xcassets */; };
 		3AC21B062B02DD15008E82D4 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC21B052B02DD15008E82D4 /* UIImageColors */; };
 		3AC21B092B02E26D008E82D4 /* Navigation+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC21B082B02E26D008E82D4 /* Navigation+Home.swift */; };
@@ -120,20 +119,6 @@
 			remoteInfo = "watchOS Watch App";
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		3AB897A22B02969200AF783D /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				3AB8979E2B02969200AF783D /* watchOS.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3A11013A2AC0362B004CF731 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
@@ -1144,7 +1129,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.ampfin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1187,7 +1172,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.ampfin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
