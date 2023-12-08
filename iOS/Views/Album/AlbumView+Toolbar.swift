@@ -63,7 +63,7 @@ extension AlbumView {
                                         try! await OfflineManager.shared.download(album)
                                     }
                                 } else if album.offline == .downloaded {
-                                    try! OfflineManager.shared.deleteOfflineAlbum(albumId: album.id)
+                                    try! OfflineManager.shared.delete(albumId: album.id)
                                 }
                             } label: {
                                 switch album.offline {

@@ -96,6 +96,8 @@ extension NowPlayingSheet {
                 VolumeSlider()
                 
                 HStack {
+                    // sometime when they are properly supported by the server
+                    /*
                     Button {
                         setActiveTab(.lyrics)
                     } label: {
@@ -103,6 +105,7 @@ extension NowPlayingSheet {
                     }
                     .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
                     .popoverTip(LyricsTip(), arrowEdge: .bottom)
+                     */
                     
                     Spacer()
                     AirPlayView()
@@ -115,6 +118,8 @@ extension NowPlayingSheet {
                         Image(systemName: "list.dash")
                     }
                     .buttonStyle(SymbolButtonStyle(active: queueTabActive))
+                    
+                    Spacer()
                 }
                 .bold()
                 .font(.system(size: 20))

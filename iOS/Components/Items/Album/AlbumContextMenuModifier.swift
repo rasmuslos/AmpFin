@@ -61,7 +61,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                         }
                     } else if album.offline == .downloaded {
                         Button {
-                            try! OfflineManager.shared.deleteOfflineAlbum(albumId: album.id)
+                            try! OfflineManager.shared.delete(albumId: album.id)
                         } label: {
                             Label("download.remove", systemImage: "xmark")
                         }

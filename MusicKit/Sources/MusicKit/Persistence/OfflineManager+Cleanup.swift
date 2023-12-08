@@ -20,7 +20,7 @@ public extension OfflineManager {
         }
         
         for album in albums {
-            try await OfflineManager.shared.deleteOfflineAlbum(album)
+            try await OfflineManager.shared.delete(album)
         }
     }
     
@@ -29,7 +29,7 @@ public extension OfflineManager {
         // Delete all albums (should remove all tracks, too)
         let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
         for album in albums {
-            try deleteOfflineAlbum(album)
+            try! delete(album)
         }
         
         // Ensure all tracks are deleted

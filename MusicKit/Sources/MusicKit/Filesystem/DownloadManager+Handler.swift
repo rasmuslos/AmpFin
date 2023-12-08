@@ -33,7 +33,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                     logger.info("Download finished: \(track.id) (\(track.name))")
                 } catch {
                     try? FileManager.default.removeItem(at: tmpLocation)
-                    try? OfflineManager.shared.deleteOfflineAlbum(track.album)
+                    try? OfflineManager.shared.delete(track.album)
                     
                     logger.fault("Error while moving track \(track.id) (\(track.name)): \(error.localizedDescription)")
                 }
@@ -49,7 +49,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         if let error = error {
             Task.detached { @MainActor [self] in
                 if let track = OfflineManager.shared.getOfflineTrack(taskId: task.taskIdentifier) {
-                    try? OfflineManager.shared.deleteOfflineAlbum(track.album)
+                    try? OfflineManager.shared.delete(track.album)
                     logger.fault("Error while downloading track \(track.id) (\(track.name)): \(error.localizedDescription)")
                 } else {
                     logger.fault("Error while downloading unknown track: \(error.localizedDescription)")

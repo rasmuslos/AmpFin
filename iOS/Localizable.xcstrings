@@ -225,6 +225,22 @@
         }
       }
     },
+    "genres.separator" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ", "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ", "
+          }
+        }
+      }
+    },
     "home.recentlyAdded" : {
       "comment" : "Albums recently added to the Jellyfin server",
       "localizations" : {

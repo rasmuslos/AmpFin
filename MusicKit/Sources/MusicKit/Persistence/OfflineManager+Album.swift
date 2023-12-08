@@ -75,22 +75,22 @@ extension OfflineManager {
     }
     
     @MainActor
-    public func deleteOfflineAlbum(albumId: String) throws {
+    public func delete(albumId: String) throws {
         if let album = OfflineManager.shared.getOfflineAlbum(albumId: albumId) {
-            try deleteOfflineAlbum(album)
+            try delete(album)
         } else {
             throw OfflineError.notFoundError
         }
     }
     
     @MainActor
-    func deleteOfflineAlbum(_ album: OfflineAlbum) throws {
+    func delete(_ album: OfflineAlbum) throws {
         let tracks = try getAlbumTracks(album)
         for track in tracks {
             delete(track)
         }
         
-        try DownloadManager.shared.deleteAlbumCover(albumId: album.id)
+        try? DownloadManager.shared.deleteAlbumCover(albumId: album.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(album)
         
         NotificationCenter.default.post(name: OfflineManager.albumDownloadStatusChanged, object: album.id)

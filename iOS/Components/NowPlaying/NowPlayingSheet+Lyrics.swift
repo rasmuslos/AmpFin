@@ -119,18 +119,6 @@ extension NowPlayingSheet {
         }
         
         func fetchLyrics() {
-            self.lyrics = [
-                0: "Hello, World!",
-                10: "Hello, World!",
-                20: "Hello, World!",
-                30: "Hello, World!",
-                40: "Hello, World!",
-                50: "Hello, World!",
-                60: "Hello, World!",
-                70: "Hello, World!",
-                80: "Hello, World!",
-            ]
-            
             if let trackId = AudioPlayer.shared.nowPlaying?.id {
                 Task.detached {
                     if let lyrics = await OfflineManager.shared.getLyrics(trackId: trackId) {
