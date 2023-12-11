@@ -111,7 +111,13 @@ extension Item {
         } catch {
             OfflineManager.shared.createOfflineFavorite(itemId: id, favorite: favorite)
         }
+        
+        NotificationCenter.default.post(name: Self.affinityChanged, object: id, userInfo: [
+            "favorite": favorite,
+        ])
     }
+    
+    public static let affinityChanged = NSNotification.Name("io.rfk.music.item.affinity")
 }
 
 // MARK: Offline

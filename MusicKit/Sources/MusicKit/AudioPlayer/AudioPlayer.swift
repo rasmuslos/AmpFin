@@ -391,6 +391,12 @@ extension AudioPlayer {
             }
         }
         #endif
+        
+        NotificationCenter.default.addObserver(forName: Item.affinityChanged, object: nil, queue: nil) { [weak self] event in
+            print(event.userInfo?["favorite"] as? Bool ?? false)
+            
+            self?.updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
+        }
     }
 }
 
@@ -433,6 +439,55 @@ extension AudioPlayer {
             backToPreviousItem()
             return .success
         }
+        
+        commandCenter.likeCommand.isEnabled = true
+        commandCenter.likeCommand.addTarget { event in
+            if let event = event as? MPFeedbackCommandEvent {
+                Task.detached { [self] in
+                    await nowPlaying?.setFavorite(favorite: !event.isNegative)
+                }
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+        
+        commandCenter.changeShuffleModeCommand.isEnabled = true
+        commandCenter.changeShuffleModeCommand.addTarget { event in
+            if let event = event as? MPChangeShuffleModeCommandEvent {
+                switch event.shuffleType {
+                case .off:
+                    self.shuffle(false)
+                default:
+                    self.shuffle(true)
+                }
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+        
+        commandCenter.changeRepeatModeCommand.isEnabled = true
+        commandCenter.changeRepeatModeCommand.addTarget { event in
+            if let event = event as? MPChangeRepeatModeCommandEvent {
+                switch event.repeatType {
+                case .off:
+                    self.setRepeatMode(.none)
+                case .one:
+                    self.setRepeatMode(.track)
+                case .all:
+                    self.setRepeatMode(.queue)
+                @unknown default:
+                    self.logger.error("Unknown repeat type")
+                }
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
     }
     
     private func setupAudioSession() {
@@ -456,6 +511,11 @@ extension AudioPlayer {
             logger.fault("Failed to update audio session")
         }
         #endif
+    }
+    
+    func updateCommandCenter(favorite: Bool) {
+        MPRemoteCommandCenter.shared().changeRepeatModeCommand.currentRepeatType = repeatMode == .track ? .one : repeatMode == .queue ? .all : .off
+        MPRemoteCommandCenter.shared().likeCommand.isActive = favorite
     }
 }
 
@@ -558,6 +618,10 @@ extension AudioPlayer {
     
     private func setNowPlaying(track: Track?) {
         nowPlaying = track
+        
+        if let track = track {
+            updateCommandCenter(favorite: track.favorite)
+        }
         
         if let track = track {
             playbackReporter = PlaybackReporter(trackId: track.id)
