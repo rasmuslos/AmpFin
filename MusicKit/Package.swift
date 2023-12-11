@@ -5,7 +5,6 @@ import PackageDescription
 
 let package = Package(
     name: "MusicKit",
-    defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
         .watchOS(.v10),
@@ -16,7 +15,6 @@ let package = Package(
             targets: ["MusicKit"]),
     ],
     targets: [
-        .target(name: "MusicKit",
-                resources: [.process("Resources")])
+        .target(name: "MusicKit")
     ]
 )

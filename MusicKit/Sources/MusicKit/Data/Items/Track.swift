@@ -46,7 +46,7 @@ public class Track: Item {
 extension Track {
     public var artistName: String {
         get {
-            artists.map { $0.name }.joined(separator: String(localized: "artists.separator"))
+            artists.map { $0.name }.joined(separator: String(localized: ", "))
         }
     }
 }
@@ -63,7 +63,7 @@ extension Track {
         
         public var artistName: String {
             get {
-                artists.map { $0.name }.joined(separator: String(localized: "artists.separator"))
+                artists.map { $0.name }.joined(separator: String(localized: ", "))
             }
         }
     }

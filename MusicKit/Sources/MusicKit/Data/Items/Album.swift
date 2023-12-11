@@ -45,7 +45,8 @@ public class Album: Item {
 extension Album {
     public var artistName: String {
         get {
-            artists.map { $0.name }.joined(separator: String(localized: "artists.separator"))
+            // for some truly stupid reasons string catalogs do not work here. I have no idea why
+            artists.map { $0.name }.joined(separator: String(localized: ", "))
         }
     }
 }
