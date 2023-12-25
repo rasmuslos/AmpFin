@@ -75,13 +75,7 @@ extension LocalAudioEndpoint {
         }
         
         updateNowPlayingStatus()
-        playbackReporter?.update(
-            positionSeconds: currentTime(),
-            paused: !playing,
-            repeatMode: repeatMode,
-            shuffled: shuffled,
-            volume: audioSession.outputVolume,
-            scheduled: false)
+        updatePlaybackReporter(scheduled: false)
         Task { @MainActor in
             NotificationCenter.default.post(name: AudioPlayer.playPause, object: nil)
         }
@@ -91,10 +85,13 @@ extension LocalAudioEndpoint {
     }
     
     func seek(seconds: Double) {
-        audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000))
+        audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000)) { _ in
+            self.updatePlaybackReporter(scheduled: false)
+        }
     }
     func seek(seconds: Double) async {
         await audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000))
+        updatePlaybackReporter(scheduled: false)
     }
     
     func duration() -> Double {
@@ -126,10 +123,11 @@ extension LocalAudioEndpoint {
         if shuffle {
             tracks.shuffle()
         }
-        setNowPlaying(track: tracks[startIndex])
         
         history = Array(tracks[0..<startIndex])
         queue = Array(tracks[startIndex + 1..<tracks.count])
+        
+        setNowPlaying(track: tracks[startIndex])
         
         audioPlayer.insert(getAVPlayerItem(nowPlaying!), after: nil)
         populateQueue()
@@ -351,13 +349,7 @@ extension LocalAudioEndpoint {
             updateNowPlayingStatus()
             buffering = !(audioPlayer.currentItem?.isPlaybackLikelyToKeepUp ?? false)
             
-            playbackReporter?.update(
-                positionSeconds: currentTime(),
-                paused: !self.isPlaying(),
-                repeatMode: repeatMode,
-                shuffled: shuffled,
-                volume: audioSession.outputVolume,
-                scheduled: true)
+            updatePlaybackReporter(scheduled: true)
             
             Task { @MainActor in
                 NotificationCenter.default.post(name: AudioPlayer.positionUpdated, object: nil)
@@ -395,6 +387,12 @@ extension LocalAudioEndpoint {
             }
         }
         
+        NotificationCenter.default.addObserver(forName: Item.affinityChanged, object: nil, queue: nil) { [weak self] event in
+            print(event.userInfo?["favorite"] as? Bool ?? false)
+            
+            self?.updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
+        }
+        
         #if os(iOS)
         NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [weak self] _ in
             if let self = self {
@@ -402,12 +400,6 @@ extension LocalAudioEndpoint {
             }
         }
         #endif
-        
-        NotificationCenter.default.addObserver(forName: Item.affinityChanged, object: nil, queue: nil) { [weak self] event in
-            print(event.userInfo?["favorite"] as? Bool ?? false)
-            
-            self?.updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
-        }
     }
 }
 
@@ -604,7 +596,7 @@ extension LocalAudioEndpoint {
         return nil
     }
     
-    private func getAVPlayerItem(_ track: Track) -> AVPlayerItem {
+    func getAVPlayerItem(_ track: Track) -> AVPlayerItem {
         #if canImport(AFOfflineKit)
         if DownloadManager.shared.isTrackDownloaded(trackId: track.id) {
             return AVPlayerItem(url: DownloadManager.shared.getTrackUrl(trackId: track.id))
@@ -625,14 +617,24 @@ extension LocalAudioEndpoint {
         #endif
     }
     
-    private func notifyQueueChanged() {
+    func notifyQueueChanged() {
         Task { @MainActor in
             NotificationCenter.default.post(name: AudioPlayer.queueUpdated, object: nil)
             NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
         }
     }
     
-    private func setNowPlaying(track: Track?) {
+    func updatePlaybackReporter(scheduled: Bool) {
+        playbackReporter?.update(
+            positionSeconds: currentTime(),
+            paused: !self.isPlaying(),
+            repeatMode: repeatMode,
+            shuffled: shuffled,
+            volume: audioSession.outputVolume,
+            scheduled: scheduled)
+    }
+    
+    func setNowPlaying(track: Track?) {
         nowPlaying = track
         
         if let track = track {
@@ -640,7 +642,7 @@ extension LocalAudioEndpoint {
         }
         
         if let track = track {
-            playbackReporter = PlaybackReporter(trackId: track.id)
+            playbackReporter = PlaybackReporter(trackId: track.id, queue: queue)
         } else {
             playbackReporter = nil
         }

@@ -13,7 +13,13 @@ public class AudioPlayer {
     
     private var endpoint: AudioEndpoint?
     private var remoteControlAvailable = false
+    
+    init() {
+        setupObservers()
+    }
 }
+
+// MARK: Setup endpoints
 
 extension AudioPlayer {
     public func setupRemoteControl() {
@@ -154,6 +160,49 @@ extension AudioPlayer: AudioEndpoint {
     }
 }
 
+// MARK: Receive remote events
+
+extension AudioPlayer {
+    func setupObservers() {
+        // For some reason queue & repeat mode don't work
+        // TODO: GeneralCommand/SetVolume
+        
+        NotificationCenter.default.addObserver(forName: JellyfinWebSocket.playStateCommandIssuedNotification, object: nil, queue: nil) { [self] notification in
+            let command = notification.userInfo?["command"] as? String
+            
+            if command == "stop" {
+                stopPlayback()
+            } else if command == "playpause" {
+                setPlaying(!isPlaying())
+            } else if command == "previoustrack" {
+                backToPreviousItem()
+            } else if command == "nexttrack" {
+                advanceToNextTrack()
+            } else if command == "seek" {
+                let position = notification.userInfo?["position"] as? UInt64 ?? 0
+                seek(seconds: Double(position / 10_000_000))
+            }
+        }
+        
+        NotificationCenter.default.addObserver(forName: JellyfinWebSocket.playCommandIssuedNotification, object: nil, queue: nil) { [self] notification in
+            let command = notification.userInfo?["command"] as? String
+            let trackIds = notification.userInfo?["trackIds"] as? [String]
+            
+            Task.detached { [self] in
+                guard let tracks = try? await trackIds?.parallelMap(JellyfinClient.shared.getTrack).filter({ $0 != nil }) as? [Track], !tracks.isEmpty else { return }
+                
+                if command == "playnow" {
+                    startPlayback(tracks: tracks, startIndex: 0, shuffle: false)
+                } else if command == "playnext" {
+                    queueTracks(tracks, index: 0)
+                } else if command == "playlast" {
+                    queueTracks(tracks, index: queue.count)
+                }
+            }
+        }
+    }
+}
+
 // MARK: Helper
 
 public extension AudioPlayer {
@@ -162,19 +211,6 @@ public extension AudioPlayer {
         case local
         case jellyfinRemote
     }
-}
-
-// MARK: Notifications
-
-extension AudioPlayer {
-    public static let playbackStarted = Notification.Name.init("io.rfk.music.player.started")
-    public static let queueUpdated = Notification.Name.init("io.rfk.music.player.queue.updated")
-    
-    public static let playPause = Notification.Name.init("io.rfk.music.player.playPause")
-    public static let positionUpdated = Notification.Name.init("io.rfk.music.player.position.updated")
-    
-    public static let playbackChange = Notification.Name.init("io.rfk.music.player.playback.changed")
-    public static let trackChange = Notification.Name.init("io.rfk.music.player.changed")
 }
 
 // MARK: Singleton

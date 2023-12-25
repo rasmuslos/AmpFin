@@ -19,11 +19,11 @@ public class PlaybackReporter {
     
     var currentTime: Double = 0
     
-    init(trackId: String) {
+    init(trackId: String, queue: [Track]) {
         self.trackId = trackId
         
         Task.detached {
-            try? await JellyfinClient.shared.reportPlaybackStarted(trackId: trackId)
+            try? await JellyfinClient.shared.reportPlaybackStarted(trackId: trackId, queue: queue)
         }
     }
     deinit {

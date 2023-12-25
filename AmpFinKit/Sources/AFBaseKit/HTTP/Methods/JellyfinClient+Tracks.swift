@@ -73,6 +73,21 @@ public extension JellyfinClient {
     
     // MARK: Other
     
+    /// Get a track by its ID
+    func getTrack(trackId: String) async -> Track? {
+        if let album = try? await request(ClientRequest<JellyfinTrackItem>(path: "Items/\(trackId)", method: "GET", query: [
+            URLQueryItem(name: "IncludeItemTypes", value: "Audio"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
+        ], userPrefix: true)) {
+            return Track.convertFromJellyfin(album)
+        }
+        
+        return nil
+    }
+    
     /// Get the lyrics of a track
     func getLyrics(trackId: String) async throws -> Track.Lyrics {
         let response = try await request(ClientRequest<LyricsResponse>(path: "Items/\(trackId)/Lyrics", method: "GET", userPrefix: true))

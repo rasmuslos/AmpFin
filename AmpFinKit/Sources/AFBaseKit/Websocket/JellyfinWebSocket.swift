@@ -66,8 +66,7 @@ extension JellyfinWebSocket: WebSocketDelegate {
             
             reconnect(resetTimer: true)
         case .text(let message):
-            logger.info("Received WebSocket message:")
-            print(message)
+            parseMessage(message)
         case .reconnectSuggested:
             reconnect(resetTimer: true)
             break
@@ -87,6 +86,29 @@ extension JellyfinWebSocket: WebSocketDelegate {
         default:
             break
         }
+    }
+    
+    func parseMessage(_ message: String) {
+        do {
+            guard let data = message.data(using: .utf8, allowLossyConversion: false) else { throw JellyfinClientError.invalidHttpBody }
+            let parsed = try JSONDecoder().decode(Message.self, from: data)
+            
+            if parsed.MessageType == "ForceKeepAlive" {
+                logger.info("Received keep alive message from server")
+            } else if parsed.MessageType == "Playstate" {
+                NotificationCenter.default.post(name: Self.playStateCommandIssuedNotification, object: nil, userInfo: [
+                    "position": parsed.Data?.SeekPositionTicks as Any,
+                    "command": parsed.Data?.Command?.lowercased() as Any,
+                ])
+            } else if parsed.MessageType == "Play" {
+                NotificationCenter.default.post(name: Self.playCommandIssuedNotification, object: nil, userInfo: [
+                    "trackIds": parsed.Data?.ItemIds as Any,
+                    "command": parsed.Data?.PlayCommand?.lowercased() as Any,
+                ])
+            } else {
+                throw JellyfinClientError.invalidHttpBody
+            }
+        } catch {}
     }
 }
 

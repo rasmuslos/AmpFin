@@ -11,10 +11,14 @@ import Foundation
 
 public extension JellyfinClient {
     /// Report a playback start event to the server
-    func reportPlaybackStarted(trackId: String) async throws {
+    func reportPlaybackStarted(trackId: String, queue: [Track]) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "sessions/playing", method: "POST", body: [
             "ItemId": trackId,
             "PositionTicks": 0,
+            "NowPlayingQueue": queue.enumerated().map { [
+                "Id": $1.id,
+                "PlaylistItemId": "playlistItem\($0)"
+            ] }
         ]))
     }
     
