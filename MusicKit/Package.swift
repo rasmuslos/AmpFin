@@ -1,20 +1,23 @@
 // swift-tools-version: 5.9
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
-    name: "MusicKit",
+    name: "AmpFinKit",
     platforms: [
         .iOS(.v17),
         .watchOS(.v10),
     ],
     products: [
-        .library(
-            name: "MusicKit",
-            targets: ["MusicKit"]),
+        .library(name: "AFBaseKit", targets: ["AFBaseKit"]),
+        .library(name: "AFApiKit", targets: ["AFApiKit"]),
+        .library(name: "AFOfflineKit", targets: ["AFOfflineKit"]),
+        .library(name: "AFPlaybackKit", targets: ["AFPlaybackKit"]),
     ],
     targets: [
-        .target(name: "MusicKit")
+        .target(name: "AFBaseKit"),
+        .target(name: "AFApiKit", dependencies: [.byName(name: "AFBaseKit")]),
+        .target(name: "AFOfflineKit", dependencies: [.byName(name: "AFBaseKit"), .byName(name: "AFApiKit")]),
+        .target(name: "AFPlaybackKit", dependencies: [.byName(name: "AFBaseKit"), .byName(name: "AFApiKit")]),
     ]
 )

@@ -7,7 +7,9 @@
 
 import SwiftUI
 import SwiftData
-import MusicKit
+import AFBaseKit
+import AFApiKit
+import AFPlaybackKit
 
 struct ContentView: View {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -22,6 +24,8 @@ struct ContentView: View {
                 .onAppear {
                     SpotlightDonator.donate()
                     UserContext.updateContext()
+                    
+                    AudioPlayer.current.setupRemoteControl()
                 }
                 .onReceive(NotificationCenter.default.publisher(for: JellyfinClient.onlineStatusChanged), perform: { _ in
                     online = JellyfinClient.shared.isOnline

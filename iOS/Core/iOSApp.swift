@@ -8,8 +8,8 @@
 import SwiftUI
 import SwiftData
 import TipKit
-import MusicKit
-import ConnectivityKit
+import AFBaseKit
+import AFOfflineKit
 
 @main
 struct iOSApp: App {
@@ -17,8 +17,6 @@ struct iOSApp: App {
         try? Tips.configure([
             .displayFrequency(.daily)
         ])
-        
-        ConnectivityKit.shared.setup()
     }
     
     var body: some Scene {

@@ -17,6 +17,19 @@
         }
       }
     },
+    ":)" : {
+
+    },
+    "%@ • %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ • %2$@"
+          }
+        }
+      }
+    },
     "account.deleteDownloads" : {
       "localizations" : {
         "de" : {
@@ -48,6 +61,15 @@
           }
         }
       }
+    },
+    "account.remote" : {
+
+    },
+    "account.remote.empty" : {
+
+    },
+    "account.remote.loading" : {
+
     },
     "account.server" : {
       "localizations" : {
@@ -128,6 +150,9 @@
           }
         }
       }
+    },
+    "Command" : {
+
     },
     "developedBy" : {
       "localizations" : {
@@ -642,6 +667,9 @@
           }
         }
       }
+    },
+    "Remote" : {
+
     },
     "search.albums" : {
       "localizations" : {
