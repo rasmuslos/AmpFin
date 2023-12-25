@@ -7,7 +7,6 @@
 
 import SwiftUI
 import AFBaseKit
-import AFApiKit
 
 extension AlbumView {
     struct AdditionalAlbums: View {

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import AFBaseKit
-import AFApiKit
 
 struct LoginView: View {
     var callback : () -> ()

@@ -7,7 +7,6 @@
 
 import Foundation
 import AFBaseKit
-import AFApiKit
 import AFOfflineKit
 
 public struct OnlineLibraryDataProvider: LibraryDataProvider {
@@ -23,8 +22,6 @@ public struct OnlineLibraryDataProvider: LibraryDataProvider {
     }
     
     public func getRecentAlbums() async throws -> [Album] {
-        // this is a great place to sync playbacks (async)
-        OfflineManager.shared.syncPlaysToJellyfinServer()
         return try await JellyfinClient.shared.getAlbums(limit: 20, sortOrder: .added, ascending: false, favorite: false)
     }
     public func getRecommendedAlbums() async throws -> [Album] {

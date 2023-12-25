@@ -9,7 +9,6 @@ import Foundation
 import CoreSpotlight
 import OSLog
 import AFBaseKit
-import AFApiKit
 
 struct SpotlightDonator {
     // 12 hours

@@ -7,7 +7,6 @@
 
 import Foundation
 import AFBaseKit
-import AFApiKit
 
 public struct MockLibraryDataProvider: LibraryDataProvider {
     public var supportsArtistLookup: Bool = true

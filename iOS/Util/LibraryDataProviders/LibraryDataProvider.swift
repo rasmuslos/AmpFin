@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import AFBaseKit
-import AFApiKit
 
 public protocol LibraryDataProvider {
     var supportsArtistLookup: Bool { get }

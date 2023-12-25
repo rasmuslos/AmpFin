@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 import AFBaseKit
-import AFApiKit
+import AFOfflineKit
 import AFPlaybackKit
 
 struct ContentView: View {
@@ -25,6 +25,10 @@ struct ContentView: View {
                     SpotlightDonator.donate()
                     UserContext.updateContext()
                     
+                    OfflineManager.shared.updateOfflineFavorites()
+                    OfflineManager.shared.syncPlaysToJellyfinServer()
+                    
+                    JellyfinWebSocket.shared.connect()
                     AudioPlayer.current.setupRemoteControl()
                 }
                 .onReceive(NotificationCenter.default.publisher(for: JellyfinClient.onlineStatusChanged), perform: { _ in

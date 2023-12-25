@@ -24,6 +24,17 @@ struct ArtistView: View {
                 AlbumGrid(albums: albums)
                     .padding()
             }
+            
+            if let overview = artist.overview {
+                Text(overview)
+                    .padding()
+                    .background {
+                        LinearGradient(colors: [
+                            .clear,
+                            Color(UIColor.secondarySystemBackground),
+                        ], startPoint: .top, endPoint: .bottom)
+                    }
+            }
         }
         .navigationTitle(artist.name)
         .navigationBarTitleDisplayMode(.inline)
