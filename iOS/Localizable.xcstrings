@@ -540,6 +540,9 @@
         }
       }
     },
+    "playback.disconnect" : {
+
+    },
     "playback.stop" : {
       "localizations" : {
         "de" : {
@@ -668,7 +671,10 @@
         }
       }
     },
-    "Remote" : {
+    "remote.connect" : {
+
+    },
+    "remote.stop" : {
 
     },
     "search.albums" : {

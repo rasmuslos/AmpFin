@@ -29,6 +29,7 @@ extension OfflineManager {
             releaseDate: track.releaseDate,
             artists: track.artists,
             favorite: track.favorite,
+            runtime: track.runtime,
             downloadId: downloadTask.taskIdentifier)
         
         PersistenceManager.shared.modelContainer.mainContext.insert(offlineItem)

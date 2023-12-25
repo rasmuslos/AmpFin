@@ -117,7 +117,15 @@ struct NowPlayingBarModifier: ViewModifier {
                         Button {
                             AudioPlayer.current.stopPlayback()
                         } label: {
-                            Label("playback.stop", systemImage: "xmark")
+                            Label("playback.stop", systemImage: "stop.circle")
+                        }
+                        
+                        if AudioPlayer.current.source == .jellyfinRemote {
+                            Button {
+                                AudioPlayer.current.destroy()
+                            } label: {
+                                Label("playback.disconnect", systemImage: "xmark")
+                            }
                         }
                     } preview: {
                         VStack(alignment: .leading) {

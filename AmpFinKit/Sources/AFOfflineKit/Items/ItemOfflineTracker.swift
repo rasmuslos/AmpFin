@@ -17,7 +17,7 @@ public class ItemOfflineTracker {
     var _status: OfflineStatus? = nil
     var token: Any? = nil
     
-    let logger = Logger(subsystem: "io.rfk.music", category: "Item")
+    let logger = Logger(subsystem: "io.rfk.ampfin", category: "Item")
     
     init(itemId: String, itemType: Item.ItemType) {
         self.itemId = itemId

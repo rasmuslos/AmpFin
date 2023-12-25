@@ -28,6 +28,7 @@ extension Track {
             index: 3,
             disk: 1
         ),
+        runtime: 144,
         playCount: 9,
         releaseDate: Date())
 }

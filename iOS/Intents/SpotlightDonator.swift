@@ -13,7 +13,7 @@ import AFBaseKit
 struct SpotlightDonator {
     // 12 hours
     static let waitTime: Double = 60 * 60 * 12
-    static let logger = Logger(subsystem: "io.rfk.music", category: "Spotlight")
+    static let logger = Logger(subsystem: "io.rfk.ampfin", category: "Spotlight")
     
     static func donate(force: Bool = false) {
         let lastDonation = UserDefaults.standard.double(forKey: "lastSpotlightDonation")

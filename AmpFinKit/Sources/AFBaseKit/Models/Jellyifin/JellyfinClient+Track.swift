@@ -33,5 +33,6 @@ public extension JellyfinClient {
         let AlbumPrimaryImageTag: String?
         
         let LUFS: Float?
+        let RunTimeTicks: UInt64
     }
 }

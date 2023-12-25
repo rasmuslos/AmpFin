@@ -7,9 +7,9 @@
 
 import Foundation
 import AVKit
-import MediaPlayer
 import OSLog
 import AFBaseKit
+import MediaPlayer
 
 #if canImport(UIKit)
 import UIKit
@@ -43,7 +43,7 @@ class LocalAudioEndpoint: AudioEndpoint {
         }
     }
     
-    let logger = Logger(subsystem: "io.rfk.music", category: "AudioPlayer")
+    let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
     
     init() {
         audioPlayer = AVQueuePlayer()
@@ -55,11 +55,10 @@ class LocalAudioEndpoint: AudioEndpoint {
         
         unalteredQueue = []
         
-        setupRemoteControls()
         setupTimeObserver()
         setupObservers()
         
-        updateAudioSession(active: false)
+        AudioPlayer.updateAudioSession(active: false)
     }
 }
 
@@ -69,7 +68,7 @@ extension LocalAudioEndpoint {
     func setPlaying(_ playing: Bool) {
         if playing {
             audioPlayer.play()
-            updateAudioSession(active: true)
+            AudioPlayer.updateAudioSession(active: true)
         } else {
             audioPlayer.pause()
         }
@@ -134,8 +133,8 @@ extension LocalAudioEndpoint {
         
         notifyQueueChanged()
         
-        setupAudioSession()
-        updateAudioSession(active: true)
+        AudioPlayer.setupAudioSession()
+        AudioPlayer.updateAudioSession(active: true)
         setPlaying(true)
         setupNowPlayingMetadata()
         
@@ -158,7 +157,7 @@ extension LocalAudioEndpoint {
         
         notifyQueueChanged()
         clearNowPlayingMetadata()
-        updateAudioSession(active: false)
+        AudioPlayer.updateAudioSession(active: false)
     }
     
     func advanceToNextTrack() {
@@ -358,169 +357,42 @@ extension LocalAudioEndpoint {
     }
     private func setupObservers() {
         // The player is never discarded, so no removing of the observers is necessary
-        NotificationCenter.default.addObserver(forName: AVPlayerItem.didPlayToEndTimeNotification, object: nil, queue: nil) { [weak self] _ in
-            if self?.repeatMode == .track, let nowPlaying = self?.nowPlaying, let item = self?.getAVPlayerItem(nowPlaying) {
+        NotificationCenter.default.addObserver(forName: AVPlayerItem.didPlayToEndTimeNotification, object: nil, queue: nil) { [self] _ in
+            if repeatMode == .track, let nowPlaying = nowPlaying {
+                let item = getAVPlayerItem(nowPlaying)
+                
                 // i tried really good things here, but only this stupid thing works
-                self?.audioPlayer.removeAllItems()
-                self?.audioPlayer.insert(item, after: nil)
-                self?.populateQueue()
+                audioPlayer.removeAllItems()
+                audioPlayer.insert(item, after: nil)
+                populateQueue()
             } else {
-                self?.trackDidFinish()
+                trackDidFinish()
             }
         }
         
-        NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), queue: nil) { [weak self] notification in
+        NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), queue: nil) { [self] notification in
             guard let userInfo = notification.userInfo, let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
                 return
             }
             
             switch type {
             case .began:
-                self?.setPlaying(false)
+                setPlaying(false)
             case .ended:
                 guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
                 let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
                 if options.contains(.shouldResume) {
-                    self?.setPlaying(true)
+                    setPlaying(true)
                 }
             default: ()
             }
         }
         
-        NotificationCenter.default.addObserver(forName: Item.affinityChanged, object: nil, queue: nil) { [weak self] event in
-            print(event.userInfo?["favorite"] as? Bool ?? false)
-            
-            self?.updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
-        }
-        
         #if os(iOS)
-        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [weak self] _ in
-            if let self = self {
-                self.setNowPlaying(track: nil)
-            }
+        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [self] _ in
+            setNowPlaying(track: nil)
         }
         #endif
-    }
-}
-
-// MARK: Remote controls
-
-extension LocalAudioEndpoint {
-    private func setupRemoteControls() {
-        let commandCenter = MPRemoteCommandCenter.shared()
-        
-        commandCenter.playCommand.addTarget { [unowned self] event in
-            setPlaying(true)
-            return .success
-        }
-        commandCenter.pauseCommand.addTarget { [unowned self] event in
-            setPlaying(false)
-            return .success
-        }
-        commandCenter.togglePlayPauseCommand.addTarget { [unowned self] event in
-            setPlaying(!isPlaying())
-            return .success
-        }
-        
-        commandCenter.changePlaybackPositionCommand.addTarget { [unowned self] event in
-            if let changePlaybackPositionCommandEvent = event as? MPChangePlaybackPositionCommandEvent {
-                let positionSeconds = changePlaybackPositionCommandEvent.positionTime
-                audioPlayer.seek(to: CMTime(seconds: positionSeconds, preferredTimescale: 1000))
-                return .success
-            }
-            
-            return .commandFailed
-        }
-        
-        commandCenter.nextTrackCommand.isEnabled = true
-        commandCenter.nextTrackCommand.addTarget { [unowned self] event in
-            advanceToNextTrack()
-            return .success
-        }
-        commandCenter.previousTrackCommand.isEnabled = true
-        commandCenter.previousTrackCommand.addTarget { [unowned self] event in
-            backToPreviousItem()
-            return .success
-        }
-        
-        #if canImport(AFOfflineKit)
-        commandCenter.likeCommand.isEnabled = true
-        commandCenter.likeCommand.addTarget { event in
-            if let event = event as? MPFeedbackCommandEvent {
-                Task.detached { [self] in
-                    await nowPlaying?.setFavorite(favorite: !event.isNegative)
-                }
-                
-                return .success
-            }
-            
-            return .commandFailed
-        }
-        #endif
-        
-        commandCenter.changeShuffleModeCommand.isEnabled = true
-        commandCenter.changeShuffleModeCommand.addTarget { event in
-            if let event = event as? MPChangeShuffleModeCommandEvent {
-                switch event.shuffleType {
-                case .off:
-                    self.shuffle(false)
-                default:
-                    self.shuffle(true)
-                }
-                
-                return .success
-            }
-            
-            return .commandFailed
-        }
-        
-        commandCenter.changeRepeatModeCommand.isEnabled = true
-        commandCenter.changeRepeatModeCommand.addTarget { event in
-            if let event = event as? MPChangeRepeatModeCommandEvent {
-                switch event.repeatType {
-                case .off:
-                    self.setRepeatMode(.none)
-                case .one:
-                    self.setRepeatMode(.track)
-                case .all:
-                    self.setRepeatMode(.queue)
-                @unknown default:
-                    self.logger.error("Unknown repeat type")
-                }
-                
-                return .success
-            }
-            
-            return .commandFailed
-        }
-    }
-    
-    private func setupAudioSession() {
-        do {
-            try audioSession.setCategory(.playback, mode: .default, policy: .longFormAudio, options: [])
-        } catch {
-            logger.fault("Failed to setup audio session")
-        }
-    }
-    private func updateAudioSession(active: Bool) {
-        #if os(watchOS)
-        audioSession.activate { success, error in
-            if error != nil {
-                self.logger.fault("Failed to update audio session")
-            }
-        }
-        #else
-        do {
-            try audioSession.setActive(active)
-        } catch {
-            logger.fault("Failed to update audio session")
-        }
-        #endif
-    }
-    
-    func updateCommandCenter(favorite: Bool) {
-        MPRemoteCommandCenter.shared().changeRepeatModeCommand.currentRepeatType = repeatMode == .track ? .one : repeatMode == .queue ? .all : .off
-        MPRemoteCommandCenter.shared().likeCommand.isActive = favorite
     }
 }
 
@@ -638,7 +510,7 @@ extension LocalAudioEndpoint {
         nowPlaying = track
         
         if let track = track {
-            updateCommandCenter(favorite: track.favorite)
+            AudioPlayer.current.updateCommandCenter(favorite: track.favorite)
         }
         
         if let track = track {

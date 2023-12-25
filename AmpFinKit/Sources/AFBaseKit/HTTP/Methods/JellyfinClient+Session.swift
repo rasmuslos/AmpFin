@@ -9,12 +9,10 @@ import Foundation
 
 public extension JellyfinClient {
     /// Update the capabilities of the current session
-    func setSessionCapabilities() async throws {
+    func setSessionCapabilities(allowRemoteControl: Bool) async throws {
         // TODO: add a DLNA profile
         let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/Capabilities/Full", method: "POST", body: [
-            "PlayableMediaTypes": [
-                "Audio"
-            ],
+            "PlayableMediaTypes": allowRemoteControl ? ["Audio"] : [],
             "SupportedCommands": [
                 // "VolumeUp",
                 // "VolumeDown",
@@ -42,6 +40,53 @@ public extension JellyfinClient {
             return []
         }
         
-        return response.filter { $0.Capabilities.PlayableMediaTypes.contains("Audio") && $0.Capabilities.SupportsMediaControl }.map(Session.convertFromJellyfin)
+        return response.filter {
+            $0.Capabilities.PlayableMediaTypes.contains("Audio")
+            && $0.Capabilities.SupportsMediaControl
+            && $0.DeviceId != JellyfinClient.shared.clientId
+        }.map(Session.convertFromJellyfin)
+    }
+    
+    /// Issue a play state command without any parameters
+    func issuePlayStateCommand(sessionId: String, command: PlayStateCommand) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Playing/\(command.rawValue)", method: "POST"))
+    }
+    
+    /// Seek the playback of the session to the specified position
+    func seek(sessionId: String, positionSeconds: Double) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Playing/Seek", method: "POST", query: [
+            URLQueryItem(name: "seekPositionTicks", value: String(UInt64(positionSeconds * 10_000_000)))
+        ]))
+    }
+    
+    /// Set the session shuffle mode
+    func setShuffleMode(sessionId: String, shuffled: Bool) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Command/SetShuffleQueue", method: "POST", body: [
+            "ShuffleMode": shuffled ? "Shuffle" : "Sorted"
+        ]))
+    }
+    
+    /// Set the repeat shuffle mode
+    func setRepeatMode(sessionId: String, repeatMode: RepeatMode) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Command/SetRepeatMode", method: "POST", body: [
+            "RepeatMode": repeatMode == .none ? "RepeatNone" : repeatMode == .track ? "RepeatOne" : "RepeatAll"
+        ]))
+    }
+    
+    /// Start playback of the provided tracks
+    func playTracks(sessionId: String, tracks: [Track], index: Int) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Playing", method: "POST", query: [
+            URLQueryItem(name: "ItemIds", value: tracks.map { $0.id }.joined(separator: ",")),
+            URLQueryItem(name: "StartIndex", value: String(index)),
+            URLQueryItem(name: "PlayCommand", value: "PlayNow"),
+        ]))
+    }
+    
+    /// Add the provided tracks to the session queue
+    func queueTracks(sessionId: String, tracks: [Track], queuePosition: PlayCommand) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Playing", method: "POST", query: [
+            URLQueryItem(name: "ItemIds", value: tracks.map { $0.id }.joined(separator: ",")),
+            URLQueryItem(name: "PlayCommand", value: queuePosition.rawValue),
+        ]))
     }
 }

@@ -22,6 +22,7 @@ extension Track {
             artists: offline.artists,
             lufs: nil,
             index: offline.index,
+            runtime: offline.runtime,
             playCount: -1,
             releaseDate: offline.releaseDate)
     }

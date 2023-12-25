@@ -11,13 +11,28 @@ extension JellyfinWebSocket {
     struct Message: Codable {
         let MessageType: String
         let MessageId: String
+
+    }
+    
+    struct PlayStateMessage: Codable {
+        let Data: MessageData?
+        
+        struct MessageData: Codable {
+            let Command: String?
+            let SeekPositionTicks: UInt64?
+        }
+    }
+    struct PlayMessage: Codable {
         let Data: MessageData?
         
         struct MessageData: Codable {
             let ItemIds: [String]?
-            let Command: String?
             let PlayCommand: String?
-            let SeekPositionTicks: UInt64?
+            let StartIndex: Int?
         }
+    }
+    
+    struct SessionMessage: Codable {
+        let Data: [JellyfinClient.JellyfinSession]?
     }
 }

@@ -13,14 +13,17 @@ public class Track: Item {
     
     public let lufs: Float?
     public let index: Index
+    
+    public let runtime: Double
     public let playCount: Int
     public let releaseDate: Date?
     
-    public init(id: String, name: String, cover: Cover? = nil, favorite: Bool, album: ReducedAlbum, artists: [ReducedArtist], lufs: Float?, index: Index, playCount: Int, releaseDate: Date?) {
+    public init(id: String, name: String, cover: Cover? = nil, favorite: Bool, album: ReducedAlbum, artists: [ReducedArtist], lufs: Float?, index: Index, runtime: Double, playCount: Int, releaseDate: Date?) {
         self.album = album
         self.artists = artists
         self.lufs = lufs
         self.index = index
+        self.runtime = runtime
         self.playCount = playCount
         self.releaseDate = releaseDate
         

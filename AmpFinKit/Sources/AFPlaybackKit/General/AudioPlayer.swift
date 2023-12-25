@@ -7,33 +7,107 @@
 
 import Foundation
 import AFBaseKit
+import MediaPlayer
+import OSLog
 
+#if canImport(AFOfflineKit)
+import AFOfflineKit
+#endif
+
+@Observable
 public class AudioPlayer {
-    public private(set) var source: PlaybackSource = .none
+    static let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
     
-    private var endpoint: AudioEndpoint?
-    private var remoteControlAvailable = false
-    
-    init() {
-        setupObservers()
+    public private(set) var source: PlaybackSource = .none {
+        didSet {
+            checkRemoteControlAvailability()
+        }
     }
-}
-
-// MARK: Setup endpoints
-
-extension AudioPlayer {
-    public func setupRemoteControl() {
-        Task.detached { [self] in
-            try? await JellyfinClient.shared.setSessionCapabilities()
-            remoteControlAvailable = true
+    public var allowRemoteControl = false {
+        didSet {
+            checkRemoteControlAvailability()
         }
     }
     
+    private var endpoint: AudioEndpoint?
+    private var remoteControlAvailable = false {
+        didSet {
+            Task.detached {
+                try? await JellyfinClient.shared.setSessionCapabilities(allowRemoteControl: self.remoteControlAvailable)
+            }
+        }
+    }
+    
+    init() {
+        setupObservers()
+        setupRemoteControls()
+    }
+}
+
+// MARK: Endpoint util
+
+extension AudioPlayer {
+    func checkRemoteControlAvailability() {
+        if source != .local {
+            remoteControlAvailable = false
+            return
+        }
+        
+        remoteControlAvailable = allowRemoteControl
+    }
+    
     func setupLocalPlayback() {
-        endpoint?.stopPlayback()
+        stopPlayback()
         
         source = .local
         endpoint = LocalAudioEndpoint.shared
+    }
+    
+    public func destroy() {
+        stopPlayback()
+        JellyfinWebSocket.shared.stopReceivingSessionUpdates()
+        
+        endpoint = nil
+        source = .none
+    }
+}
+
+// MARK: Remote endpoint
+
+public extension AudioPlayer {
+    func startRemoteControl(session: Session) {
+        Self.logger.info("Setting up remote endpoint \(session.name) (\(session.client))")
+        
+        destroy()
+        
+        JellyfinWebSocket.shared.requestSessionUpdates(clientId: session.clientId)
+        source = .jellyfinRemote
+        endpoint = RemoteAudioEndpoint(session: session)
+    }
+}
+
+extension AudioPlayer {
+    static func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: .longFormAudio, options: [])
+        } catch {
+            logger.fault("Failed to setup audio session")
+        }
+    }
+    static func updateAudioSession(active: Bool) {
+        #if os(watchOS)
+        AVAudioSession.sharedInstance().activate { success, error in
+            if error != nil {
+                self.logger.fault("Failed to update audio session")
+            }
+        }
+        #else
+        do {
+            try AVAudioSession.sharedInstance().setActive(active)
+        } catch {
+            logger.fault("Failed to update audio session")
+        }
+        #endif
     }
 }
 
@@ -98,9 +172,6 @@ extension AudioPlayer: AudioEndpoint {
     
     public func stopPlayback() {
         endpoint?.stopPlayback()
-        
-        endpoint = nil
-        source = .none
     }
     
     public func advanceToNextTrack() {
@@ -160,10 +231,20 @@ extension AudioPlayer: AudioEndpoint {
     }
 }
 
-// MARK: Receive remote events
+// MARK: Observers
 
 extension AudioPlayer {
     func setupObservers() {
+        NotificationCenter.default.addObserver(forName: JellyfinWebSocket.disconnectedNotification, object: nil, queue: nil) { [self] _ in
+            if source == .jellyfinRemote {
+                destroy()
+            }
+        }
+        
+        NotificationCenter.default.addObserver(forName: Item.affinityChanged, object: nil, queue: nil) { [self] event in
+            updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
+        }
+        
         // For some reason queue & repeat mode don't work
         // TODO: GeneralCommand/SetVolume
         
@@ -187,12 +268,13 @@ extension AudioPlayer {
         NotificationCenter.default.addObserver(forName: JellyfinWebSocket.playCommandIssuedNotification, object: nil, queue: nil) { [self] notification in
             let command = notification.userInfo?["command"] as? String
             let trackIds = notification.userInfo?["trackIds"] as? [String]
+            let index = notification.userInfo?["index"] as? Int ?? 0
             
             Task.detached { [self] in
                 guard let tracks = try? await trackIds?.parallelMap(JellyfinClient.shared.getTrack).filter({ $0 != nil }) as? [Track], !tracks.isEmpty else { return }
                 
                 if command == "playnow" {
-                    startPlayback(tracks: tracks, startIndex: 0, shuffle: false)
+                    startPlayback(tracks: tracks, startIndex: index, shuffle: false)
                 } else if command == "playnext" {
                     queueTracks(tracks, index: 0)
                 } else if command == "playlast" {
@@ -203,10 +285,109 @@ extension AudioPlayer {
     }
 }
 
+// MARK: Remote controls
+
+extension AudioPlayer {
+    func setupRemoteControls() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        commandCenter.playCommand.addTarget { [unowned self] event in
+            setPlaying(true)
+            return .success
+        }
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            setPlaying(false)
+            return .success
+        }
+        commandCenter.togglePlayPauseCommand.addTarget { [unowned self] event in
+            setPlaying(!isPlaying())
+            return .success
+        }
+        
+        commandCenter.changePlaybackPositionCommand.addTarget { [unowned self] event in
+            if let changePlaybackPositionCommandEvent = event as? MPChangePlaybackPositionCommandEvent {
+                let positionSeconds = changePlaybackPositionCommandEvent.positionTime
+                endpoint?.seek(seconds: positionSeconds)
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+        
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.nextTrackCommand.addTarget { [unowned self] event in
+            advanceToNextTrack()
+            return .success
+        }
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.addTarget { [unowned self] event in
+            backToPreviousItem()
+            return .success
+        }
+        
+        #if canImport(AFOfflineKit)
+        commandCenter.likeCommand.isEnabled = true
+        commandCenter.likeCommand.addTarget { event in
+            if let event = event as? MPFeedbackCommandEvent {
+                Task.detached { [self] in
+                    await nowPlaying?.setFavorite(favorite: !event.isNegative)
+                }
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+        #endif
+        
+        commandCenter.changeShuffleModeCommand.isEnabled = true
+        commandCenter.changeShuffleModeCommand.addTarget { event in
+            if let event = event as? MPChangeShuffleModeCommandEvent {
+                switch event.shuffleType {
+                case .off:
+                    self.shuffle(false)
+                default:
+                    self.shuffle(true)
+                }
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+        
+        commandCenter.changeRepeatModeCommand.isEnabled = true
+        commandCenter.changeRepeatModeCommand.addTarget { event in
+            if let event = event as? MPChangeRepeatModeCommandEvent {
+                switch event.repeatType {
+                case .off:
+                    self.setRepeatMode(.none)
+                case .one:
+                    self.setRepeatMode(.track)
+                case .all:
+                    self.setRepeatMode(.queue)
+                @unknown default:
+                    Self.logger.error("Unknown repeat type")
+                }
+                
+                return .success
+            }
+            
+            return .commandFailed
+        }
+    }
+    
+    func updateCommandCenter(favorite: Bool) {
+        MPRemoteCommandCenter.shared().changeRepeatModeCommand.currentRepeatType = repeatMode == .track ? .one : repeatMode == .queue ? .all : .off
+        MPRemoteCommandCenter.shared().likeCommand.isActive = favorite
+    }
+}
+
 // MARK: Helper
 
-public extension AudioPlayer {
-    enum PlaybackSource {
+extension AudioPlayer {
+    public enum PlaybackSource {
         case none
         case local
         case jellyfinRemote

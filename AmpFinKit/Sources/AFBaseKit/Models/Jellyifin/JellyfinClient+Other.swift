@@ -59,16 +59,18 @@ extension JellyfinClient {
         let HasPassword: Bool
     }
     
-    struct JellyfinSession: Codable {
+    public struct JellyfinSession: Codable {
         let Id: String
         let Client: String
+        
+        let DeviceId: String
         let DeviceName: String
         
         let PlayState: JellyfinPlayState
         let Capabilities: JellyfinCapabilities
         
         let NowPlayingItem: JellyfinTrackItem?
-        let NowPlayingQueueFullItems: [JellyfinTrackItem]
+        // let NowPlayingQueueFullItems: [JellyfinTrackItem]
         
         struct JellyfinPlayState: Codable {
             let PositionTicks: Int64?
@@ -83,5 +85,21 @@ extension JellyfinClient {
             let SupportedCommands: [String]
             let SupportsMediaControl: Bool
         }
+    }
+}
+
+extension JellyfinClient {
+    public enum PlayStateCommand: String {
+        case play = "Unpause"
+        case pause = "Pause"
+        case next = "NextTrack"
+        case previous = "PreviousTrack"
+        case stop = "Stop"
+    }
+    
+    // this is truly stupid. there are more commands but these are the only ones that are actually used
+    public enum PlayCommand: String {
+        case next = "PlayNext"
+        case last = "PlayLast"
     }
 }

@@ -12,7 +12,7 @@ import AFBaseKit
 import AFPlaybackKit
 
 struct UserContext {
-    static let logger = Logger(subsystem: "io.rfk.music", category: "Interactions")
+    static let logger = Logger(subsystem: "io.rfk.ampfin", category: "Interactions")
     
     static func updateContext() {
         Task.detached {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AFBaseKit
+import AFPlaybackKit
 
 // MARK: Cover
 
@@ -95,16 +96,18 @@ extension NowPlayingSheet {
         let track: Track
         
         var body: some View {
-            Button {
-                Task.detached {
-                    await track.setFavorite(favorite: !track.favorite)
+            if AudioPlayer.current.source == .local {
+                Button {
+                    Task.detached {
+                        await track.setFavorite(favorite: !track.favorite)
+                    }
+                } label: {
+                    Image(systemName: track.favorite ? "heart.fill" : "heart")
+                        .font(.system(size: 24))
+                        .symbolRenderingMode(.palette)
+                        .contentTransition(.symbolEffect(.replace))
+                        .foregroundStyle(.white)
                 }
-            } label: {
-                Image(systemName: track.favorite ? "heart.fill" : "heart")
-                    .font(.system(size: 24))
-                    .symbolRenderingMode(.palette)
-                    .contentTransition(.symbolEffect(.replace))
-                    .foregroundStyle(.white)
             }
         }
     }

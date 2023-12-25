@@ -39,25 +39,54 @@ struct AccountSheet: View {
             }
             
             Section("account.remote") {
-                if let sessions = sessions {
-                    if sessions.count == 0 {
-                        Text("account.remote.empty")
-                            .foregroundStyle(.secondary)
-                    } else {
-                        ForEach(sessions) { session in
-                            Button {
-                                
-                            } label: {
-                                Text("\(session.name) • \(session.client)")
+                if JellyfinWebSocket.shared.isConnected {
+                    if AudioPlayer.current.source == .jellyfinRemote {
+                        Button {
+                            AudioPlayer.current.destroy()
+                        } label: {
+                            Text("remote.stop")
+                        }
+                    } else if let sessions = sessions {
+                        if sessions.count == 0 {
+                            Text("account.remote.empty")
+                                .foregroundStyle(.secondary)
+                        } else {
+                            ForEach(sessions) { session in
+                                Button {
+                                    AudioPlayer.current.startRemoteControl(session: session)
+                                } label: {
+                                    VStack(alignment: .leading, spacing: 7) {
+                                        Text("\(session.name) • \(session.client)")
+                                        
+                                        if let nowPlaying = session.nowPlaying {
+                                            HStack {
+                                                Image(systemName: "waveform")
+                                                    .symbolEffect(.pulse.byLayer)
+                                                
+                                                Text(nowPlaying.name)
+                                                
+                                                Spacer()
+                                            }
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                        }
+                                    }
+                                }
                             }
                         }
+                    } else {
+                        Text("account.remote.loading")
+                            .foregroundStyle(.secondary)
+                            .task {
+                                sessions = await JellyfinClient.shared.getControllableSessions()
+                            }
                     }
                 } else {
-                    Text("account.remote.loading")
-                        .foregroundStyle(.secondary)
-                        .task {
-                            sessions = await JellyfinClient.shared.getControllableSessions()
-                        }
+                    Button {
+                        JellyfinWebSocket.shared.connect()
+                    } label: {
+                        Text("remote.connect")
+                    }
                 }
             }
             

@@ -8,8 +8,8 @@
 import Foundation
 
 extension NavigationRoot {
-    static let navigateNotification = NSNotification.Name("io.rfk.music.navigation")
+    static let navigateNotification = NSNotification.Name("io.rfk.ampfin.navigation")
     
-    static let navigateAlbumNotification = NSNotification.Name("io.rfk.music.navigation.album")
-    static let navigateArtistNotification = NSNotification.Name("io.rfk.music.navigation.artist")
+    static let navigateAlbumNotification = NSNotification.Name("io.rfk.ampfin.navigation.album")
+    static let navigateArtistNotification = NSNotification.Name("io.rfk.ampfin.navigation.artist")
 }

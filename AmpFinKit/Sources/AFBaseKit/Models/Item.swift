@@ -55,7 +55,7 @@ extension Item {
         }
     }
     
-    public static let affinityChanged = NSNotification.Name("io.rfk.music.item.affinity")
+    public static let affinityChanged = NSNotification.Name("io.rfk.ampfin.item.affinity")
 }
 
 // MARK: Computed

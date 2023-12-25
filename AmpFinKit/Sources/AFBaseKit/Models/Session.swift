@@ -11,26 +11,31 @@ import Foundation
 public class Session: Identifiable {
     public let id: String
     public let name: String
+    
     public let client: String
+    public let clientId: String
     
     public let nowPlaying: Track?
-    public let queue: [Track]
     
     public let position: Double
     public let canSeek: Bool
+    public let canSetVolume: Bool
+    
     public let isPaused: Bool
     public let isMuted: Bool
+    
     public let volumeLevel: Float
     public let repeatMode: RepeatMode
     
-    public init(id: String, name: String, client: String, nowPlaying: Track?, queue: [Track], position: Double, canSeek: Bool, isPaused: Bool, isMuted: Bool, volumeLevel: Float, repeatMode: RepeatMode) {
+    public init(id: String, name: String, client: String, clientId: String, nowPlaying: Track?, position: Double, canSeek: Bool, canSetVolume: Bool, isPaused: Bool, isMuted: Bool, volumeLevel: Float, repeatMode: RepeatMode) {
         self.id = id
         self.name = name
         self.client = client
+        self.clientId = clientId
         self.nowPlaying = nowPlaying
-        self.queue = queue
         self.position = position
         self.canSeek = canSeek
+        self.canSetVolume = canSetVolume
         self.isPaused = isPaused
         self.isMuted = isMuted
         self.volumeLevel = volumeLevel

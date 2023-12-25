@@ -10,7 +10,7 @@ import SwiftData
 import OSLog
 
 public struct OfflineManager {
-    static let logger = Logger(subsystem: "io.rfk.music", category: "Offline")
+    static let logger = Logger(subsystem: "io.rfk.ampfin", category: "Offline")
 }
 
 // MARK: Error

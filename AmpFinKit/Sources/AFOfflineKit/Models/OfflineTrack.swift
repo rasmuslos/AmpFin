@@ -22,9 +22,11 @@ class OfflineTrack {
     let artists: [Item.ReducedArtist]
     
     var favorite: Bool
+    var runtime: Double
+    
     var downloadId: Int?
     
-    init(id: String, name: String, index: Track.Index, releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, downloadId: Int?) {
+    init(id: String, name: String, index: Track.Index, releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, runtime: Double, downloadId: Int? = nil) {
         self.id = id
         self.name = name
         self.index = index
@@ -32,6 +34,7 @@ class OfflineTrack {
         self.artists = artists
         self.favorite = favorite
         self.downloadId = downloadId
+        self.runtime = runtime
         
         self.album = nil
     }

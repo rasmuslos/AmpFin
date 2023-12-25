@@ -113,17 +113,35 @@ extension NowPlayingSheet {
                     if AudioPlayer.current.source == .local {
                         AirPlayView()
                             .frame(width: 45)
-                    } else {
-                        Text("Remote")
+                        
+                        Spacer()
+                        
+                        Button {
+                            setActiveTab(.queue)
+                        } label: {
+                            Image(systemName: "list.dash")
+                        }
+                        .buttonStyle(SymbolButtonStyle(active: queueTabActive))
+                    } else if AudioPlayer.current.source == .jellyfinRemote {
+                        Button {
+                            AudioPlayer.current.destroy()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                        .buttonStyle(SymbolButtonStyle(active: false))
+                        
+                        /*
+                         Does not work
+                        Spacer()
+                        
+                        Button {
+                            AudioPlayer.current.shuffle(!AudioPlayer.current.shuffled)
+                        } label: {
+                            Image(systemName: "shuffle")
+                        }
+                        .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
+                         */
                     }
-                    
-                    Spacer()
-                    Button {
-                        setActiveTab(.queue)
-                    } label: {
-                        Image(systemName: "list.dash")
-                    }
-                    .buttonStyle(SymbolButtonStyle(active: queueTabActive))
                     
                     Spacer()
                 }

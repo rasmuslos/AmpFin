@@ -32,10 +32,13 @@ extension JellyfinClient {
 }
 
 extension JellyfinClient {
-    public static let onlineStatusChanged = Notification.Name.init("io.rfk.music.online.changed")
+    public static let onlineStatusChanged = Notification.Name.init("io.rfk.ampfin.online.changed")
 }
 
 public enum JellyfinClientError: Error {
+    case parseFailed
+    case unknownMessage
+    
     case invalidServerUrl
     case invalidHttpBody
     case invalidResponse

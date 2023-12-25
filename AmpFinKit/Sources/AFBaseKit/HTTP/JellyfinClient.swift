@@ -27,7 +27,7 @@ public class JellyfinClient {
     public let deviceType = "unknown"
     #endif
     
-    let logger = Logger(subsystem: "io.rfk.music", category: "Download")
+    let logger = Logger(subsystem: "io.rfk.ampfin", category: "Download")
     static let defaults = UserDefaults(suiteName: "group.io.rfk.shelfplayer")!
     
     init(serverUrl: URL!, token: String?, userId: String?) {

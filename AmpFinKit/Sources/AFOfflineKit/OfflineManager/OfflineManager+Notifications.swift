@@ -8,5 +8,5 @@
 import Foundation
 
 extension OfflineManager {
-    static let itemDownloadStatusChanged = Notification.Name.init("io.rfk.music.download.updated")
+    static let itemDownloadStatusChanged = Notification.Name.init("io.rfk.ampfin.download.updated")
 }

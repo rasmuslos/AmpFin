@@ -31,6 +31,7 @@ extension Track {
             artists: item.ArtistItems.map { ReducedArtist(id: $0.Id, name: $0.Name) },
             lufs: item.LUFS,
             index: Index(index: item.IndexNumber ?? fallbackIndex, disk: item.ParentIndexNumber ?? 1),
+            runtime: Double(item.RunTimeTicks / 10_000_000),
             playCount: item.UserData?.PlayCount ?? 0,
             releaseDate: Date.parseDate(item.PremiereDate))
     }

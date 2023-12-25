@@ -29,7 +29,7 @@ struct ContentView: View {
                     OfflineManager.shared.syncPlaysToJellyfinServer()
                     
                     JellyfinWebSocket.shared.connect()
-                    AudioPlayer.current.setupRemoteControl()
+                    AudioPlayer.current.allowRemoteControl = true
                 }
                 .onReceive(NotificationCenter.default.publisher(for: JellyfinClient.onlineStatusChanged), perform: { _ in
                     online = JellyfinClient.shared.isOnline

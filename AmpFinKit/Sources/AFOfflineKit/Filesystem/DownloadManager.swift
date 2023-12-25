@@ -13,7 +13,7 @@ public class DownloadManager: NSObject {
     var documentsURL: URL!
     var urlSession: URLSession!
     
-    let logger = Logger(subsystem: "io.rfk.music", category: "Download")
+    let logger = Logger(subsystem: "io.rfk.ampfin", category: "Download")
     
     override init() {
         super.init()

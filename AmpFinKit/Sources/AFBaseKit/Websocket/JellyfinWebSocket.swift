@@ -9,18 +9,21 @@ import Foundation
 import Starscream
 import OSLog
 
+@Observable
 public class JellyfinWebSocket {
     var socket: WebSocket!
-    var isConnected = false
+    public private(set) var isConnected = false
     
     var reconnectTimeout: UInt64 = 5
     var reconnectTask: Task<(), Error>?
     
-    let logger = Logger(subsystem: "io.rfk.music", category: "WebSocket")
+    var observedClientId: String?
+    
+    let logger = Logger(subsystem: "io.rfk.ampfin", category: "WebSocket")
 }
 
-extension JellyfinWebSocket {
-    public func connect() {
+public extension JellyfinWebSocket {
+    func connect() {
         if let serverUrl = JellyfinClient.shared.serverUrl, let token = JellyfinClient.shared.token {
             var request = URLRequest(url: serverUrl.appending(path: "socket").appending(queryItems: [
                 URLQueryItem(name: "api_key", value: token),
@@ -33,13 +36,14 @@ extension JellyfinWebSocket {
             socket.connect()
         }
     }
-    
     func reconnect(resetTimer: Bool) {
         if resetTimer {
             reconnectTimeout = 5
         } else {
             reconnectTimeout = min(reconnectTimeout * 2, 60)
         }
+        
+        NotificationCenter.default.post(name: Self.disconnectedNotification, object: nil)
         
         logger.info("Reconnecting WebSocket in \(self.reconnectTimeout) seconds")
         socket.disconnect()
@@ -51,6 +55,17 @@ extension JellyfinWebSocket {
             
             socket.connect()
         }
+    }
+    
+    func requestSessionUpdates(clientId: String) {
+        observedClientId = clientId
+        
+        // is this stupid? yes. But it works
+        socket.write(string: "{\"MessageType\":\"SessionsStart\",\"Data\":\"100,800\"}")
+    }
+    func stopReceivingSessionUpdates() {
+        observedClientId = nil
+        socket.write(string: "{\"MessageType\":\"SessionsStop\"}")
     }
 }
 
@@ -90,23 +105,33 @@ extension JellyfinWebSocket: WebSocketDelegate {
     
     func parseMessage(_ message: String) {
         do {
-            guard let data = message.data(using: .utf8, allowLossyConversion: false) else { throw JellyfinClientError.invalidHttpBody }
+            guard let data = message.data(using: .utf8, allowLossyConversion: false) else { throw JellyfinClientError.parseFailed }
             let parsed = try JSONDecoder().decode(Message.self, from: data)
             
             if parsed.MessageType == "ForceKeepAlive" {
-                logger.info("Received keep alive message from server")
+                logger.info("Received a \"keep alive\" message from the server")
             } else if parsed.MessageType == "Playstate" {
+                let playStateMessage = try JSONDecoder().decode(PlayStateMessage.self, from: data)
+                
                 NotificationCenter.default.post(name: Self.playStateCommandIssuedNotification, object: nil, userInfo: [
-                    "position": parsed.Data?.SeekPositionTicks as Any,
-                    "command": parsed.Data?.Command?.lowercased() as Any,
+                    "position": playStateMessage.Data?.SeekPositionTicks as Any,
+                    "command": playStateMessage.Data?.Command?.lowercased() as Any,
                 ])
             } else if parsed.MessageType == "Play" {
+                let playMessage = try JSONDecoder().decode(PlayMessage.self, from: data)
+                
                 NotificationCenter.default.post(name: Self.playCommandIssuedNotification, object: nil, userInfo: [
-                    "trackIds": parsed.Data?.ItemIds as Any,
-                    "command": parsed.Data?.PlayCommand?.lowercased() as Any,
+                    "trackIds": playMessage.Data?.ItemIds as Any,
+                    "index": playMessage.Data?.StartIndex as Any,
+                    "command": playMessage.Data?.PlayCommand?.lowercased() as Any,
                 ])
+            } else if parsed.MessageType == "Sessions" {
+                let sessionMessage = try JSONDecoder().decode(SessionMessage.self, from: data)
+                guard let observedSession = sessionMessage.Data?.filter({ $0.DeviceId == observedClientId }).first else { return }
+                
+                NotificationCenter.default.post(name: Self.sessionUpdateNotification, object: try observedSession.toJSON())
             } else {
-                throw JellyfinClientError.invalidHttpBody
+                throw JellyfinClientError.unknownMessage
             }
         } catch {}
     }
