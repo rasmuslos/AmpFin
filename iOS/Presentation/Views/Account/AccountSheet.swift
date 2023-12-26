@@ -14,6 +14,8 @@ struct AccountSheet: View {
     @State var username: String?
     @State var sessions: [Session]? = nil
     
+    @State var downloads: [Track]? = nil
+    
     var body: some View {
         List {
             HStack {
@@ -90,7 +92,25 @@ struct AccountSheet: View {
                 }
             }
             
-            Section {
+            Section("account.downloads.queue") {
+                if let downloads = downloads {
+                    if downloads.isEmpty {
+                        Text("account.downloads.queue.empty")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        ForEach(downloads) {
+                            TrackListRow(track: $0, startPlayback: {}, disableMenu: true)
+                        }
+                    }
+                } else {
+                    ProgressView()
+                        .onAppear {
+                            downloads = try? OfflineManager.shared.getDownloadingTracks()
+                        }
+                }
+            }
+            
+            Section() {
                 Button(role: .destructive) {
                     JellyfinClient.shared.logout()
                 } label: {
@@ -105,7 +125,7 @@ struct AccountSheet: View {
                 }
             }
             
-            Section {
+            Section("account.server") {
                 Group {
                     Text(JellyfinClient.shared.serverUrl.absoluteString)
                     Text(JellyfinClient.shared.token)
@@ -113,10 +133,9 @@ struct AccountSheet: View {
                 }
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-            } header: {
-                Text("account.server")
             }
             
+            #if DEBUG
             // quite ironic that this code is bad
             Section {
                 HStack {
@@ -128,6 +147,7 @@ struct AccountSheet: View {
                 }
             }
             .listRowBackground(Color.clear)
+            #endif
         }
         .task {
             do {

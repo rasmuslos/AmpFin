@@ -83,6 +83,12 @@ extension OfflineManager {
     }
     
     @MainActor
+    public func getDownloadingTracks() throws -> [Track] {
+        let tracks = try getUnfinishedDownloads()
+        return tracks.map(Track.convertFromOffline)
+    }
+    
+    @MainActor
     func getTrackOfflineStatus(trackId: String) -> ItemOfflineTracker.OfflineStatus {
         if let track = getOfflineTrack(trackId: trackId) {
             return track.downloadId == nil ? .downloaded : .working

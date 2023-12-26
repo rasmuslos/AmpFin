@@ -16,6 +16,7 @@ struct TrackListRow: View {
     let track: Track
     var album: Album? = nil
     let startPlayback: () -> ()
+    var disableMenu: Bool = false
     
     var body: some View {
         let showArtist = album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
@@ -55,45 +56,47 @@ struct TrackListRow: View {
             
             DownloadIndicator(item: track)
             
-            Menu {
-                PlayNextButton(track: track)
-                PlayLastButton(track: track)
-                
-                Divider()
-                
-                FavoriteButton(track: track)
-                
-                Button {
-                    Task {
-                        try? await track.startInstantMix()
+            if !disableMenu {
+                Menu {
+                    PlayNextButton(track: track)
+                    PlayLastButton(track: track)
+                    
+                    Divider()
+                    
+                    FavoriteButton(track: track)
+                    
+                    Button {
+                        Task {
+                            try? await track.startInstantMix()
+                        }
+                    } label: {
+                        Label("queue.mix", systemImage: "compass.drawing")
+                    }
+                    .disabled(!libraryOnline)
+                    
+                    Divider()
+                    
+                    if album == nil {
+                        NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
+                            Label("album.view", systemImage: "square.stack")
+                        }
+                    }
+                    
+                    if let artist = track.artists.first {
+                        NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
+                            Label("artist.view", systemImage: "music.mic")
+                                .disabled(!dataProvider.supportsArtistLookup)
+                        }
                     }
                 } label: {
-                    Label("queue.mix", systemImage: "compass.drawing")
+                    Image(systemName: "ellipsis")
+                        .renderingMode(.original)
+                        .foregroundStyle(Color(UIColor.label))
+                        .padding(.vertical, 10)
+                        .padding(.leading, 0)
                 }
-                .disabled(!libraryOnline)
-                
-                Divider()
-                
-                if album == nil {
-                    NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
-                        Label("album.view", systemImage: "square.stack")
-                    }
-                }
-                
-                if let artist = track.artists.first {
-                    NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
-                        Label("artist.view", systemImage: "music.mic")
-                            .disabled(!dataProvider.supportsArtistLookup)
-                    }
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .renderingMode(.original)
-                    .foregroundStyle(Color(UIColor.label))
-                    .padding(.vertical, 10)
-                    .padding(.leading, 0)
+                .popoverTip(InstantMixTip())
             }
-            .popoverTip(InstantMixTip())
         }
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             PlayNextButton(track: track)

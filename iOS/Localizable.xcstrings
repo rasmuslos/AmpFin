@@ -17,6 +17,38 @@
         }
       }
     },
+    "account.downloads.queue" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download-Warteschlange"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download queue"
+          }
+        }
+      }
+    },
+    "account.downloads.queue.empty" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Downloads"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No downloads"
+          }
+        }
+      }
+    },
     "account.logout" : {
       "localizations" : {
         "de" : {

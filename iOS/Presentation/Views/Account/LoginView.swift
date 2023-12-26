@@ -47,9 +47,11 @@ struct LoginView: View {
             
             Spacer()
             
+            #if DEBUG
             Text("developedBy")
                 .font(.caption)
                 .foregroundStyle(.secondary)
+            #endif
         }
         .sheet(isPresented: $loginSheetPresented, content: {
             switch loginFlowState {

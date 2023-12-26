@@ -41,7 +41,8 @@ public class Session: Identifiable {
         self.volumeLevel = volumeLevel
         self.repeatMode = repeatMode
         
-        // TODO: it seems like shuffle is not send at the moment, this should be implemented on the server...
+        // TODO: it seems like shuffled is not send at the moment, this should be implemented on the server...
+        // also the send queue is useless
     }
 }
 
