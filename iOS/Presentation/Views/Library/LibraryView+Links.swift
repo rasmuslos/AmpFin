@@ -35,13 +35,6 @@ extension LibraryView {
                     Label("title.artists", systemImage: "mic.fill")
                 }
                 .disabled(!dataProvider.supportsArtistLookup)
-                /*
-                 Not really possible without knowing the library id
-                 
-                NavigationLink(destination: Text(":)")) {
-                    Label("Genres", systemImage: "guitars")
-                }
-                 */
             }
             .font(.headline)
         }

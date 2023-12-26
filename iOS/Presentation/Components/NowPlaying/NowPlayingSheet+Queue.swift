@@ -17,9 +17,6 @@ extension NowPlayingSheet {
         @State var history = AudioPlayer.current.history
         @State var queue = AudioPlayer.current.queue
         
-        @State var shuffled = AudioPlayer.current.shuffled
-        @State var repeatMode = AudioPlayer.current.repeatMode
-        
         @State var showHistory = false
         
         var body: some View {
@@ -31,29 +28,29 @@ extension NowPlayingSheet {
                 Spacer()
                 
                 Button {
-                    if repeatMode == .none {
+                    if AudioPlayer.current.repeatMode == .none {
                         AudioPlayer.current.setRepeatMode(.queue)
-                    } else if repeatMode == .queue {
+                    } else if AudioPlayer.current.repeatMode == .queue {
                         AudioPlayer.current.setRepeatMode(.track)
-                    } else if repeatMode == .track {
+                    } else if AudioPlayer.current.repeatMode == .track {
                         AudioPlayer.current.setRepeatMode(.none)
                     }
                 } label: {
-                    if repeatMode == .track {
+                    if AudioPlayer.current.repeatMode == .track {
                         Image(systemName: "repeat.1")
-                    } else if repeatMode == .none || repeatMode == .queue {
+                    } else if AudioPlayer.current.repeatMode == .none || AudioPlayer.current.repeatMode == .queue {
                         Image(systemName: "repeat")
                     }
                 }
-                .buttonStyle(SymbolButtonStyle(active: repeatMode != .none))
+                .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
                 .padding(.horizontal, 4)
                 
                 Button {
-                    AudioPlayer.current.shuffle(!shuffled)
+                    AudioPlayer.current.shuffle(!AudioPlayer.current.shuffled)
                 } label: {
                     Image(systemName: "shuffle")
                 }
-                .buttonStyle(SymbolButtonStyle(active: shuffled))
+                .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
                 .padding(.horizontal, 4)
                 
                 Button {
@@ -142,11 +139,6 @@ extension NowPlayingSheet {
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.queueUpdated), perform: { _ in
                 history = AudioPlayer.current.history
                 queue = AudioPlayer.current.queue
-                
-                withAnimation {
-                    shuffled = AudioPlayer.current.shuffled
-                    repeatMode = AudioPlayer.current.repeatMode
-                }
             })
         }
     }

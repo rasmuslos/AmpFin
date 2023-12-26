@@ -1,35 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ""
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ""
-          }
-        }
-      }
-    },
-    ":)" : {
-
-    },
-    "%@ • %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ • %2$@"
-          }
-        }
-      }
-    },
     "account.deleteDownloads" : {
       "localizations" : {
         "de" : {
@@ -63,13 +34,52 @@
       }
     },
     "account.remote" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fernbedienung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remote control"
+          }
+        }
+      }
     },
     "account.remote.empty" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine unterstützten Anwendungen gefunden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No supported clients found"
+          }
+        }
+      }
     },
     "account.remote.loading" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lade Anwendungen..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading clients..."
+          }
+        }
+      }
     },
     "account.server" : {
       "localizations" : {
@@ -151,8 +161,21 @@
         }
       }
     },
-    "Command" : {
-
+    "Command :)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : ""
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Command :)"
+          }
+        }
+      }
     },
     "developedBy" : {
       "localizations" : {
@@ -540,9 +563,6 @@
         }
       }
     },
-    "playback.disconnect" : {
-
-    },
     "playback.stop" : {
       "localizations" : {
         "de" : {
@@ -672,10 +692,36 @@
       }
     },
     "remote.connect" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Jellyfin-Server verbinden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establish connection to the Jellyfin server"
+          }
+        }
+      }
     },
-    "remote.stop" : {
-
+    "remote.disconnect" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindung trennen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disconnect client"
+          }
+        }
+      }
     },
     "search.albums" : {
       "localizations" : {

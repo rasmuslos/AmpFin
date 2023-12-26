@@ -15,4 +15,5 @@ extension AudioPlayer {
     public static let positionUpdated = Notification.Name.init("io.rfk.ampfin.player.position.updated")
     
     public static let trackChange = Notification.Name.init("io.rfk.ampfin.player.changed")
+    public static let volumeChange = Notification.Name.init("io.rfk.ampfin.volume.changed")
 }

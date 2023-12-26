@@ -97,20 +97,22 @@ extension NowPlayingSheet {
                 VolumeSlider()
                 
                 HStack {
-                    // sometime when they are properly supported by the server
-                    /*
-                    Button {
-                        setActiveTab(.lyrics)
-                    } label: {
-                        Image(systemName: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
-                    }
-                    .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
-                    .popoverTip(LyricsTip(), arrowEdge: .bottom)
-                     */
-                    
                     Spacer()
                     
                     if AudioPlayer.current.source == .local {
+                        // disabled until lyrics are fully supported by the stable server
+                        /*
+                         Button {
+                         setActiveTab(.lyrics)
+                         } label: {
+                         Image(systemName: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
+                         }
+                         .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
+                         .popoverTip(LyricsTip(), arrowEdge: .bottom)
+                         
+                         Spacer()
+                         */
+                        
                         AirPlayView()
                             .frame(width: 45)
                         
@@ -124,23 +126,39 @@ extension NowPlayingSheet {
                         .buttonStyle(SymbolButtonStyle(active: queueTabActive))
                     } else if AudioPlayer.current.source == .jellyfinRemote {
                         Button {
-                            AudioPlayer.current.destroy()
-                        } label: {
-                            Image(systemName: "xmark")
-                        }
-                        .buttonStyle(SymbolButtonStyle(active: false))
-                        
-                        /*
-                         Does not work
-                        Spacer()
-                        
-                        Button {
                             AudioPlayer.current.shuffle(!AudioPlayer.current.shuffled)
                         } label: {
                             Image(systemName: "shuffle")
                         }
                         .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
-                         */
+                        
+                        Spacer()
+                        
+                        Button {
+                            if AudioPlayer.current.repeatMode == .none {
+                                AudioPlayer.current.setRepeatMode(.queue)
+                            } else if AudioPlayer.current.repeatMode == .queue {
+                                AudioPlayer.current.setRepeatMode(.track)
+                            } else if AudioPlayer.current.repeatMode == .track {
+                                AudioPlayer.current.setRepeatMode(.none)
+                            }
+                        } label: {
+                            if AudioPlayer.current.repeatMode == .track {
+                                Image(systemName: "repeat.1")
+                            } else if AudioPlayer.current.repeatMode == .none || AudioPlayer.current.repeatMode == .queue {
+                                Image(systemName: "repeat")
+                            }
+                        }
+                        .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
+                        
+                        Spacer()
+                        
+                        Button {
+                            AudioPlayer.current.destroy()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                        .buttonStyle(SymbolButtonStyle(active: false))
                     }
                     
                     Spacer()

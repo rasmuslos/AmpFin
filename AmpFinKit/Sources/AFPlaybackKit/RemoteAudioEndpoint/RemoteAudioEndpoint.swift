@@ -29,28 +29,28 @@ class RemoteAudioEndpoint {
     var active: Bool
     var token: Any!
     
+    var nowPlayingInfo = [String: Any]()
+    var queuePlayer: AVQueuePlayer!
+    
     init(session: Session) {
         clientId = session.clientId
         sessionId = session.id
+        active = false
         
         nowPlaying = session.nowPlaying
-        
         playing = !session.isPaused
         canSeek = session.canSeek
         canSetVolume = session.canSetVolume
-        
         position = session.position
         volume = session.volumeLevel
-        
         shuffled = false
         repeatMode = .none
-        
-        active = false
         
         setupObserver()
         AudioPlayer.setupAudioSession()
         
-        update()
+        startDummyAudioPlayer()
+        updateNowPlayingWidget()
         
         NotificationCenter.default.post(name: AudioPlayer.playbackStarted, object: nil)
     }
@@ -60,7 +60,14 @@ class RemoteAudioEndpoint {
             NotificationCenter.default.removeObserver(token)
         }
         
-        NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
+        if let queuePlayer = queuePlayer {
+            queuePlayer.pause()
+            queuePlayer.removeAllItems()
+        }
+        
+        Task { @MainActor in
+            NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
+        }
     }
 }
 
@@ -74,49 +81,91 @@ extension RemoteAudioEndpoint {
             let session = Session.convertFromJellyfin(jellyfinSession)
             
             self?.nowPlaying = session.nowPlaying
-            
             self?.playing = !session.isPaused
             self?.canSeek = session.canSeek
             self?.canSetVolume = session.canSetVolume
-            
             self?.position = session.position
             self?.volume = session.volumeLevel
-            
             self?.repeatMode = session.repeatMode
             
-            self?.update()
-            
-            print(self?.nowPlaying)
+            self?.updateNowPlayingWidget()
             
             NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
+            NotificationCenter.default.post(name: AudioPlayer.volumeChange, object: nil)
             
             NotificationCenter.default.post(name: AudioPlayer.playPause, object: nil)
             NotificationCenter.default.post(name: AudioPlayer.positionUpdated, object: nil)
         }
     }
     
-    func update() {
-        if let nowPlaying = nowPlaying, active == false {
-            NotificationCenter.default.post(name: AudioPlayer.playbackStarted, object: nil)
+    func startDummyAudioPlayer() {
+        // this horrible abomination is required to show up in now playing
+        let path = Bundle.module.path(forResource: "silence", ofType: "wav")
+        let url = NSURL.fileURL(withPath: path!)
+        let asset = AVAsset(url: url)
+        let playerItem = AVPlayerItem(asset: asset)
+        queuePlayer = AVQueuePlayer(playerItem: playerItem)
+        let _ = AVPlayerLooper(player: queuePlayer, templateItem: playerItem)
+    }
+    
+    func updateNowPlayingWidget() {
+        if let nowPlaying = nowPlaying {
+            if isPlaying() {
+                queuePlayer.play()
+            } else {
+                queuePlayer.pause()
+            }
             
-            AudioPlayer.updateAudioSession(active: true)
             AudioPlayer.current.updateCommandCenter(favorite: nowPlaying.favorite)
-            
-            var nowPlayingInfo = [String: Any]()
             
             nowPlayingInfo[MPMediaItemPropertyTitle] = nowPlaying.name
             nowPlayingInfo[MPMediaItemPropertyArtist] = nowPlaying.artistName
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = nowPlaying.album.name
             nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = nowPlaying.album.artistName
+            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration()
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime()
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackProgress] = currentTime() / duration()
+            
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = isPlaying() ? 1.0 : 0.0
             
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            MPNowPlayingInfoCenter.default().playbackState = isPlaying() ? .playing : .paused
+            
+            updateNowPlayingCover()
+        }
+        
+        if nowPlaying != nil && active == false {
+            NotificationCenter.default.post(name: AudioPlayer.playbackStarted, object: nil)
+            AudioPlayer.updateAudioSession(active: true)
             
             active = true
         } else if nowPlaying == nil && active == true {
             AudioPlayer.updateAudioSession(active: false)
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
+            queuePlayer.pause()
+            
+            nowPlayingInfo = [:]
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
             
             active = false
+        }
+    }
+    
+    func updateNowPlayingCover() {
+        let identifier = nowPlayingInfo[MPNowPlayingInfoPropertyExternalContentIdentifier] as? String
+        
+        if let nowPlaying = nowPlaying, identifier != nowPlaying.id {
+            nowPlayingInfo[MPNowPlayingInfoPropertyExternalContentIdentifier] = nowPlaying.id
+            
+            #if canImport(UIKit)
+            Task.detached { [self] in
+                if let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url), let image = UIImage(data: data) {
+                    let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { _ -> UIImage in image })
+                    nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+                }
+            }
+            #else
+            // TODO: code this
+            #endif
         }
     }
 }
@@ -148,6 +197,12 @@ extension RemoteAudioEndpoint: AudioEndpoint {
     
     func currentTime() -> Double {
         position
+    }
+    
+    func setVolume(_ volume: Float) {
+        Task {
+            try? await JellyfinClient.shared.setOutputVolume(sessionId: sessionId, volume: volume)
+        }
     }
     
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
@@ -188,8 +243,6 @@ extension RemoteAudioEndpoint: AudioEndpoint {
             try? await JellyfinClient.shared.queueTracks(sessionId: sessionId, tracks: tracks, queuePosition: index == 0 ? .next : .last)
         }
     }
-    
-    // This does not work...
     
     func shuffle(_ shuffle: Bool) {
         shuffled = shuffle

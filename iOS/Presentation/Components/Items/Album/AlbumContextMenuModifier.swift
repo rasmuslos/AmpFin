@@ -99,6 +99,6 @@ struct AlbumContextMenuModifier: ViewModifier {
 }
 
 #Preview {
-    Text(":)")
+    Text(verbatim: ":)")
         .modifier(AlbumContextMenuModifier(album: Album.fixture))
 }

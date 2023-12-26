@@ -89,7 +89,7 @@ struct LoginView: View {
                             case .failed:
                                 Text("login.error.failed")
                             case nil:
-                                Text("")
+                                Text(verbatim: "")
                             }
                         }
                         .foregroundStyle(.red)

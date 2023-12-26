@@ -18,6 +18,8 @@ protocol AudioEndpoint {
     var shuffled: Bool { get }
     var repeatMode: RepeatMode { get }
     
+    var volume: Float { get }
+    
     func setPlaying(_ playing: Bool)
     func isPlaying() -> Bool
     
@@ -26,6 +28,8 @@ protocol AudioEndpoint {
     
     func duration() -> Double
     func currentTime() -> Double
+    
+    func setVolume(_ volume: Float)
     
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool)
     func stopPlayback()

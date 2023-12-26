@@ -40,6 +40,8 @@ public class Session: Identifiable {
         self.isMuted = isMuted
         self.volumeLevel = volumeLevel
         self.repeatMode = repeatMode
+        
+        // TODO: it seems like shuffle is not send at the moment, this should be implemented on the server...
     }
 }
 

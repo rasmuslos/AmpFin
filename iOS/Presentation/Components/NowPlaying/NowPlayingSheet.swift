@@ -112,7 +112,7 @@ extension NowPlayingSheet {
 }
 
 #Preview {
-    Text(":)")
+    Text(verbatim: ":)")
         .fullScreenCover(item: .constant(Track.fixture)) {
             NowPlayingSheet(track: $0, playing: .constant(false))
         }

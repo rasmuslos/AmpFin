@@ -124,7 +124,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             Button {
                                 AudioPlayer.current.destroy()
                             } label: {
-                                Label("playback.disconnect", systemImage: "xmark")
+                                Label("remote.disconnect", systemImage: "xmark")
                             }
                         }
                     } preview: {

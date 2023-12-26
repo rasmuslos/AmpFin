@@ -39,7 +39,7 @@ extension AlbumView {
                                 }
                             }
                         } else {
-                            Text("")
+                            Text(verbatim: "")
                         }
                     }
                 }

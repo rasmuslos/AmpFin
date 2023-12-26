@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import MediaPlayer
+import AFPlaybackKit
 
 struct VolumeSlider: View {
-    @State var volume: Double = 0
+    @State var volume = Double(AudioPlayer.current.volume) * 100
     @State var isDragging: Bool = false
     
     var body: some View {
@@ -29,13 +29,13 @@ struct VolumeSlider: View {
         .animation(.easeInOut, value: isDragging)
         .onChange(of: volume) {
             if isDragging {
-                MPVolumeView.setVolume(Float(volume / 100))
+                AudioPlayer.current.setVolume(Float(volume / 100))
             }
         }
-        .onReceive(AVAudioSession.sharedInstance().publisher(for: \.outputVolume), perform: { value in
+        .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.volumeChange), perform: { _ in
             if !isDragging {
                 withAnimation {
-                    volume = Double(value) * 100
+                    volume = Double(AudioPlayer.current.volume) * 100
                 }
             }
         })

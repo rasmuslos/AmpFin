@@ -40,7 +40,7 @@ struct ArtistView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("")
+                Text(verbatim: "")
             }
         }
         .toolbar {

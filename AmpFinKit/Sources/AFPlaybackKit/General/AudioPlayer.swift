@@ -20,6 +20,7 @@ public class AudioPlayer {
     
     public private(set) var source: PlaybackSource = .none {
         didSet {
+            MPRemoteCommandCenter.shared().likeCommand.isEnabled = source == .local
             checkRemoteControlAvailability()
         }
     }
@@ -138,6 +139,10 @@ extension AudioPlayer: AudioEndpoint {
         endpoint?.repeatMode ?? .none
     }
     
+    public var volume: Float {
+        endpoint?.volume ?? 0.5
+    }
+    
     public func setPlaying(_ playing: Bool) {
         endpoint?.setPlaying(playing)
     }
@@ -160,6 +165,10 @@ extension AudioPlayer: AudioEndpoint {
     
     public func currentTime() -> Double {
         endpoint?.currentTime() ?? 0
+    }
+    
+    public func setVolume(_ volume: Float) {
+        endpoint?.setVolume(volume)
     }
     
     public func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
@@ -327,7 +336,7 @@ extension AudioPlayer {
         }
         
         #if canImport(AFOfflineKit)
-        commandCenter.likeCommand.isEnabled = true
+        commandCenter.likeCommand.isEnabled = false
         commandCenter.likeCommand.addTarget { event in
             if let event = event as? MPFeedbackCommandEvent {
                 Task.detached { [self] in

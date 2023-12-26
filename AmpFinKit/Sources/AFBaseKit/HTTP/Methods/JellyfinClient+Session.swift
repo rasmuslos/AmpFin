@@ -61,15 +61,21 @@ public extension JellyfinClient {
     
     /// Set the session shuffle mode
     func setShuffleMode(sessionId: String, shuffled: Bool) async throws {
-        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Command/SetShuffleQueue", method: "POST", body: [
-            "ShuffleMode": shuffled ? "Shuffle" : "Sorted"
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Command", method: "POST", body: [
+            "Name": "SetShuffleQueue",
+            "Arguments": [
+                "ShuffleMode": shuffled ? "Shuffle" : "Sorted",
+            ]
         ]))
     }
     
     /// Set the repeat shuffle mode
     func setRepeatMode(sessionId: String, repeatMode: RepeatMode) async throws {
-        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Command/SetRepeatMode", method: "POST", body: [
-            "RepeatMode": repeatMode == .none ? "RepeatNone" : repeatMode == .track ? "RepeatOne" : "RepeatAll"
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Command", method: "POST", body: [
+            "Name": "SetRepeatMode",
+            "Arguments": [
+                "RepeatMode": repeatMode == .none ? "RepeatNone" : repeatMode == .track ? "RepeatOne" : "RepeatAll",
+            ],
         ]))
     }
     
@@ -87,6 +93,16 @@ public extension JellyfinClient {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Playing", method: "POST", query: [
             URLQueryItem(name: "ItemIds", value: tracks.map { $0.id }.joined(separator: ",")),
             URLQueryItem(name: "PlayCommand", value: queuePosition.rawValue),
+        ]))
+    }
+    
+    /// Set the output volume of the session
+    func setOutputVolume(sessionId: String, volume: Float) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Command", method: "POST", body: [
+            "Name": "SetVolume",
+            "Arguments": [
+                "Volume": String(Int(volume * 100)),
+            ],
         ]))
     }
 }

@@ -44,7 +44,7 @@ struct AccountSheet: View {
                         Button {
                             AudioPlayer.current.destroy()
                         } label: {
-                            Text("remote.stop")
+                            Text("remote.disconnect")
                         }
                     } else if let sessions = sessions {
                         if sessions.count == 0 {
@@ -56,7 +56,7 @@ struct AccountSheet: View {
                                     AudioPlayer.current.startRemoteControl(session: session)
                                 } label: {
                                     VStack(alignment: .leading, spacing: 7) {
-                                        Text("\(session.name) • \(session.client)")
+                                        Text(verbatim: "\(session.name) • \(session.client)")
                                         
                                         if let nowPlaying = session.nowPlaying {
                                             HStack {
@@ -138,7 +138,7 @@ struct AccountSheet: View {
 }
 
 #Preview {
-    Text(":)")
+    Text(verbatim: ":)")
         .sheet(isPresented: .constant(true)) {
             AccountSheet()
         }

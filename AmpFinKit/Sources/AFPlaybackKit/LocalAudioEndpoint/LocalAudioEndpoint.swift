@@ -101,6 +101,15 @@ extension LocalAudioEndpoint {
         let currentTime = audioPlayer.currentTime().seconds
         return currentTime.isFinite ? currentTime : 0
     }
+    
+    func setVolume(_ volume: Float) {
+        MPVolumeView.setVolume(volume)
+        NotificationCenter.default.post(name: AudioPlayer.volumeChange, object: nil)
+    }
+    
+    var volume: Float {
+        audioSession.outputVolume
+    }
 }
 
 // MARK: Queue
@@ -325,11 +334,11 @@ extension LocalAudioEndpoint {
             
             populateQueue()
             setPlaying(repeatMode != .none)
+        } else {
+            setNowPlaying(track: queue.removeFirst())
         }
         
-        setNowPlaying(track: queue.removeFirst())
         setupNowPlayingMetadata()
-        
         notifyQueueChanged()
     }
     
@@ -386,6 +395,10 @@ extension LocalAudioEndpoint {
                 }
             default: ()
             }
+        }
+        
+        let _ = AVAudioSession.sharedInstance().publisher(for: \.outputVolume).sink { _ in
+            NotificationCenter.default.post(name: AudioPlayer.volumeChange, object: nil)
         }
         
         #if os(iOS)
