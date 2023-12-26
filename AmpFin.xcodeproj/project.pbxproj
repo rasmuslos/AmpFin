@@ -34,6 +34,7 @@
 		3A3EA5A72ACC206500600BC5 /* DownloadIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */; };
 		3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F11392B010FB600E205DA /* HistoryTip.swift */; };
 		3A3FEECD2AF7A3C8001F8AA0 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */; };
+		3A5B470F2B3B37A60075118F /* UIImage+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */; };
 		3A6565D72AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */; };
 		3A6F50A72AACA3D600FC8A29 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6F50A62AACA3D600FC8A29 /* SearchView.swift */; };
 		3A6F50A92AACA48400FC8A29 /* SearchView+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6F50A82AACA48400FC8A29 /* SearchView+Picker.swift */; };
@@ -115,6 +116,7 @@
 		3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadIndicator.swift; sourceTree = "<group>"; };
 		3A3F11392B010FB600E205DA /* HistoryTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTip.swift; sourceTree = "<group>"; };
 		3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+IsLight.swift"; sourceTree = "<group>"; };
 		3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingSheet+Queue.swift"; sourceTree = "<group>"; };
 		3A6F50A62AACA3D600FC8A29 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3A6F50A82AACA48400FC8A29 /* SearchView+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+Picker.swift"; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 			children = (
 				3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */,
 				3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */,
+				3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
 			);
 			path = Extensions;
@@ -618,6 +621,7 @@
 				3AF815DD2AAA1A80004BA444 /* NowPlayingSheet+Lyrics.swift in Sources */,
 				3A8B99422AAA0880004AAA7B /* VolumeSlider.swift in Sources */,
 				3AEB323E2AA7FFA100853210 /* NavigationRoot+Search.swift in Sources */,
+				3A5B470F2B3B37A60075118F /* UIImage+IsLight.swift in Sources */,
 				3A98A0302AABA37B00EA84CF /* ErrorView.swift in Sources */,
 				3ADE8EA42AA94142009826A3 /* UINavigationController+Gesture.swift in Sources */,
 				3A234E052AA88D6000197AA7 /* TracksView.swift in Sources */,

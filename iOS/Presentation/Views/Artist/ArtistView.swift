@@ -18,37 +18,47 @@ struct ArtistView: View {
     
     var body: some View {
         ScrollView {
-            Header(artist: artist)
-            
-            if let albums = albums {
-                AlbumGrid(albums: albums)
-                    .padding()
-            }
-            
-            if let overview = artist.overview {
-                Text(overview)
-                    .padding()
-                    .background {
-                        LinearGradient(colors: [
-                            .clear,
-                            Color(UIColor.secondarySystemBackground),
-                        ], startPoint: .top, endPoint: .bottom)
+            if artist.cover != nil {
+                Header(artist: artist)
+            } else {
+                Color.clear
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                Task {
+                                    try? await artist.startInstantMix()
+                                }
+                            } label: {
+                                Image(systemName: "play.circle.fill")
+                            }
+                        }
                     }
             }
-        }
-        .navigationTitle(artist.name)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(verbatim: "")
+            
+            if let albums = albums, !albums.isEmpty {
+                HStack {
+                    Text("artist.albums")
+                        .font(.headline)
+                    
+                    Spacer()
+                }
+                .padding(.top, artist.cover == nil ? 0 : 17)
+                .padding(.horizontal)
+                
+                AlbumGrid(albums: albums)
+                    .padding()
+            } else {
+                Text("artist.empty")
+                    .font(.headline.smallCaps())
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 100)
             }
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 SortSelector(sortOrder: $sortOrder)
             }
-        }
-        .toolbar {
+            
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     Task {
@@ -59,16 +69,9 @@ struct ArtistView: View {
                         .contentTransition(.symbolEffect(.replace))
                 }
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    Task {
-                        try? await artist.startInstantMix()
-                    }
-                } label: {
-                    Image(systemName: "play.circle.fill")
-                }
-            }
         }
+        .navigationTitle(artist.name)
+        .modifier(IgnoreSafeAreaModifier(ignoreSafeArea: artist.cover != nil))
         .task(loadAlbums)
         .onChange(of: sortOrder) {
             Task {
@@ -85,6 +88,20 @@ extension ArtistView {
     @Sendable
     func loadAlbums() async {
         albums = try? await dataProvider.getArtistAlbums(id: artist.id, sortOrder: sortOrder, ascending: true)
+    }
+    
+    // truly stupid
+    struct IgnoreSafeAreaModifier: ViewModifier {
+        let ignoreSafeArea: Bool
+        
+        func body(content: Content) -> some View {
+            if ignoreSafeArea {
+                content
+                    .ignoresSafeArea(edges: .top)
+            } else {
+                content
+            }
+        }
     }
 }
 

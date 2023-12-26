@@ -11,19 +11,22 @@ import AFBaseKit
 
 struct ItemImage: View {
     let cover: Item.Cover?
+    var cornerRadius: CGFloat = 7
     
-    let placeholder: some View = VStack {
-        Spacer()
-        HStack {
+    var placeholder: some View {
+        VStack {
             Spacer()
-            Image(systemName: "music.note")
+            HStack {
+                Spacer()
+                Image(systemName: "music.note")
+                Spacer()
+            }
             Spacer()
         }
-        Spacer()
-    }
         .background(.ultraThickMaterial)
         .aspectRatio(1, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 7))
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+    }
     
     var body: some View {
         if let cover = cover {
@@ -37,7 +40,7 @@ struct ItemImage: View {
                 }
             }
             .aspectRatio(1, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
         } else {
             placeholder
         }
