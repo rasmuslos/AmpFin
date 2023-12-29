@@ -13,7 +13,7 @@ extension Track {
         return Track(
             id: offline.id,
             name: offline.name,
-            cover: Item.Cover(type: .local, url: DownloadManager.shared.getAlbumCoverUrl(albumId: offline.album.id)),
+            cover: Item.Cover(type: .local, url: DownloadManager.shared.getCoverUrl(albumId: offline.album.id)),
             favorite: offline.favorite,
             album: ReducedAlbum(
                 id: offline.album.id,

@@ -13,7 +13,7 @@ extension Album {
         Album(
             id: offline.id,
             name: offline.name,
-            cover: Item.Cover(type: .local, url: DownloadManager.shared.getAlbumCoverUrl(albumId: offline.id)),
+            cover: Item.Cover(type: .local, url: DownloadManager.shared.getCoverUrl(albumId: offline.id)),
             favorite: offline.favorite,
             overview: offline.overview,
             genres: offline.genres,

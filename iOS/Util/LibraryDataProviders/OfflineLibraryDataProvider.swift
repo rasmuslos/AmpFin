@@ -15,7 +15,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     public var supportsAdvancedFilters: Bool = false
     
     public func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
-        let tracks = try await OfflineManager.shared.getAllTracks().sorted {
+        let tracks = try await OfflineManager.shared.getTracks().sorted {
             switch sortOrder {
             case .name:
                 return $0.name < $1.name
@@ -46,13 +46,13 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     }
     
     public func getAlbumTracks(id: String) async throws -> [Track] {
-        return try await OfflineManager.shared.getAlbumTracks(albumId: id)
+        return try await OfflineManager.shared.getTracks(albumId: id)
     }
     public func getAlbumById(_ albumId: String) async throws -> Album? {
         await OfflineManager.shared.getAlbum(albumId: albumId)
     }
     public func getAlbums(limit: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
-        let albums = try await OfflineManager.shared.getAllAlbums().sorted {
+        let albums = try await OfflineManager.shared.getAlbums().sorted {
             switch sortOrder {
             case .name, .album:
                 return $0.name < $1.name
@@ -81,11 +81,11 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     }
     
     public func searchTracks(query: String) async throws -> [Track] {
-        try await OfflineManager.shared.searchTracks(query: query)
+        try await OfflineManager.shared.getTracks(query: query)
     }
     
     public func searchAlbums(query: String) async throws -> [Album] {
-        try await OfflineManager.shared.searchAlbums(query: query)
+        try await OfflineManager.shared.getAlbums(query: query)
     }
     
     public init() {

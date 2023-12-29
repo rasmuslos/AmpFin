@@ -9,18 +9,20 @@ import Foundation
 import SwiftData
 import AFBaseKit
 
+// MARK: Private
+
 extension OfflineManager {
     @MainActor
-    func download(_ track: Track, album: OfflineAlbum) {
+    func download(track: Track, album: OfflineAlbum) {
         if let existing = getOfflineTrack(trackId: track.id) {
             if existing.downloadId == nil {
                 return
             }
             
-            delete(existing)
+            delete(track: existing)
         }
         
-        let downloadTask = DownloadManager.shared.downloadTrack(track: track)
+        let downloadTask = DownloadManager.shared.download(track: track)
         
         let offlineItem = OfflineTrack(
             id: track.id,
@@ -50,16 +52,12 @@ extension OfflineManager {
     }
     
     @MainActor
-    func delete(_ track: OfflineTrack) {
-        DownloadManager.shared.deleteTrack(trackId: track.id)
+    func delete(track: OfflineTrack) {
+        DownloadManager.shared.delete(trackId: track.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(track)
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
     }
-}
-
-// MARK: Get/Set
-
-extension OfflineManager {
+    
     @MainActor
     func getOfflineTrack(trackId: String) -> OfflineTrack? {
         var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
@@ -81,9 +79,38 @@ extension OfflineManager {
         let track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId != nil })
         return try PersistenceManager.shared.modelContainer.mainContext.fetch(track)
     }
+}
+
+// MARK: Public
+
+public extension OfflineManager {
+    @MainActor
+    func getTracks() throws -> [Track] {
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
+        return tracks.map(Track.convertFromOffline)
+    }
     
     @MainActor
-    public func getDownloadingTracks() throws -> [Track] {
+    func getTracks(query: String) throws -> [Track] {
+        /*
+        var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate {
+            $0.name.localizedStandardContains(query)
+            || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(query) })
+        })
+        descriptor.fetchLimit = 20
+         */
+        
+        // SwiftData has serious flaws
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>()).filter {
+            $0.name.localizedStandardContains(query)
+            || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(query) })
+        }
+        
+        return tracks.map(Track.convertFromOffline)
+    }
+    
+    @MainActor
+    func getDownloadingTracks() throws -> [Track] {
         let tracks = try getUnfinishedDownloads()
         return tracks.map(Track.convertFromOffline)
     }
@@ -98,41 +125,10 @@ extension OfflineManager {
     }
     
     @MainActor
-    public func getLyrics(trackId: String) -> Track.Lyrics? {
+    func getLyrics(trackId: String) -> Track.Lyrics? {
         var lyrics = FetchDescriptor<OfflineLyrics>(predicate: #Predicate { $0.trackId == trackId })
         lyrics.fetchLimit = 1
         
         return try? PersistenceManager.shared.modelContainer.mainContext.fetch(lyrics).first?.lyrics
-    }
-    
-    @MainActor
-    public func updateOfflineFavorite(itemId: String, favorite: Bool) {
-        if let offlineTrack = OfflineManager.shared.getOfflineTrack(trackId: itemId) {
-            offlineTrack.favorite = favorite
-        } else if let offlineAlbum = OfflineManager.shared.getOfflineAlbum(albumId: itemId) {
-            offlineAlbum.favorite = favorite
-        }
-    }
-}
-
-// MARK: Provider
-
-extension OfflineManager {
-    @MainActor
-    public func getAllTracks() throws -> [Track] {
-        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
-        return tracks.map(Track.convertFromOffline)
-    }
-    
-    @MainActor
-    public func searchTracks(query: String) throws -> [Track] {
-        var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate {
-            $0.name.localizedStandardContains(query)
-            // || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(query) })
-        })
-        descriptor.fetchLimit = 20
-        
-        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
-        return tracks.map(Track.convertFromOffline)
     }
 }

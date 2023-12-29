@@ -21,22 +21,22 @@ public extension OfflineManager {
         }
         
         for album in albums {
-            try await OfflineManager.shared.delete(album)
+            try await OfflineManager.shared.delete(album: album)
         }
     }
     
     @MainActor
-    func deleteAllDownloads() async throws {
+    func deleteAll() async throws {
         // Delete all albums (should remove all tracks, too)
         let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
         for album in albums {
-            try! delete(album)
+            try! delete(album: album)
         }
         
         // Ensure all tracks are deleted
         let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
         for track in tracks {
-            delete(track)
+            delete(track: track)
         }
         
         try DownloadManager.shared.cleanupDirectory()
@@ -54,6 +54,7 @@ public extension OfflineManager {
                     PersistenceManager.shared.modelContainer.mainContext.delete(play)
                 } catch {
                     Self.logger.fault("Error while syncing play to Jellyfin server \(play.trackId) (\(play.positionSeconds)")
+                    break
                 }
             }
         }

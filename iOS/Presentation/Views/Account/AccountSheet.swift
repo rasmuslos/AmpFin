@@ -118,7 +118,7 @@ struct AccountSheet: View {
                 }
                 Button(role: .destructive) {
                     Task {
-                        try await OfflineManager.shared.deleteAllDownloads()
+                        try await OfflineManager.shared.deleteAll()
                     }
                 } label: {
                     Text("account.deleteDownloads")

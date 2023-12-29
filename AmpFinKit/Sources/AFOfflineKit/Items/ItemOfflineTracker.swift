@@ -58,7 +58,7 @@ extension ItemOfflineTracker {
         if itemType == .track {
             return OfflineManager.shared.getTrackOfflineStatus(trackId: itemId)
         } else if itemType == .album {
-            return OfflineManager.shared.getAlbumOfflineStatus(albumId: itemId)
+            return OfflineManager.shared.getOfflineStatus(albumId: itemId)
         }
         
         return .none

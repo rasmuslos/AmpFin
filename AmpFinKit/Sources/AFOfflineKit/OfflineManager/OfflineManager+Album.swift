@@ -9,55 +9,13 @@ import Foundation
 import SwiftData
 import AFBaseKit
 
-// MARK: Downloader
-
-public extension OfflineManager {
-    func download(_ album: Album) async throws {
-        var offlineAlbum: OfflineAlbum
-        let tracks = try await JellyfinClient.shared.getTracks(albumId: album.id)
-        
-        if let existing = await getOfflineAlbum(albumId: album.id) {
-            offlineAlbum = existing
-        } else {
-            offlineAlbum = try await createOfflineAlbum(album, trackCount: tracks.count)
-        }
-        
-        let album = offlineAlbum
-        
-        tracks.forEach { track in
-            Task.detached {
-                await download(track, album: album)
-            }
-        }
-        
-        NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: album.id)
-    }
-    
-    @MainActor
-    func getAlbumOfflineStatus(albumId: String) -> ItemOfflineTracker.OfflineStatus {
-        if let album = getOfflineAlbum(albumId: albumId) {
-            return isAlbumDownloadInProgress(album) ? .working : .downloaded
-        }
-        
-        return .none
-    }
-}
-
-// MARK: Get/Set/Delete
+// MARK: Private
 
 extension OfflineManager {
     @MainActor
-    func getOfflineAlbum(albumId: String) -> OfflineAlbum? {
-        var album = FetchDescriptor(predicate: #Predicate<OfflineAlbum> { $0.id == albumId })
-        album.fetchLimit = 1
-        
-        return try? PersistenceManager.shared.modelContainer.mainContext.fetch(album).first
-    }
-    
-    @MainActor
-    func createOfflineAlbum(_ album: Album, trackCount: Int) async throws -> OfflineAlbum {
+    func create(album: Album, trackCount: Int) async throws -> OfflineAlbum {
         if let cover = album.cover {
-            try await DownloadManager.shared.downloadAlbumCover(albumId: album.id, cover: cover)
+            try await DownloadManager.shared.downloadCover(albumId: album.id, cover: cover)
         }
         
         let offlineAlbum = OfflineAlbum(
@@ -75,70 +33,102 @@ extension OfflineManager {
     }
     
     @MainActor
-    public func delete(albumId: String) throws {
-        if let album = OfflineManager.shared.getOfflineAlbum(albumId: albumId) {
-            try delete(album)
-        } else {
-            throw OfflineError.notFoundError
-        }
-    }
-    
-    @MainActor
-    func delete(_ album: OfflineAlbum) throws {
-        let tracks = try getAlbumTracks(album)
+    func delete(album: OfflineAlbum) throws {
+        let tracks = try getOfflineTracks(albumId: album.id)
         for track in tracks {
-            delete(track)
+            delete(track: track)
         }
         
-        try? DownloadManager.shared.deleteAlbumCover(albumId: album.id)
+        try? DownloadManager.shared.deleteCover(albumId: album.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(album)
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: album.id)
     }
     
     @MainActor
-    public func getAlbumTracks(albumId: String) throws -> [Track] {
-        if let album = OfflineManager.shared.getOfflineAlbum(albumId: albumId) {
-            return try OfflineManager.shared.getAlbumTracks(album).map(Track.convertFromOffline)
-        }
+    func getOfflineAlbum(albumId: String) -> OfflineAlbum? {
+        var album = FetchDescriptor(predicate: #Predicate<OfflineAlbum> { $0.id == albumId })
+        album.fetchLimit = 1
         
-        throw OfflineError.notFoundError
-    }
-}
-
-// MARK: Album tracks
-
-extension OfflineManager {
-    @MainActor
-    func getAlbumTracks(_ album: OfflineAlbum) throws -> [OfflineTrack] {
-        // this is so incredibly stupid... whoever thought of this goes straight to hell
-        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
-        return tracks.filter { $0.album.id == album.id }
+        return try? PersistenceManager.shared.modelContainer.mainContext.fetch(album).first
     }
     
     @MainActor
-    func isAlbumDownloadInProgress(_ album: OfflineAlbum) -> Bool {
-        let tracks = (try? getAlbumTracks(album)) ?? []
+    func getOfflineTracks(albumId: String) throws -> [OfflineTrack] {
+        // this is so incredibly stupid... whoever thought of this goes straight to hell
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
+        return tracks.filter { $0.album.id == albumId }
+    }
+    
+    @MainActor
+    func isDownloadInProgress(albumId: String) throws -> Bool {
+        let tracks = try getOfflineTracks(albumId: albumId)
         return tracks.reduce(false) { $1.downloadId == nil ? $0 : true }
     }
 }
 
-// MARK: Provider
+// MARK: Public
 
 public extension OfflineManager {
-    @MainActor
-    func getRecentAlbums() throws -> [Album] {
-        let descriptor = FetchDescriptor<OfflineAlbum>()
-        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
+    func download(_ album: Album) async throws {
+        var offlineAlbum: OfflineAlbum
+        let tracks = try await JellyfinClient.shared.getTracks(albumId: album.id)
         
-        // this is also stupid
-        return albums.suffix(20).map(Album.convertFromOffline).reversed()
+        if let existing = await getOfflineAlbum(albumId: album.id) {
+            offlineAlbum = existing
+        } else {
+            offlineAlbum = try await create(album: album, trackCount: tracks.count)
+        }
+        
+        let album = offlineAlbum
+        
+        tracks.forEach { track in
+            Task.detached {
+                await download(track: track, album: album)
+            }
+        }
+        
+        NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: album.id)
     }
     
     @MainActor
-    func getAllAlbums() throws -> [Album] {
+    func delete(albumId: String) throws {
+        if let album = OfflineManager.shared.getOfflineAlbum(albumId: albumId) {
+            try delete(album: album)
+        } else {
+            throw OfflineError.notFoundError
+        }
+    }
+    
+    @MainActor
+    func getAlbums() throws -> [Album] {
         let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
         return albums.map(Album.convertFromOffline)
+    }
+    
+    @MainActor
+    func getAlbums(query: String) throws -> [Album] {
+        var descriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate { $0.name.localizedStandardContains(query) })
+        descriptor.fetchLimit = 20
+        
+        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
+        return albums.map(Album.convertFromOffline)
+    }
+    
+    @MainActor
+    func getRecentAlbums() throws -> [Album] {
+        // this is stupid
+        let albums = try getAlbums()
+        return albums.suffix(20).reversed()
+    }
+    
+    @MainActor
+    func getTracks(albumId: String) throws -> [Track] {
+        if let album = getOfflineAlbum(albumId: albumId) {
+            return try getOfflineTracks(albumId: albumId).map(Track.convertFromOffline)
+        }
+        
+        throw OfflineError.notFoundError
     }
     
     @MainActor
@@ -153,11 +143,14 @@ public extension OfflineManager {
         }
     }
     
-    @MainActor func searchAlbums(query: String) throws -> [Album] {
-        var descriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate { $0.name.localizedStandardContains(query) })
-        descriptor.fetchLimit = 20
+    @MainActor
+    func getOfflineStatus(albumId: String) -> ItemOfflineTracker.OfflineStatus {
+        do {
+            if let album = getOfflineAlbum(albumId: albumId) {
+                return try isDownloadInProgress(albumId: albumId) ? .working : .downloaded
+            }
+        } catch {}
         
-        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
-        return albums.map(Album.convertFromOffline)
+        return .none
     }
 }

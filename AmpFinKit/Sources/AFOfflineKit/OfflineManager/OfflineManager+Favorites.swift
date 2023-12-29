@@ -11,9 +11,18 @@ import AFBaseKit
 
 public extension OfflineManager {
     @MainActor
-    func createOfflineFavorite(itemId: String, favorite: Bool) {
+    func create(itemId: String, favorite: Bool) {
         let offlineFavorite = OfflineFavorite(itemId: itemId, favorite: favorite)
         PersistenceManager.shared.modelContainer.mainContext.insert(offlineFavorite)
+    }
+    
+    @MainActor
+    func updateOfflineFavorite(itemId: String, favorite: Bool) {
+        if let offlineTrack = OfflineManager.shared.getOfflineTrack(trackId: itemId) {
+            offlineTrack.favorite = favorite
+        } else if let offlineAlbum = OfflineManager.shared.getOfflineAlbum(albumId: itemId) {
+            offlineAlbum.favorite = favorite
+        }
     }
     
     func updateOfflineFavorites() {

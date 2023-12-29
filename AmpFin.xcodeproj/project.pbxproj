@@ -342,9 +342,9 @@
 			isa = PBXGroup;
 			children = (
 				3AB697A12B386B20009000DD /* LibraryDataProvider.swift */,
+				3AB697A22B386B20009000DD /* MockLibraryDataProvider.swift */,
 				3AB697A02B386B20009000DD /* OnlineLibraryDataProivder.swift */,
 				3AB697A32B386B20009000DD /* OfflineLibraryDataProvider.swift */,
-				3AB697A22B386B20009000DD /* MockLibraryDataProvider.swift */,
 			);
 			path = LibraryDataProviders;
 			sourceTree = "<group>";

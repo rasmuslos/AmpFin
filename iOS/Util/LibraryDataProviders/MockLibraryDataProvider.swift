@@ -139,6 +139,4 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
             Album.fixture,
         ]
     }
-    
-    
 }

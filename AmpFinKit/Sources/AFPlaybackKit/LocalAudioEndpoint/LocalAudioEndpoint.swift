@@ -483,8 +483,8 @@ extension LocalAudioEndpoint {
     
     func getAVPlayerItem(_ track: Track) -> AVPlayerItem {
         #if canImport(AFOfflineKit)
-        if DownloadManager.shared.isTrackDownloaded(trackId: track.id) {
-            return AVPlayerItem(url: DownloadManager.shared.getTrackUrl(trackId: track.id))
+        if DownloadManager.shared.isDownloaded(trackId: track.id) {
+            return AVPlayerItem(url: DownloadManager.shared.getUrl(trackId: track.id))
         }
         #endif
         
