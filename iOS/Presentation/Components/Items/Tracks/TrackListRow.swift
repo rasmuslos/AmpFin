@@ -10,9 +10,6 @@ import AFBaseKit
 import AFPlaybackKit
 
 struct TrackListRow: View {
-    @Environment(\.libraryDataProvider) var dataProvider
-    @Environment(\.libraryOnline) var libraryOnline
-    
     let track: Track
     var album: Album? = nil
     let startPlayback: () -> ()
@@ -41,8 +38,8 @@ struct TrackListRow: View {
                         .font(.body)
                         .padding(.vertical, showArtist ? 0 : 6)
                     
-                    if showArtist {
-                        Text(track.artistName)
+                    if showArtist, let artistName = track.artistName {
+                        Text(artistName)
                             .lineLimit(1)
                             .font(.callout)
                             .foregroundStyle(.secondary)
@@ -58,36 +55,7 @@ struct TrackListRow: View {
             
             if !disableMenu {
                 Menu {
-                    PlayNextButton(track: track)
-                    PlayLastButton(track: track)
-                    
-                    Divider()
-                    
-                    FavoriteButton(track: track)
-                    
-                    Button {
-                        Task {
-                            try? await track.startInstantMix()
-                        }
-                    } label: {
-                        Label("queue.mix", systemImage: "compass.drawing")
-                    }
-                    .disabled(!libraryOnline)
-                    
-                    Divider()
-                    
-                    if album == nil {
-                        NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
-                            Label("album.view", systemImage: "square.stack")
-                        }
-                    }
-                    
-                    if let artist = track.artists.first {
-                        NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
-                            Label("artist.view", systemImage: "music.mic")
-                                .disabled(!dataProvider.supportsArtistLookup)
-                        }
-                    }
+                    TrackMenu(track: track, album: album)
                 } label: {
                     Image(systemName: "ellipsis")
                         .renderingMode(.original)
@@ -97,6 +65,17 @@ struct TrackListRow: View {
                 }
                 .popoverTip(InstantMixTip())
             }
+        }
+        .draggable(track) {
+            TrackPreview(track: track)
+                .padding(4)
+        }
+        .contextMenu {
+            TrackMenu(track: track, album: album)
+        } preview: {
+            TrackPreview(track: track)
+                .padding()
+                .clipShape(RoundedRectangle(cornerRadius: 15))
         }
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             PlayNextButton(track: track)
@@ -113,6 +92,70 @@ struct TrackListRow: View {
 // MARK: Buttons
 
 extension TrackListRow {
+    struct TrackPreview: View {
+        let track: Track
+        
+        var body: some View {
+            HStack {
+                ItemImage(cover: track.cover)
+                    .frame(width: 45)
+                
+                VStack(alignment: .leading) {
+                    Text(track.name)
+                    
+                    if let artistName = track.artistName {
+                        Text(artistName)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                
+                Spacer()
+            }
+        }
+    }
+    
+    struct TrackMenu: View {
+        @Environment(\.libraryDataProvider) var dataProvider
+        @Environment(\.libraryOnline) var libraryOnline
+        
+        let track: Track
+        let album: Album?
+        
+        var body: some View {
+            PlayNextButton(track: track)
+            PlayLastButton(track: track)
+            
+            Divider()
+            
+            FavoriteButton(track: track)
+            
+            Button {
+                Task {
+                    try? await track.startInstantMix()
+                }
+            } label: {
+                Label("queue.mix", systemImage: "compass.drawing")
+            }
+            .disabled(!libraryOnline)
+            
+            Divider()
+            
+            if album == nil {
+                NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
+                    Label("album.view", systemImage: "square.stack")
+                }
+            }
+            
+            if let artist = track.artists.first {
+                NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
+                    Label("artist.view", systemImage: "music.mic")
+                        .disabled(!dataProvider.supportsArtistLookup)
+                }
+            }
+        }
+    }
+    
     struct PlayNextButton: View {
         let track: Track
         

@@ -129,7 +129,7 @@ extension JellyfinWebSocket: WebSocketDelegate {
                 let sessionMessage = try JSONDecoder().decode(SessionMessage.self, from: data)
                 guard let observedSession = sessionMessage.Data?.filter({ $0.DeviceId == observedClientId }).first else { return }
                 
-                NotificationCenter.default.post(name: Self.sessionUpdateNotification, object: try observedSession.toJSON())
+                NotificationCenter.default.post(name: Self.sessionUpdateNotification, object: Session.convertFromJellyfin(observedSession))
             } else {
                 throw JellyfinClientError.unknownMessage
             }

@@ -74,11 +74,7 @@ class RemoteAudioEndpoint {
 extension RemoteAudioEndpoint {
     func setupObserver() {
         token = NotificationCenter.default.addObserver(forName: JellyfinWebSocket.sessionUpdateNotification, object: nil, queue: nil) { [weak self] notification in
-            guard let object = notification.object as? String,
-                  let data = object.data(using: .utf8, allowLossyConversion: false),
-                  let jellyfinSession = try? JSONDecoder().decode(JellyfinClient.JellyfinSession.self, from: data) else { return }
-            
-            let session = Session.convertFromJellyfin(jellyfinSession)
+            guard let session = notification.object as? Session else { return }
             
             self?.nowPlaying = session.nowPlaying
             self?.playing = !session.isPaused

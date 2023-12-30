@@ -98,18 +98,38 @@ struct NowPlayingBarModifier: ViewModifier {
                         
                         Divider()
                         
-                        Button {
+                        // why is SwiftUI so stupid?
+                        Button(action: {
                             NotificationCenter.default.post(name: NavigationRoot.navigateAlbumNotification, object: currentTrack.album.id)
-                        } label: {
+                        }) {
                             Label("album.view", systemImage: "square.stack")
+                            
+                            if let albumName = currentTrack.album.name {
+                                Text(albumName)
+                            }
                         }
                         
-                        if let artistId = currentTrack.artists.first?.id {
-                            Button {
+                        if let artistId = currentTrack.artists.first?.id, let artistName = currentTrack.artists.first?.name {
+                            Button(action: {
                                 NotificationCenter.default.post(name: NavigationRoot.navigateArtistNotification, object: artistId)
-                            } label: {
+                            }) {
                                 Label("artist.view", systemImage: "music.mic")
+                                Text(artistName)
                             }
+                        }
+                        
+                        Divider()
+                        
+                        Button {
+                            AudioPlayer.current.backToPreviousItem()
+                        } label: {
+                            Label("playback.back", systemImage: "backward")
+                        }
+                        
+                        Button {
+                            AudioPlayer.current.advanceToNextTrack()
+                        } label: {
+                            Label("playback.next", systemImage: "forward")
                         }
                         
                         Divider()
@@ -133,8 +153,9 @@ struct NowPlayingBarModifier: ViewModifier {
                                 .padding(.bottom, 10)
                             
                             Text(currentTrack.name)
-                            if !currentTrack.artists.isEmpty {
-                                Text(currentTrack.artistName)
+                            
+                            if let artistName = currentTrack.artistName {
+                                Text(artistName)
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }
@@ -144,6 +165,10 @@ struct NowPlayingBarModifier: ViewModifier {
                         .background(.ultraThickMaterial)
                     }
                 }
+            }
+            .dropDestination(for: Track.self) { tracks, _ in
+                AudioPlayer.current.queueTracks(tracks, index: 0)
+                return true
             }
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
                 withAnimation {

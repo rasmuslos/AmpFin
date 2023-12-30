@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AFPlaybackKit
+import AVKit
 
 struct VolumeSlider: View {
     @State var volume = Double(AudioPlayer.current.volume) * 100
@@ -36,6 +37,14 @@ struct VolumeSlider: View {
             if !isDragging {
                 withAnimation {
                     volume = Double(AudioPlayer.current.volume) * 100
+                }
+            }
+        })
+        // because apple makes stupid software i guess
+        .onReceive(AVAudioSession.sharedInstance().publisher(for: \.outputVolume), perform: { value in
+            if !isDragging && AudioPlayer.current.source == .local {
+                withAnimation {
+                    volume = Double(value) * 100
                 }
             }
         })

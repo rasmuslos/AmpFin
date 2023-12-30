@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class Session: Identifiable {
+public class Session: Identifiable, Codable {
     public let id: String
     public let name: String
     
@@ -46,7 +46,7 @@ public class Session: Identifiable {
     }
 }
 
-public enum RepeatMode: Int, Equatable {
+public enum RepeatMode: Int, Equatable, Codable {
     case none = 0
     case track = 1
     case queue = 2

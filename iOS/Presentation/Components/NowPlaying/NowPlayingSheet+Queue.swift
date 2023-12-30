@@ -161,10 +161,12 @@ extension NowPlayingSheet {
                         .lineLimit(1)
                         .font(.body)
                     
-                    Text(track.artistName)
-                        .lineLimit(1)
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
+                    if let artistName = track.artistName {
+                        Text(artistName)
+                            .lineLimit(1)
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    }
                 }
                 .padding(.horizontal, 10)
                 

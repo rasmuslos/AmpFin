@@ -209,6 +209,22 @@
         }
       }
     },
+    "artist.unknown" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unbekannter Künstler"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown artist"
+          }
+        }
+      }
+    },
     "artist.view" : {
       "localizations" : {
         "de" : {
@@ -623,6 +639,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Server unavailable"
+          }
+        }
+      }
+    },
+    "playback.back" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorheriges Lied"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previous Track"
+          }
+        }
+      }
+    },
+    "playback.next" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächstes Lied"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next track"
           }
         }
       }

@@ -31,6 +31,25 @@ public class Album: Item {
         
         super.init(id: id, type: .album, name: name, cover: cover, favorite: favorite)
     }
+    
+    public enum CodingKeys: String, CodingKey {
+        case overview
+        case genres
+        case releaseDate
+        case artists
+        case playCount
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.overview = try container.decodeIfPresent(String.self, forKey: .overview)
+        self.genres = try container.decodeIfPresent([String].self, forKey: .genres) ?? []
+        self.releaseDate = try container.decodeIfPresent(Date.self, forKey: .releaseDate)
+        self.artists = try container.decodeIfPresent([ReducedArtist].self, forKey: .artists) ?? []
+        self.playCount = try container.decode(Int.self, forKey: .playCount)
+        
+        try super.init(from: decoder)
+    }
 }
 
 // MARK: Convenience

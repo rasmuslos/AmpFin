@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 /// Superclass of all other item types
-@Observable public class Item: Identifiable {
+@Observable public class Item: Identifiable, Codable {
     /// Unique identifier of the item
     public let id: String
     /// Type of the item
@@ -30,13 +30,41 @@ import OSLog
         self.cover = cover
         self.favorite = favorite
     }
+    
+    enum CodingKeys: CodingKey {
+        case id
+        case type
+        case name
+        case cover
+        case favorite
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.id = try container.decode(String.self, forKey: .id)
+        self.type = try container.decode(ItemType.self, forKey: .type)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.cover = try container.decodeIfPresent(Cover.self, forKey: .cover)
+        self.favorite = try container.decode(Bool.self, forKey: .favorite)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.type, forKey: .type)
+        try container.encode(self.name, forKey: .name)
+        try container.encodeIfPresent(self.cover, forKey: .cover)
+        try container.encode(self.favorite, forKey: .favorite)
+    }
 }
 
 // MARK: Util
 
 extension Item {
     /// Type of an item
-    public enum ItemType {
+    public enum ItemType: Codable {
         case album
         case artist
         case track

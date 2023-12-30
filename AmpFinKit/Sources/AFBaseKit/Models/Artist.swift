@@ -16,4 +16,15 @@ public class Artist: Item {
         self.overview = overview
         super.init(id: id, type: .artist, name: name, cover: cover, favorite: favorite)
     }
+    
+    public enum CodingKeys: String, CodingKey {
+        case overview
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.overview = try container.decodeIfPresent(String.self, forKey: .overview)
+        
+        try super.init(from: decoder)
+    }
 }

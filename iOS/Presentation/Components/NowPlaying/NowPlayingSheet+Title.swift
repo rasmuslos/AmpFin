@@ -121,21 +121,26 @@ extension NowPlayingSheet {
         
         var body: some View {
             Menu {
-                Button {
+                Button(action: {
                     NotificationCenter.default.post(name: NavigationRoot.navigateAlbumNotification, object: track.album.id)
-                } label: {
+                }) {
                     Label("album.view", systemImage: "square.stack")
+                    
+                    if let albumName = track.album.name {
+                        Text(albumName)
+                    }
                 }
                 
-                if let artistId = track.artists.first?.id {
-                    Button {
+                if let artistId = track.artists.first?.id, let artistName = track.artists.first?.name {
+                    Button(action: {
                         NotificationCenter.default.post(name: NavigationRoot.navigateArtistNotification, object: artistId)
-                    } label: {
+                    }) {
                         Label("artist.view", systemImage: "music.mic")
+                        Text(artistName)
                     }
                 }
             } label: {
-                Text(track.artistName)
+                Text(track.artistName ?? String(localized: "artist.unknown"))
                     .lineLimit(1)
             }
             .foregroundStyle(.secondary)
