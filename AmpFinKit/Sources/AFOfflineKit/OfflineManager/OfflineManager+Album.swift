@@ -141,6 +141,10 @@ public extension OfflineManager {
     
     @MainActor
     func getOfflineStatus(albumId: String) -> ItemOfflineTracker.OfflineStatus {
+        if getAlbum(albumId: albumId) == nil {
+            return .none
+        }
+        
         do {
             return try isDownloadInProgress(albumId: albumId) ? .working : .downloaded
         } catch {}

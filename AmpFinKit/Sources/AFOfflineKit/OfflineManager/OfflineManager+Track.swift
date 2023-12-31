@@ -116,7 +116,7 @@ public extension OfflineManager {
     }
     
     @MainActor
-    func getTrackOfflineStatus(trackId: String) -> ItemOfflineTracker.OfflineStatus {
+    func getOfflineStatus(trackId: String) -> ItemOfflineTracker.OfflineStatus {
         if let track = getOfflineTrack(trackId: trackId) {
             return track.downloadId == nil ? .downloaded : .working
         }

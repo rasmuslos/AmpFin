@@ -56,7 +56,7 @@ extension ItemOfflineTracker {
     @MainActor
     func checkOfflineStatus() -> OfflineStatus {
         if itemType == .track {
-            return OfflineManager.shared.getTrackOfflineStatus(trackId: itemId)
+            return OfflineManager.shared.getOfflineStatus(trackId: itemId)
         } else if itemType == .album {
             return OfflineManager.shared.getOfflineStatus(albumId: itemId)
         }
