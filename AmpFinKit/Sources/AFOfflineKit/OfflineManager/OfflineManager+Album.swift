@@ -124,11 +124,7 @@ public extension OfflineManager {
     
     @MainActor
     func getTracks(albumId: String) throws -> [Track] {
-        if let album = getOfflineAlbum(albumId: albumId) {
-            return try getOfflineTracks(albumId: albumId).map(Track.convertFromOffline)
-        }
-        
-        throw OfflineError.notFoundError
+        return try getOfflineTracks(albumId: albumId).map(Track.convertFromOffline)
     }
     
     @MainActor
@@ -146,9 +142,7 @@ public extension OfflineManager {
     @MainActor
     func getOfflineStatus(albumId: String) -> ItemOfflineTracker.OfflineStatus {
         do {
-            if let album = getOfflineAlbum(albumId: albumId) {
-                return try isDownloadInProgress(albumId: albumId) ? .working : .downloaded
-            }
+            return try isDownloadInProgress(albumId: albumId) ? .working : .downloaded
         } catch {}
         
         return .none
