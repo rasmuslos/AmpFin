@@ -45,7 +45,7 @@ struct ArtistView: View {
                 .padding(.top, artist.cover == nil ? 0 : 17)
                 .padding(.horizontal)
                 
-                AlbumGrid(albums: albums)
+                AlbumsGrid(albums: albums)
                     .padding()
             } else {
                 Text("artist.empty")

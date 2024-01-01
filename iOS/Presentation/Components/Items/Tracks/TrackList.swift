@@ -12,11 +12,12 @@ import AFPlaybackKit
 struct TrackList: View {
     let tracks: [Track]
     var album: Album? = nil
+    var hideButtons = false
     
     @State var search: String = ""
     
     var body: some View {
-        if album == nil {
+        if !hideButtons {
             TrackListButtons() {
                 startPlayback(index: 0, shuffle: $0)
             }

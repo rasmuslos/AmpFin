@@ -26,7 +26,7 @@ struct AlbumView: View {
             .navigationTitle(album.name)
             .navigationBarTitleDisplayMode(.inline)
             
-            TrackList(tracks: tracks, album: album)
+            TrackList(tracks: tracks, album: album, hideButtons: true)
                 .padding(.top, 4)
             
             if let overview = album.overview, overview.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
@@ -55,7 +55,7 @@ struct AlbumView: View {
         }
         .onAppear {
             Task.detached {
-                if let imageColors = await getImageColors() {
+                if let imageColors = await ImageColors.getImageColors(cover: album.cover) {
                     withAnimation {
                         self.imageColors = imageColors
                     }

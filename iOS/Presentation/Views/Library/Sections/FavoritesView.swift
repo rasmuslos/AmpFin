@@ -48,6 +48,8 @@ struct FavoritesView: View {
 extension FavoritesView {
     @Sendable
     func loadTracks() async {
+        errored = false
+        
         do {
             tracks = try await dataProvider.getFavoriteTracks(sortOrder: sortOrder, ascending: true)
         } catch {

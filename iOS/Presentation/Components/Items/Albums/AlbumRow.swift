@@ -27,7 +27,7 @@ struct AlbumRow: View {
             .background {
                 NavigationLink {
                     ScrollView {
-                        AlbumGrid(albums: albums)
+                        AlbumsGrid(albums: albums)
                     }
                     .navigationTitle(title)
                     .padding(.horizontal)

@@ -144,6 +144,10 @@ extension TrackListRow {
             if album == nil {
                 NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
                     Label("album.view", systemImage: "square.stack")
+                    
+                    if let name = track.album.name {
+                        Text(verbatim: name)
+                    }
                 }
             }
             
@@ -151,6 +155,7 @@ extension TrackListRow {
                 NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
                     Label("artist.view", systemImage: "music.mic")
                         .disabled(!dataProvider.supportsArtistLookup)
+                    Text(artist.name)
                 }
             }
         }

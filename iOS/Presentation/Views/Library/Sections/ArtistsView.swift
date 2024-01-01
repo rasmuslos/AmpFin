@@ -37,6 +37,8 @@ struct ArtistsView: View {
 extension ArtistsView {
     @Sendable
     func loadArtists() async {
+        errored = false
+        
         do {
             artists = try await dataProvider.getArtists(albumOnly: albumOnly)
         } catch {

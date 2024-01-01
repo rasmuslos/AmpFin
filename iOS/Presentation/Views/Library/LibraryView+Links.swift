@@ -9,7 +9,7 @@ import SwiftUI
 
 extension LibraryView {
     struct Links: View {
-        static let count = 5
+        static let count = 6
         
         @Environment(\.libraryDataProvider) var dataProvider
         
@@ -20,6 +20,10 @@ extension LibraryView {
                 }
                 NavigationLink(destination: AlbumsView()) {
                     Label("title.albums", systemImage: "square.stack")
+                }
+                
+                NavigationLink(destination: PlaylistsView()) {
+                    Label("title.playlists", systemImage: "music.note.list")
                 }
                 
                 NavigationLink(destination: FavoritesView()) {

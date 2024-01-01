@@ -21,7 +21,7 @@ struct AlbumsView: View {
         VStack {
             if albums != nil {
                 ScrollView {
-                    AlbumGrid(albums: filter())
+                    AlbumsGrid(albums: filter())
                         .padding()
                 }
             } else if errored {
@@ -49,6 +49,8 @@ struct AlbumsView: View {
 extension AlbumsView {
     @Sendable
     func loadAlbums() {
+        errored = false
+        
         Task.detached {
             do {
                 albums = try await dataProvider.getAlbums(limit: -1, sortOrder: sortOrder, ascending: true)

@@ -35,7 +35,7 @@ struct LibraryView: View {
                 .padding(.horizontal)
                 .padding(.top)
                 
-                AlbumGrid(albums: recentAlbums)
+                AlbumsGrid(albums: recentAlbums)
                     .padding(.horizontal)
             } else if !online && dataProvider as? OnlineLibraryDataProvider != nil {
                 ContentUnavailableView("offline.title", systemImage: "network.slash", description: Text("offline.description"))

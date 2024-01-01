@@ -88,6 +88,10 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         try await OfflineManager.shared.getAlbums(query: query)
     }
     
-    public init() {
+    public func getPlaylists() async throws -> [Playlist] {
+        []
+    }
+    public func getPlaylistTracks(playlistId: String) async throws -> [Track] {
+        []
     }
 }

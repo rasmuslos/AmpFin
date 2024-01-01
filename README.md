@@ -23,3 +23,10 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 ## Sideloading
 
 You have to manually install the app using Xcode or install the latest release. Newer ones (building from Xcode) require you to change the group identifier. More detailed instructions soon™️
+
+## Thanks to
+
+Oskar Groth & João Gabriel: Great (https://cindori.com/developer/animated-gradient-2)[article] on fluid gradients in SwiftUI
+Nuke: Much better LazyImage that SwiftUI
+Starscream: Great WebSocket library for swift
+UIImageColor (Felix Herrman Fork): Working Version for iOS 17 

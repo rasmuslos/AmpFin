@@ -8,7 +8,7 @@
 import SwiftUI
 import AFBaseKit
 
-struct AlbumGrid: View {
+struct AlbumsGrid: View {
     let albums: [Album]
     
     var body: some View {
@@ -28,7 +28,7 @@ struct AlbumGrid: View {
 }
 
 #Preview {
-    AlbumGrid(albums: [
+    AlbumsGrid(albums: [
         Album.fixture,
         Album.fixture,
         Album.fixture,

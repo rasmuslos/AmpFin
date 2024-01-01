@@ -30,6 +30,9 @@ public protocol LibraryDataProvider {
     
     func searchTracks(query: String) async throws -> [Track]
     func searchAlbums(query: String) async throws -> [Album]
+    
+    func getPlaylists() async throws -> [Playlist]
+    func getPlaylistTracks(playlistId: String) async throws -> [Track]
 }
 
 struct LibraryDataProviderDefault: EnvironmentKey {

@@ -48,6 +48,8 @@ struct TracksView: View {
 extension TracksView {
     @Sendable
     func loadTracks() async {
+        errored = false
+        
         do {
             tracks = try await dataProvider.getAllTracks(sortOrder: sortOrder, ascending: true)
         } catch {

@@ -68,6 +68,7 @@ extension Item {
         case album
         case artist
         case track
+        case playlist
     }
     
     /// Reduced version of the artist class
