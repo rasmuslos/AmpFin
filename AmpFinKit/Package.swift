@@ -19,6 +19,9 @@ let package = Package(
     targets: [
         .target(name: "AFBaseKit", dependencies: [.byName(name: "Starscream")]),
         .target(name: "AFOfflineKit", dependencies: [.byName(name: "AFBaseKit")]),
-        .target(name: "AFPlaybackKit", dependencies: [.byName(name: "AFBaseKit")], resources: [.process("RemoteAudioEndpoint/silence.wav")]),
+        .target(
+            name: "AFPlaybackKit",
+            dependencies: [.byName(name: "AFBaseKit"), .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))],
+            resources: [.process("RemoteAudioEndpoint/silence.wav")]),
     ]
 )

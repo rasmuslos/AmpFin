@@ -46,11 +46,10 @@
 		3A7939002B387851001B3B3D /* OfflineLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A32B386B20009000DD /* OfflineLibraryDataProvider.swift */; };
 		3A7939012B387851001B3B3D /* MockLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A22B386B20009000DD /* MockLibraryDataProvider.swift */; };
 		3A7939022B387851001B3B3D /* OnlineLibraryDataProivder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A02B386B20009000DD /* OnlineLibraryDataProivder.swift */; };
-		3A82864A2AEC0D3400384BC9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3A8286492AEC0D3400384BC9 /* README.md */; };
 		3A844DF22B398C150021BC63 /* AmpFinKit in Resources */ = {isa = PBXBuildFile; fileRef = 3A844DF12B398C150021BC63 /* AmpFinKit */; };
 		3A844DF42B398C5F0021BC63 /* AFBaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A844DF32B398C5F0021BC63 /* AFBaseKit */; };
 		3A844DF62B398C5F0021BC63 /* AFOfflineKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A844DF52B398C5F0021BC63 /* AFOfflineKit */; };
-		3A844DF82B398C5F0021BC63 /* AFPlaybackKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A844DF72B398C5F0021BC63 /* AFPlaybackKit */; };
+		3A844DF82B398C5F0021BC63 /* AFPlaybackKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A844DF72B398C5F0021BC63 /* AFPlaybackKit */; settings = {ATTRIBUTES = (Required, ); }; };
 		3A88505C2AA909CE00456DDD /* AlbumCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88505B2AA909CE00456DDD /* AlbumCover.swift */; };
 		3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88505F2AA90CA200456DDD /* AlbumGrid.swift */; };
 		3A8850622AA90D1200456DDD /* AlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8850612AA90D1200456DDD /* AlbumsView.swift */; };
@@ -173,10 +172,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */,
 				3A844DF42B398C5F0021BC63 /* AFBaseKit in Frameworks */,
 				3A844DF62B398C5F0021BC63 /* AFOfflineKit in Frameworks */,
 				3A844DF82B398C5F0021BC63 /* AFPlaybackKit in Frameworks */,
+				3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */,
 				3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -555,7 +554,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A844DF22B398C150021BC63 /* AmpFinKit in Resources */,
-				3A82864A2AEC0D3400384BC9 /* README.md in Resources */,
 				3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */,
 				3A3FEECD2AF7A3C8001F8AA0 /* Localizable.xcstrings in Resources */,
 			);
