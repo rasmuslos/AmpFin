@@ -39,7 +39,7 @@ extension PlaylistView {
                 }
                 
                 VStack {
-                    Spacer(minLength: 375)
+                    Spacer(minLength: 400)
                     
                     HStack {
                         Text("playlist.trackCount \(playlist.trackCount)")

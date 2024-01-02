@@ -12,7 +12,10 @@ import AFPlaybackKit
 struct TrackListRow: View {
     let track: Track
     var album: Album? = nil
+    
+    var deleteCallback: TrackList.DeleteCallback = nil
     let startPlayback: () -> ()
+    
     var disableMenu: Bool = false
     
     var body: some View {
@@ -55,7 +58,7 @@ struct TrackListRow: View {
             
             if !disableMenu {
                 Menu {
-                    TrackMenu(track: track, album: album)
+                    TrackMenu(track: track, album: album, deleteCallback: deleteCallback)
                 } label: {
                     Image(systemName: "ellipsis")
                         .renderingMode(.original)
@@ -71,7 +74,7 @@ struct TrackListRow: View {
                 .padding(4)
         }
         .contextMenu {
-            TrackMenu(track: track, album: album)
+            TrackMenu(track: track, album: album, deleteCallback: deleteCallback)
         } preview: {
             TrackPreview(track: track)
                 .padding()
@@ -122,6 +125,8 @@ extension TrackListRow {
         let track: Track
         let album: Album?
         
+        let deleteCallback: TrackList.DeleteCallback
+        
         var body: some View {
             PlayNextButton(track: track)
             PlayLastButton(track: track)
@@ -156,6 +161,16 @@ extension TrackListRow {
                     Label("artist.view", systemImage: "music.mic")
                         .disabled(!dataProvider.supportsArtistLookup)
                     Text(artist.name)
+                }
+            }
+            
+            if let deleteCallback = deleteCallback {
+                Divider()
+                
+                Button(role: .destructive) {
+                    deleteCallback(track)
+                } label: {
+                    Label("playlist.remove", systemImage: "trash.fill")
                 }
             }
         }
@@ -197,7 +212,7 @@ extension TrackListRow {
             } label: {
                 Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
             }
-            .tint(.red)
+            .tint(.orange)
         }
     }
 }

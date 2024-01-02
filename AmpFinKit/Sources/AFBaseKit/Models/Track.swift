@@ -112,6 +112,11 @@ extension Track {
     }
 }
 
+extension Track: Equatable {
+    public static func == (lhs: Track, rhs: Track) -> Bool {
+        lhs.id == rhs.id
+    }
+}
 
 // MARK: Convenience
 

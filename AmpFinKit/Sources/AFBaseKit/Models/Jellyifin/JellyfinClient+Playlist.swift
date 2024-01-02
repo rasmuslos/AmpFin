@@ -21,5 +21,7 @@ extension JellyfinClient {
         
         let UserData: UserData
         let ImageTags: ImageTags
+        
+        let MediaType: String
     }
 }

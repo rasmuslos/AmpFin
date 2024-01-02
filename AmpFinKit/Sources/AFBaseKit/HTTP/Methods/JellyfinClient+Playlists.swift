@@ -14,7 +14,6 @@ public extension JellyfinClient {
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
             URLQueryItem(name: "StartIndex", value: "0"),
             URLQueryItem(name: "IncludeItemTypes", value: "Playlist"),
-            URLQueryItem(name: "IncludeMediaTypes", value: "Audio"),
             URLQueryItem(name: "Recursive", value: "true"),
             URLQueryItem(name: "ParentId", value: "3996159c9706fc5500823e0316d260c1"),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
@@ -29,7 +28,7 @@ public extension JellyfinClient {
         }
         
         let response = try await request(ClientRequest<PlaylistItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
-        return response.Items.map(Playlist.convertFromJellyfin)
+        return response.Items.filter { $0.MediaType == "Audio" }.map(Playlist.convertFromJellyfin)
     }
     
     func getTracks(playlistId: String) async throws -> [Track] {
@@ -41,5 +40,9 @@ public extension JellyfinClient {
         ], userId: true))
         
         return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
+    }
+    
+    func remove(trackId: String, playlistId: String) async throws {
+        print(trackId, playlistId)
     }
 }

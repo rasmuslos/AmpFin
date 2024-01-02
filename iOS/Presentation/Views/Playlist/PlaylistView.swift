@@ -11,6 +11,7 @@ import AFPlaybackKit
 
 struct PlaylistView: View {
     @Environment(\.libraryDataProvider) var dataProvider
+    @Environment(\.libraryOnline) var libraryOnline
     
     let playlist: Playlist
     
@@ -25,12 +26,13 @@ struct PlaylistView: View {
             .listRowSeparator(.hidden)
             .padding(.bottom)
             
-            TrackList(tracks: tracks, hideButtons: true)
+            TrackList(tracks: tracks, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil)
         }
         .listStyle(.plain)
         .ignoresSafeArea(edges: .top)
         .navigationTitle(playlist.name)
         .modifier(ToolbarModifier())
+        .modifier(NowPlayingBarSafeAreaModifier())
         .task(fetchTracks)
         .refreshable(action: fetchTracks)
     }
@@ -40,6 +42,15 @@ extension PlaylistView {
     @Sendable
     func fetchTracks() async {
         tracks = (try? await dataProvider.getPlaylistTracks(playlistId: playlist.id)) ?? []
+    }
+    
+    func removeTrack(track: Track) {
+        Task {
+            do {
+                try await JellyfinClient.shared.remove(trackId: track.id, playlistId: playlist.id)
+                tracks = tracks.filter { $0 != track }
+            } catch {}
+        }
     }
 }
 

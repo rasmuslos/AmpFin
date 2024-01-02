@@ -12,7 +12,9 @@ import AFPlaybackKit
 struct TrackList: View {
     let tracks: [Track]
     var album: Album? = nil
+    
     var hideButtons = false
+    var deleteCallback: DeleteCallback = nil
     
     @State var search: String = ""
     
@@ -31,14 +33,14 @@ struct TrackList: View {
         if album != nil, disks.count > 1 {
             ForEach(disks.sorted(), id: \.hashValue) { disk in
                 Section {
-                    TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback)
+                    TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback)
                 } header: {
                     Text("tracks.disk \(disk)")
                         .padding(.top, -20)
                 }
             }
         } else {
-            TrackSection(tracks: filter(tracks: tracks), album: album, startPlayback: startPlayback)
+            TrackSection(tracks: filter(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback)
         }
     }
 }
@@ -46,19 +48,44 @@ struct TrackList: View {
 // MARK: Track section
 
 extension TrackList {
+    typealias DeleteCallback = ((_ track: Track) -> Void)?
+    
     struct TrackSection: View {
         let tracks: [Track]
         let album: Album?
         
         let startPlayback: (Track) -> ()
+        let deleteCallback: DeleteCallback
         
         var body: some View {
             ForEach(tracks) { track in
-                TrackListRow(track: track, album: album) {
+                TrackListRow(track: track, album: album, deleteCallback: deleteCallback) {
                     startPlayback(track)
                 }
                 .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
                 .padding(.horizontal)
+                .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
+            }
+        }
+    }
+    
+    struct DeleteSwipeActionModifier: ViewModifier {
+        let track: Track
+        let callback: DeleteCallback
+        
+        func body(content: Content) -> some View {
+            if let callback = callback {
+                content
+                    .swipeActions(edge: .trailing) {
+                        Button {
+                            callback(track)
+                        } label: {
+                            Image(systemName: "trash.fill")
+                                .tint(.red)
+                        }
+                    }
+            } else {
+                content
             }
         }
     }
