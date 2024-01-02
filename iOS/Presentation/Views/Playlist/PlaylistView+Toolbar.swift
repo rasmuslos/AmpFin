@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import AFBaseKit
+import AFOfflineKit
 import AFPlaybackKit
 
 extension PlaylistView {
@@ -20,17 +21,40 @@ extension PlaylistView {
         @Binding var editMode: EditMode
         
         @State var alertPresented = false
+        @State var offlineTracker: ItemOfflineTracker?
         
         func body(content: Content) -> some View {
             content
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "arrow.down.circle.fill")
+                        if let offlineTracker = offlineTracker {
+                            Button {
+                                if offlineTracker.status == .none {
+                                    Task {
+                                        try! await OfflineManager.shared.download(playlist)
+                                    }
+                                } else if offlineTracker.status == .downloaded {
+                                    try! OfflineManager.shared.delete(playlistId: playlist.id)
+                                }
+                            } label: {
+                                Group {
+                                    switch offlineTracker.status {
+                                    case .none:
+                                        Image(systemName: "arrow.down.circle.fill")
+                                    case .working:
+                                        ProgressView()
+                                    case .downloaded:
+                                        Image(systemName: "xmark.circle.fill")
+                                    }
+                                }
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(.white, .black.opacity(0.25))
+                            }
+                        } else {
+                            ProgressView()
+                                .onAppear {
+                                    offlineTracker = playlist.offlineTracker
+                                }
                         }
                     }
                     
@@ -57,27 +81,27 @@ extension PlaylistView {
                                 Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                             }
                             
-                            if libraryOnline {
-                                Divider()
-                                
-                                Button {
-                                    withAnimation {
-                                        if editMode == .active {
-                                            editMode = .inactive
-                                        } else {
-                                            editMode = .active
-                                        }
+                            Divider()
+                            
+                            Button {
+                                withAnimation {
+                                    if editMode == .active {
+                                        editMode = .inactive
+                                    } else {
+                                        editMode = .active
                                     }
-                                } label: {
-                                    Label("playlist.edit", systemImage: "pencil")
                                 }
-                                
-                                Button(role: .destructive) {
-                                    alertPresented.toggle()
-                                } label: {
-                                    Label("playlist.delete", systemImage: "trash")
-                                }
+                            } label: {
+                                Label("playlist.edit", systemImage: "pencil")
                             }
+                            .disabled(!libraryOnline)
+                            
+                            Button(role: .destructive) {
+                                alertPresented.toggle()
+                            } label: {
+                                Label("playlist.delete", systemImage: "trash")
+                            }
+                            .disabled(!libraryOnline)
                         } label: {
                             Image(systemName: "ellipsis.circle.fill")
                                 .symbolRenderingMode(.palette)

@@ -18,6 +18,8 @@ extension AlbumView {
         let album: Album
         let queueTracks: (_ next: Bool) -> ()
         
+        @State var offlineTracker: ItemOfflineTracker?
+        
         @Binding var navbarVisible: Bool
         @Binding var imageColors: ImageColors
         
@@ -56,10 +58,8 @@ extension AlbumView {
                     }
                 }
                 .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        HStack {
-                            let offlineTracker = album.offlineTracker
-                            
+                    ToolbarItem(placement: .topBarTrailing) {
+                        if let offlineTracker = offlineTracker {
                             Button {
                                 if offlineTracker.status == .none {
                                     Task {
@@ -76,57 +76,64 @@ extension AlbumView {
                                 case .working:
                                     ProgressView()
                                 case .downloaded:
-                                    Image(systemName: "xmark.circle.fill")
+                                    Image(systemName: "xmark")
                                 }
                             }
                             // funny thing, this crashed the app
                             // .popoverTip(DownloadTip())
                             .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
-                            
-                            Menu {
-                                Button {
-                                    Task {
-                                        await album.setFavorite(favorite: !album.favorite)
-                                    }
-                                } label: {
-                                    Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
+                        } else {
+                            ProgressView()
+                                .onAppear {
+                                    offlineTracker = album.offlineTracker
                                 }
-                                
-                                Button {
-                                    Task {
-                                        try? await album.startInstantMix()
-                                    }
-                                } label: {
-                                    Label("queue.mix", systemImage: "compass.drawing")
-                                }
-                                .disabled(!libraryOnline)
-                                
-                                Divider()
-                                
-                                Button {
-                                    queueTracks(true)
-                                } label: {
-                                    Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
-                                }
-                                Button {
-                                    queueTracks(false)
-                                } label: {
-                                    Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
-                                }
-                                
-                                Divider()
-                                
-                                if let first = album.artists.first {
-                                    NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
-                                        Label("artist.view", systemImage: "music.mic")
-                                    }
-                                    .disabled(!dataProvider.supportsArtistLookup)
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            Button {
+                                Task {
+                                    await album.setFavorite(favorite: !album.favorite)
                                 }
                             } label: {
-                                // for some reason it did show the label...
-                                Image(systemName: "ellipsis")
-                                    .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
+                                Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
                             }
+                            
+                            Button {
+                                Task {
+                                    try? await album.startInstantMix()
+                                }
+                            } label: {
+                                Label("queue.mix", systemImage: "compass.drawing")
+                            }
+                            .disabled(!libraryOnline)
+                            
+                            Divider()
+                            
+                            Button {
+                                queueTracks(true)
+                            } label: {
+                                Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                            }
+                            Button {
+                                queueTracks(false)
+                            } label: {
+                                Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                            }
+                            
+                            Divider()
+                            
+                            if let first = album.artists.first {
+                                NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
+                                    Label("artist.view", systemImage: "music.mic")
+                                }
+                                .disabled(!dataProvider.supportsArtistLookup)
+                            }
+                        } label: {
+                            // for some reason it did show the label...
+                            Image(systemName: "ellipsis")
+                                .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
                         }
                     }
                 }

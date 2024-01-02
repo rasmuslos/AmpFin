@@ -17,6 +17,7 @@ struct NowPlayingBarModifier: ViewModifier {
     @State var currentTrack = AudioPlayer.current.nowPlaying
     
     @State var nowPlayingSheetPresented = false
+    @State var addToPlaylistSheetPresented = false
     
     func body(content: Content) -> some View {
         content
@@ -96,6 +97,13 @@ struct NowPlayingBarModifier: ViewModifier {
                         }
                         .disabled(!libraryOnline)
                         
+                        Button {
+                            addToPlaylistSheetPresented.toggle()
+                        } label: {
+                            Label("playlist.add", systemImage: "plus")
+                        }
+                        .disabled(!libraryOnline)
+                        
                         Divider()
                         
                         // why is SwiftUI so stupid?
@@ -166,6 +174,9 @@ struct NowPlayingBarModifier: ViewModifier {
                     }
                     .draggable(currentTrack) {
                         TrackListRow.TrackPreview(track: currentTrack)
+                    }
+                    .sheet(isPresented: $addToPlaylistSheetPresented) {
+                        PlaylistAddSheet(track: currentTrack)
                     }
                 }
             }

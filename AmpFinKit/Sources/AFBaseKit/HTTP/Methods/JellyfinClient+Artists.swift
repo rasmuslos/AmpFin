@@ -19,11 +19,11 @@ public extension JellyfinClient {
     }
     
     /// Get an artist by its their ID
-    func getArtist(artistId: String) async -> Artist? {
-        if let artist = try? await request(ClientRequest<JellyfinFullArtist?>(path: "Items/\(artistId)", method: "GET", userPrefix: true)) {
+    func getArtist(artistId: String) async throws -> Artist {
+        if let artist = try await request(ClientRequest<JellyfinFullArtist?>(path: "Items/\(artistId)", method: "GET", userPrefix: true)) {
             return Artist.convertFromJellyfin(artist)
         }
         
-        return nil
+        throw JellyfinClientError.invalidResponse
     }
 }

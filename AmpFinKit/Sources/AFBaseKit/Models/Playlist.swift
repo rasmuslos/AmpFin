@@ -11,7 +11,7 @@ public class Playlist: Item {
     public var duration: Double
     public var trackCount: Int
     
-    init(id: String, name: String, cover: Cover? = nil, favorite: Bool, duration: Double, trackCount: Int) {
+    public init(id: String, name: String, cover: Cover? = nil, favorite: Bool, duration: Double, trackCount: Int) {
         self.duration = duration
         self.trackCount = trackCount
         

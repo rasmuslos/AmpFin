@@ -8,6 +8,7 @@
 import SwiftUI
 import AFBaseKit
 import AFOfflineKit
+import AFPlaybackKit
 
 struct AlbumContextMenuModifier: ViewModifier {
     @Environment(\.libraryDataProvider) var dataProvider
@@ -42,6 +43,23 @@ struct AlbumContextMenuModifier: ViewModifier {
                     Label("queue.mix", systemImage: "compass.drawing")
                 }
                 .disabled(!libraryOnline)
+                
+                Divider()
+                
+                Button {
+                    Task {
+                        AudioPlayer.current.queueTracks(try await dataProvider.getAlbumTracks(id: album.id), index: 0)
+                    }
+                } label: {
+                    Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                }
+                Button {
+                    Task {
+                        AudioPlayer.current.queueTracks(try await dataProvider.getAlbumTracks(id: album.id), index: AudioPlayer.current.queue.count)
+                    }
+                } label: {
+                    Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                }
                 
                 Divider()
                 

@@ -10,7 +10,7 @@ import SwiftData
 import AFBaseKit
 
 @Model
-class OfflineAlbum {
+class OfflineAlbum: OfflineParent {
     @Attribute(.unique) let id: String
     let name: String
     
@@ -21,9 +21,10 @@ class OfflineAlbum {
     let artists: [Item.ReducedArtist]
     
     var favorite: Bool
-    var trackCount: Int
     
-    init(id: String, name: String, overview: String?, genres: [String], releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, trackCount: Int) {
+    var childrenIds: [String]
+    
+    init(id: String, name: String, overview: String?, genres: [String], releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, childrenIds: [String]) {
         self.id = id
         self.name = name
         self.overview = overview
@@ -31,6 +32,6 @@ class OfflineAlbum {
         self.releaseDate = releaseDate
         self.artists = artists
         self.favorite = favorite
-        self.trackCount = trackCount
+        self.childrenIds = childrenIds
     }
 }

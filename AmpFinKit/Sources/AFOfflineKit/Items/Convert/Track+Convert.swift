@@ -13,7 +13,7 @@ extension Track {
         return Track(
             id: offline.id,
             name: offline.name,
-            cover: Item.Cover(type: .local, url: DownloadManager.shared.getCoverUrl(albumId: offline.album.id)),
+            cover: Item.Cover(type: .local, url: DownloadManager.shared.getCoverUrl(parentId: offline.album.id)),
             favorite: offline.favorite,
             album: ReducedAlbum(
                 id: offline.album.id,
@@ -21,7 +21,25 @@ extension Track {
                 artists: offline.album.artists),
             artists: offline.artists,
             lufs: nil,
-            index: offline.index,
+            index: Index(index: 0, disk: 0),
+            runtime: offline.runtime,
+            playCount: -1,
+            releaseDate: offline.releaseDate)
+    }
+    
+    static func convertFromOffline(_ offline: OfflineTrack, parent: OfflineParent) -> Track {
+        return Track(
+            id: offline.id,
+            name: offline.name,
+            cover: Item.Cover(type: .local, url: DownloadManager.shared.getCoverUrl(parentId: offline.album.id)),
+            favorite: offline.favorite,
+            album: ReducedAlbum(
+                id: offline.album.id,
+                name: offline.album.name,
+                artists: offline.album.artists),
+            artists: offline.artists,
+            lufs: nil,
+            index: Track.Index(index: parent.childrenIds.firstIndex(of: offline.id) ?? 0, disk: 0),
             runtime: offline.runtime,
             playCount: -1,
             releaseDate: offline.releaseDate)

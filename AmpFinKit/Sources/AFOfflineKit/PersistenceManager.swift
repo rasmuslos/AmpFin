@@ -13,8 +13,9 @@ public struct PersistenceManager {
         let schema = Schema([
             OfflineTrack.self,
             OfflineAlbum.self,
-            OfflineLyrics.self,
+            OfflinePlaylist.self,
             
+            OfflineLyrics.self,
             OfflinePlay.self,
             OfflineFavorite.self,
         ])

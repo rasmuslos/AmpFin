@@ -157,6 +157,7 @@ extension TrackListRow {
             } label: {
                 Label("playlist.add", systemImage: "plus")
             }
+            .disabled(!libraryOnline)
             
             Divider()
             

@@ -71,7 +71,7 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
         ]
     }
     
-    public func getAlbumById(_ albumId: String) async throws -> Album? {
+    public func getAlbumById(_ albumId: String) async throws -> Album {
         Album.fixture
     }
     
@@ -99,7 +99,7 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
         ]
     }
     
-    public func getArtistById(_ artistId: String) async throws -> Artist? {
+    public func getArtistById(_ artistId: String) async throws -> Artist {
         Artist.fixture
     }
     

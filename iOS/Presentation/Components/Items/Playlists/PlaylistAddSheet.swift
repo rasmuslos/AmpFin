@@ -54,7 +54,9 @@ struct PlaylistAddSheet: View {
                                 }
                             } else {
                                 Button {
-                                    creatingNewPlaylist.toggle()
+                                    withAnimation {
+                                        creatingNewPlaylist.toggle()
+                                    }
                                 } label: {
                                     Label("playlist.new", systemImage: "plus")
                                 }

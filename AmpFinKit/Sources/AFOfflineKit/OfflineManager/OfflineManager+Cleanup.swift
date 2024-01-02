@@ -12,19 +12,6 @@ import AFBaseKit
 // MARK: Remove tracks
 
 public extension OfflineManager {
-    func removeUnfinishedDownloads() async throws {
-        let tracks = try await OfflineManager.shared.getUnfinishedDownloads()
-        var albums = Set<OfflineAlbum>()
-        
-        tracks.forEach {
-            albums.insert($0.album)
-        }
-        
-        for album in albums {
-            try await OfflineManager.shared.delete(album: album)
-        }
-    }
-    
     @MainActor
     func deleteAll() async throws {
         // Delete all albums (should remove all tracks, too)
@@ -59,4 +46,6 @@ public extension OfflineManager {
             }
         }
     }
+    
+    // TODO: update children
 }

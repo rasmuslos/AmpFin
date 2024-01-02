@@ -13,8 +13,8 @@ import AFBaseKit
 
 extension OfflineManager {
     @MainActor
-    func download(track: Track, album: OfflineAlbum) {
-        if let existing = getOfflineTrack(trackId: track.id) {
+    func download(track: Track) {
+        if let existing = try? getOfflineTrack(trackId: track.id) {
             if existing.downloadId == nil {
                 return
             }
@@ -27,16 +27,14 @@ extension OfflineManager {
         let offlineItem = OfflineTrack(
             id: track.id,
             name: track.name,
-            index: track.index,
             releaseDate: track.releaseDate,
+            album: track.album,
             artists: track.artists,
             favorite: track.favorite,
             runtime: track.runtime,
             downloadId: downloadTask.taskIdentifier)
         
         PersistenceManager.shared.modelContainer.mainContext.insert(offlineItem)
-        
-        offlineItem.album = album
         downloadTask.resume()
         
         Task.detached {
@@ -59,19 +57,32 @@ extension OfflineManager {
     }
     
     @MainActor
-    func getOfflineTrack(trackId: String) -> OfflineTrack? {
-        var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
-        track.fetchLimit = 1
-        
-        return try? PersistenceManager.shared.modelContainer.mainContext.fetch(track).first
+    func getOfflineTracks() throws -> [OfflineTrack] {
+        return try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
     }
     
     @MainActor
-    func getOfflineTrack(taskId: Int) -> OfflineTrack? {
+    func getOfflineTrack(trackId: String) throws -> OfflineTrack {
+        var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
+        track.fetchLimit = 1
+        
+        if let track = try PersistenceManager.shared.modelContainer.mainContext.fetch(track).first {
+            return track
+        }
+        
+        throw OfflineError.notFoundError
+    }
+    
+    @MainActor
+    func getOfflineTrack(taskId: Int) throws -> OfflineTrack {
         var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId == taskId })
         track.fetchLimit = 1
         
-        return try? PersistenceManager.shared.modelContainer.mainContext.fetch(track).first
+        if let track = try? PersistenceManager.shared.modelContainer.mainContext.fetch(track).first {
+            return track
+        }
+        
+        throw OfflineError.notFoundError
     }
     
     @MainActor
@@ -100,16 +111,8 @@ public extension OfflineManager {
     
     @MainActor
     func getTracks(query: String) throws -> [Track] {
-        /*
-        var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate {
-            $0.name.localizedStandardContains(query)
-            || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(query) })
-        })
-        descriptor.fetchLimit = 20
-         */
-        
         // SwiftData has serious flaws
-        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>()).filter {
+        let tracks = try getOfflineTracks().filter {
             $0.name.localizedStandardContains(query)
             || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(query) })
         }
@@ -125,7 +128,7 @@ public extension OfflineManager {
     
     @MainActor
     func getOfflineStatus(trackId: String) -> ItemOfflineTracker.OfflineStatus {
-        if let track = getOfflineTrack(trackId: trackId) {
+        if let track = try? getOfflineTrack(trackId: trackId) {
             return track.downloadId == nil ? .downloaded : .working
         }
         

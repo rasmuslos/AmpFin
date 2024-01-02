@@ -14,11 +14,9 @@ class OfflineTrack {
     @Attribute(.unique) let id: String
     let name: String
     
-    let index: Track.Index
     let releaseDate: Date?
     
-    @Relationship
-    var album: OfflineAlbum!
+    let album: Track.ReducedAlbum
     let artists: [Item.ReducedArtist]
     
     var favorite: Bool
@@ -26,16 +24,14 @@ class OfflineTrack {
     
     var downloadId: Int?
     
-    init(id: String, name: String, index: Track.Index, releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, runtime: Double, downloadId: Int? = nil) {
+    init(id: String, name: String, releaseDate: Date?, album: Track.ReducedAlbum, artists: [Item.ReducedArtist], favorite: Bool, runtime: Double, downloadId: Int? = nil) {
         self.id = id
         self.name = name
-        self.index = index
+        self.album = album
         self.releaseDate = releaseDate
         self.artists = artists
         self.favorite = favorite
         self.downloadId = downloadId
         self.runtime = runtime
-        
-        self.album = nil
     }
 }

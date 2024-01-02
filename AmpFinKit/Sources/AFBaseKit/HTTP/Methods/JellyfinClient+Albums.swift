@@ -91,8 +91,8 @@ public extension JellyfinClient {
     // MARK: Other
     
     /// Get an album by its ID
-    func getAlbum(albumId: String) async -> Album? {
-        if let album = try? await request(ClientRequest<JellyfinAlbum?>(path: "Items/\(albumId)", method: "GET", query: [
+    func getAlbum(albumId: String) async throws -> Album {
+        if let album = try await request(ClientRequest<JellyfinAlbum?>(path: "Items/\(albumId)", method: "GET", query: [
             URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
             URLQueryItem(name: "Recursive", value: "true"),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
@@ -102,6 +102,6 @@ public extension JellyfinClient {
             return Album.convertFromJellyfin(album)
         }
         
-        return nil
+        throw JellyfinClientError.invalidResponse
     }
 }

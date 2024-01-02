@@ -47,8 +47,8 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     public func getAlbumTracks(id: String) async throws -> [Track] {
         return try await OfflineManager.shared.getTracks(albumId: id)
     }
-    public func getAlbumById(_ albumId: String) async throws -> Album? {
-        await OfflineManager.shared.getAlbum(albumId: albumId)
+    public func getAlbumById(_ albumId: String) async throws -> Album {
+        try await OfflineManager.shared.getAlbum(albumId: albumId)
     }
     public func getAlbums(limit: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
         let albums = try await OfflineManager.shared.getAlbums().sorted {
@@ -75,8 +75,8 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         return []
     }
     
-    public func getArtistById(_ artistId: String) async throws -> Artist? {
-        return nil
+    public func getArtistById(_ artistId: String) async throws -> Artist {
+        throw JellyfinClientError.invalidResponse
     }
     
     public func searchTracks(query: String) async throws -> [Track] {
@@ -88,9 +88,9 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     }
     
     public func getPlaylists() async throws -> [Playlist] {
-        []
+        try await OfflineManager.shared.getPlaylists()
     }
     public func getPlaylistTracks(playlistId: String) async throws -> [Track] {
-        []
+        try await OfflineManager.shared.getTracks(playlistId: playlistId)
     }
 }

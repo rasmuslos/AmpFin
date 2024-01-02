@@ -21,7 +21,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         }
         
         Task.detached { @MainActor [self] in
-            if let track = OfflineManager.shared.getOfflineTrack(taskId: downloadTask.taskIdentifier) {
+            if let track = try? OfflineManager.shared.getOfflineTrack(taskId: downloadTask.taskIdentifier) {
                 let destination = getUrl(trackId: track.id)
                 
                 do {
@@ -33,7 +33,6 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                     logger.info("Download finished: \(track.id) (\(track.name))")
                 } catch {
                     try? FileManager.default.removeItem(at: tmpLocation)
-                    try? OfflineManager.shared.delete(album: track.album)
                     
                     logger.fault("Error while moving track \(track.id) (\(track.name)): \(error.localizedDescription)")
                 }
@@ -48,8 +47,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let error = error {
             Task.detached { @MainActor [self] in
-                if let track = OfflineManager.shared.getOfflineTrack(taskId: task.taskIdentifier) {
-                    try? OfflineManager.shared.delete(album: track.album)
+                if let track = try? OfflineManager.shared.getOfflineTrack(taskId: task.taskIdentifier) {
                     logger.fault("Error while downloading track \(track.id) (\(track.name)): \(error.localizedDescription)")
                 } else {
                     logger.fault("Error while downloading unknown track: \(error.localizedDescription)")
