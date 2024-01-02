@@ -16,6 +16,7 @@ struct PlaylistView: View {
     let playlist: Playlist
     
     @State var tracks = [Track]()
+    @State var editMode: EditMode = .inactive
     
     var body: some View {
         List {
@@ -26,12 +27,13 @@ struct PlaylistView: View {
             .listRowSeparator(.hidden)
             .padding(.bottom)
             
-            TrackList(tracks: tracks, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil)
+            TrackList(tracks: tracks, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil, moveCallback: libraryOnline ? moveTrack : nil)
         }
+        .environment(\.editMode, $editMode)
         .listStyle(.plain)
         .ignoresSafeArea(edges: .top)
         .navigationTitle(playlist.name)
-        .modifier(ToolbarModifier())
+        .modifier(ToolbarModifier(playlist: playlist, tracks: $tracks, editMode: $editMode))
         .modifier(NowPlayingBarSafeAreaModifier())
         .task(fetchTracks)
         .refreshable(action: fetchTracks)
@@ -48,8 +50,25 @@ extension PlaylistView {
         Task {
             do {
                 try await JellyfinClient.shared.remove(trackId: track.id, playlistId: playlist.id)
-                tracks = tracks.filter { $0 != track }
+                
+                withAnimation {
+                    tracks = tracks.filter { $0 != track }
+                    playlist.trackCount = tracks.count
+                    playlist.duration = tracks.reduce(0, { $0 + $1.runtime })
+                }
             } catch {}
+        }
+    }
+    
+    func moveTrack(track: Track, to: Int) {
+        Task {
+            var to = to
+            
+            if tracks.firstIndex(of: track)! < to {
+                to -= 1
+            }
+            
+            try? await JellyfinClient.shared.move(trackId: track.id, index: to, playlistId: playlist.id)
         }
     }
 }

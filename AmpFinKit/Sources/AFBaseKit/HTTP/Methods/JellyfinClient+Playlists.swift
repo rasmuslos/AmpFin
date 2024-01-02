@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Rasmus Krämer on 01.01.24.
 //
@@ -8,6 +8,14 @@
 import Foundation
 
 public extension JellyfinClient {
+    func create(playlistName: String, trackIds: [String]) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists", method: "POST", body: [
+            "Name": playlistName,
+            "Ids": trackIds,
+            "MediaType": "Audio",
+        ], userId: true))
+    }
+    
     func getPlaylists(limit: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> [Playlist] {
         var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
@@ -31,6 +39,34 @@ public extension JellyfinClient {
         return response.Items.filter { $0.MediaType == "Audio" }.map(Playlist.convertFromJellyfin)
     }
     
+    func add(trackIds: [String], playlistId: String) async throws {
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items", method: "POST", query: [
+            URLQueryItem(name: "Ids", value: trackIds.joined(separator: ","))
+        ], userId: true))
+    }
+    
+    func remove(trackId: String, playlistId: String) async throws {
+        let mappings = try await getTrackPlaylistIdsMapping(playlistId: playlistId)
+        
+        if let trackId = mappings.first(where: { $0.key == trackId })?.value {
+            let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items", method: "DELETE", query: [
+                URLQueryItem(name: "EntryIds", value: trackId),
+            ], userId: true))
+        } else {
+            throw JellyfinClientError.invalidHttpBody
+        }
+    }
+    
+    func move(trackId: String, index: Int, playlistId: String) async throws {
+        let mappings = try await getTrackPlaylistIdsMapping(playlistId: playlistId)
+        
+        if let trackId = mappings.first(where: { $0.key == trackId })?.value {
+            let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items/\(trackId)/Move/\(index)", method: "POST", userId: true))
+        } else {
+            throw JellyfinClientError.invalidHttpBody
+        }
+    }
+    
     func getTracks(playlistId: String) async throws -> [Track] {
         let response = try await request(ClientRequest<TracksItemResponse>(path: "Playlists/\(playlistId)/Items", method: "GET", query: [
             URLQueryItem(name: "IncludeItemTypes", value: "Audio"),
@@ -42,7 +78,19 @@ public extension JellyfinClient {
         return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
     
-    func remove(trackId: String, playlistId: String) async throws {
-        print(trackId, playlistId)
+    func getTrackPlaylistIdsMapping(playlistId: String) async throws -> [String: String] {
+        let response = try await request(ClientRequest<TracksItemResponse>(path: "Playlists/\(playlistId)/Items", method: "GET", query: [
+            URLQueryItem(name: "IncludeItemTypes", value: "Audio"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
+        ], userId: true))
+        
+        var mapping = [String: String]()
+        response.Items.forEach {
+            mapping[$0.Id] = $0.PlaylistItemId
+        }
+        
+        return mapping
     }
 }

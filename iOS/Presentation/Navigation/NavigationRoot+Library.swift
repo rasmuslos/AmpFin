@@ -31,6 +31,11 @@ extension NavigationRoot {
                     navigationPath.append(ArtistLoadDestination(artistId: artistId))
                 }
             }
+            .onReceive(NotificationCenter.default.publisher(for: NavigationRoot.navigateBackNotification)) { notification in
+                if !navigationPath.isEmpty {
+                    navigationPath.removeLast()
+                }
+            }
             .tabItem {
                 Label("tab.libarary", systemImage: "rectangle.stack.fill")
             }

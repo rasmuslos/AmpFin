@@ -11,7 +11,6 @@ import AFBaseKit
 
 public protocol LibraryDataProvider {
     var supportsArtistLookup: Bool { get }
-    var supportsFavoritesLookup: Bool { get }
     var supportsAdvancedFilters: Bool { get }
     
     func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]

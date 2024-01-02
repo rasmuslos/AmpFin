@@ -19,16 +19,16 @@ struct PlaylistsView: View {
             if let playlists = playlists {
                 List {
                     PlaylistsList(playlists: playlists)
-                        .navigationTitle("title.playlists")
-                        .refreshable(action: loadPlaylists)
                 }
             } else if failed {
                 ErrorView()
             } else {
                 LoadingView()
-                    .task(loadPlaylists)
             }
         }
+        .navigationTitle("title.playlists")
+        .task(loadPlaylists)
+        .refreshable(action: loadPlaylists)
         .modifier(NowPlayingBarSafeAreaModifier())
     }
 }

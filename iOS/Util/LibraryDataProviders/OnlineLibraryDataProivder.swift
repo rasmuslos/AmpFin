@@ -11,7 +11,6 @@ import AFOfflineKit
 
 public struct OnlineLibraryDataProvider: LibraryDataProvider {
     public var supportsArtistLookup: Bool = true
-    public var supportsFavoritesLookup: Bool = true
     public var supportsAdvancedFilters: Bool = true
     
     public func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {

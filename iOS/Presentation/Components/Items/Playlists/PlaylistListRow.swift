@@ -26,5 +26,32 @@ struct PlaylistListRow: View {
             
             Spacer()
         }
+        .dropDestination(for: Track.self) { tracks, _ in
+            Task {
+                try await JellyfinClient.shared.add(trackIds: tracks.map { $0.id }, playlistId: playlist.id)
+                // might not be true but who cares
+                playlist.trackCount += 1
+            }
+            
+            return true
+        }
+        .swipeActions(edge: .leading) {
+            Button {
+                
+            } label: {
+                Image(systemName: "arrow.down")
+                    .tint(.green)
+            }
+        }
+        .swipeActions(edge: .trailing) {
+            Button {
+                Task {
+                    await playlist.setFavorite(favorite: !playlist.favorite)
+                }
+            } label: {
+                Image(systemName: playlist.favorite ? "heart.fill" : "heart")
+                    .tint(.orange)
+            }
+        }
     }
 }

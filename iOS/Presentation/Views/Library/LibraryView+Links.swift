@@ -29,7 +29,6 @@ extension LibraryView {
                 NavigationLink(destination: FavoritesView()) {
                     Label("title.favorites", systemImage: "heart")
                 }
-                .disabled(!dataProvider.supportsFavoritesLookup)
                 
                 NavigationLink(destination: ArtistsView(albumOnly: true)) {
                     Label("title.albumArtists", systemImage: "music.mic")

@@ -27,8 +27,6 @@ extension PlaylistView {
                             height = max(height, proxy.size.height)
                         }
                         .onChange(of: proxy.frame(in: .global)) {
-                            print(height, proxy.size.height)
-                            
                             height = max(height, proxy.size.height)
                             offset = proxy.frame(in: .global).minY
                             
@@ -70,9 +68,9 @@ extension PlaylistView.Header {
         let hours = seconds / 3600
         
         if hours > 0 {
-            return String(hours) + " " + String(localized: "hours")
+            return String(localized: "hours \(hours)")
         } else {
-            return String((seconds % 3600) / 60) + " " + String(localized: "minutes")
+            return String(localized: "minutes \((seconds % 3600) / 60)")
         }
     }
 }

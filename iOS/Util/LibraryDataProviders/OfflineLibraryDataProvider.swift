@@ -11,7 +11,6 @@ import AFOfflineKit
 
 public struct OfflineLibraryDataProvider: LibraryDataProvider {
     public var supportsArtistLookup: Bool = false
-    public var supportsFavoritesLookup: Bool = false
     public var supportsAdvancedFilters: Bool = false
     
     public func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
@@ -35,7 +34,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         return ascending ? tracks : tracks.reversed()
     }
     public func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
-        return []
+        try await OfflineManager.shared.getTracks(favorite: true)
     }
     
     public func getRecentAlbums() async throws -> [Album] {

@@ -85,8 +85,16 @@ extension OfflineManager {
 
 public extension OfflineManager {
     @MainActor
-    func getTracks() throws -> [Track] {
-        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
+    func getTracks(favorite: Bool = false) throws -> [Track] {
+        let descriptor: FetchDescriptor<OfflineTrack>
+        
+        if favorite {
+            descriptor = FetchDescriptor(predicate: #Predicate { $0.favorite == true })
+        } else {
+            descriptor = FetchDescriptor()
+        }
+        
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
         return tracks.map(Track.convertFromOffline)
     }
     

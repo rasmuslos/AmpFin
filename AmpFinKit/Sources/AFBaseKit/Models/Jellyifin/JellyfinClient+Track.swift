@@ -14,6 +14,8 @@ public extension JellyfinClient {
     
     struct JellyfinTrackItem: Codable {
         let Id: String
+        let PlaylistItemId: String?
+        
         let Name: String
         
         let PremiereDate: String?

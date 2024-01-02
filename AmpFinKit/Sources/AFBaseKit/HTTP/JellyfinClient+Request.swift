@@ -52,6 +52,8 @@ extension JellyfinClient {
             }
         }
         
+        // print(request.url?.absoluteString, request.httpMethod, request.allHTTPHeaderFields)
+        
         do {
             let (data, _) = try await URLSession.shared.data(for: request)
             // print(clientRequest.path, String.init(data: data, encoding: .utf8))

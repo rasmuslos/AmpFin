@@ -8,8 +8,8 @@
 import Foundation
 
 public class Playlist: Item {
-    public let duration: Double
-    public let trackCount: Int
+    public var duration: Double
+    public var trackCount: Int
     
     init(id: String, name: String, cover: Cover? = nil, favorite: Bool, duration: Double, trackCount: Int) {
         self.duration = duration

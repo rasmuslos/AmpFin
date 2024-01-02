@@ -164,6 +164,9 @@ struct NowPlayingBarModifier: ViewModifier {
                         .padding()
                         .background(.ultraThickMaterial)
                     }
+                    .draggable(currentTrack) {
+                        TrackListRow.TrackPreview(track: currentTrack)
+                    }
                 }
             }
             .dropDestination(for: Track.self) { tracks, _ in

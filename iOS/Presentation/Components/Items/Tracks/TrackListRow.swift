@@ -18,6 +18,8 @@ struct TrackListRow: View {
     
     var disableMenu: Bool = false
     
+    @State var addToPlaylistSheetPresented = false
+    
     var body: some View {
         let showArtist = album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
         
@@ -58,7 +60,7 @@ struct TrackListRow: View {
             
             if !disableMenu {
                 Menu {
-                    TrackMenu(track: track, album: album, deleteCallback: deleteCallback)
+                    TrackMenu(track: track, album: album, deleteCallback: deleteCallback, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
                 } label: {
                     Image(systemName: "ellipsis")
                         .renderingMode(.original)
@@ -74,11 +76,14 @@ struct TrackListRow: View {
                 .padding(4)
         }
         .contextMenu {
-            TrackMenu(track: track, album: album, deleteCallback: deleteCallback)
+            TrackMenu(track: track, album: album, deleteCallback: deleteCallback, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
         } preview: {
             TrackPreview(track: track)
                 .padding()
                 .clipShape(RoundedRectangle(cornerRadius: 15))
+        }
+        .sheet(isPresented: $addToPlaylistSheetPresented) {
+            PlaylistAddSheet(track: track)
         }
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             PlayNextButton(track: track)
@@ -127,9 +132,12 @@ extension TrackListRow {
         
         let deleteCallback: TrackList.DeleteCallback
         
+        @Binding var addToPlaylistSheetPresented: Bool
+        
         var body: some View {
             PlayNextButton(track: track)
             PlayLastButton(track: track)
+            
             
             Divider()
             
@@ -143,6 +151,12 @@ extension TrackListRow {
                 Label("queue.mix", systemImage: "compass.drawing")
             }
             .disabled(!libraryOnline)
+            
+            Button {
+                addToPlaylistSheetPresented.toggle()
+            } label: {
+                Label("playlist.add", systemImage: "plus")
+            }
             
             Divider()
             

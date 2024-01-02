@@ -15,6 +15,7 @@ struct TrackList: View {
     
     var hideButtons = false
     var deleteCallback: DeleteCallback = nil
+    var moveCallback: MoveCallback = nil
     
     @State var search: String = ""
     
@@ -33,14 +34,14 @@ struct TrackList: View {
         if album != nil, disks.count > 1 {
             ForEach(disks.sorted(), id: \.hashValue) { disk in
                 Section {
-                    TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback)
+                    TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback)
                 } header: {
                     Text("tracks.disk \(disk)")
                         .padding(.top, -20)
                 }
             }
         } else {
-            TrackSection(tracks: filter(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback)
+            TrackSection(tracks: filter(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback)
         }
     }
 }
@@ -48,6 +49,7 @@ struct TrackList: View {
 // MARK: Track section
 
 extension TrackList {
+    typealias MoveCallback = ((_ track: Track, _ to: Int) -> Void)?
     typealias DeleteCallback = ((_ track: Track) -> Void)?
     
     struct TrackSection: View {
@@ -56,15 +58,35 @@ extension TrackList {
         
         let startPlayback: (Track) -> ()
         let deleteCallback: DeleteCallback
+        let moveCallback: MoveCallback
         
         var body: some View {
-            ForEach(tracks) { track in
-                TrackListRow(track: track, album: album, deleteCallback: deleteCallback) {
-                    startPlayback(track)
+            if let moveCallback = moveCallback {
+                ForEach(tracks) { track in
+                    TrackListRow(track: track, album: album, deleteCallback: deleteCallback) {
+                        startPlayback(track)
+                    }
+                    .id(track.id)
+                    .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
+                    .padding(.horizontal)
+                    .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
                 }
-                .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-                .padding(.horizontal)
-                .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
+                .onDelete(perform: { _ in })
+                .onMove(perform: { from, to in
+                    from.map { tracks[$0] }.forEach {
+                        moveCallback($0, to)
+                    }
+                })
+            } else {
+                ForEach(tracks) { track in
+                    TrackListRow(track: track, album: album, deleteCallback: deleteCallback) {
+                        startPlayback(track)
+                    }
+                    .id(track.id)
+                    .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
+                    .padding(.horizontal)
+                    .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
+                }
             }
         }
     }

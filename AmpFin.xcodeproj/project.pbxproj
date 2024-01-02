@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A07CD932B4401BE00F9AB19 /* PlaylistAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */; };
 		3A11013B2AC0362B004CF731 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A11013A2AC0362B004CF731 /* FavoritesView.swift */; };
 		3A1CBC192B0D284200855A70 /* NavigationRoot+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC182B0D284200855A70 /* NavigationRoot+Notifications.swift */; };
 		3A1CBC1B2B0D2A6400855A70 /* NavigationRoot+Destinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC1A2B0D2A6400855A70 /* NavigationRoot+Destinations.swift */; };
@@ -100,6 +101,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistAddSheet.swift; sourceTree = "<group>"; };
 		3A11013A2AC0362B004CF731 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		3A1CBC182B0D284200855A70 /* NavigationRoot+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Notifications.swift"; sourceTree = "<group>"; };
 		3A1CBC1A2B0D2A6400855A70 /* NavigationRoot+Destinations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Destinations.swift"; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 			children = (
 				3A2B28E72B43422800DF9731 /* PlaylistsList.swift */,
 				3A2B28E92B4342F000DF9731 /* PlaylistListRow.swift */,
+				3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */,
 			);
 			path = Playlists;
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 				3A2B28E82B43422800DF9731 /* PlaylistsList.swift in Sources */,
 				3A2B93312B00C9DA00638AE9 /* DownloadTip.swift in Sources */,
 				3A3DA6642AAB2BC10091211A /* ArtistList.swift in Sources */,
+				3A07CD932B4401BE00F9AB19 /* PlaylistAddSheet.swift in Sources */,
 				3A2B93332B00D28700638AE9 /* InstantMixTip.swift in Sources */,
 				3A8850642AA90E4600456DDD /* AlbumView.swift in Sources */,
 				3AE322E12AFF7421002D70CC /* Intents.intentdefinition in Sources */,

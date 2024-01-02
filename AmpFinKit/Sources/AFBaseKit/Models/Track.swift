@@ -39,6 +39,7 @@ public class Track: Item {
         case runtime
         case playCount
         case releaseDate
+        case playlistItemId
     }
     
     public required init(from decoder: Decoder) throws {
