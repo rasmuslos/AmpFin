@@ -14,15 +14,15 @@ import AFBaseKit
 public extension OfflineManager {
     @MainActor
     func deleteAll() async throws {
-        // Delete all albums (should remove all tracks, too)
-        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineAlbum>())
-        for album in albums {
-            try! delete(album: album)
+        for album in try getOfflineAlbums() {
+            try delete(album: album)
         }
         
-        // Ensure all tracks are deleted
-        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineTrack>())
-        for track in tracks {
+        for playlist in try getOfflinePlaylists() {
+            try delete(playlist: playlist)
+        }
+        
+        for track in try getOfflineTracks() {
             delete(track: track)
         }
         

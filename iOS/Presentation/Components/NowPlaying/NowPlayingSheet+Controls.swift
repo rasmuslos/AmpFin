@@ -101,17 +101,16 @@ extension NowPlayingSheet {
                     
                     if AudioPlayer.current.source == .local {
                         // disabled until lyrics are fully supported by the stable server
-                        /*
-                         Button {
-                         setActiveTab(.lyrics)
-                         } label: {
-                         Image(systemName: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
-                         }
-                         .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
-                         .popoverTip(LyricsTip(), arrowEdge: .bottom)
-                         
-                         Spacer()
-                         */
+                        #if DEBUG
+                        Button {
+                            setActiveTab(.lyrics)
+                        } label: {
+                            Image(systemName: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
+                        }
+                        .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
+                        
+                        Spacer()
+                        #endif
                         
                         AirPlayView()
                             .frame(width: 45)
@@ -166,7 +165,6 @@ extension NowPlayingSheet {
                 .bold()
                 .font(.system(size: 20))
                 .frame(height: 45)
-                .padding(.horizontal, 45)
                 .padding(.top, 35)
                 .padding(.bottom, 40)
             }

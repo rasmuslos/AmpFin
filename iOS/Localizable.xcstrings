@@ -274,6 +274,7 @@
       }
     },
     "developedBy" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1390,6 +1391,7 @@
       }
     },
     "tip.lyrics.message" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1406,6 +1408,7 @@
       }
     },
     "tip.lyrics.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
