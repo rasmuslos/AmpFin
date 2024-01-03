@@ -81,7 +81,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                     if offlineTracker.status == .none {
                         Button {
                             Task {
-                                try! await OfflineManager.shared.download(album)
+                                try! await OfflineManager.shared.download(album: album)
                             }
                         } label: {
                             Label("download.download", systemImage: "arrow.down")

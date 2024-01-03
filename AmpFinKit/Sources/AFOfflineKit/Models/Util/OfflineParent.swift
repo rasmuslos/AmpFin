@@ -9,7 +9,7 @@ import Foundation
 import AFBaseKit
 
 protocol OfflineParent {
-    var childrenIds: [String] { get }
+    var childrenIds: [String] { get set }
 }
 
 extension OfflineParent {

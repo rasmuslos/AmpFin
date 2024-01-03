@@ -11,6 +11,7 @@ import AFBaseKit
 public struct MockLibraryDataProvider: LibraryDataProvider {
     public var supportsArtistLookup: Bool = true
     public var supportsAdvancedFilters: Bool = true
+    public var albumNotFoundFallbackToLibrary: Bool = false
     
     public func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
         [

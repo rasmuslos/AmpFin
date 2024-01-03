@@ -228,7 +228,7 @@
 				3A234E162AA8E0A300197AA7 /* Items */,
 				3A8B99432AAA089F004AAA7B /* Sliders */,
 				3A98A02C2AABA35700EA84CF /* Fallback */,
-				3A2B28F22B4379ED00DF9731 /* Gradient */,
+				3A2B28F22B4379ED00DF9731 /* FluidGradient */,
 				3ADE8EA52AA94637009826A3 /* NowPlaying */,
 			);
 			path = Components;
@@ -277,7 +277,7 @@
 			path = Playlist;
 			sourceTree = "<group>";
 		};
-		3A2B28F22B4379ED00DF9731 /* Gradient */ = {
+		3A2B28F22B4379ED00DF9731 /* FluidGradient */ = {
 			isa = PBXGroup;
 			children = (
 				3A2B28F32B437A0700DF9731 /* BlobLayer.swift */,
@@ -286,7 +286,7 @@
 				3A2B28F92B437A7300DF9731 /* FluidGradientView.swift */,
 				3A2B28FB2B437A8100DF9731 /* ResizableLayer.swift */,
 			);
-			path = Gradient;
+			path = FluidGradient;
 			sourceTree = "<group>";
 		};
 		3A2B932D2B00C79D00638AE9 /* Tips */ = {

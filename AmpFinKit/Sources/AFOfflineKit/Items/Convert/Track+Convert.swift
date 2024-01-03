@@ -39,7 +39,7 @@ extension Track {
                 artists: offline.album.artists),
             artists: offline.artists,
             lufs: nil,
-            index: Track.Index(index: parent.childrenIds.firstIndex(of: offline.id) ?? 0, disk: 0),
+            index: Track.Index(index: (parent.childrenIds.firstIndex(of: offline.id) ?? -1) + 1, disk: 0),
             runtime: offline.runtime,
             playCount: -1,
             releaseDate: offline.releaseDate)

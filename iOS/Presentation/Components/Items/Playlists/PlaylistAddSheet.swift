@@ -23,14 +23,13 @@ struct PlaylistAddSheet: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                TrackListRow(track: track, startPlayback: {}, disableMenu: true)
-                    .padding()
-                
+            Group {
                 if libraryOnline {
                     List {
-                        if failed {
-                            Section {
+                        Section {
+                            TrackListRow(track: track, startPlayback: {}, disableMenu: true)
+                            
+                            if failed {
                                 Label("playlist.add.error", systemImage: "xmark.circle")
                                     .foregroundStyle(.red)
                             }
@@ -50,7 +49,7 @@ struct PlaylistAddSheet: View {
                                         }
                                     }
                                 } label: {
-                                    Label("playlist.new.create", systemImage: "plus")
+                                    Text("playlist.new.create")
                                 }
                             } else {
                                 Button {
@@ -99,6 +98,7 @@ struct PlaylistAddSheet: View {
                 }
             }
             .navigationTitle("playlist.add.title")
+            .toolbarTitleDisplayMode(.inline)
         }
         .presentationDragIndicator(.visible)
     }

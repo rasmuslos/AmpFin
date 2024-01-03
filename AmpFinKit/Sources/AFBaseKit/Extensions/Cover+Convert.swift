@@ -18,13 +18,18 @@ extension Item.Cover {
     }
     
     /// Construct a valid image URL from an item's ID
-    static func constructItemCoverUrl(itemId: String, imageTag: String, size: Int = 800, quality: Int = 96) -> URL {
-        JellyfinClient.shared.serverUrl.appending(path: "Items").appending(path: itemId).appending(path: "Images").appending(path: "Primary").appending(queryItems: [
+    public static func constructItemCoverUrl(itemId: String, imageTag: String?, size: Int = 800, quality: Int = 96) -> URL {
+        var query = [
             URLQueryItem(name: "fillHeight", value: String(size)),
             URLQueryItem(name: "fillWidth", value: String(size)),
             URLQueryItem(name: "quality", value: String(quality)),
-            URLQueryItem(name: "tag", value: imageTag),
             URLQueryItem(name: "token", value: JellyfinClient.shared.token),
-        ])
+        ]
+        
+        if let imageTag = imageTag {
+            query.append(URLQueryItem(name: "tag", value: imageTag))
+        }
+        
+        return JellyfinClient.shared.serverUrl.appending(path: "Items").appending(path: itemId).appending(path: "Images").appending(path: "Primary").appending(queryItems: query)
     }
 }

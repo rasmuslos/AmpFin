@@ -47,5 +47,27 @@ public extension OfflineManager {
         }
     }
     
-    // TODO: update children
+    @MainActor
+    func removeOrphanedTracks() throws {
+        let tracks = try getOfflineTracks()
+        let orphaned = try tracks.filter { try !isTrackInUse(trackId: $0.id) }
+        
+        for orphan in orphaned {
+            delete(track: orphan)
+        }
+    }
+    
+    func updateOfflineItems() {
+        Task { @MainActor in
+            for album in try getOfflineAlbums() {
+                try await download(album: Album.convertFromOffline(album))
+            }
+            
+            for playlist in try getOfflinePlaylists() {
+                try await download(playlist: Playlist.convertFromOffline(playlist))
+            }
+            
+            try removeOrphanedTracks()
+        }
+    }
 }

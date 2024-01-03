@@ -11,9 +11,21 @@ import AFBaseKit
 
 extension OfflineManager {
     @MainActor
-    func create(playlist: Playlist, tracks: [Track]) async throws -> OfflinePlaylist {
+    func create(playlist: Playlist, tracks: [Track]) throws -> OfflinePlaylist {
         if let cover = playlist.cover {
-            try await DownloadManager.shared.downloadCover(parentId: playlist.id, cover: cover)
+            Task.detached {
+                try await DownloadManager.shared.downloadCover(parentId: playlist.id, cover: cover)
+            }
+        }
+        
+        let albumIds = Set(tracks.map { $0.album.id })
+        
+        for albumId in albumIds {
+            if !DownloadManager.shared.isCoverDownloaded(parentId: albumId) {
+                Task.detached {
+                    try await DownloadManager.shared.downloadCover(parentId: albumId, cover: Item.Cover(type: .remote, url: Item.Cover.constructItemCoverUrl(itemId: albumId, imageTag: nil)))
+                }
+            }
         }
         
         let offlinePlaylist = OfflinePlaylist(
@@ -68,12 +80,13 @@ extension OfflineManager {
 }
 
 public extension OfflineManager {
-    func download(_ playlist: Playlist) async throws {
+    func download(playlist: Playlist) async throws {
         let offlinePlaylist: OfflinePlaylist
         let tracks = try await JellyfinClient.shared.getTracks(playlistId: playlist.id)
         
         if let existing = try? await getOfflinePlaylist(playlistId: playlist.id) {
             offlinePlaylist = existing
+            await update(parent: offlinePlaylist, tracks: tracks)
         } else {
             offlinePlaylist = try await create(playlist: playlist, tracks: tracks)
         }

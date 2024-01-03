@@ -16,7 +16,7 @@ class OfflinePlaylist: OfflineParent {
     public var favorite: Bool
     public var duration: Double
     
-    let childrenIds: [String]
+    var childrenIds: [String]
     
     init(id: String, name: String, favorite: Bool, duration: Double, childrenIds: [String]) {
         self.id = id

@@ -25,6 +25,7 @@ struct ContentView: View {
                     SpotlightDonator.donate()
                     UserContext.updateContext()
                     
+                    OfflineManager.shared.updateOfflineItems()
                     OfflineManager.shared.updateOfflineFavorites()
                     OfflineManager.shared.syncPlaysToJellyfinServer()
                     

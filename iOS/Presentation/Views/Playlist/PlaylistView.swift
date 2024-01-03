@@ -25,7 +25,7 @@ struct PlaylistView: View {
             }
             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
             .listRowSeparator(.hidden)
-            .padding(.bottom)
+            .padding(.bottom, 5)
             
             TrackList(tracks: tracks, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil, moveCallback: libraryOnline ? moveTrack : nil)
         }

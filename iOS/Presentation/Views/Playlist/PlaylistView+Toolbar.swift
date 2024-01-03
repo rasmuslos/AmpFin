@@ -14,6 +14,7 @@ import AFPlaybackKit
 extension PlaylistView {
     struct ToolbarModifier: ViewModifier {
         @Environment(\.libraryOnline) var libraryOnline
+        @Environment(\.dismiss) var dismiss
         
         let playlist: Playlist
         
@@ -31,7 +32,7 @@ extension PlaylistView {
                             Button {
                                 if offlineTracker.status == .none {
                                     Task {
-                                        try! await OfflineManager.shared.download(playlist)
+                                        try! await OfflineManager.shared.download(playlist: playlist)
                                     }
                                 } else if offlineTracker.status == .downloaded {
                                     try! OfflineManager.shared.delete(playlistId: playlist.id)
@@ -121,7 +122,7 @@ extension PlaylistView {
                             try! await JellyfinClient.shared.delete(itemId: playlist.id)
                             alertPresented = false
                             
-                            NotificationCenter.default.post(name: NavigationRoot.navigateBackNotification, object: nil)
+                            dismiss()
                         }
                     } label: {
                         Text("playlist.delete.finalize")

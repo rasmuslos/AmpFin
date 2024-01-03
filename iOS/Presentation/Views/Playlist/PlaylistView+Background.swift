@@ -15,7 +15,7 @@ extension PlaylistView {
         
         var body: some View {
             if let colors = colors {
-                FluidGradient(blobs: [colors.background, colors.detail, colors.secondary], highlights: [colors.primary], speed: 0.1)
+                FluidGradient(blobs: [colors.background, colors.detail, colors.secondary, colors.primary], highlights: [], speed: 0.1, blur: 0.7)
                     .background(.tertiary)
             } else {
                 Rectangle()

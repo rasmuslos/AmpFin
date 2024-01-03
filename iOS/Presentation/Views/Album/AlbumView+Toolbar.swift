@@ -63,7 +63,7 @@ extension AlbumView {
                             Button {
                                 if offlineTracker.status == .none {
                                     Task {
-                                        try! await OfflineManager.shared.download(album)
+                                        try! await OfflineManager.shared.download(album: album)
                                     }
                                 } else if offlineTracker.status == .downloaded {
                                     try! OfflineManager.shared.delete(albumId: album.id)
@@ -150,7 +150,6 @@ extension AlbumView {
         
         func body(content: Content) -> some View {
             content
-                .font(.system(size: 20))
                 .symbolVariant(.circle.fill)
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(

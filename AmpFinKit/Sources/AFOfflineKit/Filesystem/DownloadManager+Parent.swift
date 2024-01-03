@@ -16,6 +16,10 @@ extension DownloadManager {
         try FileManager.default.moveItem(at: location, to: getCoverUrl(parentId: parentId))
     }
     
+    func isCoverDownloaded(parentId: String) -> Bool {
+        FileManager.default.fileExists(atPath: getCoverUrl(parentId: parentId).absoluteString)
+    }
+    
     func deleteCover(parentId: String) throws {
         try FileManager.default.removeItem(at: getCoverUrl(parentId: parentId))
     }

@@ -13,7 +13,16 @@ extension OfflineManager {
     @MainActor
     func getOfflineTracks(parent: OfflineParent) throws -> [OfflineTrack] {
         // SwiftData sucks complete ass
-        return try getOfflineTracks().filter { parent.childrenIds.contains($0.id) }
+        var tracks = try getOfflineTracks().filter { parent.childrenIds.contains($0.id) }
+        
+        tracks.sort {
+            let lhs = parent.childrenIds.firstIndex(of: $0.id)!
+            let rhs = parent.childrenIds.firstIndex(of: $1.id)!
+            
+            return lhs < rhs
+        }
+        
+        return tracks
     }
     
     @MainActor
@@ -51,6 +60,12 @@ extension OfflineManager {
                 await download(track: track)
             }
         }
+    }
+    
+    @MainActor
+    func update(parent: OfflineParent, tracks: [Track]) {
+        var parent = parent
+        parent.childrenIds = tracks.map { $0.id }
     }
     
     func delete(parent: OfflineParent) throws {

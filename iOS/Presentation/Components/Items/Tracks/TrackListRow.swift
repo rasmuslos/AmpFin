@@ -174,9 +174,9 @@ extension TrackListRow {
             if let artist = track.artists.first {
                 NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
                     Label("artist.view", systemImage: "music.mic")
-                        .disabled(!dataProvider.supportsArtistLookup)
                     Text(artist.name)
                 }
+                .disabled(!dataProvider.supportsArtistLookup)
             }
             
             if let deleteCallback = deleteCallback {

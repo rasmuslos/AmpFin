@@ -9,7 +9,6 @@ import Foundation
 
 extension NavigationRoot {
     static let navigateNotification = NSNotification.Name("io.rfk.ampfin.navigation")
-    static let navigateBackNotification = NSNotification.Name("io.rfk.ampfin.navigation.back")
     
     static let navigateAlbumNotification = NSNotification.Name("io.rfk.ampfin.navigation.album")
     static let navigateArtistNotification = NSNotification.Name("io.rfk.ampfin.navigation.artist")

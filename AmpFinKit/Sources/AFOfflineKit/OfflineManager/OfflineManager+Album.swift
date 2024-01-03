@@ -63,12 +63,13 @@ extension OfflineManager {
 // MARK: Public
 
 public extension OfflineManager {
-    func download(_ album: Album) async throws {
+    func download(album: Album) async throws {
         let offlineAlbum: OfflineAlbum
         let tracks = try await JellyfinClient.shared.getTracks(albumId: album.id)
         
         if let existing = try? await getOfflineAlbum(albumId: album.id) {
             offlineAlbum = existing
+            await update(parent: offlineAlbum, tracks: tracks)
         } else {
             offlineAlbum = try await create(album: album, tracks: tracks)
         }
@@ -129,5 +130,10 @@ public extension OfflineManager {
         } catch {
             return .none
         }
+    }
+    
+    @MainActor
+    func isAlbumDownloaded(albumId: String) -> Bool {
+        (try? getOfflineAlbum(albumId: albumId)) != nil
     }
 }
