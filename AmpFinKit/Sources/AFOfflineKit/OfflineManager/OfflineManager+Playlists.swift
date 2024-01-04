@@ -14,16 +14,15 @@ extension OfflineManager {
     func create(playlist: Playlist, tracks: [Track]) throws -> OfflinePlaylist {
         if let cover = playlist.cover {
             Task.detached {
-                try await DownloadManager.shared.downloadCover(parentId: playlist.id, cover: cover)
+                try? await DownloadManager.shared.downloadCover(parentId: playlist.id, cover: cover)
             }
         }
         
         let albumIds = Set(tracks.map { $0.album.id })
-        
         for albumId in albumIds {
             if !DownloadManager.shared.isCoverDownloaded(parentId: albumId) {
                 Task.detached {
-                    try await DownloadManager.shared.downloadCover(parentId: albumId, cover: Item.Cover(type: .remote, url: Item.Cover.constructItemCoverUrl(itemId: albumId, imageTag: nil)))
+                    try? await DownloadManager.shared.downloadCover(parentId: albumId, cover: Item.Cover(type: .remote, url: Item.Cover.constructItemCoverUrl(itemId: albumId, imageTag: nil)))
                 }
             }
         }
@@ -41,17 +40,12 @@ extension OfflineManager {
     
     @MainActor
     func delete(playlist: OfflinePlaylist) throws {
-        try delete(parent: playlist)
-        
-        try? DownloadManager.shared.deleteCover(parentId: playlist.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(playlist)
         
+        try? DownloadManager.shared.deleteCover(parentId: playlist.id)
+        try removeOrphanedTracks()
+        
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: playlist.id)
-    }
-    
-    @MainActor
-    func getOfflinePlaylists() throws -> [OfflinePlaylist] {
-        return try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
     }
     
     @MainActor
@@ -64,6 +58,11 @@ extension OfflineManager {
         }
         
         throw OfflineManager.OfflineError.notFoundError
+    }
+    
+    @MainActor
+    func getOfflinePlaylists() throws -> [OfflinePlaylist] {
+        return try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
     }
     
     @MainActor
@@ -86,12 +85,17 @@ public extension OfflineManager {
         
         if let existing = try? await getOfflinePlaylist(playlistId: playlist.id) {
             offlinePlaylist = existing
-            await update(parent: offlinePlaylist, tracks: tracks)
+            offlinePlaylist.childrenIds = tracks.map { $0.id }
         } else {
             offlinePlaylist = try await create(playlist: playlist, tracks: tracks)
         }
         
-        download(parent: offlinePlaylist, tracks: tracks)
+        for track in tracks {
+            Task.detached {
+                await download(track: track)
+            }
+        }
+        
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: offlinePlaylist.id)
     }
     

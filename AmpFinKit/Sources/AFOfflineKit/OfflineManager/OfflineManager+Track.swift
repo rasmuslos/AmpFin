@@ -15,11 +15,7 @@ extension OfflineManager {
     @MainActor
     func download(track: Track) {
         if let existing = try? getOfflineTrack(trackId: track.id) {
-            if existing.downloadId == nil {
-                return
-            }
-            
-            delete(track: existing)
+            return
         }
         
         let downloadTask = DownloadManager.shared.download(track: track)
@@ -57,16 +53,11 @@ extension OfflineManager {
     }
     
     @MainActor
-    func getOfflineTracks() throws -> [OfflineTrack] {
-        return try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
-    }
-    
-    @MainActor
     func getOfflineTrack(trackId: String) throws -> OfflineTrack {
-        var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
-        track.fetchLimit = 1
+        var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
+        descriptor.fetchLimit = 1
         
-        if let track = try PersistenceManager.shared.modelContainer.mainContext.fetch(track).first {
+        if let track = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first {
             return track
         }
         
@@ -83,6 +74,11 @@ extension OfflineManager {
         }
         
         throw OfflineError.notFoundError
+    }
+    
+    @MainActor
+    func getOfflineTracks() throws -> [OfflineTrack] {
+        return try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
     }
     
     @MainActor

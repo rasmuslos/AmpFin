@@ -9,7 +9,7 @@ import Foundation
 
 // Taken from https://gist.github.com/DougGregor/92a2e4f6e11f6d733fb5065e9d1c880f
 
-extension Collection {
+public extension Collection {
     func parallelMap<T>(
         parallelism requestedParallelism: Int? = nil,
         _ transform: @escaping (Element) async throws -> T

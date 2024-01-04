@@ -15,7 +15,9 @@ extension OfflineManager {
     @MainActor
     func create(album: Album, tracks: [Track]) async throws -> OfflineAlbum {
         if let cover = album.cover {
-            try await DownloadManager.shared.downloadCover(parentId: album.id, cover: cover)
+            Task.detached {
+                try await DownloadManager.shared.downloadCover(parentId: album.id, cover: cover)
+            }
         }
         
         let offlineAlbum = OfflineAlbum(
@@ -33,18 +35,13 @@ extension OfflineManager {
     }
     
     @MainActor
-    func delete(album: OfflineAlbum) throws {
-        try delete(parent: album)
+    func delete(offlineAlbum: OfflineAlbum) throws {
+        PersistenceManager.shared.modelContainer.mainContext.delete(offlineAlbum)
         
-        try? DownloadManager.shared.deleteCover(parentId: album.id)
-        PersistenceManager.shared.modelContainer.mainContext.delete(album)
+        try? DownloadManager.shared.deleteCover(parentId: offlineAlbum.id)
+        try removeOrphanedTracks()
         
-        NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: album.id)
-    }
-    
-    @MainActor
-    func getOfflineAlbums() throws -> [OfflineAlbum] {
-        return try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
+        NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: offlineAlbum.id)
     }
     
     @MainActor
@@ -58,6 +55,11 @@ extension OfflineManager {
         
         throw OfflineError.notFoundError
     }
+    
+    @MainActor
+    func getOfflineAlbums() throws -> [OfflineAlbum] {
+        return try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
+    }
 }
 
 // MARK: Public
@@ -69,19 +71,24 @@ public extension OfflineManager {
         
         if let existing = try? await getOfflineAlbum(albumId: album.id) {
             offlineAlbum = existing
-            await update(parent: offlineAlbum, tracks: tracks)
+            offlineAlbum.childrenIds = tracks.map { $0.id }
         } else {
             offlineAlbum = try await create(album: album, tracks: tracks)
         }
         
-        download(parent: offlineAlbum, tracks: tracks)
+        for track in tracks {
+            Task.detached {
+                await download(track: track)
+            }
+        }
+        
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: album.id)
     }
     
     @MainActor
     func delete(albumId: String) throws {
         let album = try OfflineManager.shared.getOfflineAlbum(albumId: albumId)
-        try delete(album: album)
+        try delete(offlineAlbum: album)
     }
     
     @MainActor
@@ -101,7 +108,6 @@ public extension OfflineManager {
     
     @MainActor
     func getRecentAlbums() throws -> [Album] {
-        // this is stupid
         let albums = try getAlbums()
         return albums.suffix(20).reversed()
     }

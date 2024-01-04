@@ -12,8 +12,7 @@ import AFBaseKit
 extension OfflineManager {
     @MainActor
     func getOfflineTracks(parent: OfflineParent) throws -> [OfflineTrack] {
-        // SwiftData sucks complete ass
-        var tracks = try getOfflineTracks().filter { parent.childrenIds.contains($0.id) }
+        var tracks = try parent.childrenIds.map { try getOfflineTrack(trackId: $0) }
         
         tracks.sort {
             let lhs = parent.childrenIds.firstIndex(of: $0.id)!
@@ -31,50 +30,15 @@ extension OfflineManager {
         return tracks.reduce(false) { $1.downloadId == nil ? $0 : true }
     }
     
-    @MainActor
-    func isTrackInUse(trackId: String) throws -> Bool {
-        let albumDependencies = try getOfflineAlbums().reduce([String](), {
-            var result = $0
-            result.append(contentsOf: $1.childrenIds)
-            
-            return result
-        })
+    func reduceToChildrenIds(parents: [OfflineParent]) -> Set<String> {
+        var result = Set<String>()
         
-        if albumDependencies.contains(trackId) {
-            return true
-        }
-        
-        let playlistDependencies = try getOfflinePlaylists().reduce([String](), {
-            var result = $0
-            result.append(contentsOf: $1.childrenIds)
-            
-            return result
-        })
-        
-        return playlistDependencies.contains(trackId)
-    }
-    
-    func download(parent: OfflineParent, tracks: [Track]) {
-        for track in tracks {
-            Task.detached {
-                await download(track: track)
+        for parent in parents {
+            for trackId in parent.childrenIds {
+                result.insert(trackId)
             }
         }
-    }
-    
-    @MainActor
-    func update(parent: OfflineParent, tracks: [Track]) {
-        var parent = parent
-        parent.childrenIds = tracks.map { $0.id }
-    }
-    
-    func delete(parent: OfflineParent) throws {
-        for trackId in parent.childrenIds {
-            Task.detached {
-                if try await !isTrackInUse(trackId: trackId), let track = try? await getOfflineTrack(trackId: trackId) {
-                    await delete(track: track)
-                }
-            }
-        }
+        
+        return result
     }
 }

@@ -13,9 +13,9 @@ import AFBaseKit
 
 public extension OfflineManager {
     @MainActor
-    func deleteAll() async throws {
+    func deleteAll() throws {
         for album in try getOfflineAlbums() {
-            try delete(album: album)
+            try delete(offlineAlbum: album)
         }
         
         for playlist in try getOfflinePlaylists() {
@@ -47,28 +47,37 @@ public extension OfflineManager {
         }
     }
     
-    // this is not really efficient and an easy fix but ¯\_(ツ)_/¯
-    @MainActor
-    func removeOrphanedTracks() throws {
-        let tracks = try getOfflineTracks()
-        let orphaned = try tracks.filter { try !isTrackInUse(trackId: $0.id) }
-        
-        for orphan in orphaned {
-            delete(track: orphan)
-        }
-    }
-    
     func updateOfflineItems() {
         Task { @MainActor in
             for album in try getOfflineAlbums() {
                 try await download(album: Album.convertFromOffline(album))
             }
-            
+        }
+        
+        Task { @MainActor in
             for playlist in try getOfflinePlaylists() {
                 try await download(playlist: Playlist.convertFromOffline(playlist))
             }
-            
-            try removeOrphanedTracks()
+        }
+        
+        Task { @MainActor in
+            try? removeOrphanedTracks()
+        }
+    }
+    
+    @MainActor
+    func removeOrphanedTracks() throws {
+        let albums = try getOfflineAlbums()
+        let playlists = try getOfflinePlaylists()
+        
+        let albumTrackIds = reduceToChildrenIds(parents: albums)
+        let playlistTrackIds = reduceToChildrenIds(parents: playlists)
+        
+        let tracks = try getOfflineTracks()
+        let orphaned = tracks.filter { albumTrackIds.contains($0.id) || playlistTrackIds.contains($0.id) }
+        
+        for orphan in orphaned {
+            delete(track: orphan)
         }
     }
 }

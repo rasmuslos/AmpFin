@@ -9,8 +9,9 @@ import SwiftData
 
 @Model
 class OfflineFavorite {
+    @Attribute(.unique)
     let itemId: String
-    let favorite: Bool
+    var favorite: Bool
     
     init(itemId: String, favorite: Bool) {
         self.itemId = itemId

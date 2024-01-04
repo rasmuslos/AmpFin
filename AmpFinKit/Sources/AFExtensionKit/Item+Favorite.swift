@@ -25,7 +25,7 @@ extension Item {
         do {
             try await JellyfinClient.shared.setFavorite(itemId: id, favorite: favorite)
         } catch {
-            OfflineManager.shared.create(itemId: id, favorite: favorite)
+            OfflineManager.shared.cacheFavorite(itemId: id, favorite: favorite)
         }
         #endif
         

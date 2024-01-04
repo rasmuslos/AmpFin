@@ -11,9 +11,13 @@ import AFBaseKit
 
 public extension OfflineManager {
     @MainActor
-    func create(itemId: String, favorite: Bool) {
-        let offlineFavorite = OfflineFavorite(itemId: itemId, favorite: favorite)
-        PersistenceManager.shared.modelContainer.mainContext.insert(offlineFavorite)
+    func cacheFavorite(itemId: String, favorite: Bool) {
+        if let existing = try? PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineFavorite>(predicate: #Predicate { $0.itemId == itemId })).first {
+            existing.favorite = favorite
+        } else {
+            let offlineFavorite = OfflineFavorite(itemId: itemId, favorite: favorite)
+            PersistenceManager.shared.modelContainer.mainContext.insert(offlineFavorite)
+        }
     }
     
     @MainActor
@@ -22,6 +26,8 @@ public extension OfflineManager {
             offlineTrack.favorite = favorite
         } else if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: itemId) {
             offlineAlbum.favorite = favorite
+        } else if let offlinePlaylist = try? OfflineManager.shared.getOfflinePlaylist(playlistId: itemId) {
+            offlinePlaylist.favorite = favorite
         }
     }
     
@@ -35,10 +41,14 @@ public extension OfflineManager {
                     
                     for favorite in favorites {
                         Task.detached {
-                            try await JellyfinClient.shared.setFavorite(itemId: favorite.itemId, favorite: favorite.favorite)
-                            
-                            Task { @MainActor in
-                                PersistenceManager.shared.modelContainer.mainContext.delete(favorite)
+                            do {
+                                try await JellyfinClient.shared.setFavorite(itemId: favorite.itemId, favorite: favorite.favorite)
+                                
+                                Task { @MainActor in
+                                    PersistenceManager.shared.modelContainer.mainContext.delete(favorite)
+                                }
+                            } catch {
+                                Self.logger.fault("Failed to sync offline favorite to server \(favorite.itemId) (\(favorite.favorite))")
                             }
                         }
                     }
