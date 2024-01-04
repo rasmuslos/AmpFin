@@ -8,6 +8,10 @@
 import Foundation
 import AFBaseKit
 
+#if canImport(AFOfflineKit)
+import AFOfflineKit
+#endif
+
 // MARK: Favorite
 
 extension Item {
@@ -15,6 +19,7 @@ extension Item {
     public func setFavorite(favorite: Bool) async {
         self.favorite = favorite
 
+        #if canImport(AFOfflineKit)
         OfflineManager.shared.updateOfflineFavorite(itemId: id, favorite: favorite)
         
         do {
@@ -22,6 +27,7 @@ extension Item {
         } catch {
             OfflineManager.shared.create(itemId: id, favorite: favorite)
         }
+        #endif
         
         try? await JellyfinClient.shared.setFavorite(itemId: id, favorite: favorite)
         

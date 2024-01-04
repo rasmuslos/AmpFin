@@ -7,6 +7,7 @@
 
 import Foundation
 import AFBaseKit
+import AFExtensionKit
 import MediaPlayer
 import OSLog
 

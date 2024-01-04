@@ -17,19 +17,28 @@ extension AlbumView {
         
         let album: Album
         let queueTracks: (_ next: Bool) -> ()
+        let offlineTracker: ItemOfflineTracker
         
-        @State var offlineTracker: ItemOfflineTracker?
-        
-        @Binding var navbarVisible: Bool
+        @Binding var toolbarBackgroundVisible: Bool
         @Binding var imageColors: ImageColors
+        
+        init(album: Album, queueTracks: @escaping (_: Bool) -> Void, toolbarBackgroundVisible: Binding<Bool>, imageColors: Binding<ImageColors>) {
+            self.album = album
+            self.offlineTracker = album.offlineTracker
+            
+            self.queueTracks = queueTracks
+            
+            self._toolbarBackgroundVisible = toolbarBackgroundVisible
+            self._imageColors = imageColors
+        }
         
         func body(content: Content) -> some View {
             content
-                .toolbarBackground(navbarVisible ? .visible : .hidden, for: .navigationBar)
-                .navigationBarBackButtonHidden(!navbarVisible)
+                .toolbarBackground(toolbarBackgroundVisible ? .visible : .hidden, for: .navigationBar)
+                .navigationBarBackButtonHidden(!toolbarBackgroundVisible)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                        if navbarVisible {
+                        if toolbarBackgroundVisible {
                             VStack {
                                 Text(album.name)
                                     .font(.headline)
@@ -47,47 +56,40 @@ extension AlbumView {
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigation) {
-                        if !navbarVisible && presentationMode.wrappedValue.isPresented {
+                        if !toolbarBackgroundVisible && presentationMode.wrappedValue.isPresented {
                             Button {
                                 presentationMode.wrappedValue.dismiss()
                             } label: {
                                 Image(systemName: "chevron.left")
-                                    .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
+                                    .modifier(FullscreenToolbarModifier(toolbarBackgroundVisible: $toolbarBackgroundVisible, imageColors: $imageColors))
                             }
                         }
                     }
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        if let offlineTracker = offlineTracker {
-                            Button {
-                                if offlineTracker.status == .none {
-                                    Task {
-                                        try! await OfflineManager.shared.download(album: album)
-                                    }
-                                } else if offlineTracker.status == .downloaded {
-                                    try! OfflineManager.shared.delete(albumId: album.id)
+                        Button {
+                            if offlineTracker.status == .none {
+                                Task {
+                                    try! await OfflineManager.shared.download(album: album)
                                 }
-                            } label: {
-                                switch offlineTracker.status {
-                                case .none:
-                                    // and for some other reason this was blue when i used a label
-                                    Image(systemName: "arrow.down")
-                                case .working:
-                                    ProgressView()
-                                case .downloaded:
-                                    Image(systemName: "xmark")
-                                }
+                            } else if offlineTracker.status == .downloaded {
+                                try! OfflineManager.shared.delete(albumId: album.id)
                             }
-                            // funny thing, this crashed the app
-                            // .popoverTip(DownloadTip())
-                            .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
-                        } else {
-                            ProgressView()
-                                .onAppear {
-                                    offlineTracker = album.offlineTracker
-                                }
+                        } label: {
+                            switch offlineTracker.status {
+                            case .none:
+                                // and for some other reason this was blue when i used a label
+                                Image(systemName: "arrow.down")
+                            case .working:
+                                ProgressView()
+                            case .downloaded:
+                                Image(systemName: "xmark")
+                            }
                         }
+                        // funny thing, this crashed the app
+                        // .popoverTip(DownloadTip())
+                        .modifier(FullscreenToolbarModifier(toolbarBackgroundVisible: $toolbarBackgroundVisible, imageColors: $imageColors))
                     }
                     
                     ToolbarItem(placement: .topBarTrailing) {
@@ -133,7 +135,7 @@ extension AlbumView {
                         } label: {
                             // for some reason it did show the label...
                             Image(systemName: "ellipsis")
-                                .modifier(FullscreenToolbarModifier(navbarVisible: $navbarVisible, imageColors: $imageColors))
+                                .modifier(FullscreenToolbarModifier(toolbarBackgroundVisible: $toolbarBackgroundVisible, imageColors: $imageColors))
                         }
                     }
                 }
@@ -145,7 +147,7 @@ extension AlbumView {
 
 extension AlbumView {
     struct FullscreenToolbarModifier: ViewModifier {
-        @Binding var navbarVisible: Bool
+        @Binding var toolbarBackgroundVisible: Bool
         @Binding var imageColors: ImageColors
         
         func body(content: Content) -> some View {
@@ -153,9 +155,9 @@ extension AlbumView {
                 .symbolVariant(.circle.fill)
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(
-                    navbarVisible ? Color.accentColor : imageColors.isLight ? .black : .white,
-                    navbarVisible ? .black.opacity(0.1) : .black.opacity(0.25))
-                .animation(.easeInOut, value: navbarVisible)
+                    toolbarBackgroundVisible ? Color.accentColor : imageColors.isLight ? .black : .white,
+                    toolbarBackgroundVisible ? .black.opacity(0.1) : .black.opacity(0.25))
+                .animation(.easeInOut, value: toolbarBackgroundVisible)
         }
     }
 }

@@ -68,7 +68,7 @@ struct PlaylistAddSheet: View {
                                     Button {
                                         Task {
                                             do {
-                                                try await JellyfinClient.shared.add(trackIds: [track.id], playlistId: playlist.id)
+                                                try await playlist.add(trackIds: [track.id])
                                                 dismiss()
                                             } catch {
                                                 failed = true

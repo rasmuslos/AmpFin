@@ -439,7 +439,7 @@ extension LocalAudioEndpoint {
         }
     }
     #else
-    private func setNowPlayingArtwork(image: UIImage) {
+    private func setNowPlayingArtwork() {
         // TODO: code this
     }
     #endif
@@ -449,8 +449,8 @@ extension LocalAudioEndpoint {
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime()
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackProgress] = currentTime() / duration()
         
-        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackQueueIndex] = history.count
-        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackQueueCount] = queue.count
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackQueueIndex] = history.count + 1
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackQueueCount] = history.count + 1 + queue.count
         
         MPNowPlayingInfoCenter.default().playbackState = isPlaying() ? .playing : .paused
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo

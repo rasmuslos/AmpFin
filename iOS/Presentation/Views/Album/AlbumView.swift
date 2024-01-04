@@ -15,12 +15,12 @@ struct AlbumView: View {
     let album: Album
     
     @State var tracks = [Track]()
-    @State var navbarVisible = false
+    @State var toolbarBackgroundVisible = false
     @State var imageColors = ImageColors()
     
     var body: some View {
         List {
-            Header(album: album, navbarVisible: $navbarVisible, imageColors: $imageColors) { shuffle in
+            Header(album: album, toolbarBackgroundVisible: $toolbarBackgroundVisible, imageColors: $imageColors) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffle)
             }
             .navigationTitle(album.name)
@@ -45,7 +45,7 @@ struct AlbumView: View {
                 AudioPlayer.current.queueTracks(
                     tracks.sorted { $0.index < $1.index },
                     index: next ? 0 : AudioPlayer.current.queue.count)
-            }, navbarVisible: $navbarVisible, imageColors: $imageColors)
+            }, toolbarBackgroundVisible: $toolbarBackgroundVisible, imageColors: $imageColors)
         )
         .modifier(NowPlayingBarSafeAreaModifier())
         .task {

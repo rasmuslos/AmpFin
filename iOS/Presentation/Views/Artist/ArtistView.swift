@@ -56,10 +56,6 @@ struct ArtistView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                SortSelector(sortOrder: $sortOrder)
-            }
-            
-            ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     Task {
                         await artist.setFavorite(favorite: !artist.favorite)
@@ -68,6 +64,10 @@ struct ArtistView: View {
                     Label("favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
                         .contentTransition(.symbolEffect(.replace))
                 }
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                SortSelector(sortOrder: $sortOrder)
             }
         }
         .navigationTitle(artist.name)

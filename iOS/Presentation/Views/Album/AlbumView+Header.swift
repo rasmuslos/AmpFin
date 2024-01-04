@@ -13,7 +13,7 @@ extension AlbumView {
     struct Header: View {
         let album: Album
         
-        @Binding var navbarVisible: Bool
+        @Binding var toolbarBackgroundVisible: Bool
         @Binding var imageColors: ImageColors
         
         let startPlayback: (_ shuffle: Bool) -> ()
@@ -32,7 +32,9 @@ extension AlbumView {
                     
                     Color.clear
                         .onChange(of: offset) {
-                            navbarVisible = offset < -350
+                            withAnimation {
+                                toolbarBackgroundVisible = offset < -350
+                            }
                         }
                 }
                 .frame(height: 0)

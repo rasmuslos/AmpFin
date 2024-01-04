@@ -9,7 +9,7 @@ let package = Package(
         .watchOS(.v10),
     ],
     products: [
-        .library(name: "AFBaseKit", targets: ["AFBaseKit"]),
+        .library(name: "AFBaseKit", targets: ["AFBaseKit", "AFExtensionKit"]),
         .library(name: "AFOfflineKit", targets: ["AFOfflineKit"]),
         .library(name: "AFPlaybackKit", targets: ["AFPlaybackKit"]),
     ],
@@ -21,7 +21,13 @@ let package = Package(
         .target(name: "AFOfflineKit", dependencies: [.byName(name: "AFBaseKit")]),
         .target(
             name: "AFPlaybackKit",
-            dependencies: [.byName(name: "AFBaseKit"), .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))],
+            dependencies: [
+                .byName(name: "AFBaseKit"),
+                .byName(name: "AFExtensionKit"),
+                .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))],
             resources: [.process("RemoteAudioEndpoint/silence.wav")]),
+        .target(
+            name: "AFExtensionKit",
+            dependencies: [.byName(name: "AFBaseKit"), .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))]),
     ]
 )

@@ -28,9 +28,7 @@ struct PlaylistListRow: View {
         }
         .dropDestination(for: Track.self) { tracks, _ in
             Task {
-                try await JellyfinClient.shared.add(trackIds: tracks.map { $0.id }, playlistId: playlist.id)
-                // might not be true but who cares
-                playlist.trackCount += 1
+                try await playlist.add(trackIds: tracks.map { $0.id })
             }
             
             return true
