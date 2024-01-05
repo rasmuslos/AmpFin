@@ -14,7 +14,7 @@ import AFBaseKit
 extension OfflineManager {
     @MainActor
     func download(track: Track) {
-        if let existing = try? getOfflineTrack(trackId: track.id) {
+        if (try? getOfflineTrack(trackId: track.id)) != nil {
             return
         }
         

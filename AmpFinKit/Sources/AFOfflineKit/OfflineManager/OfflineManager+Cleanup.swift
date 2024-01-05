@@ -74,7 +74,7 @@ public extension OfflineManager {
         let playlistTrackIds = reduceToChildrenIds(parents: playlists)
         
         let tracks = try getOfflineTracks()
-        let orphaned = tracks.filter { albumTrackIds.contains($0.id) || playlistTrackIds.contains($0.id) }
+        let orphaned = tracks.filter { !albumTrackIds.contains($0.id) && !playlistTrackIds.contains($0.id) }
         
         for orphan in orphaned {
             delete(track: orphan)
