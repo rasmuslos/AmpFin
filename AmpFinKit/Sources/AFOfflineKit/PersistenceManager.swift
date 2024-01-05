@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import AFBaseKit
 
 public struct PersistenceManager {
     public let modelContainer: ModelContainer = {
@@ -19,7 +20,7 @@ public struct PersistenceManager {
             OfflinePlay.self,
             OfflineFavorite.self,
         ])
-        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: .identifier("group.io.rfk.ampfin"))
+        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: .identifier(JellyfinClient.groupIdentifier))
         
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])

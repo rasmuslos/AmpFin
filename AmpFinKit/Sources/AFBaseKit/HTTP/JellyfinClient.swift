@@ -28,9 +28,11 @@ public class JellyfinClient {
     #endif
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "Download")
-    static let defaults = UserDefaults(suiteName: "group.io.rfk.shelfplayer")!
+    static let defaults = UserDefaults(suiteName: JellyfinClient.groupIdentifier)!
     
     init(serverUrl: URL!, token: String?, userId: String?) {
+        logger.info("Using group identifier \(Self.groupIdentifier)")
+        
         self.serverUrl = serverUrl
         self.token = token
         self.userId = userId
@@ -84,6 +86,38 @@ extension JellyfinClient {
         Self.defaults.set(nil, forKey: "userId")
         
         exit(0)
+    }
+}
+
+extension JellyfinClient {
+    public static var groupIdentifier: String {
+        let fallback = "group.io.rfk.ampfin"
+        let queryLoad: [String: AnyObject] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "bundleSeedID" as AnyObject,
+            kSecAttrService as String: "AmpFin" as AnyObject,
+            kSecReturnAttributes as String: kCFBooleanTrue,
+        ]
+        
+        var result: AnyObject?
+        var status = withUnsafeMutablePointer(to: &result) {
+            SecItemCopyMatching(queryLoad as CFDictionary, UnsafeMutablePointer($0))
+        }
+        
+        if status == errSecItemNotFound {
+            status = withUnsafeMutablePointer(to: &result) {
+                SecItemAdd(queryLoad as CFDictionary, UnsafeMutablePointer($0))
+            }
+        }
+        
+        if status == noErr,
+           let resultDict = result as? [String: Any], let accessGroup = resultDict[kSecAttrAccessGroup as String] as? String,
+           let seedID = accessGroup.components(separatedBy: ".").first,
+           seedID != "N8AA4S3S96" {
+            return "\(fallback).\(seedID)"
+        }
+        
+        return fallback
     }
 }
 
