@@ -17,40 +17,12 @@ struct SpotlightDonator {
     
     static func donate(force: Bool = false) {
         let lastDonation = UserDefaults.standard.double(forKey: "lastSpotlightDonation")
-        if lastDonation + waitTime > Date.timeIntervalSinceReferenceDate {
+        if lastDonation + waitTime > Date.timeIntervalSinceReferenceDate && false {
             logger.info("Skipped spotlight indexing")
             return
         }
         
         let index = CSSearchableIndex(name: "tracks", protectionClass: .completeUntilFirstUserAuthentication)
-        
-        Task.detached {
-            if let tracks = try? await JellyfinClient.shared.getTracks(limit: 0, sortOrder: .album, ascending: false, favorite: false) {
-                logger.info("Indexing \(tracks.count) tracks")
-                var items = [CSSearchableItem]()
-                
-                for track in tracks {
-                    let attributes = CSSearchableItemAttributeSet(contentType: .audio)
-                    attributes.title = track.name
-                    attributes.artist = track.artistName
-                    attributes.album = track.album.name
-                    attributes.playCount = track.playCount as NSNumber
-                    
-                    let item = CSSearchableItem(uniqueIdentifier: track.id, domainIdentifier: "tracks", attributeSet: attributes)
-                    items.append(item)
-                }
-                
-                do {
-                    try await index.indexSearchableItems(items)
-                } catch {
-                    logger.fault("Failed to index spotlight items: \(error.localizedDescription)")
-                }
-                
-                UserDefaults.standard.set(Date.timeIntervalSinceReferenceDate, forKey: "lastSpotlightDonation")
-                logger.info("Finished spotlight indexing")
-            } else {
-                logger.error("Could not load tracks for spotlight indexing")
-            }
-        }
+        index.deleteAllSearchableItems()
     }
 }

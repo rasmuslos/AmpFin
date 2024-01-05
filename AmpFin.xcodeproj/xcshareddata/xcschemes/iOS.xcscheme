@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
-               BuildableName = "iOS.app"
+               BuildableName = "AmpFin.app"
                BlueprintName = "iOS"
                ReferencedContainer = "container:AmpFin.xcodeproj">
             </BuildableReference>
@@ -31,6 +31,7 @@
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
+      intentQueryString = "Spiele Musik"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -44,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
-            BuildableName = "iOS.app"
+            BuildableName = "AmpFin.app"
             BlueprintName = "iOS"
             ReferencedContainer = "container:AmpFin.xcodeproj">
          </BuildableReference>
@@ -52,6 +53,7 @@
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
+      intentQueryString = "Spiele Musik"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -61,7 +63,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
-            BuildableName = "iOS.app"
+            BuildableName = "AmpFin.app"
             BlueprintName = "iOS"
             ReferencedContainer = "container:AmpFin.xcodeproj">
          </BuildableReference>

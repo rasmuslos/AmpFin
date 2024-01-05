@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Intents
 import AFBaseKit
 import AFOfflineKit
 import AFPlaybackKit
@@ -31,6 +32,8 @@ struct ContentView: View {
                     
                     JellyfinWebSocket.shared.connect()
                     AudioPlayer.current.allowRemoteControl = true
+                    
+                    INPreferences.requestSiriAuthorization { _ in }
                 }
                 .onReceive(NotificationCenter.default.publisher(for: JellyfinClient.onlineStatusChanged), perform: { _ in
                     online = JellyfinClient.shared.isOnline

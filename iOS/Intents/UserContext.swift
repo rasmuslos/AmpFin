@@ -15,15 +15,18 @@ struct UserContext {
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "Interactions")
     
     static func updateContext() {
+        /*
         Task.detached {
             let context = INMediaUserContext()
             // context.numberOfLibraryItems = (try? await OfflineManager.shared.getAllTracks().count) ?? 0
             context.subscriptionStatus = .subscribed
             context.becomeCurrent()
         }
+         */
     }
     
     static func donateTrack(_ track: Track, shuffle: Bool, repeatMode: RepeatMode) {
+        /*
         var artwork: INImage?
         
         if let cover = track.cover, let data = try? Data(contentsOf: cover.url) {
@@ -56,5 +59,6 @@ struct UserContext {
                 logger.fault("Failed to donate interaction \(error.localizedDescription)")
             }
         }
+         */
     }
 }

@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3A442BE22B483C0B008FECE2"
-               BuildableName = "widget Extension.appex"
-               BlueprintName = "widget Extension"
+               BuildableName = "Widget Extension.appex"
+               BlueprintName = "Widget Extension"
                ReferencedContainer = "container:AmpFin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,7 +30,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
-               BuildableName = "iOS.app"
+               BuildableName = "AmpFin.app"
                BlueprintName = "iOS"
                ReferencedContainer = "container:AmpFin.xcodeproj">
             </BuildableReference>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3A442BE22B483C0B008FECE2"
-            BuildableName = "widget Extension.appex"
-            BlueprintName = "widget Extension"
+            BuildableName = "Widget Extension.appex"
+            BlueprintName = "Widget Extension"
             ReferencedContainer = "container:AmpFin.xcodeproj">
          </BuildableReference>
       </RemoteRunnable>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
-            BuildableName = "iOS.app"
+            BuildableName = "AmpFin.app"
             BlueprintName = "iOS"
             ReferencedContainer = "container:AmpFin.xcodeproj">
          </BuildableReference>
@@ -107,7 +107,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
-            BuildableName = "iOS.app"
+            BuildableName = "AmpFin.app"
             BlueprintName = "iOS"
             ReferencedContainer = "container:AmpFin.xcodeproj">
          </BuildableReference>

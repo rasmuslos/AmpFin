@@ -11,6 +11,8 @@ import SwiftUI
 @main
 struct WidgetExtension: WidgetBundle {
     var body: some Widget {
+        #if DEBUG
         DebugTokenWidget()
+        #endif
     }
 }
