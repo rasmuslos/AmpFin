@@ -274,7 +274,6 @@
       }
     },
     "developedBy" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1386,40 +1385,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View history"
-          }
-        }
-      }
-    },
-    "tip.lyrics.message" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Synchronisierte Lyrics sind nur mit dem instabilen Jellyfin-Server verfügbar"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lyrics are available only when using the unstable version of the Jellyfin server"
-          }
-        }
-      }
-    },
-    "tip.lyrics.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Synchronisierte Lyrics"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Time synced lyrics"
           }
         }
       }

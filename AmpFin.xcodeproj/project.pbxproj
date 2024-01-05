@@ -12,10 +12,11 @@
 		3A1750CD2B48B57000A39BD9 /* PlayMediaHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1750CC2B48B57000A39BD9 /* PlayMediaHandler.swift */; };
 		3A1750D62B48BC6A00A39BD9 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1750D52B48BC6A00A39BD9 /* IntentHandler.swift */; };
 		3A1750DA2B48BC6A00A39BD9 /* Siri Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A1750D22B48BC6A00A39BD9 /* Siri Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3A1750E02B48BD5900A39BD9 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A2D9DC12B48AE540069DED0 /* Intents.intentdefinition */; };
 		3A1CBC192B0D284200855A70 /* NavigationRoot+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC182B0D284200855A70 /* NavigationRoot+Notifications.swift */; };
 		3A1CBC1B2B0D2A6400855A70 /* NavigationRoot+Destinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC1A2B0D2A6400855A70 /* NavigationRoot+Destinations.swift */; };
 		3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */; };
+		3A21CF0F2B48C3140068ACB7 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */; };
+		3A21CF102B48C3140068ACB7 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */; };
 		3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFA2AA883EC00197AA7 /* LibraryView.swift */; };
 		3A234DFD2AA884FF00197AA7 /* LibraryView+Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */; };
 		3A234E052AA88D6000197AA7 /* TracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E042AA88D6000197AA7 /* TracksView.swift */; };
@@ -38,7 +39,6 @@
 		3A2B29002B43819400DF9731 /* PlaylistView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28FF2B43819400DF9731 /* PlaylistView+Toolbar.swift */; };
 		3A2B93312B00C9DA00638AE9 /* DownloadTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */; };
 		3A2B93332B00D28700638AE9 /* InstantMixTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B93322B00D28700638AE9 /* InstantMixTip.swift */; };
-		3A2D9DC22B48AE540069DED0 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A2D9DC12B48AE540069DED0 /* Intents.intentdefinition */; };
 		3A36A59E2ADEF8BA00D83BE7 /* AlbumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A59D2ADEF8BA00D83BE7 /* AlbumRow.swift */; };
 		3A36A5A02ADEF99700D83BE7 /* AlbumView+Additional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */; };
 		3A36A5A22ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */; };
@@ -154,6 +154,9 @@
 		3A1CBC182B0D284200855A70 /* NavigationRoot+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Notifications.swift"; sourceTree = "<group>"; };
 		3A1CBC1A2B0D2A6400855A70 /* NavigationRoot+Destinations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Destinations.swift"; sourceTree = "<group>"; };
 		3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
+		3A21CF112B48C3140068ACB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Intents.intentdefinition; sourceTree = "<group>"; };
+		3A21CF142B48C3340068ACB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Intents.strings; sourceTree = "<group>"; };
+		3A21CF162B48C3340068ACB7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
 		3A234DFA2AA883EC00197AA7 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView+Links.swift"; sourceTree = "<group>"; };
 		3A234E042AA88D6000197AA7 /* TracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksView.swift; sourceTree = "<group>"; };
@@ -176,7 +179,6 @@
 		3A2B28FF2B43819400DF9731 /* PlaylistView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistView+Toolbar.swift"; sourceTree = "<group>"; };
 		3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTip.swift; sourceTree = "<group>"; };
 		3A2B93322B00D28700638AE9 /* InstantMixTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantMixTip.swift; sourceTree = "<group>"; };
-		3A2D9DC12B48AE540069DED0 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		3A36A59D2ADEF8BA00D83BE7 /* AlbumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumRow.swift; sourceTree = "<group>"; };
 		3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Additional.swift"; sourceTree = "<group>"; };
 		3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumContextMenuModifier.swift; sourceTree = "<group>"; };
@@ -522,7 +524,7 @@
 			isa = PBXGroup;
 			children = (
 				3A8286492AEC0D3400384BC9 /* README.md */,
-				3A2D9DC12B48AE540069DED0 /* Intents.intentdefinition */,
+				3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */,
 				3AEB32192AA7EC3C00853210 /* iOS */,
 				3A1750D42B48BC6A00A39BD9 /* Siri Extension */,
 				3A442BE82B483C0B008FECE2 /* Widget Extension */,
@@ -856,7 +858,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A1750E02B48BD5900A39BD9 /* Intents.intentdefinition in Sources */,
+				3A21CF102B48C3140068ACB7 /* Intents.intentdefinition in Sources */,
 				3A1750D62B48BC6A00A39BD9 /* IntentHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -876,7 +878,7 @@
 			files = (
 				3ADE8E982AA92B47009826A3 /* UIColor+IsLight.swift in Sources */,
 				3A3AF1A42AC4517B00811D7D /* AccountToolbarButtonModifier.swift in Sources */,
-				3A2D9DC22B48AE540069DED0 /* Intents.intentdefinition in Sources */,
+				3A21CF0F2B48C3140068ACB7 /* Intents.intentdefinition in Sources */,
 				3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */,
 				3A36A5A22ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift in Sources */,
 				3A2B28F62B437A3F00DF9731 /* CGPoint+Extensions.swift in Sources */,
@@ -974,6 +976,19 @@
 			targetProxy = 3A442BF42B483C0D008FECE2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3A21CF112B48C3140068ACB7 /* Base */,
+				3A21CF142B48C3340068ACB7 /* en */,
+				3A21CF162B48C3340068ACB7 /* de */,
+			);
+			name = Intents.intentdefinition;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		3A1750DC2B48BC6A00A39BD9 /* Debug */ = {
