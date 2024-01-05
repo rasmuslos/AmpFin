@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>Siri Extension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>Widget Extension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -22,6 +27,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>3A1750D12B48BC6A00A39BD9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3A2D9DAE2B489ED00069DED0</key>
 		<dict>
 			<key>primary</key>

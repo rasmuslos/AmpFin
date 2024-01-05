@@ -25,9 +25,24 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         }
     }
     
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        print("a")
+        return true
+    }
+    
+    func application(_ application: UIApplication, handle intent: INIntent, completionHandler: @escaping (INIntentResponse) -> Void) {
+        print("b")
+    }
+    
     // I would love to put this in an app extension, but it does not fucking work... This is s incredibly stupid, i think i lose some IQ points over this
     func application(_ application: UIApplication, handlerFor intent: INIntent) -> Any? {
-        print("b")
-        return nil
+        print("c")
+        
+        switch intent {
+        case is INPlayMediaIntent:
+            return PlayMediaHandler()
+        default:
+            return nil
+        }
     }
 }
