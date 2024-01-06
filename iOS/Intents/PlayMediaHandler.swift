@@ -98,7 +98,7 @@ class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
             
             if var result = result, !result.isEmpty {
                 if let name = search.mediaName {
-                    result.sort { $0.name.levenshteinDistanceScore(to: name) < $1.name.levenshteinDistanceScore(to: name) }
+                    result.sort { $0.name.levenshteinDistanceScore(to: name) > $1.name.levenshteinDistanceScore(to: name) }
                 }
                 
                 return INPlayMediaMediaItemResolutionResult.successes(with: mapItems(items: result))
