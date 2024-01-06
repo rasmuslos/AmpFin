@@ -8,9 +8,6 @@
 import UIKit
 import Intents
 
-import AFBaseKit
-import AFPlaybackKit
-
 class AppDelegate: NSObject, UIApplicationDelegate {
     private var backgroundCompletionHandler: (() -> Void)? = nil
     
@@ -28,10 +25,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         }
     }
     
-    // I would love to put this in an app extension, but it does not fucking work... This is s incredibly stupid, i think i lose some IQ points over this
+    // I would love to put this in an app extension, but it does not fucking work... This is s incredibly stupid, i think i lost some IQ points over this
     func application(_ application: UIApplication, handlerFor intent: INIntent) -> Any? {
-        print("fuvking hell")
-        
         switch intent {
         case is INPlayMediaIntent:
             return PlayMediaHandler()

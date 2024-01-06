@@ -8,6 +8,11 @@
 import Foundation
 
 public extension JellyfinClient {
+    func getTrack(id: String) async throws -> Track {
+        let track = try await request(ClientRequest<JellyfinTrackItem>(path: "Items/\(id)", method: "GET", userPrefix: true))
+        return Track.convertFromJellyfin(track)
+    }
+    
     // MARK: Get Tracks
     
     /// Get all tracks from all libraries and albums

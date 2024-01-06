@@ -92,6 +92,12 @@ extension OfflineManager {
 
 public extension OfflineManager {
     @MainActor
+    func getTrack(id: String) throws -> Track {
+        let track = try getOfflineTrack(trackId: id)
+        return Track.convertFromOffline(track)
+    }
+    
+    @MainActor
     func getTracks(favorite: Bool = false) throws -> [Track] {
         let descriptor: FetchDescriptor<OfflineTrack>
         

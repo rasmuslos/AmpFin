@@ -25,6 +25,26 @@ extension OfflineManager {
     }
     
     @MainActor
+    func getParentIds(childId: String) throws -> [String] {
+        return []
+        
+        // this does not work because
+        #if false
+        let albumDescriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate {
+            $0.childrenIds.contains(childId)
+        })
+        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(albumDescriptor)
+        
+        let playlistDescriptor = FetchDescriptor<OfflinePlaylist>(predicate: #Predicate {
+            $0.childrenIds.contains(childId)
+        })
+        let playlists = try PersistenceManager.shared.modelContainer.mainContext.fetch(playlistDescriptor)
+        
+        return albums.map { $0.id } + playlists.map { $0.id }
+        #endif
+    }
+    
+    @MainActor
     func isDownloadInProgress(parent: OfflineParent) throws -> Bool {
         let tracks = try getOfflineTracks(parent: parent)
         return tracks.reduce(false) { $1.downloadId == nil ? $0 : true }

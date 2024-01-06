@@ -121,7 +121,7 @@ extension Item {
         }
         
         /// Source of an item image
-        public enum CoverType: Codable {
+        public enum CoverType: Codable, Hashable {
             case local
             case remote
             case mock

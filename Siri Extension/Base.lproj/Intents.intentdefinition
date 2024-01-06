@@ -28,7 +28,7 @@
 			<key>INIntentDefaultImageName</key>
 			<string>Logo</string>
 			<key>INIntentDescription</key>
-			<string>A request to play media.</string>
+			<string>PLAY_MEDIA_DESCRIPTION</string>
 			<key>INIntentDescriptionID</key>
 			<string>LdrEPN</string>
 			<key>INIntentDomain</key>
@@ -45,116 +45,16 @@
 			<dict>
 				<key></key>
 				<dict>
-					<key>INIntentParameterCombinationIsPrimary</key>
-					<true/>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Play</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>f3d3kn</string>
-				</dict>
-				<key>mediaContainer</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Play ${mediaContainer}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>YYfsKp</string>
-				</dict>
-				<key>mediaContainer,mediaItems,resumePlayback</key>
-				<dict>
 					<key>INIntentParameterCombinationSubtitle</key>
-					<string>${mediaItems}</string>
+					<string>PLAY_PLAY_DESCRIPTION</string>
 					<key>INIntentParameterCombinationSubtitleID</key>
-					<string>vUAqfM</string>
+					<string>2BXT56</string>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
 					<key>INIntentParameterCombinationTitle</key>
-					<string>Resume ${mediaContainer}</string>
+					<string>PLAY_PLAY</string>
 					<key>INIntentParameterCombinationTitleID</key>
-					<string>o6CuZu</string>
-				</dict>
-				<key>mediaContainer,playShuffled</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Shuffle ${mediaContainer}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>nAv25k</string>
-				</dict>
-				<key>mediaContainer,resumePlayback</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Resume ${mediaContainer}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>sLPQxZ</string>
-				</dict>
-				<key>mediaItems</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Play ${mediaItems}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>KcCcQu</string>
-				</dict>
-				<key>mediaItems,mediaContainer</key>
-				<dict>
-					<key>INIntentParameterCombinationSubtitle</key>
-					<string>${mediaItems}</string>
-					<key>INIntentParameterCombinationSubtitleID</key>
-					<string>ApUiZd</string>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Play ${mediaContainer}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>WEjMGd</string>
-				</dict>
-				<key>mediaItems,resumePlayback</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Resume ${mediaItems}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>mIvv3D</string>
-				</dict>
-				<key>playShuffled,mediaContainer,mediaItems</key>
-				<dict>
-					<key>INIntentParameterCombinationSubtitle</key>
-					<string>${mediaItems}</string>
-					<key>INIntentParameterCombinationSubtitleID</key>
-					<string>5oBQUn</string>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Shuffle ${mediaContainer}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>nNozW1</string>
-				</dict>
-				<key>playShuffled,mediaContainer,resumePlayback</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Resume ${mediaContainer}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>H25xHi</string>
-				</dict>
-				<key>playShuffled,mediaItems</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Shuffle ${mediaItems}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>MbU5ep</string>
+					<string>VZVq43</string>
 				</dict>
 			</dict>
 			<key>INIntentParameters</key>
@@ -354,7 +254,7 @@
 				</dict>
 			</array>
 			<key>INIntentTitle</key>
-			<string>Play Media</string>
+			<string>PLAY_MEDIA</string>
 			<key>INIntentTitleID</key>
 			<string>G3J6fP</string>
 			<key>INIntentType</key>
