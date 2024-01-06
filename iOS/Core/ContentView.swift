@@ -13,8 +13,6 @@ import AFOfflineKit
 import AFPlaybackKit
 
 struct ContentView: View {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
     @State var online = JellyfinClient.shared.isOnline
     @State var isAuthorized = JellyfinClient.shared.isAuthorized
     

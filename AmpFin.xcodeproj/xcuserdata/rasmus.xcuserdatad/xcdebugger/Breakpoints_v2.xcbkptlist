@@ -46,28 +46,58 @@
             filePath = "iOS/Core/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
             landmarkName = "application(_:handlerFor:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "E48BF554-D9BD-409F-BBF8-0FF1B0BD8B80 - e64578d1fa2ea1fa"
+                  uuid = "E48BF554-D9BD-409F-BBF8-0FF1B0BD8B80 - b59181e83b2e01f7"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, handlerFor: __C.INIntent) -&gt; Swift.Optional&lt;Any&gt;"
+                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, handle: __C.INIntent, completionHandler: (__C.INIntentResponse) -&gt; ()) -&gt; ()"
                   moduleName = "AmpFin"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "40"
-                  endingLineNumber = "40"
-                  offsetFromSymbolStart = "112">
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "160">
                </Location>
                <Location
-                  uuid = "E48BF554-D9BD-409F-BBF8-0FF1B0BD8B80 - e64578d1fa2ea1db"
+                  uuid = "E48BF554-D9BD-409F-BBF8-0FF1B0BD8B80 - f807cc9a755c681c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable () async throws -&gt; () in AmpFin.AppDelegate.application(_: __C.UIApplication, handle: __C.INIntent, completionHandler: (__C.INIntentResponse) -&gt; ()) -&gt; ()"
+                  moduleName = "AmpFin"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "92">
+               </Location>
+               <Location
+                  uuid = "E48BF554-D9BD-409F-BBF8-0FF1B0BD8B80 - d72e4334e235b194"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in AmpFin.AppDelegate.application(_: __C.UIApplication, handle: __C.INIntent, completionHandler: (__C.INIntentResponse) -&gt; ()) -&gt; ()"
+                  moduleName = "AmpFin"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "E48BF554-D9BD-409F-BBF8-0FF1B0BD8B80 - e64578d1fa2ea080"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -77,43 +107,26 @@
                   urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "39"
-                  endingLineNumber = "39"
-                  offsetFromSymbolStart = "112">
+                  startingLineNumber = "34"
+                  endingLineNumber = "34"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "E48BF554-D9BD-409F-BBF8-0FF1B0BD8B80 - e64578d1fa2ea0e1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, handlerFor: __C.INIntent) -&gt; Swift.Optional&lt;Any&gt;"
+                  moduleName = "AmpFin"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "33"
+                  endingLineNumber = "33"
+                  offsetFromSymbolStart = "108">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EE226AD1-8678-4FB4-A468-E5AE4A232CAB"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Siri Extension/IntentHandler.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "handle(intent:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3A853F79-DCC8-4C7E-979A-B36478C11C7C"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Siri Extension/IntentHandler.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "11"
-            endingLineNumber = "11"
-            landmarkName = "handler(for:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -126,8 +139,8 @@
             filePath = "iOS/Intents/PlayMediaHandler.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "12"
-            endingLineNumber = "12"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
             landmarkName = "handle(intent:)"
             landmarkType = "7">
             <Locations>
@@ -176,161 +189,113 @@
                   endingLineNumber = "12"
                   offsetFromSymbolStart = "36">
                </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1E6136B4-C205-488D-AE19-A0B7FF44408B"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "iOS/Core/AppDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "application(_:continue:restorationHandler:)"
-            landmarkType = "7">
-            <Locations>
                <Location
-                  uuid = "1E6136B4-C205-488D-AE19-A0B7FF44408B - e64578d1fa2eaf23"
+                  uuid = "4C16DD10-A503-4841-BF52-9CD87102D894 - 41de80ccb991c312"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, handlerFor: __C.INIntent) -&gt; Swift.Optional&lt;Any&gt;"
+                  symbolName = "AmpFin.PlayMediaHandler.handle(intent: __C.INPlayMediaIntent) async -&gt; __C.INPlayMediaIntentResponse"
                   moduleName = "AmpFin"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Intents/PlayMediaHandler.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31"
-                  offsetFromSymbolStart = "52">
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "36">
                </Location>
                <Location
-                  uuid = "1E6136B4-C205-488D-AE19-A0B7FF44408B - 220e22d67369c1f"
+                  uuid = "4C16DD10-A503-4841-BF52-9CD87102D894 - 6aa9bb67ab28a267"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, handle: __C.INIntent) async -&gt; __C.INIntentResponse"
+                  symbolName = "(1) suspend resume partial function for AmpFin.PlayMediaHandler.handle(intent: __C.INPlayMediaIntent) async -&gt; __C.INPlayMediaIntentResponse"
                   moduleName = "AmpFin"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Intents/PlayMediaHandler.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "28"
-                  endingLineNumber = "28"
-                  offsetFromSymbolStart = "88">
-               </Location>
-               <Location
-                  uuid = "1E6136B4-C205-488D-AE19-A0B7FF44408B - d7e4462f4f5469ae"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for AmpFin.AppDelegate.application(_: __C.UIApplication, handle: __C.INIntent) async -&gt; __C.INIntentResponse"
-                  moduleName = "AmpFin"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "28"
-                  endingLineNumber = "28"
-                  offsetFromSymbolStart = "44">
-               </Location>
-               <Location
-                  uuid = "1E6136B4-C205-488D-AE19-A0B7FF44408B - 2aa5907984d0ea56"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, continue: __C.NSUserActivity, restorationHandler: (Swift.Optional&lt;Swift.Array&lt;__C.UIUserActivityRestoring&gt;&gt;) -&gt; ()) -&gt; Swift.Bool"
-                  moduleName = "AmpFin"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "120">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4523DE37-69F0-4AF0-9016-CB418D47C148"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "iOS/Core/AppDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "application(_:handle:completionHandler:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "4523DE37-69F0-4AF0-9016-CB418D47C148 - 220e22d673693b8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, handle: __C.INIntent) async -&gt; __C.INIntentResponse"
-                  moduleName = "AmpFin"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "33"
-                  endingLineNumber = "33"
-                  offsetFromSymbolStart = "88">
-               </Location>
-               <Location
-                  uuid = "4523DE37-69F0-4AF0-9016-CB418D47C148 - d7e4462f4f546609"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for AmpFin.AppDelegate.application(_: __C.UIApplication, handle: __C.INIntent) async -&gt; __C.INIntentResponse"
-                  moduleName = "AmpFin"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "33"
-                  endingLineNumber = "33"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
                   offsetFromSymbolStart = "60">
                </Location>
                <Location
-                  uuid = "4523DE37-69F0-4AF0-9016-CB418D47C148 - e64578d1fa2ea080"
+                  uuid = "4C16DD10-A503-4841-BF52-9CD87102D894 - 6aa9bb67ab28a267"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, handlerFor: __C.INIntent) -&gt; Swift.Optional&lt;Any&gt;"
+                  symbolName = "(1) suspend resume partial function for AmpFin.PlayMediaHandler.handle(intent: __C.INPlayMediaIntent) async -&gt; __C.INPlayMediaIntentResponse"
                   moduleName = "AmpFin"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Intents/PlayMediaHandler.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "34"
-                  endingLineNumber = "34"
-                  offsetFromSymbolStart = "132">
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "903B4720-C3E8-42D4-925E-9369C791701D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iOS/Intents/PlayMediaHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "resolveMediaItems(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "903B4720-C3E8-42D4-925E-9369C791701D - 8d6d58c22958adfc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for AmpFin.PlayMediaHandler.resolveMediaItems(for: __C.INPlayMediaIntent) async -&gt; Swift.Array&lt;__C.INPlayMediaMediaItemResolutionResult&gt;"
+                  moduleName = "AmpFin"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Intents/PlayMediaHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "136">
                </Location>
                <Location
-                  uuid = "4523DE37-69F0-4AF0-9016-CB418D47C148 - b59181e83b2e01b5"
+                  uuid = "903B4720-C3E8-42D4-925E-9369C791701D - 6c3eb5024e764418"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "AmpFin.AppDelegate.application(_: __C.UIApplication, handle: __C.INIntent, completionHandler: (__C.INIntentResponse) -&gt; ()) -&gt; ()"
+                  symbolName = "AmpFin.PlayMediaHandler.resolveMediaItems(for: __C.INPlayMediaIntent) async -&gt; Swift.Array&lt;__C.INPlayMediaMediaItemResolutionResult&gt;"
                   moduleName = "AmpFin"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Core/AppDelegate.swift"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Intents/PlayMediaHandler.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "34"
-                  endingLineNumber = "34"
-                  offsetFromSymbolStart = "116">
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  uuid = "903B4720-C3E8-42D4-925E-9369C791701D - 8d6d58c22958adfc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for AmpFin.PlayMediaHandler.resolveMediaItems(for: __C.INPlayMediaIntent) async -&gt; Swift.Array&lt;__C.INPlayMediaMediaItemResolutionResult&gt;"
+                  moduleName = "AmpFin"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rasmus/Development/AmpFin/iOS/Intents/PlayMediaHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "52">
                </Location>
             </Locations>
          </BreakpointContent>

@@ -3,20 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		3A07CD932B4401BE00F9AB19 /* PlaylistAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */; };
 		3A11013B2AC0362B004CF731 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A11013A2AC0362B004CF731 /* FavoritesView.swift */; };
 		3A1750CD2B48B57000A39BD9 /* PlayMediaHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1750CC2B48B57000A39BD9 /* PlayMediaHandler.swift */; };
-		3A1750D62B48BC6A00A39BD9 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1750D52B48BC6A00A39BD9 /* IntentHandler.swift */; };
-		3A1750DA2B48BC6A00A39BD9 /* Siri Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A1750D22B48BC6A00A39BD9 /* Siri Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A1CBC192B0D284200855A70 /* NavigationRoot+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC182B0D284200855A70 /* NavigationRoot+Notifications.swift */; };
 		3A1CBC1B2B0D2A6400855A70 /* NavigationRoot+Destinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC1A2B0D2A6400855A70 /* NavigationRoot+Destinations.swift */; };
 		3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */; };
-		3A21CF0F2B48C3140068ACB7 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */; };
-		3A21CF102B48C3140068ACB7 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */; };
+		3A21CF0F2B48C3140068ACB7 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFA2AA883EC00197AA7 /* LibraryView.swift */; };
 		3A234DFD2AA884FF00197AA7 /* LibraryView+Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */; };
 		3A234E052AA88D6000197AA7 /* TracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E042AA88D6000197AA7 /* TracksView.swift */; };
@@ -112,13 +109,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3A1750D82B48BC6A00A39BD9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3ABAFCA22AA7D6C40011BFD6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3A1750D12B48BC6A00A39BD9;
-			remoteInfo = "Siri Extension";
-		};
 		3A442BF42B483C0D008FECE2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3ABAFCA22AA7D6C40011BFD6 /* Project object */;
@@ -135,7 +125,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3A1750DA2B48BC6A00A39BD9 /* Siri Extension.appex in Embed Foundation Extensions */,
 				3A442BF62B483C0D008FECE2 /* Widget Extension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -147,10 +136,6 @@
 		3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistAddSheet.swift; sourceTree = "<group>"; };
 		3A11013A2AC0362B004CF731 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		3A1750CC2B48B57000A39BD9 /* PlayMediaHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMediaHandler.swift; sourceTree = "<group>"; };
-		3A1750D22B48BC6A00A39BD9 /* Siri Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Siri Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A1750D52B48BC6A00A39BD9 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
-		3A1750D72B48BC6A00A39BD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3A1750DF2B48BD4600A39BD9 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A1CBC182B0D284200855A70 /* NavigationRoot+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Notifications.swift"; sourceTree = "<group>"; };
 		3A1CBC1A2B0D2A6400855A70 /* NavigationRoot+Destinations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Destinations.swift"; sourceTree = "<group>"; };
 		3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
@@ -253,13 +238,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3A1750CF2B48BC6A00A39BD9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3A442BE02B483C0B008FECE2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -285,16 +263,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3A1750D42B48BC6A00A39BD9 /* Siri Extension */ = {
-			isa = PBXGroup;
-			children = (
-				3A1750D52B48BC6A00A39BD9 /* IntentHandler.swift */,
-				3A1750D72B48BC6A00A39BD9 /* Info.plist */,
-				3A1750DF2B48BD4600A39BD9 /* Entitlements.entitlements */,
-			);
-			path = "Siri Extension";
-			sourceTree = "<group>";
-		};
 		3A234DF92AA883D900197AA7 /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -526,7 +494,6 @@
 				3A8286492AEC0D3400384BC9 /* README.md */,
 				3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */,
 				3AEB32192AA7EC3C00853210 /* iOS */,
-				3A1750D42B48BC6A00A39BD9 /* Siri Extension */,
 				3A442BE82B483C0B008FECE2 /* Widget Extension */,
 				3A844DF12B398C150021BC63 /* AmpFinKit */,
 				3ABAFCAB2AA7D6C40011BFD6 /* Products */,
@@ -539,7 +506,6 @@
 			children = (
 				3ABAFCAA2AA7D6C40011BFD6 /* AmpFin.app */,
 				3A442BE32B483C0B008FECE2 /* Widget Extension.appex */,
-				3A1750D22B48BC6A00A39BD9 /* Siri Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -654,24 +620,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3A1750D12B48BC6A00A39BD9 /* Siri Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3A1750DB2B48BC6A00A39BD9 /* Build configuration list for PBXNativeTarget "Siri Extension" */;
-			buildPhases = (
-				3A1750CE2B48BC6A00A39BD9 /* Sources */,
-				3A1750CF2B48BC6A00A39BD9 /* Frameworks */,
-				3A1750D02B48BC6A00A39BD9 /* Resources */,
-				3A1750E52B48C1CB00A39BD9 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Siri Extension";
-			productName = "Siri Extension";
-			productReference = 3A1750D22B48BC6A00A39BD9 /* Siri Extension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		3A442BE22B483C0B008FECE2 /* Widget Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A442BFA2B483C0D008FECE2 /* Build configuration list for PBXNativeTarget "Widget Extension" */;
@@ -707,7 +655,6 @@
 			);
 			dependencies = (
 				3A442BF52B483C0D008FECE2 /* PBXTargetDependency */,
-				3A1750D92B48BC6A00A39BD9 /* PBXTargetDependency */,
 			);
 			name = iOS;
 			packageProductDependencies = (
@@ -731,9 +678,6 @@
 				LastSwiftUpdateCheck = 1510;
 				LastUpgradeCheck = 1510;
 				TargetAttributes = {
-					3A1750D12B48BC6A00A39BD9 = {
-						CreatedOnToolsVersion = 15.1;
-					};
 					3A442BE22B483C0B008FECE2 = {
 						CreatedOnToolsVersion = 15.1;
 					};
@@ -743,7 +687,7 @@
 				};
 			};
 			buildConfigurationList = 3ABAFCA52AA7D6C40011BFD6 /* Build configuration list for PBXProject "AmpFin" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -761,20 +705,12 @@
 			projectRoot = "";
 			targets = (
 				3ABAFCA92AA7D6C40011BFD6 /* iOS */,
-				3A1750D12B48BC6A00A39BD9 /* Siri Extension */,
 				3A442BE22B483C0B008FECE2 /* Widget Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		3A1750D02B48BC6A00A39BD9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3A442BE12B483C0B008FECE2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -797,24 +733,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3A1750E52B48C1CB00A39BD9 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    buildNumber=$(git rev-list --count head)\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nfi\n";
-		};
 		3A442C032B4849B2008FECE2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -854,15 +772,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3A1750CE2B48BC6A00A39BD9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3A21CF102B48C3140068ACB7 /* Intents.intentdefinition in Sources */,
-				3A1750D62B48BC6A00A39BD9 /* IntentHandler.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3A442BDF2B483C0B008FECE2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -965,11 +874,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3A1750D92B48BC6A00A39BD9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3A1750D12B48BC6A00A39BD9 /* Siri Extension */;
-			targetProxy = 3A1750D82B48BC6A00A39BD9 /* PBXContainerItemProxy */;
-		};
 		3A442BF52B483C0D008FECE2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3A442BE22B483C0B008FECE2 /* Widget Extension */;
@@ -991,61 +895,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		3A1750DC2B48BC6A00A39BD9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Siri Extension/Entitlements.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Siri Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Siri Extension";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.ampfin.siri;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		3A1750DD2B48BC6A00A39BD9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Siri Extension/Entitlements.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Siri Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Siri Extension";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.ampfin.siri;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		3A442BF82B483C0D008FECE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1316,15 +1165,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3A1750DB2B48BC6A00A39BD9 /* Build configuration list for PBXNativeTarget "Siri Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3A1750DC2B48BC6A00A39BD9 /* Debug */,
-				3A1750DD2B48BC6A00A39BD9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		3A442BFA2B483C0D008FECE2 /* Build configuration list for PBXNativeTarget "Widget Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

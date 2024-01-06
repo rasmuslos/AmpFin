@@ -25,6 +25,8 @@
 			<string>IN</string>
 			<key>INIntentCustomizable</key>
 			<true/>
+			<key>INIntentDefaultImageName</key>
+			<string>Logo</string>
 			<key>INIntentDescription</key>
 			<string>A request to play media.</string>
 			<key>INIntentDescriptionID</key>
