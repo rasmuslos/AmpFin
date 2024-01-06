@@ -60,6 +60,12 @@ import OSLog
     }
 }
 
+extension Item: Equatable {
+    public static func == (lhs: Item, rhs: Item) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 // MARK: Util
 
 extension Item {
