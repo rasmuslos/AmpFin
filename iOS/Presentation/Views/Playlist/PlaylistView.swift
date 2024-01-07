@@ -21,7 +21,7 @@ struct PlaylistView: View {
     var body: some View {
         List {
             Header(playlist: playlist) { shuffle in
-                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle)
+                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: playlist))
             }
             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
             .listRowSeparator(.hidden)

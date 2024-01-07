@@ -18,7 +18,6 @@ public typealias SystemColor = UIColor
 public typealias SystemView = UIView
 #endif
 
-/// A system view that presents an animated gradient with ``CoreAnimation``
 public class FluidGradientView: SystemView {
     var speed: CGFloat
     

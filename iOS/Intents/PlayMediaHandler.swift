@@ -34,18 +34,20 @@ class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
                 tracks = try await getTracks(artistId: identifier)
                 break
             case .playlist:
+                tracks = try await getTracks(playlistId: identifier)
                 break
             case .station, .musicStation, .algorithmicRadioStation:
+                // TODO: this
                 break
             default:
                 logger.error("Received intent with unknown media type \(identifier) \(first.type.rawValue)")
                 return .init(code: .failureUnknownMediaType, userActivity: nil)
             }
             
-            guard let tracks = tracks else { throw PlayError.notFound }
+            guard let tracks = tracks, !tracks.isEmpty else { throw PlayError.notFound }
             startPlayback(tracks: tracks, queueLocation: intent.playbackQueueLocation, repeatMode: intent.playbackRepeatMode, shuffle: intent.playShuffled)
         } catch {
-            logger.error("Failed to resolve track \(identifier)")
+            logger.error("Failed to resolve tracks \(identifier)")
             return .init(code: .failure, userActivity: nil)
         }
         
@@ -53,8 +55,6 @@ class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
     }
     
     func resolveMediaItems(for intent: INPlayMediaIntent) async -> [INPlayMediaMediaItemResolutionResult] {
-        print(intent.mediaSearch as Any)
-        
         if !JellyfinClient.shared.isAuthorized {
             return [INPlayMediaMediaItemResolutionResult.unsupported(forReason: .loginRequired)]
         }
@@ -73,6 +73,7 @@ class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
                 result = try? await searchArtists(name: search.artistName ?? search.mediaName)
                 break
             case .playlist:
+                result = try? await searchPlaylists(name: search.mediaName)
                 break
                 
             case .unknown, .music:
@@ -87,9 +88,19 @@ class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
                 if let artists = try? await searchArtists(name: search.artistName ?? search.mediaName) {
                     result! += artists
                 }
+                if let playlists = try? await searchPlaylists(name: search.mediaName) {
+                    result! += playlists
+                }
                 
                 break
-            case .station, .musicVideo, .algorithmicRadioStation:
+                
+            case .station, .musicStation, .algorithmicRadioStation:
+                if !JellyfinClient.shared.isOnline {
+                    return [.unsupported(forReason: .serviceUnavailable)]
+                }
+                
+                // TODO: this
+                
                 break
                 
             default:
@@ -205,6 +216,30 @@ extension PlayMediaHandler {
     }
 }
 
+// MARK: Playlists
+
+extension PlayMediaHandler {
+    func searchPlaylists(name: String?) async throws -> [Playlist] {
+        guard let name = name else { throw PlayError.notFound }
+        
+        var result = [Playlist]()
+        
+        if let offlinePlaylists = try? await OfflineManager.shared.getPlaylists(query: name) {
+            result += offlinePlaylists
+        }
+        
+        if let fetchedPlaylists = try? await JellyfinClient.shared.getPlaylists(query: name) {
+            result += fetchedPlaylists.filter { !result.contains($0) }
+        }
+        
+        if result.isEmpty {
+            throw PlayError.notFound
+        } else {
+            return result
+        }
+    }
+}
+
 // MARK: AFItem --> INItem
 
 extension PlayMediaHandler {
@@ -269,7 +304,7 @@ extension PlayMediaHandler {
                 AudioPlayer.current.shuffle(shuffle)
             }
         } else {
-            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle ?? false)
+            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle ?? false, playbackInfo: .init(disable: true))
         }
         
         if let repeatMode = repeatMode {
@@ -310,5 +345,12 @@ extension PlayMediaHandler {
         }
         
         return try await JellyfinClient.shared.getTracks(artistId: artistId).shuffled()
+    }
+    func getTracks(playlistId: String) async throws -> [Track] {
+        if let tracks = try? await OfflineManager.shared.getTracks(playlistId: playlistId) {
+            return tracks
+        }
+        
+        return try await JellyfinClient.shared.getTracks(playlistId: playlistId)
     }
 }

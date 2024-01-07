@@ -141,12 +141,12 @@ extension TrackList {
     }
     
     private func startPlayback(index: Int, shuffle: Bool) {
-        AudioPlayer.current.startPlayback(tracks: filter(tracks: tracks), startIndex: index, shuffle: shuffle)
+        AudioPlayer.current.startPlayback(tracks: filter(tracks: tracks), startIndex: index, shuffle: shuffle, playbackInfo: .init(type: .tracks, query: search, container: nil))
     }
     private func startPlayback(track: Track) {
         let tracks = filter(tracks: tracks)
         if let index = tracks.firstIndex(where: { $0.id == track.id }) {
-            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false)
+            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(type: .tracks, query: search, container: nil))
         }
     }
 }

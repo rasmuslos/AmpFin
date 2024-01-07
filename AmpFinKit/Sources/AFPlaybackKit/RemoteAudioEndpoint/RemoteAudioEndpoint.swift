@@ -32,6 +32,8 @@ class RemoteAudioEndpoint {
     var nowPlayingInfo = [String: Any]()
     var queuePlayer: AVQueuePlayer!
     
+    var lastTrackId: String?
+    
     init(session: Session) {
         clientId = session.clientId
         sessionId = session.id
@@ -86,7 +88,11 @@ extension RemoteAudioEndpoint {
             
             self?.updateNowPlayingWidget()
             
-            NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
+            if self?.lastTrackId != session.nowPlaying?.id {
+                self?.lastTrackId = session.nowPlaying?.id
+                NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
+            }
+            
             NotificationCenter.default.post(name: AudioPlayer.volumeChange, object: nil)
             
             NotificationCenter.default.post(name: AudioPlayer.playPause, object: nil)

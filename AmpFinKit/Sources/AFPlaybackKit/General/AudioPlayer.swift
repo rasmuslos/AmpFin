@@ -19,6 +19,8 @@ import AFOfflineKit
 public class AudioPlayer {
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
     
+    var playbackInfo: PlaybackInfo?
+    
     public private(set) var source: PlaybackSource = .none {
         didSet {
             MPRemoteCommandCenter.shared().likeCommand.isEnabled = source == .local
@@ -172,7 +174,11 @@ extension AudioPlayer: AudioEndpoint {
         endpoint?.setVolume(volume)
     }
     
-    public func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
+    public func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool, playbackInfo: PlaybackInfo) {
+        self.playbackInfo = playbackInfo
+        startPlayback(tracks: tracks, startIndex: startIndex, shuffle: shuffle)
+    }
+    func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
         if source == .none {
             setupLocalPlayback()
         }
@@ -181,6 +187,7 @@ extension AudioPlayer: AudioEndpoint {
     }
     
     public func stopPlayback() {
+        playbackInfo = nil
         endpoint?.stopPlayback()
     }
     
@@ -210,7 +217,7 @@ extension AudioPlayer: AudioEndpoint {
     
     public func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool = true) {
         if endpoint == nil || (endpoint?.nowPlaying == nil && endpoint?.queue.count == 0) {
-            startPlayback(tracks: [track], startIndex: 0, shuffle: false)
+            startPlayback(tracks: [track], startIndex: 0, shuffle: false, playbackInfo: .init())
         } else {
             endpoint?.queueTrack(track, index: index, updateUnalteredQueue: updateUnalteredQueue)
         }
@@ -218,7 +225,7 @@ extension AudioPlayer: AudioEndpoint {
     
     public func queueTracks(_ tracks: [Track], index: Int) {
         if endpoint == nil || (endpoint?.nowPlaying == nil && endpoint?.queue.count == 0) {
-            startPlayback(tracks: tracks, startIndex: 0, shuffle: false)
+            startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init())
         } else {
             endpoint?.queueTracks(tracks, index: index)
         }
@@ -255,6 +262,13 @@ extension AudioPlayer {
             updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
         }
         
+        NotificationCenter.default.addObserver(forName: Self.trackChange, object: nil, queue: nil) { [self] _ in
+            if let playbackInfo = playbackInfo, let nowPlaying = nowPlaying {
+                Self.logger.info("Donating \(nowPlaying.name) to system")
+                playbackInfo.donate(nowPlaying: nowPlaying, shuffled: shuffled, repeatMode: repeatMode, resumePlayback: true)
+            }
+        }
+        
         // For some reason queue & repeat mode don't work
         // TODO: GeneralCommand/SetVolume
         
@@ -284,7 +298,7 @@ extension AudioPlayer {
                 guard let tracks = try? await trackIds?.parallelMap(JellyfinClient.shared.getTrack).filter({ $0 != nil }) as? [Track], !tracks.isEmpty else { return }
                 
                 if command == "playnow" {
-                    startPlayback(tracks: tracks, startIndex: index, shuffle: false)
+                    startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init())
                 } else if command == "playnext" {
                     queueTracks(tracks, index: 0)
                 } else if command == "playlast" {

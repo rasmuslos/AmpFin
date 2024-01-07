@@ -28,7 +28,7 @@ struct SearchView: View {
                     Section("section.tracks") {
                         ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
                             TrackListRow(track: track) {
-                                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false)
+                                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(type: .tracks, query: query, container: nil))
                             }
                             .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
                             .padding(.horizontal)

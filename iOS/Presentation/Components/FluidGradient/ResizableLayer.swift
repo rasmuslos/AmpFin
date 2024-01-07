@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// An implementation of ``CALayer`` that resizes its sublayers
 public class ResizableLayer: CALayer {
     override init() {
         super.init()

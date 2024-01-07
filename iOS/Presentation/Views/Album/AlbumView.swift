@@ -13,6 +13,19 @@ struct AlbumView: View {
     @Environment(\.libraryDataProvider) var dataProvider
     
     let album: Album
+    let userActivity: NSUserActivity
+    
+    init(album: Album) {
+        self.album = album
+        userActivity = .createUserActivity(item: album)
+    }
+    
+    #if DEBUG
+    init(album: Album, tracks: [Track]) {
+        self.init(album: album)
+        self.tracks = tracks
+    }
+    #endif
     
     @State var tracks = [Track]()
     @State var toolbarBackgroundVisible = false
@@ -21,7 +34,7 @@ struct AlbumView: View {
     var body: some View {
         List {
             Header(album: album, toolbarBackgroundVisible: $toolbarBackgroundVisible, imageColors: $imageColors) { shuffle in
-                AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffle)
+                AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: album))
             }
             .navigationTitle(album.name)
             .navigationBarTitleDisplayMode(.inline)
@@ -54,6 +67,8 @@ struct AlbumView: View {
             }
         }
         .onAppear {
+            userActivity.becomeCurrent()
+            
             Task.detached {
                 if let imageColors = await ImageColors.getImageColors(cover: album.cover) {
                     withAnimation {
@@ -61,6 +76,9 @@ struct AlbumView: View {
                     }
                 }
             }
+        }
+        .onDisappear {
+            userActivity.resignCurrent()
         }
     }
 }

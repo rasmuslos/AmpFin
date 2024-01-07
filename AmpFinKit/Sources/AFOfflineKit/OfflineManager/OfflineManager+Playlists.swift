@@ -117,6 +117,15 @@ public extension OfflineManager {
     }
     
     @MainActor
+    func getPlaylists(query: String) throws -> [Playlist] {
+        let playlists = Array(try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflinePlaylist>(predicate: #Predicate {
+            $0.name.localizedStandardContains(query)
+        })).prefix(20))
+        
+        return playlists.map(Playlist.convertFromOffline)
+    }
+    
+    @MainActor
     func getTracks(playlistId: String) throws -> [Track] {
         let playlist = try getOfflinePlaylist(playlistId: playlistId)
         let tracks = try getOfflineTracks(parent: playlist)

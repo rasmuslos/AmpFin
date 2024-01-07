@@ -39,6 +39,20 @@ public extension JellyfinClient {
         return response.Items.filter { $0.MediaType == "Audio" }.map(Playlist.convertFromJellyfin)
     }
     
+    func getPlaylists(query: String) async throws -> [Playlist] {
+        let response = try await request(ClientRequest<PlaylistItemsResponse>(path: "Items", method: "GET", query: [
+            URLQueryItem(name: "searchTerm", value: query),
+            URLQueryItem(name: "Limit", value: "20"),
+            URLQueryItem(name: "IncludeItemTypes", value: "Playlist"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ParentId", value: "3996159c9706fc5500823e0316d260c1"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+        ], userPrefix: true))
+        
+        return response.Items.filter { $0.MediaType == "Audio" }.map(Playlist.convertFromJellyfin)
+    }
+    
     func add(trackIds: [String], playlistId: String) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items", method: "POST", query: [
             URLQueryItem(name: "Ids", value: trackIds.joined(separator: ","))

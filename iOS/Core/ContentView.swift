@@ -11,8 +11,11 @@ import Intents
 import AFBaseKit
 import AFOfflineKit
 import AFPlaybackKit
+import CoreSpotlight
 
 struct ContentView: View {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     @State var online = JellyfinClient.shared.isOnline
     @State var isAuthorized = JellyfinClient.shared.isAuthorized
     
@@ -20,9 +23,11 @@ struct ContentView: View {
         if isAuthorized {
             NavigationRoot()
                 .environment(\.libraryOnline, online)
+                .onContinueUserActivity(CSSearchableItemActionType, perform: SpotlightHelper.handleSpotlight)
                 .onAppear {
-                    SpotlightDonator.donate()
-                    UserContext.updateContext()
+                    SpotlightHelper.donate()
+                    INMediaUserContext.donate()
+                    INPreferences.requestSiriAuthorization { _ in }
                     
                     OfflineManager.shared.updateOfflineItems()
                     OfflineManager.shared.updateOfflineFavorites()
@@ -30,8 +35,6 @@ struct ContentView: View {
                     
                     JellyfinWebSocket.shared.connect()
                     AudioPlayer.current.allowRemoteControl = true
-                    
-                    INPreferences.requestSiriAuthorization { _ in }
                 }
                 .onReceive(NotificationCenter.default.publisher(for: JellyfinClient.onlineStatusChanged), perform: { _ in
                     online = JellyfinClient.shared.isOnline

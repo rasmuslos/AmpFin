@@ -12,7 +12,7 @@
 			<array/>
 			<key>IntentsSupported</key>
 			<array>
-				<string>INPlayMediaIntent</string>
+				<string>INSearchForMediaIntent</string>
 			</array>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>

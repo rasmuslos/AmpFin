@@ -10,6 +10,7 @@ import SwiftData
 import TipKit
 import AFBaseKit
 import AFOfflineKit
+import CoreSpotlight
 
 @main
 struct iOSApp: App {
