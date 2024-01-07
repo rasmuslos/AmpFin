@@ -88,4 +88,13 @@ struct SpotlightHelper {
             NotificationCenter.default.post(name: NavigationRoot.navigateAlbumNotification, object: albumId)
         }
     }
+    
+    static func deleteSpotlightIndex() {
+        Task {
+            let index = CSSearchableIndex(name: "items", protectionClass: .completeUntilFirstUserAuthentication)
+            
+            try await index.deleteAllSearchableItems()
+            UserDefaults.standard.removeObject(forKey: "lastSpotlightDonation")
+        }
+    }
 }

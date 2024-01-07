@@ -17,6 +17,22 @@
         }
       }
     },
+    "account.deleteSpotlightIndex" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Spotlight Index löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Spotlight index"
+          }
+        }
+      }
+    },
     "account.downloads.queue" : {
       "localizations" : {
         "de" : {
@@ -1257,6 +1273,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Albums"
+          }
+        }
+      }
+    },
+    "section.playlists" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlists"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlists"
           }
         }
       }

@@ -55,6 +55,9 @@ public struct OnlineLibraryDataProvider: LibraryDataProvider {
     public func searchAlbums(query: String) async throws -> [Album] {
         try await JellyfinClient.shared.getAlbums(query: query)
     }
+    public func searchPlaylists(query: String) async throws -> [Playlist] {
+        try await JellyfinClient.shared.getPlaylists(query: query)
+    }
     
     public func getPlaylists() async throws -> [Playlist] {
         try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .added, ascending: false, favorite: false)

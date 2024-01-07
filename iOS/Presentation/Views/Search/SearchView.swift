@@ -15,6 +15,7 @@ struct SearchView: View {
     
     @State var tracks = [Track]()
     @State var albums = [Album]()
+    @State var playlists = [Playlist]()
     
     @State var library: Tab = .online
     @State var dataProvider: LibraryDataProvider = OnlineLibraryDataProvider()
@@ -47,6 +48,18 @@ struct SearchView: View {
                         }
                     }
                 }
+                
+                if playlists.count > 0 {
+                    Section("section.playlists") {
+                        ForEach(playlists) { playlist in
+                            NavigationLink(destination: PlaylistView(playlist: playlist)) {
+                                PlaylistListRow(playlist: playlist)
+                            }
+                            .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+                            .padding(.horizontal)
+                        }
+                    }
+                }
             }
             .listStyle(.plain)
             .navigationTitle("title.search")
@@ -65,6 +78,7 @@ struct SearchView: View {
                 
                 tracks = []
                 albums = []
+                playlists = []
                 
                 switch library {
                 case .online:
@@ -86,10 +100,11 @@ extension SearchView {
         task?.cancel()
         task = Task.detached {
             // I guess this runs in parallel?
-            (tracks, albums) = (try? await (
+            (tracks, albums, playlists) = (try? await (
                 dataProvider.searchTracks(query: query.lowercased()),
-                dataProvider.searchAlbums(query: query.lowercased())
-            )) ?? ([], [])
+                dataProvider.searchAlbums(query: query.lowercased()),
+                dataProvider.searchPlaylists(query: query.lowercased())
+            )) ?? ([], [], [])
         }
     }
 }

@@ -121,6 +121,11 @@ struct AccountSheet: View {
                 } label: {
                     Text("account.deleteDownloads")
                 }
+                Button(role: .destructive) {
+                    SpotlightHelper.deleteSpotlightIndex()
+                } label: {
+                    Text("account.deleteSpotlightIndex")
+                }
             }
             
             Section("account.server") {

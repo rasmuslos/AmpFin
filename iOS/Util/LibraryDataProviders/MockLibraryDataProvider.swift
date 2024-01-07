@@ -140,6 +140,18 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
         ]
     }
     
+    public func searchPlaylists(query: String) async throws -> [Playlist] {
+        [
+            Playlist.fixture,
+            Playlist.fixture,
+            Playlist.fixture,
+            Playlist.fixture,
+            Playlist.fixture,
+            Playlist.fixture,
+            Playlist.fixture,
+        ]
+    }
+    
     public func getPlaylists() async throws -> [Playlist] {
         [
             Playlist.fixture,
