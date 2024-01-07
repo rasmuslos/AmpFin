@@ -83,6 +83,7 @@ struct AlbumView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         AlbumView(album: Album.fixture, tracks: [
@@ -104,3 +105,4 @@ struct AlbumView: View {
         ])
     }
 }
+#endif
