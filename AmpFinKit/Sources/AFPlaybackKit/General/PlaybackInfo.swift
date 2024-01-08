@@ -106,7 +106,7 @@ extension PlaybackInfo {
             playbackQueueLocation: .unknown,
             playbackSpeed: 1, mediaSearch: INMediaSearch(mediaName: query))
         
-        let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: .createUserActivity(item: nowPlaying)))
+        let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: nil))
         interaction.donate()
     }
 }

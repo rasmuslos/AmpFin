@@ -13,19 +13,6 @@ struct AlbumView: View {
     @Environment(\.libraryDataProvider) var dataProvider
     
     let album: Album
-    let userActivity: NSUserActivity
-    
-    init(album: Album) {
-        self.album = album
-        userActivity = .createUserActivity(item: album)
-    }
-    
-    #if DEBUG
-    init(album: Album, tracks: [Track]) {
-        self.init(album: album)
-        self.tracks = tracks
-    }
-    #endif
     
     @State var tracks = [Track]()
     @State var toolbarBackgroundVisible = false
@@ -61,14 +48,20 @@ struct AlbumView: View {
             }, toolbarBackgroundVisible: $toolbarBackgroundVisible, imageColors: $imageColors)
         )
         .modifier(NowPlayingBarSafeAreaModifier())
+        .userActivity("io.rfk.ampfin.album") {
+            $0.title = album.name
+            $0.isEligibleForHandoff = true
+            $0.persistentIdentifier = album.id
+            $0.userInfo = [
+                "albumId": album.id
+            ]
+        }
         .task {
             if let tracks = try? await dataProvider.getAlbumTracks(id: album.id) {
                 self.tracks = tracks
             }
         }
         .onAppear {
-            userActivity.becomeCurrent()
-            
             Task.detached {
                 if let imageColors = await ImageColors.getImageColors(cover: album.cover) {
                     withAnimation {
@@ -77,13 +70,9 @@ struct AlbumView: View {
                 }
             }
         }
-        .onDisappear {
-            userActivity.resignCurrent()
-        }
     }
 }
 
-#if DEBUG
 #Preview {
     NavigationStack {
         AlbumView(album: Album.fixture, tracks: [
@@ -105,4 +94,3 @@ struct AlbumView: View {
         ])
     }
 }
-#endif

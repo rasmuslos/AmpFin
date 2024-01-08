@@ -35,6 +35,14 @@ struct PlaylistView: View {
         .navigationTitle(playlist.name)
         .modifier(ToolbarModifier(playlist: playlist, tracks: $tracks, editMode: $editMode))
         .modifier(NowPlayingBarSafeAreaModifier())
+        .userActivity("io.rfk.ampfin.playlist") {
+            $0.title = playlist.name
+            $0.isEligibleForHandoff = true
+            $0.persistentIdentifier = playlist.id
+            $0.userInfo = [
+                "playlistId": playlist.id
+            ]
+        }
         .task(fetchTracks)
         .refreshable(action: fetchTracks)
     }

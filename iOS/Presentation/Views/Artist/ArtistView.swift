@@ -79,14 +79,22 @@ struct ArtistView: View {
             }
         }
         .navigationTitle(artist.name)
-        .modifier(IgnoreSafeAreaModifier(ignoreSafeArea: artist.cover != nil))
-        .task(loadAlbums)
         .onChange(of: sortOrder) {
             Task {
                 await loadAlbums()
             }
         }
         .modifier(NowPlayingBarSafeAreaModifier())
+        .modifier(IgnoreSafeAreaModifier(ignoreSafeArea: artist.cover != nil))
+        .task(loadAlbums)
+        .userActivity("io.rfk.ampfin.artist") {
+            $0.title = artist.name
+            $0.isEligibleForHandoff = true
+            $0.persistentIdentifier = artist.id
+            $0.userInfo = [
+                "artistId": artist.id
+            ]
+        }
     }
 }
 
