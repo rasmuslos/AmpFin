@@ -36,12 +36,16 @@ public extension OfflineManager {
             Self.logger.info("Syncing \(plays.count) plays to the server")
             
             for play in plays {
-                do {
-                    try await JellyfinClient.shared.reportPlaybackStopped(trackId: play.trackId, positionSeconds: play.positionSeconds)
-                    PersistenceManager.shared.modelContainer.mainContext.delete(play)
-                } catch {
-                    Self.logger.fault("Error while syncing play to Jellyfin server \(play.trackId) (\(play.positionSeconds)")
-                    break
+                Task.detached {
+                    do {
+                        try await JellyfinClient.shared.reportPlaybackStopped(trackId: play.trackId, positionSeconds: play.positionSeconds)
+                        
+                        Task.detached { @MainActor in
+                            PersistenceManager.shared.modelContainer.mainContext.delete(play)
+                        }
+                    } catch {
+                        Self.logger.fault("Error while syncing play to Jellyfin server \(play.trackId) (\(play.positionSeconds)")
+                    }
                 }
             }
         }
