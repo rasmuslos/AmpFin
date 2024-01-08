@@ -35,8 +35,8 @@ public extension OfflineManager {
         Task.detached {
             do {
                 // MARK: sync
-                let descriptor = FetchDescriptor<OfflineFavorite>()
                 Task { @MainActor in
+                    let descriptor = FetchDescriptor<OfflineFavorite>()
                     let favorites = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
                     
                     for favorite in favorites {
@@ -57,38 +57,38 @@ public extension OfflineManager {
                 // MARK: tracks
                 let trackFavorites = try await JellyfinClient.shared.getTracks(limit: 0, sortOrder: .added, ascending: true, favorite: true)
                 
-                if !trackFavorites.isEmpty {
-                    for track in trackFavorites {
-                        if let offline = try? await OfflineManager.shared.getOfflineTrack(trackId: track.id), track.favorite != offline.favorite {
-                            offline.favorite = track.favorite
+                Task { @MainActor in
+                    if !trackFavorites.isEmpty {
+                        for track in trackFavorites {
+                            if let offline = try? OfflineManager.shared.getOfflineTrack(trackId: track.id), track.favorite != offline.favorite {
+                                offline.favorite = track.favorite
+                            }
                         }
                     }
                     
                     let identifiers = trackFavorites.map { $0.id }
                     
-                    Task { @MainActor in
-                        let descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { !identifiers.contains($0.id) && $0.favorite == true })
-                        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
-                        
-                        for track in tracks {
-                            track.favorite = false
-                        }
+                    let descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { !identifiers.contains($0.id) && $0.favorite == true })
+                    let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
+                    
+                    for track in tracks {
+                        track.favorite = false
                     }
                 }
                 
                 // MARK: albums
                 let albumFavorites = try await JellyfinClient.shared.getAlbums(limit: 0, sortOrder: .added, ascending: true, favorite: true)
                 
-                if !albumFavorites.isEmpty {
-                    for album in albumFavorites {
-                        if let offline = try? await OfflineManager.shared.getOfflineAlbum(albumId: album.id), album.favorite != offline.favorite {
-                            offline.favorite = album.favorite
+                Task { @MainActor in
+                    if !albumFavorites.isEmpty {
+                        for album in albumFavorites {
+                            if let offline = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id), album.favorite != offline.favorite {
+                                offline.favorite = album.favorite
+                            }
                         }
-                    }
-                    
-                    let identifiers = albumFavorites.map { $0.id }
-                    
-                    Task { @MainActor in
+                        
+                        let identifiers = albumFavorites.map { $0.id }
+                        
                         let descriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate { !identifiers.contains($0.id) && $0.favorite == true })
                         let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
                         
@@ -101,16 +101,16 @@ public extension OfflineManager {
                 // MARK: Playlists
                 let playlistFavorites = try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .added, ascending: true, favorite: true)
                 
-                if !playlistFavorites.isEmpty {
-                    for playlist in playlistFavorites {
-                        if let offline = try? await OfflineManager.shared.getOfflinePlaylist(playlistId: playlist.id), playlist.favorite != offline.favorite {
-                            offline.favorite = playlist.favorite
+                Task { @MainActor in
+                    if !playlistFavorites.isEmpty {
+                        for playlist in playlistFavorites {
+                            if let offline = try? OfflineManager.shared.getOfflinePlaylist(playlistId: playlist.id), playlist.favorite != offline.favorite {
+                                offline.favorite = playlist.favorite
+                            }
                         }
-                    }
-                    
-                    let identifiers = playlistFavorites.map { $0.id }
-                    
-                    Task { @MainActor in
+                        
+                        let identifiers = playlistFavorites.map { $0.id }
+                        
                         let descriptor = FetchDescriptor<OfflinePlaylist>(predicate: #Predicate { !identifiers.contains($0.id) && $0.favorite == true })
                         let playlists = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
                         
