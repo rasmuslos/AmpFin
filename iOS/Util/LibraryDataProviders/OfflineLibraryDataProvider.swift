@@ -69,11 +69,14 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     }
     
     public func getArtists(albumOnly: Bool) async throws -> [Artist] {
-        return []
+        []
     }
     
     public func getArtistAlbums(id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
-        return []
+        []
+    }
+    public func getArtistTracks(id: String) async throws -> [Track] {
+        try await OfflineManager.shared.getTracks(artistId: id).shuffled()
     }
     
     public func getArtistById(_ artistId: String) async throws -> Artist {

@@ -27,6 +27,7 @@ public protocol LibraryDataProvider {
     func getArtists(albumOnly: Bool) async throws -> [Artist]
     func getArtistById(_ artistId: String) async throws -> Artist
     func getArtistAlbums(id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
+    func getArtistTracks(id: String) async throws -> [Track]
     
     func searchTracks(query: String) async throws -> [Track]
     func searchAlbums(query: String) async throws -> [Album]

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3A0345112B49629D007D6171 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		3A07CD932B4401BE00F9AB19 /* PlaylistAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */; };
-		3A0E5FF22B4AFB95002363F7 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A0E5FF42B4AFB95002363F7 /* AppIntentVocabulary.plist */; };
 		3A11013B2AC0362B004CF731 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A11013A2AC0362B004CF731 /* FavoritesView.swift */; };
 		3A1750CD2B48B57000A39BD9 /* PlayMediaHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1750CC2B48B57000A39BD9 /* PlayMediaHandler.swift */; };
 		3A1CBC192B0D284200855A70 /* NavigationRoot+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC182B0D284200855A70 /* NavigationRoot+Notifications.swift */; };
@@ -23,6 +22,8 @@
 		3A234E182AA8E0AD00197AA7 /* TrackListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E172AA8E0AD00197AA7 /* TrackListRow.swift */; };
 		3A234E1E2AA8E6F600197AA7 /* PlayButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E1D2AA8E6F600197AA7 /* PlayButtonStyle.swift */; };
 		3A234E202AA8E8A000197AA7 /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E1F2AA8E8A000197AA7 /* TrackList.swift */; };
+		3A24E5D92B4BF5850052DD20 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A24E5D82B4BF5850052DD20 /* Settings.bundle */; };
+		3A24E5DC2B4BF7860052DD20 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A24E5DE2B4BF7860052DD20 /* AppIntentVocabulary.plist */; };
 		3A2B28E52B433C8A00DF9731 /* PlaylistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28E42B433C8A00DF9731 /* PlaylistsView.swift */; };
 		3A2B28E82B43422800DF9731 /* PlaylistsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28E72B43422800DF9731 /* PlaylistsList.swift */; };
 		3A2B28EA2B4342F000DF9731 /* PlaylistListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28E92B4342F000DF9731 /* PlaylistListRow.swift */; };
@@ -148,9 +149,6 @@
 		3A03450A2B49613C007D6171 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A0345122B49634F007D6171 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistAddSheet.swift; sourceTree = "<group>"; };
-		3A0E5FF32B4AFB95002363F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
-		3A0E5FF72B4AFC1F002363F7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
-		3A0E5FF82B4AFC3B002363F7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = de; path = de.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
 		3A11013A2AC0362B004CF731 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		3A1750CC2B48B57000A39BD9 /* PlayMediaHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMediaHandler.swift; sourceTree = "<group>"; };
 		3A1CBC182B0D284200855A70 /* NavigationRoot+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Notifications.swift"; sourceTree = "<group>"; };
@@ -166,6 +164,9 @@
 		3A234E172AA8E0AD00197AA7 /* TrackListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListRow.swift; sourceTree = "<group>"; };
 		3A234E1D2AA8E6F600197AA7 /* PlayButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButtonStyle.swift; sourceTree = "<group>"; };
 		3A234E1F2AA8E8A000197AA7 /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
+		3A24E5D82B4BF5850052DD20 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		3A24E5DD2B4BF7860052DD20 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
+		3A24E5DF2B4BF7890052DD20 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = de; path = de.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
 		3A2B28E42B433C8A00DF9731 /* PlaylistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistsView.swift; sourceTree = "<group>"; };
 		3A2B28E72B43422800DF9731 /* PlaylistsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistsList.swift; sourceTree = "<group>"; };
 		3A2B28E92B4342F000DF9731 /* PlaylistListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListRow.swift; sourceTree = "<group>"; };
@@ -592,9 +593,10 @@
 				3A7939032B38B0EB001B3B3D /* Presentation */,
 				3A0345122B49634F007D6171 /* Info.plist */,
 				3AEB321F2AA7EC3C00853210 /* Assets.xcassets */,
+				3A24E5D82B4BF5850052DD20 /* Settings.bundle */,
 				3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */,
 				3AEB32222AA7EC3C00853210 /* Entitlements.entitlements */,
-				3A0E5FF42B4AFB95002363F7 /* AppIntentVocabulary.plist */,
+				3A24E5DE2B4BF7860052DD20 /* AppIntentVocabulary.plist */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -794,7 +796,8 @@
 			files = (
 				3A844DF22B398C150021BC63 /* AmpFinKit in Resources */,
 				3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */,
-				3A0E5FF22B4AFB95002363F7 /* AppIntentVocabulary.plist in Resources */,
+				3A24E5D92B4BF5850052DD20 /* Settings.bundle in Resources */,
+				3A24E5DC2B4BF7860052DD20 /* AppIntentVocabulary.plist in Resources */,
 				3A3FEECD2AF7A3C8001F8AA0 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -982,16 +985,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3A0E5FF42B4AFB95002363F7 /* AppIntentVocabulary.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3A0E5FF32B4AFB95002363F7 /* Base */,
-				3A0E5FF72B4AFC1F002363F7 /* en */,
-				3A0E5FF82B4AFC3B002363F7 /* de */,
-			);
-			name = AppIntentVocabulary.plist;
-			sourceTree = "<group>";
-		};
 		3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1000,6 +993,15 @@
 				3A21CF162B48C3340068ACB7 /* de */,
 			);
 			name = Intents.intentdefinition;
+			sourceTree = "<group>";
+		};
+		3A24E5DE2B4BF7860052DD20 /* AppIntentVocabulary.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3A24E5DD2B4BF7860052DD20 /* en */,
+				3A24E5DF2B4BF7890052DD20 /* de */,
+			);
+			name = AppIntentVocabulary.plist;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

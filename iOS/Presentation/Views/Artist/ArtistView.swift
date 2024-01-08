@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AFBaseKit
+import AFPlaybackKit
 
 struct ArtistView: View {
     @Environment(\.libraryDataProvider) var dataProvider
@@ -25,8 +26,15 @@ struct ArtistView: View {
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button {
-                                Task {
-                                    try? await artist.startInstantMix()
+                                if UserDefaults.standard.bool(forKey: "artistInstantMix") {
+                                    Task {
+                                        try? await artist.startInstantMix()
+                                    }
+                                } else {
+                                    Task {
+                                        let tracks = try await dataProvider.getArtistTracks(id: artist.id)
+                                        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init())
+                                    }
                                 }
                             } label: {
                                 Image(systemName: "play.circle.fill")

@@ -115,6 +115,17 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
             Album.fixture,
         ]
     }
+    public func getArtistTracks(id: String) async throws -> [Track] {
+        [
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+        ]
+    }
     
     public func searchTracks(query: String) async throws -> [Track] {
         [

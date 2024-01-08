@@ -13,7 +13,6 @@ import AFPlaybackKit
 struct AccountSheet: View {
     @State var username: String?
     @State var sessions: [Session]? = nil
-    
     @State var downloads: [Track]? = nil
     
     var body: some View {
@@ -38,6 +37,14 @@ struct AccountSheet: View {
                         .font(.caption)
                 }
                 .padding(.trailing, 5)
+            }
+            
+            Section {
+                Button {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                } label: {
+                    Text("account.settings")
+                }
             }
             
             Section("account.remote") {

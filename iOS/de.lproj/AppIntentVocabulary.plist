@@ -6,10 +6,18 @@
 	<array>
 		<dict>
 			<key>IntentName</key>
+			<string>INSearchForMediaIntent</string>
+			<key>IntentExamples</key>
+			<array>
+				<string>Zeige Musik von Abba</string>
+			</array>
+		</dict>
+		<dict>
+			<key>IntentName</key>
 			<string>INPlayMediaIntent</string>
 			<key>IntentExamples</key>
 			<array>
-				<string>Spiele Money, Money, Money von Abba als nächstes</string>
+				<string>Spiele Money, Money, Money von Abba</string>
 			</array>
 		</dict>
 	</array>
