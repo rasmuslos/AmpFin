@@ -71,7 +71,9 @@ public extension OfflineManager {
         
         if let existing = try? await getOfflineAlbum(albumId: album.id) {
             offlineAlbum = existing
-            offlineAlbum.childrenIds = tracks.map { $0.id }
+            Task { @MainActor in
+                offlineAlbum.childrenIds = tracks.map { $0.id }
+            }
         } else {
             offlineAlbum = try await create(album: album, tracks: tracks)
         }

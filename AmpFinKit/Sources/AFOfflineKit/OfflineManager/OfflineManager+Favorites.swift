@@ -9,28 +9,7 @@ import Foundation
 import SwiftData
 import AFBaseKit
 
-public extension OfflineManager {
-    @MainActor
-    func cacheFavorite(itemId: String, favorite: Bool) {
-        if let existing = try? PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineFavorite>(predicate: #Predicate { $0.itemId == itemId })).first {
-            existing.favorite = favorite
-        } else {
-            let offlineFavorite = OfflineFavorite(itemId: itemId, favorite: favorite)
-            PersistenceManager.shared.modelContainer.mainContext.insert(offlineFavorite)
-        }
-    }
-    
-    @MainActor
-    func updateOfflineFavorite(itemId: String, favorite: Bool) {
-        if let offlineTrack = try? OfflineManager.shared.getOfflineTrack(trackId: itemId) {
-            offlineTrack.favorite = favorite
-        } else if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: itemId) {
-            offlineAlbum.favorite = favorite
-        } else if let offlinePlaylist = try? OfflineManager.shared.getOfflinePlaylist(playlistId: itemId) {
-            offlinePlaylist.favorite = favorite
-        }
-    }
-    
+extension OfflineManager {
     func updateOfflineFavorites() {
         Task.detached {
             do {
@@ -123,6 +102,29 @@ public extension OfflineManager {
                 Self.logger.fault("Failed to sync favorites")
                 print(error)
             }
+        }
+    }
+}
+
+public extension OfflineManager {
+    @MainActor
+    func cacheFavorite(itemId: String, favorite: Bool) {
+        if let existing = try? PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineFavorite>(predicate: #Predicate { $0.itemId == itemId })).first {
+            existing.favorite = favorite
+        } else {
+            let offlineFavorite = OfflineFavorite(itemId: itemId, favorite: favorite)
+            PersistenceManager.shared.modelContainer.mainContext.insert(offlineFavorite)
+        }
+    }
+    
+    @MainActor
+    func updateOfflineFavorite(itemId: String, favorite: Bool) {
+        if let offlineTrack = try? OfflineManager.shared.getOfflineTrack(trackId: itemId) {
+            offlineTrack.favorite = favorite
+        } else if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: itemId) {
+            offlineAlbum.favorite = favorite
+        } else if let offlinePlaylist = try? OfflineManager.shared.getOfflinePlaylist(playlistId: itemId) {
+            offlinePlaylist.favorite = favorite
         }
     }
 }

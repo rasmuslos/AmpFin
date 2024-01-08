@@ -18,10 +18,12 @@ struct SpotlightHelper {
     
     static func donate(force: Bool = false) {
         let lastDonation = UserDefaults.standard.double(forKey: "lastSpotlightDonation")
-        if lastDonation + waitTime > Date.timeIntervalSinceReferenceDate && false {
+        if lastDonation + waitTime > Date.timeIntervalSinceReferenceDate {
             logger.info("Skipped spotlight indexing")
             return
         }
+        
+        UserDefaults.standard.set(Date.timeIntervalSinceReferenceDate, forKey: "lastSpotlightDonation")
         
         Task.detached {
             do {

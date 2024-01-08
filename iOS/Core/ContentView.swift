@@ -30,7 +30,6 @@ struct ContentView: View {
                     INPreferences.requestSiriAuthorization { _ in }
                     
                     OfflineManager.shared.updateOfflineItems()
-                    OfflineManager.shared.updateOfflineFavorites()
                     OfflineManager.shared.syncPlaysToJellyfinServer()
                     
                     JellyfinWebSocket.shared.connect()

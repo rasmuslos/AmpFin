@@ -52,20 +52,25 @@ public extension OfflineManager {
     }
     
     func updateOfflineItems() {
-        Task { @MainActor in
-            for album in try getOfflineAlbums() {
-                try await download(album: Album.convertFromOffline(album))
-            }
-        }
+        let waitTime: Double = 60 * 60 * 12
+        let lastDonation = UserDefaults.standard.double(forKey: "lastOfflineItemUpdate")
         
-        Task { @MainActor in
-            for playlist in try getOfflinePlaylists() {
-                try await download(playlist: Playlist.convertFromOffline(playlist))
+        if lastDonation + waitTime > Date.timeIntervalSinceReferenceDate {
+            updateOfflineFavorites()
+        } else {
+            UserDefaults.standard.set(Date.timeIntervalSinceReferenceDate, forKey: "lastOfflineItemUpdate")
+            
+            Task.detached { @MainActor in
+                for album in try getAlbums() {
+                    try await download(album: album)
+                }
+                
+                for playlist in try getPlaylists() {
+                    try await download(playlist: playlist)
+                }
+                
+                try? removeOrphanedTracks()
             }
-        }
-        
-        Task { @MainActor in
-            try? removeOrphanedTracks()
         }
     }
     
