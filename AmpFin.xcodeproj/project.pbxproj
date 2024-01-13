@@ -67,6 +67,8 @@
 		3A6F50AB2AACABEB00FC8A29 /* AlbumListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6F50AA2AACABEB00FC8A29 /* AlbumListRow.swift */; };
 		3A6F50AD2AACAFDF00FC8A29 /* AlbumLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6F50AC2AACAFDF00FC8A29 /* AlbumLoadView.swift */; };
 		3A6FC1F32ACC0BDB0070301B /* SpotlightHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6FC1F12ACC0BDA0070301B /* SpotlightHelper.swift */; };
+		3A73FF5C2B52D0D200933AE7 /* MediaResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */; };
+		3A73FF5D2B52D0D500933AE7 /* MediaResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */; };
 		3A7938FF2B387851001B3B3D /* LibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A12B386B20009000DD /* LibraryDataProvider.swift */; };
 		3A7939002B387851001B3B3D /* OfflineLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A32B386B20009000DD /* OfflineLibraryDataProvider.swift */; };
 		3A7939012B387851001B3B3D /* MockLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A22B386B20009000DD /* MockLibraryDataProvider.swift */; };
@@ -212,6 +214,7 @@
 		3A6F50AA2AACABEB00FC8A29 /* AlbumListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumListRow.swift; sourceTree = "<group>"; };
 		3A6F50AC2AACAFDF00FC8A29 /* AlbumLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumLoadView.swift; sourceTree = "<group>"; };
 		3A6FC1F12ACC0BDA0070301B /* SpotlightHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotlightHelper.swift; sourceTree = "<group>"; };
+		3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaResolver.swift; sourceTree = "<group>"; };
 		3A8286492AEC0D3400384BC9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3A844DF12B398C150021BC63 /* AmpFinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AmpFinKit; sourceTree = "<group>"; };
 		3A88505B2AA909CE00456DDD /* AlbumCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCover.swift; sourceTree = "<group>"; };
@@ -421,6 +424,15 @@
 			path = Intents;
 			sourceTree = "<group>";
 		};
+		3A73FF5A2B52D0C300933AE7 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */,
+				3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		3A7939032B38B0EB001B3B3D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,7 +508,7 @@
 		3AAF0DED2B4960EF0032DEFF /* Siri Extension */ = {
 			isa = PBXGroup;
 			children = (
-				3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */,
+				3A73FF5A2B52D0C300933AE7 /* Shared */,
 				3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */,
 				3AAF0DF02B4960EF0032DEFF /* Info.plist */,
 				3A03450A2B49613C007D6171 /* Entitlements.entitlements */,
@@ -876,6 +888,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A0345112B49629D007D6171 /* Intents.intentdefinition in Sources */,
+				3A73FF5C2B52D0D200933AE7 /* MediaResolver.swift in Sources */,
 				3AAF0DEF2B4960EF0032DEFF /* IntentHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -893,6 +906,7 @@
 				3AEB323B2AA7FF1100853210 /* NavigationRoot.swift in Sources */,
 				3A98A0322AABA3DF00EA84CF /* ArtistLoadView.swift in Sources */,
 				3A6FC1F32ACC0BDB0070301B /* SpotlightHelper.swift in Sources */,
+				3A73FF5D2B52D0D500933AE7 /* MediaResolver.swift in Sources */,
 				3A3AF1A62AC4523600811D7D /* AccountSheet.swift in Sources */,
 				3A234DFD2AA884FF00197AA7 /* LibraryView+Links.swift in Sources */,
 				3A6565D72AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift in Sources */,
