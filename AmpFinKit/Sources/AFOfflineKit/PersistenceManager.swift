@@ -20,7 +20,11 @@ public struct PersistenceManager {
             OfflinePlay.self,
             OfflineFavorite.self,
         ])
-        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: .identifier(JellyfinClient.groupIdentifier))
+        #if DISABLE_APP_GROUP
+        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: .identifier("group.io.rfk.ampfin"))
+        #else
+        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true)
+        #endif
         
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
