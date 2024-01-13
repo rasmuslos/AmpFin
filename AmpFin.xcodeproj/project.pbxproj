@@ -69,6 +69,9 @@
 		3A6FC1F32ACC0BDB0070301B /* SpotlightHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6FC1F12ACC0BDA0070301B /* SpotlightHelper.swift */; };
 		3A73FF5C2B52D0D200933AE7 /* MediaResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */; };
 		3A73FF5D2B52D0D500933AE7 /* MediaResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */; };
+		3A73FF5F2B52D39A00933AE7 /* AFBaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF5E2B52D39A00933AE7 /* AFBaseKit */; };
+		3A73FF612B52D39A00933AE7 /* AFOfflineKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF602B52D39A00933AE7 /* AFOfflineKit */; };
+		3A73FF632B52D39A00933AE7 /* AFPlaybackKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF622B52D39A00933AE7 /* AFPlaybackKit */; };
 		3A7938FF2B387851001B3B3D /* LibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A12B386B20009000DD /* LibraryDataProvider.swift */; };
 		3A7939002B387851001B3B3D /* OfflineLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A32B386B20009000DD /* OfflineLibraryDataProvider.swift */; };
 		3A7939012B387851001B3B3D /* MockLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A22B386B20009000DD /* MockLibraryDataProvider.swift */; };
@@ -274,7 +277,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A73FF612B52D39A00933AE7 /* AFOfflineKit in Frameworks */,
 				3AAF0DEC2B4960EF0032DEFF /* Intents.framework in Frameworks */,
+				3A73FF5F2B52D39A00933AE7 /* AFBaseKit in Frameworks */,
+				3A73FF632B52D39A00933AE7 /* AFPlaybackKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -707,6 +713,11 @@
 			dependencies = (
 			);
 			name = "Siri Extension";
+			packageProductDependencies = (
+				3A73FF5E2B52D39A00933AE7 /* AFBaseKit */,
+				3A73FF602B52D39A00933AE7 /* AFOfflineKit */,
+				3A73FF622B52D39A00933AE7 /* AFPlaybackKit */,
+			);
 			productName = "Siri Extension";
 			productReference = 3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1400,6 +1411,18 @@
 		3A442BFF2B48410A008FECE2 /* AFBaseKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AFBaseKit;
+		};
+		3A73FF5E2B52D39A00933AE7 /* AFBaseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AFBaseKit;
+		};
+		3A73FF602B52D39A00933AE7 /* AFOfflineKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AFOfflineKit;
+		};
+		3A73FF622B52D39A00933AE7 /* AFPlaybackKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AFPlaybackKit;
 		};
 		3A844DF32B398C5F0021BC63 /* AFBaseKit */ = {
 			isa = XCSwiftPackageProductDependency;
