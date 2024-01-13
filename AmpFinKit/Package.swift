@@ -19,7 +19,8 @@ let package = Package(
     targets: [
         // Remove the underscore to disable app groups for sideloading
         .target(name: "AFBaseKit", dependencies: [.byName(name: "Starscream")], swiftSettings: [.define("_DISABLE_APP_GROUP")]),
-        .target(name: "AFOfflineKit", dependencies: [.byName(name: "AFBaseKit")]),
+        .target(name: "AFExtensionKit", dependencies: [.byName(name: "AFBaseKit"), .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))]),
+        .target(name: "AFOfflineKit", dependencies: [.byName(name: "AFBaseKit")], swiftSettings: [.define("_DISABLE_APP_GROUP")]),
         .target(
             name: "AFPlaybackKit",
             dependencies: [
@@ -27,8 +28,5 @@ let package = Package(
                 .byName(name: "AFExtensionKit"),
                 .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))],
             resources: [.process("RemoteAudioEndpoint/silence.wav")]),
-        .target(
-            name: "AFExtensionKit",
-            dependencies: [.byName(name: "AFBaseKit"), .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))]),
     ]
 )

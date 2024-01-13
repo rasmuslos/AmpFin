@@ -21,6 +21,7 @@ public struct PersistenceManager {
             OfflineFavorite.self,
         ])
         #if DISABLE_APP_GROUP
+        #warning("SwiftData database will not be stored in group container")
         let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: .identifier("group.io.rfk.ampfin"))
         #else
         let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true)

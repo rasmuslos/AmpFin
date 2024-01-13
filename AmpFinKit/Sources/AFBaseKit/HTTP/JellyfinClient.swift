@@ -29,6 +29,7 @@ public class JellyfinClient {
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "HTTP")
     #if DISABLE_APP_GROUP
+    #warning("UserDefaults will not be stored in group container")
     static let defaults = UserDefaults.standard
     #else
     static let defaults = UserDefaults(suiteName: "group.io.rfk.ampfin")!
