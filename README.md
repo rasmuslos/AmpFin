@@ -21,9 +21,21 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 | ------------- | ------------- | ------------- | ------------- |
 | <img src="/Screenshots/Library.png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Album.png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player.png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Queue.png?raw=true" alt="Queue" width="200"/> 
 
-## Sideloading
+## Building the app yourself
 
-You have to manually install the app using Xcode or install the latest release. Newer ones (building from Xcode) require you to change the group identifier. More detailed instructions soon™️
+**Install using your favorite Side loading tool**
+
+Download and install the latest release \
+*Please strip app extensions (widgets, siri support, ...), they will not work as intented see https://github.com/rasmuslos/AmpFin/issues/11*
+
+**Build the app yourself**
+
+1. Install Xcode
+2. Change the bundle identifier
+3. Connect your iPhone to your Mac
+4. Enable developer mode
+5. Select your iPhone as the target
+6. Run the application
 
 ## Thanks to
 
