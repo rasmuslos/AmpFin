@@ -15,7 +15,13 @@ struct ArtistView: View {
     let artist: Artist
     
     @State var albums: [Album]?
+    @State var ascending = SortSelector.getAscending()
     @State var sortOrder = SortSelector.getSortOrder()
+    
+    var sortState: [String] {[
+        ascending.description,
+        sortOrder.rawValue,
+    ]}
     
     var body: some View {
         ScrollView {
@@ -75,11 +81,11 @@ struct ArtistView: View {
             }
             
             ToolbarItem(placement: .topBarTrailing) {
-                SortSelector(sortOrder: $sortOrder)
+                SortSelector(ascending: $ascending, sortOrder: $sortOrder)
             }
         }
         .navigationTitle(artist.name)
-        .onChange(of: sortOrder) {
+        .onChange(of: sortState) {
             Task {
                 await loadAlbums()
             }
@@ -103,7 +109,7 @@ struct ArtistView: View {
 extension ArtistView {
     @Sendable
     func loadAlbums() async {
-        albums = try? await dataProvider.getArtistAlbums(id: artist.id, sortOrder: sortOrder, ascending: true)
+        albums = try? await dataProvider.getArtistAlbums(id: artist.id, sortOrder: sortOrder, ascending: ascending)
     }
     
     // truly stupid

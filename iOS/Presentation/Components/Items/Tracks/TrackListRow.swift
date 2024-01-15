@@ -27,15 +27,15 @@ struct TrackListRow: View {
             Button {
                 startPlayback()
             } label: {
-                if album != nil {
-                    Text(String(track.index.index))
-                        .frame(width: 23)
-                        .fontDesign(.rounded)
-                    // .padding(.horizontal, 7)
-                } else {
-                    ItemImage(cover: track.cover)
-                        .frame(width: 45)
+                PlaybackIndicator(track: track) {
+                    if album != nil {
+                        Text(String(track.index.index))
+                            .fontDesign(.rounded)
+                    } else {
+                        ItemImage(cover: track.cover)
+                    }
                 }
+                .frame(width: album == nil ? 45 : 23)
                 
                 VStack(alignment: .leading) {
                     Text(track.name)

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVKit
+import MediaPlayer
 import AFBaseKit
 import AFPlaybackKit
 
@@ -94,7 +95,10 @@ extension NowPlayingSheet {
                 .padding(.top, 30)
                 .padding(.bottom, 60)
                 
+                // The first view is the visible slider, the second one is there to hide the iOS indicator (10/10 hack)
                 VolumeSlider()
+                VolumeView()
+                    .frame(width: 0, height: 0)
                 
                 HStack {
                     Spacer()
@@ -229,5 +233,16 @@ extension NowPlayingSheet {
         }
         
         func updateUIView(_ uiView: UIView, context: Context) {}
+    }
+    
+    struct VolumeView: UIViewRepresentable {
+        func makeUIView(context: Context) -> MPVolumeView {
+            let volumeView = MPVolumeView(frame: CGRect.zero)
+            volumeView.alpha = 0.001
+            
+            return volumeView
+        }
+        
+        func updateUIView(_ uiView: MPVolumeView, context: Context) {}
     }
 }

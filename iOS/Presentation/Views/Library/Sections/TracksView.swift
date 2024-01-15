@@ -14,7 +14,13 @@ struct TracksView: View {
     @State var tracks: [Track]?
     @State var errored = false
     
+    @State var ascending = SortSelector.getAscending()
     @State var sortOrder = SortSelector.getSortOrder()
+    
+    var sortState: [String] {[
+        ascending.description,
+        sortOrder.rawValue,
+    ]}
     
     var body: some View {
         VStack {
@@ -32,10 +38,10 @@ struct TracksView: View {
         .navigationTitle("title.tracks")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
-            SortSelector(sortOrder: $sortOrder)
+            SortSelector(ascending: $ascending, sortOrder: $sortOrder)
         }
         .task(loadTracks)
-        .onChange(of: sortOrder) {
+        .onChange(of: sortState) {
             Task {
                 await loadTracks()
             }
@@ -51,7 +57,7 @@ extension TracksView {
         errored = false
         
         do {
-            tracks = try await dataProvider.getAllTracks(sortOrder: sortOrder, ascending: true)
+            tracks = try await dataProvider.getAllTracks(sortOrder: sortOrder, ascending: ascending)
         } catch {
             errored = true
         }

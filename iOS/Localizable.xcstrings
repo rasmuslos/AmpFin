@@ -273,6 +273,9 @@
         }
       }
     },
+    "ascending" : {
+
+    },
     "cancel" : {
       "localizations" : {
         "de" : {
@@ -306,7 +309,6 @@
       }
     },
     "developedBy" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

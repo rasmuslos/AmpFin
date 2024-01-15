@@ -14,7 +14,13 @@ struct FavoritesView: View {
     @State var tracks: [Track]?
     @State var errored = false
     
+    @State var ascending = SortSelector.getAscending()
     @State var sortOrder = SortSelector.getSortOrder()
+    
+    var sortState: [String] {[
+        ascending.description,
+        sortOrder.rawValue,
+    ]}
     
     var body: some View {
         VStack {
@@ -32,10 +38,10 @@ struct FavoritesView: View {
         .navigationTitle("title.favorites")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
-            SortSelector(sortOrder: $sortOrder)
+            SortSelector(ascending: $ascending, sortOrder: $sortOrder)
         }
         .task(loadTracks)
-        .onChange(of: sortOrder) {
+        .onChange(of: sortState) {
             Task {
                 await loadTracks()
             }
@@ -51,7 +57,7 @@ extension FavoritesView {
         errored = false
         
         do {
-            tracks = try await dataProvider.getFavoriteTracks(sortOrder: sortOrder, ascending: true)
+            tracks = try await dataProvider.getFavoriteTracks(sortOrder: sortOrder, ascending: ascending)
         } catch {
             errored = true
         }

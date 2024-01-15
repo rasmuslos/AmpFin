@@ -11,6 +11,11 @@ import AFBaseKit
 struct SortSelector: View {
     @Environment(\.libraryDataProvider) var dataProvider
     
+    @Binding var ascending: Bool {
+        didSet {
+            UserDefaults.standard.set(ascending, forKey: "ascending")
+        }
+    }
     @Binding var sortOrder: JellyfinClient.ItemSortOrder {
         didSet {
             UserDefaults.standard.set(sortOrder.rawValue, forKey: "sortOrder")
@@ -30,6 +35,18 @@ struct SortSelector: View {
                     } else {
                         Text(label)
                     }
+                }
+            }
+            
+            Divider()
+            
+            Button {
+                ascending.toggle()
+            } label: {
+                if ascending {
+                    Label("ascending", systemImage: "checkmark")
+                } else {
+                    Text("ascending")
                 }
             }
         } label: {
@@ -69,6 +86,9 @@ extension SortSelector {
         }
     }
     
+    static func getAscending() -> Bool {
+        UserDefaults.standard.bool(forKey: "ascending")
+    }
     static func getSortOrder() -> JellyfinClient.ItemSortOrder {
         if let stored = UserDefaults.standard.string(forKey: "sortOrder"), let parsed = JellyfinClient.ItemSortOrder(rawValue: stored) {
             return parsed
@@ -78,5 +98,5 @@ extension SortSelector {
 }
 
 #Preview {
-    SortSelector(sortOrder: .constant(.added))
+    SortSelector(ascending: .constant(true), sortOrder: .constant(.added))
 }

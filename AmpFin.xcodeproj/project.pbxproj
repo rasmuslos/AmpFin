@@ -72,6 +72,10 @@
 		3A73FF5F2B52D39A00933AE7 /* AFBaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF5E2B52D39A00933AE7 /* AFBaseKit */; };
 		3A73FF612B52D39A00933AE7 /* AFOfflineKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF602B52D39A00933AE7 /* AFOfflineKit */; };
 		3A73FF632B52D39A00933AE7 /* AFPlaybackKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF622B52D39A00933AE7 /* AFPlaybackKit */; };
+		3A73FF712B540B4C00933AE7 /* tvOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF702B540B4C00933AE7 /* tvOSApp.swift */; };
+		3A73FF732B540B4C00933AE7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF722B540B4C00933AE7 /* ContentView.swift */; };
+		3A73FF752B540B4E00933AE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A73FF742B540B4E00933AE7 /* Assets.xcassets */; };
+		3A73FF802B54578F00933AE7 /* PlaybackIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF7F2B54578F00933AE7 /* PlaybackIndicator.swift */; };
 		3A7938FF2B387851001B3B3D /* LibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A12B386B20009000DD /* LibraryDataProvider.swift */; };
 		3A7939002B387851001B3B3D /* OfflineLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A32B386B20009000DD /* OfflineLibraryDataProvider.swift */; };
 		3A7939012B387851001B3B3D /* MockLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A22B386B20009000DD /* MockLibraryDataProvider.swift */; };
@@ -218,6 +222,12 @@
 		3A6F50AC2AACAFDF00FC8A29 /* AlbumLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumLoadView.swift; sourceTree = "<group>"; };
 		3A6FC1F12ACC0BDA0070301B /* SpotlightHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotlightHelper.swift; sourceTree = "<group>"; };
 		3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaResolver.swift; sourceTree = "<group>"; };
+		3A73FF6E2B540B4C00933AE7 /* AmpFin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AmpFin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A73FF702B540B4C00933AE7 /* tvOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tvOSApp.swift; sourceTree = "<group>"; };
+		3A73FF722B540B4C00933AE7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3A73FF742B540B4E00933AE7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3A73FF7D2B540BDB00933AE7 /* tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tvOS.entitlements; sourceTree = "<group>"; };
+		3A73FF7F2B54578F00933AE7 /* PlaybackIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackIndicator.swift; sourceTree = "<group>"; };
 		3A8286492AEC0D3400384BC9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3A844DF12B398C150021BC63 /* AmpFinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AmpFinKit; sourceTree = "<group>"; };
 		3A88505B2AA909CE00456DDD /* AlbumCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCover.swift; sourceTree = "<group>"; };
@@ -273,6 +283,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A73FF6B2B540B4C00933AE7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3AAF0DE82B4960EF0032DEFF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -318,8 +335,8 @@
 				3A234E162AA8E0A300197AA7 /* Items */,
 				3A8B99432AAA089F004AAA7B /* Sliders */,
 				3A98A02C2AABA35700EA84CF /* Fallback */,
-				3A2B28F22B4379ED00DF9731 /* FluidGradient */,
 				3ADE8EA52AA94637009826A3 /* NowPlaying */,
+				3A2B28F22B4379ED00DF9731 /* FluidGradient */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -328,6 +345,7 @@
 			isa = PBXGroup;
 			children = (
 				3AAC768C2B02C68600E337C1 /* ItemImage.swift */,
+				3A73FF7F2B54578F00933AE7 /* PlaybackIndicator.swift */,
 				3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */,
 				3A8850582AA9099600456DDD /* Tracks */,
 				3A8850592AA9099F00456DDD /* Albums */,
@@ -439,6 +457,25 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		3A73FF6F2B540B4C00933AE7 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				3A73FF7D2B540BDB00933AE7 /* tvOS.entitlements */,
+				3A73FF7C2B540BAE00933AE7 /* Core */,
+				3A73FF742B540B4E00933AE7 /* Assets.xcassets */,
+			);
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+		3A73FF7C2B540BAE00933AE7 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				3A73FF702B540B4C00933AE7 /* tvOSApp.swift */,
+				3A73FF722B540B4C00933AE7 /* ContentView.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		3A7939032B38B0EB001B3B3D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -548,6 +585,7 @@
 			children = (
 				3A8286492AEC0D3400384BC9 /* README.md */,
 				3AEB32192AA7EC3C00853210 /* iOS */,
+				3A73FF6F2B540B4C00933AE7 /* tvOS */,
 				3AAF0DED2B4960EF0032DEFF /* Siri Extension */,
 				3A442BE82B483C0B008FECE2 /* Widget Extension */,
 				3A844DF12B398C150021BC63 /* AmpFinKit */,
@@ -562,6 +600,7 @@
 				3ABAFCAA2AA7D6C40011BFD6 /* AmpFin.app */,
 				3A442BE32B483C0B008FECE2 /* Widget Extension.appex */,
 				3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */,
+				3A73FF6E2B540B4C00933AE7 /* AmpFin.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -699,6 +738,24 @@
 			productReference = 3A442BE32B483C0B008FECE2 /* Widget Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		3A73FF6D2B540B4C00933AE7 /* tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A73FF7B2B540B4E00933AE7 /* Build configuration list for PBXNativeTarget "tvOS" */;
+			buildPhases = (
+				3A73FF6A2B540B4C00933AE7 /* Sources */,
+				3A73FF6B2B540B4C00933AE7 /* Frameworks */,
+				3A73FF6C2B540B4C00933AE7 /* Resources */,
+				3A73FF7E2B540BF200933AE7 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tvOS;
+			productName = tvOS;
+			productReference = 3A73FF6E2B540B4C00933AE7 /* AmpFin.app */;
+			productType = "com.apple.product-type.application";
+		};
 		3AAF0DEA2B4960EF0032DEFF /* Siri Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3AAF0DF42B4960EF0032DEFF /* Build configuration list for PBXNativeTarget "Siri Extension" */;
@@ -757,11 +814,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1510;
+				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					3A442BE22B483C0B008FECE2 = {
 						CreatedOnToolsVersion = 15.1;
+					};
+					3A73FF6D2B540B4C00933AE7 = {
+						CreatedOnToolsVersion = 15.2;
 					};
 					3AAF0DEA2B4960EF0032DEFF = {
 						CreatedOnToolsVersion = 15.1;
@@ -790,6 +850,7 @@
 			projectRoot = "";
 			targets = (
 				3ABAFCA92AA7D6C40011BFD6 /* iOS */,
+				3A73FF6D2B540B4C00933AE7 /* tvOS */,
 				3AAF0DEA2B4960EF0032DEFF /* Siri Extension */,
 				3A442BE22B483C0B008FECE2 /* Widget Extension */,
 			);
@@ -803,6 +864,14 @@
 			files = (
 				3A442BFC2B483EC9008FECE2 /* Localizable.xcstrings in Resources */,
 				3A442BF22B483C0D008FECE2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A73FF6C2B540B4C00933AE7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A73FF752B540B4E00933AE7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -829,6 +898,24 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		3A442C032B4849B2008FECE2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    buildNumber=$(git rev-list --count head)\n    /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nfi\n";
+		};
+		3A73FF7E2B540BF200933AE7 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -891,6 +978,15 @@
 			files = (
 				3A442BFE2B484026008FECE2 /* DebugTokenWidget.swift in Sources */,
 				3A442BEA2B483C0B008FECE2 /* WidgetExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A73FF6A2B540B4C00933AE7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A73FF732B540B4C00933AE7 /* ContentView.swift in Sources */,
+				3A73FF712B540B4C00933AE7 /* tvOSApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -958,6 +1054,7 @@
 				3A234E052AA88D6000197AA7 /* TracksView.swift in Sources */,
 				3AEB32322AA7EC3C00853210 /* LargeButtonStyle.swift in Sources */,
 				3AEB32312AA7EC3C00853210 /* ContentView.swift in Sources */,
+				3A73FF802B54578F00933AE7 /* PlaybackIndicator.swift in Sources */,
 				3A234E202AA8E8A000197AA7 /* TrackList.swift in Sources */,
 				3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */,
 				3A234E152AA8DBC900197AA7 /* SortSelector.swift in Sources */,
@@ -1085,6 +1182,57 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3A73FF792B540B4E00933AE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = tvOS/tvOS.entitlements;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.ampfin.tvOS;
+				PRODUCT_NAME = AmpFin;
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.2;
+			};
+			name = Debug;
+		};
+		3A73FF7A2B540B4E00933AE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = tvOS/tvOS.entitlements;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.rfk.ampfin.tvOS;
+				PRODUCT_NAME = AmpFin;
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1355,6 +1503,15 @@
 			buildConfigurations = (
 				3A442BF82B483C0D008FECE2 /* Debug */,
 				3A442BF92B483C0D008FECE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A73FF7B2B540B4E00933AE7 /* Build configuration list for PBXNativeTarget "tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A73FF792B540B4E00933AE7 /* Debug */,
+				3A73FF7A2B540B4E00933AE7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

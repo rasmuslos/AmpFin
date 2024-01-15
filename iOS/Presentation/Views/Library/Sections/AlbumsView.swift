@@ -14,8 +14,14 @@ struct AlbumsView: View {
     @State var albums: [Album]?
     @State var errored = false
     
+    @State var ascending = SortSelector.getAscending()
     @State var sortOrder = SortSelector.getSortOrder()
     @State var search: String = ""
+    
+    var sortState: [String] {[
+        ascending.description,
+        sortOrder.rawValue,
+    ]}
     
     var body: some View {
         VStack {
@@ -34,11 +40,11 @@ struct AlbumsView: View {
         .searchable(text: $search, prompt: "search.albums")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
-            SortSelector(sortOrder: $sortOrder)
+            SortSelector(ascending: $ascending, sortOrder: $sortOrder)
         }
         .refreshable(action: loadAlbums)
         .task(loadAlbums)
-        .onChange(of: sortOrder) {
+        .onChange(of: sortState) {
             loadAlbums()
         }
     }
@@ -53,7 +59,7 @@ extension AlbumsView {
         
         Task.detached {
             do {
-                albums = try await dataProvider.getAlbums(limit: -1, sortOrder: sortOrder, ascending: true)
+                albums = try await dataProvider.getAlbums(limit: -1, sortOrder: sortOrder, ascending: ascending)
             } catch {
                 errored = true
             }
