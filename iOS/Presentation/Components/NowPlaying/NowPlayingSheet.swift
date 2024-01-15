@@ -13,8 +13,9 @@ struct NowPlayingSheet: View {
     @Environment(\.presentationMode) var presentationMode
     @Namespace var namespace
     
-    // i have no fucking idea why this updates
     let track: Track
+    let showDragIndicator: Bool
+    
     @Binding var playing: Bool
     
     @State var controlsVisible = true
@@ -54,13 +55,15 @@ struct NowPlayingSheet: View {
         .ignoresSafeArea(edges: .bottom)
         .preferredColorScheme(.dark)
         .overlay(alignment: .top) {
-            Rectangle()
-                .foregroundStyle(.secondary)
-                .frame(width: 50, height: 7)
-                .clipShape(RoundedRectangle(cornerRadius: 10000))
-                .onTapGesture {
-                    presentationMode.wrappedValue.dismiss()
-                }
+            if showDragIndicator {
+                Rectangle()
+                    .foregroundStyle(.secondary)
+                    .frame(width: 50, height: 7)
+                    .clipShape(RoundedRectangle(cornerRadius: 10000))
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+            }
         }
         .gesture(
             DragGesture(minimumDistance: 150).onEnded { value in
@@ -114,6 +117,6 @@ extension NowPlayingSheet {
 #Preview {
     Text(verbatim: ":)")
         .fullScreenCover(item: .constant(Track.fixture)) {
-            NowPlayingSheet(track: $0, playing: .constant(false))
+            NowPlayingSheet(track: $0, showDragIndicator: true, playing: .constant(false))
         }
 }

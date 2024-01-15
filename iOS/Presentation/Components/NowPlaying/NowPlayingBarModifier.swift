@@ -75,9 +75,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             .onTapGesture {
                                 nowPlayingSheetPresented.toggle()
                             }
-                            .fullScreenCover(isPresented: $nowPlayingSheetPresented) {
-                                NowPlayingSheet(track: currentTrack, playing: $playing)
-                            }
+                            .modifier(NowPlayingSheetModifier(currentTrack: currentTrack, playing: $playing, nowPlayingSheetPresented: $nowPlayingSheetPresented))
                     }
                     .contextMenu {
                         Button {
@@ -199,6 +197,36 @@ struct NowPlayingBarModifier: ViewModifier {
                     nowPlayingSheetPresented = false
                 }
             }
+    }
+}
+
+struct NowPlayingSheetModifier: ViewModifier {
+    var currentTrack: Track
+    
+    @Binding var playing: Bool
+    @Binding var nowPlayingSheetPresented: Bool
+    
+    @AppStorage("presentModally") var presentModally: Bool = false
+    
+    func body(content: Content) -> some View {
+        Group {
+            if presentModally {
+                content
+                    .sheet(isPresented: $nowPlayingSheetPresented) {
+                        NowPlayingSheet(track: currentTrack, showDragIndicator: false, playing: $playing)
+                            .presentationDetents([.large])
+                            .presentationDragIndicator(.visible)
+                    }
+            } else {
+                content
+                    .fullScreenCover(isPresented: $nowPlayingSheetPresented) {
+                        NowPlayingSheet(track: currentTrack, showDragIndicator: true, playing: $playing)
+                    }
+            }
+        }
+        .onChange(of: NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) {
+            presentModally = UserDefaults.standard.bool(forKey: "presentModally")
+        }
     }
 }
 
