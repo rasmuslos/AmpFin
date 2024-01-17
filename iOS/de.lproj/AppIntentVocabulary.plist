@@ -5,11 +5,13 @@
 	<key>IntentPhrases</key>
 	<array>
 		<dict>
+			<key>New item</key>
+			<string></string>
 			<key>IntentName</key>
-			<string>INSearchForMediaIntent</string>
+			<string>INAddMediaIntent</string>
 			<key>IntentExamples</key>
 			<array>
-				<string>Zeige Musik von Abba</string>
+				<string>Füge das Lied zu meiner Playlist Lieblingssongs hinzu</string>
 			</array>
 		</dict>
 		<dict>

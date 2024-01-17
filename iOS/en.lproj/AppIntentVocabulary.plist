@@ -6,10 +6,10 @@
 	<array>
 		<dict>
 			<key>IntentName</key>
-			<string>INSearchForMediaIntent</string>
+			<string>INAddMediaIntent</string>
 			<key>IntentExamples</key>
 			<array>
-				<string>Show me music by Abba</string>
+				<string>Add this song to my playlist favorites</string>
 			</array>
 		</dict>
 		<dict>

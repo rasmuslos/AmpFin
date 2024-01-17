@@ -14,6 +14,7 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 ## Roadmap
 
 - tvOS application
+- Finish Siri intents
 
 ## Screenshots
 

@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Rasmus Krämer on 25.12.23.
-//
-
 import Foundation
 
 // Taken from https://gist.github.com/DougGregor/92a2e4f6e11f6d733fb5065e9d1c880f
