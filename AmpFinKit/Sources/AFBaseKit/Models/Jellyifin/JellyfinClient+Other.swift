@@ -11,6 +11,7 @@ extension JellyfinClient {
     struct UserData: Codable {
         let PlayCount: Int
         let IsFavorite: Bool
+        let LastPlayedDate: String?
     }
     
     struct JellyfinArtist: Codable {

@@ -7,6 +7,7 @@ let package = Package(
     platforms: [
         .iOS(.v17),
         .watchOS(.v10),
+        .tvOS(.v17),
     ],
     products: [
         .library(name: "AFBaseKit", targets: ["AFBaseKit", "AFExtensionKit"]),

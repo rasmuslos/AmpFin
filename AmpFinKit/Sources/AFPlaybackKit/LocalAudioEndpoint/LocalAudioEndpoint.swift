@@ -103,7 +103,9 @@ extension LocalAudioEndpoint {
     }
     
     func setVolume(_ volume: Float) {
+        #if os(iOS)
         MPVolumeView.setVolume(volume)
+        #endif
         NotificationCenter.default.post(name: AudioPlayer.volumeChange, object: nil)
     }
     

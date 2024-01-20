@@ -19,6 +19,7 @@ extension Album {
             genres: offline.genres,
             releaseDate: offline.releaseDate,
             artists: offline.artists,
-            playCount: -1)
+            playCount: -1,
+            lastPlayed: nil)
     }
 }

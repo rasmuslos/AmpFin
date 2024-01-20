@@ -8,6 +8,7 @@
 import Foundation
 import MediaPlayer
 
+#if os(iOS)
 extension MPVolumeView {
     static func setVolume(_ volume: Float) {
         let volumeView = MPVolumeView()
@@ -18,3 +19,4 @@ extension MPVolumeView {
         }
     }
 }
+#endif

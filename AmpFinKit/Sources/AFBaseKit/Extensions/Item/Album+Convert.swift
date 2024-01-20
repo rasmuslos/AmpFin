@@ -19,6 +19,7 @@ extension Album {
             genres: item.Genres ?? [],
             releaseDate: Date.parseDate(item.PremiereDate),
             artists: item.AlbumArtists.map { ReducedArtist(id: $0.Id, name: $0.Name) },
-            playCount: item.UserData.PlayCount)
+            playCount: item.UserData.PlayCount,
+            lastPlayed: item.UserData.LastPlayedDate != nil ? Date.parseDate(item.UserData.LastPlayedDate!) : nil)
     }
 }

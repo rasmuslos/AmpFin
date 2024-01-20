@@ -53,6 +53,20 @@ public extension JellyfinClient {
         return response.Items.filter { $0.MediaType == "Audio" }.map(Playlist.convertFromJellyfin)
     }
     
+    /// Get random albums
+    func getPlaylists(limit: Int) async throws -> [Playlist] {
+        let response = try await request(ClientRequest<PlaylistItemsResponse>(path: "Items", method: "GET", query: [
+            URLQueryItem(name: "SortBy", value: "IsFavoriteOrLiked,Random"),
+            URLQueryItem(name: "Limit", value: String(limit)),
+            URLQueryItem(name: "IncludeItemTypes", value: "Playlist"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+        ], userPrefix: true))
+        
+        return response.Items.map(Playlist.convertFromJellyfin)
+    }
+    
     func add(trackIds: [String], playlistId: String) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items", method: "POST", query: [
             URLQueryItem(name: "Ids", value: trackIds.joined(separator: ","))

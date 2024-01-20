@@ -60,8 +60,6 @@ struct NavigationRoot: View {
     }
 }
 
-// MARK: Helper
-
 extension NavigationRoot {
     enum Tab: Int {
         case library = 0

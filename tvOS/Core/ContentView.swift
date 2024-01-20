@@ -6,35 +6,20 @@
 //
 
 import SwiftUI
-import AuthenticationServices
+import AFBaseKit
 
 struct ContentView: View {
+    @State var isAuthorized = JellyfinClient.shared.isAuthorized
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        if isAuthorized {
+            NavigationRoot()
+        } else {
+            LoginView() {
+                print("a")
+                isAuthorized = true
+            }
         }
-        .padding()
-        .onAppear {
-            let controller = ASAuthorizationController(authorizationRequests: [
-                ASAuthorizationPasswordProvider().createRequest()
-            ])
-            let delegate = Delegate()
-            
-            controller.delegate = delegate
-            controller.performRequests()
-        }
-    }
-}
-
-class Delegate: NSObject, ASAuthorizationControllerDelegate {
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        print(authorization)
-    }
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print(error)
     }
 }
 

@@ -60,21 +60,23 @@ extension SortSelector {
     func getOptionLabel(option: JellyfinClient.ItemSortOrder) -> String {
         switch option {
         case .added:
-            return "Added"
+            return String(localized: "sort.added")
         case .album:
-            return "Album"
+            return String(localized: "sort.album")
         case .albumArtist:
-            return "Album Aritst"
+            return String(localized: "sort.albumArtist")
         case .artist:
-            return "Artist"
+            return String(localized: "sort.artist")
         case .name:
-            return "Name"
+            return String(localized: "sort.name")
         case .plays:
-            return "Plays"
+            return String(localized: "sort.plays")
+        case .lastPlayed:
+            return String(localized: "sort.lastPlayed")
         case .released:
-            return "Released"
+            return String(localized: "sort.released")
         case .runtime:
-            return "Runtime"
+            return String(localized: "sort.runtime")
         }
     }
     

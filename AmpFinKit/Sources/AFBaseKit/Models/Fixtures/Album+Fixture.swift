@@ -22,5 +22,6 @@ extension Album {
         artists: [
             Item.ReducedArtist(id: "fixture", name: "Muse")
         ],
-        playCount: 9)
+        playCount: 9,
+        lastPlayed: Date())
 }
