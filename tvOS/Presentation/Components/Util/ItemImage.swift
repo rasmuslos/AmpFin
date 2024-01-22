@@ -23,7 +23,6 @@ struct ItemImage: View {
             }
             Spacer()
         }
-        .background(.ultraThickMaterial)
     }
     
     var body: some View {

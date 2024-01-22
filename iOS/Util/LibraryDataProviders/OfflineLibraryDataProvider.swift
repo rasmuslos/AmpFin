@@ -27,7 +27,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
                 return $0.artists.first?.name ?? "?" < $1.artists.first?.name ?? "?"
             case .added, .released:
                 return $0.releaseDate ?? Date(timeIntervalSince1970: 0) < $1.releaseDate ?? Date(timeIntervalSince1970: 0)
-            case .plays, .runtime:
+            case .plays, .runtime, .lastPlayed:
                 return false
             }
         }
@@ -60,7 +60,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
                 return $0.artists.first?.name ?? "?" < $1.artists.first?.name ?? "?"
             case .added, .released:
                 return $0.releaseDate ?? Date(timeIntervalSince1970: 0) < $1.releaseDate ?? Date(timeIntervalSince1970: 0)
-            case .plays, .runtime:
+            case .plays, .runtime, .lastPlayed:
                 return false
             }
         }

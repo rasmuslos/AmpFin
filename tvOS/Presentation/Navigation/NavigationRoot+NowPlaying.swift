@@ -9,14 +9,12 @@ import Foundation
 import SwiftUI
 
 extension NavigationRoot {
-    struct NowPlayingView: View {
+    struct NowPlayingTabView: View {
         var body: some View {
-            NavigationStack {
-                
-            }
-            .tabItem {
-                Text("title.nowPlaying")
-            }
+            NowPlayingView()
+                .tabItem {
+                    Text("title.nowPlaying")
+                }
         }
     }
 }

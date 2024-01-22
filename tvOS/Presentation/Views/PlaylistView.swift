@@ -52,7 +52,10 @@ struct PlaylistView: View {
                             Button {
                                 
                             } label: {
-                                HStack {
+                                HStack(spacing: 40) {
+                                    ItemImage(cover: track.cover)
+                                        .frame(width: 75)
+                                    
                                     VStack(alignment: .leading) {
                                         Text(track.name)
                                         

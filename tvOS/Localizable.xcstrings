@@ -225,6 +225,9 @@
         }
       }
     },
+    "playback.empty" : {
+
+    },
     "playlist.duration %@" : {
       "localizations" : {
         "de" : {

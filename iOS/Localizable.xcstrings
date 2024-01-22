@@ -1341,6 +1341,33 @@
         }
       }
     },
+    "sort.added" : {
+
+    },
+    "sort.album" : {
+
+    },
+    "sort.albumArtist" : {
+
+    },
+    "sort.artist" : {
+
+    },
+    "sort.lastPlayed" : {
+
+    },
+    "sort.name" : {
+
+    },
+    "sort.plays" : {
+
+    },
+    "sort.released" : {
+
+    },
+    "sort.runtime" : {
+
+    },
     "tab.downloads" : {
       "localizations" : {
         "de" : {

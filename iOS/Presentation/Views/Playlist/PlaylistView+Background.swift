@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AFBaseKit
+import FluidGradient
 
 extension PlaylistView {
     struct Background: View {

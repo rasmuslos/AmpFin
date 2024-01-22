@@ -30,11 +30,6 @@
 		3A2B28ED2B43739100DF9731 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28EC2B43739100DF9731 /* PlaylistView.swift */; };
 		3A2B28EF2B43798600DF9731 /* PlaylistView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28EE2B43798600DF9731 /* PlaylistView+Header.swift */; };
 		3A2B28F12B4379C500DF9731 /* PlaylistView+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28F02B4379C500DF9731 /* PlaylistView+Background.swift */; };
-		3A2B28F42B437A0700DF9731 /* BlobLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28F32B437A0700DF9731 /* BlobLayer.swift */; };
-		3A2B28F62B437A3F00DF9731 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28F52B437A3F00DF9731 /* CGPoint+Extensions.swift */; };
-		3A2B28F82B437A6000DF9731 /* FluidGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28F72B437A6000DF9731 /* FluidGradient.swift */; };
-		3A2B28FA2B437A7300DF9731 /* FluidGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28F92B437A7300DF9731 /* FluidGradientView.swift */; };
-		3A2B28FC2B437A8100DF9731 /* ResizableLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28FB2B437A8100DF9731 /* ResizableLayer.swift */; };
 		3A2B28FE2B437EFD00DF9731 /* ImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */; };
 		3A2B29002B43819400DF9731 /* PlaylistView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28FF2B43819400DF9731 /* PlaylistView+Toolbar.swift */; };
 		3A2B93312B00C9DA00638AE9 /* DownloadTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */; };
@@ -60,6 +55,13 @@
 		3A442BFC2B483EC9008FECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A442BFB2B483EC9008FECE2 /* Localizable.xcstrings */; };
 		3A442BFE2B484026008FECE2 /* DebugTokenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */; };
 		3A442C002B48410A008FECE2 /* AFBaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A442BFF2B48410A008FECE2 /* AFBaseKit */; };
+		3A58F8312B5EB5FC00421D08 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A58F8302B5EB5FC00421D08 /* NowPlayingView.swift */; };
+		3A58F8342B5EB7EA00421D08 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = 3A58F8332B5EB7EA00421D08 /* FluidGradient */; };
+		3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = 3A58F8352B5EB7F900421D08 /* FluidGradient */; };
+		3A58F8372B5EB8F200421D08 /* ImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */; };
+		3A58F83A2B5EB94E00421D08 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3A58F8392B5EB94E00421D08 /* UIImageColors */; };
+		3A58F83B2B5EB99400421D08 /* UIColor+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */; };
+		3A58F83C2B5EB99D00421D08 /* UIImage+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */; };
 		3A5B470F2B3B37A60075118F /* UIImage+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */; };
 		3A6565D72AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */; };
 		3A6F50A72AACA3D600FC8A29 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6F50A62AACA3D600FC8A29 /* SearchView.swift */; };
@@ -207,11 +209,6 @@
 		3A2B28EC2B43739100DF9731 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
 		3A2B28EE2B43798600DF9731 /* PlaylistView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistView+Header.swift"; sourceTree = "<group>"; };
 		3A2B28F02B4379C500DF9731 /* PlaylistView+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistView+Background.swift"; sourceTree = "<group>"; };
-		3A2B28F32B437A0700DF9731 /* BlobLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobLayer.swift; sourceTree = "<group>"; };
-		3A2B28F52B437A3F00DF9731 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
-		3A2B28F72B437A6000DF9731 /* FluidGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluidGradient.swift; sourceTree = "<group>"; };
-		3A2B28F92B437A7300DF9731 /* FluidGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluidGradientView.swift; sourceTree = "<group>"; };
-		3A2B28FB2B437A8100DF9731 /* ResizableLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableLayer.swift; sourceTree = "<group>"; };
 		3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageColors.swift; sourceTree = "<group>"; };
 		3A2B28FF2B43819400DF9731 /* PlaylistView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistView+Toolbar.swift"; sourceTree = "<group>"; };
 		3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTip.swift; sourceTree = "<group>"; };
@@ -239,6 +236,7 @@
 		3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugTokenWidget.swift; sourceTree = "<group>"; };
 		3A442C012B4844A6008FECE2 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A442C092B485E56008FECE2 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		3A58F8302B5EB5FC00421D08 /* NowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
 		3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+IsLight.swift"; sourceTree = "<group>"; };
 		3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingSheet+Queue.swift"; sourceTree = "<group>"; };
 		3A6F50A62AACA3D600FC8A29 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -333,7 +331,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A58F83A2B5EB94E00421D08 /* UIImageColors in Frameworks */,
 				3A882AC32B5A75A700567106 /* AFOfflineKit in Frameworks */,
+				3A58F8342B5EB7EA00421D08 /* FluidGradient in Frameworks */,
 				3ACE7ADB2B5A59BC0088D4E2 /* AFBaseKit in Frameworks */,
 				3ACE7ADD2B5A59BF0088D4E2 /* AFPlaybackKit in Frameworks */,
 				3A882AD42B5A7DAE00567106 /* NukeUI in Frameworks */,
@@ -356,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A844DF42B398C5F0021BC63 /* AFBaseKit in Frameworks */,
+				3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */,
 				3A844DF62B398C5F0021BC63 /* AFOfflineKit in Frameworks */,
 				3A844DF82B398C5F0021BC63 /* AFPlaybackKit in Frameworks */,
 				3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */,
@@ -386,7 +387,6 @@
 				3A8B99432AAA089F004AAA7B /* Sliders */,
 				3A98A02C2AABA35700EA84CF /* Fallback */,
 				3ADE8EA52AA94637009826A3 /* NowPlaying */,
-				3A2B28F22B4379ED00DF9731 /* FluidGradient */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -435,18 +435,6 @@
 			path = Playlist;
 			sourceTree = "<group>";
 		};
-		3A2B28F22B4379ED00DF9731 /* FluidGradient */ = {
-			isa = PBXGroup;
-			children = (
-				3A2B28F32B437A0700DF9731 /* BlobLayer.swift */,
-				3A2B28F52B437A3F00DF9731 /* CGPoint+Extensions.swift */,
-				3A2B28F72B437A6000DF9731 /* FluidGradient.swift */,
-				3A2B28F92B437A7300DF9731 /* FluidGradientView.swift */,
-				3A2B28FB2B437A8100DF9731 /* ResizableLayer.swift */,
-			);
-			path = FluidGradient;
-			sourceTree = "<group>";
-		};
 		3A2B932D2B00C79D00638AE9 /* Tips */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,6 +475,23 @@
 				3A442C012B4844A6008FECE2 /* Entitlements.entitlements */,
 			);
 			path = "Widget Extension";
+			sourceTree = "<group>";
+		};
+		3A58F82F2B5EB3A000421D08 /* Tracks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tracks;
+			sourceTree = "<group>";
+		};
+		3A58F8382B5EB92E00421D08 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */,
+				3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */,
+				3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		3A6FC1F52ACC0BE30070301B /* Intents */ = {
@@ -543,6 +548,7 @@
 		3A882ABF2B5A746900567106 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3A58F82F2B5EB3A000421D08 /* Tracks */,
 				3ACD23B82B5ABA7D0047D8F7 /* Util */,
 				3A882ACE2B5A78AC00567106 /* Row */,
 			);
@@ -630,19 +636,10 @@
 		3A98A0332AABA48D00EA84CF /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */,
 				3AB6979F2B386B20009000DD /* LibraryDataProviders */,
 				3ADE8E952AA92B03009826A3 /* Extensions */,
 			);
 			path = Util;
-			sourceTree = "<group>";
-		};
-		3A98E00B2B5C3EED00B96317 /* PlaylistView */ = {
-			isa = PBXGroup;
-			children = (
-				3A98E00C2B5C3F0200B96317 /* PlaylistView.swift */,
-			);
-			path = PlaylistView;
 			sourceTree = "<group>";
 		};
 		3AAF0DED2B4960EF0032DEFF /* Siri Extension */ = {
@@ -681,6 +678,7 @@
 			isa = PBXGroup;
 			children = (
 				3A8286492AEC0D3400384BC9 /* README.md */,
+				3A58F8382B5EB92E00421D08 /* Shared */,
 				3AEB32192AA7EC3C00853210 /* iOS */,
 				3A73FF6F2B540B4C00933AE7 /* tvOS */,
 				3AAF0DED2B4960EF0032DEFF /* Siri Extension */,
@@ -742,8 +740,9 @@
 		3ACE7ADF2B5A59FC0088D4E2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3A98E00B2B5C3EED00B96317 /* PlaylistView */,
+				3A98E00C2B5C3F0200B96317 /* PlaylistView.swift */,
 				3ACE7AE02B5A5A070088D4E2 /* LoginView.swift */,
+				3A58F8302B5EB5FC00421D08 /* NowPlayingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -752,8 +751,6 @@
 			isa = PBXGroup;
 			children = (
 				3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */,
-				3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */,
-				3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
 			);
 			path = Extensions;
@@ -900,6 +897,8 @@
 				3ACE7ADC2B5A59BF0088D4E2 /* AFPlaybackKit */,
 				3A882AC22B5A75A700567106 /* AFOfflineKit */,
 				3A882AD32B5A7DAE00567106 /* NukeUI */,
+				3A58F8332B5EB7EA00421D08 /* FluidGradient */,
+				3A58F8392B5EB94E00421D08 /* UIImageColors */,
 			);
 			productName = tvOS;
 			productReference = 3A73FF6E2B540B4C00933AE7 /* AmpFin.app */;
@@ -951,6 +950,7 @@
 				3A844DF32B398C5F0021BC63 /* AFBaseKit */,
 				3A844DF52B398C5F0021BC63 /* AFOfflineKit */,
 				3A844DF72B398C5F0021BC63 /* AFPlaybackKit */,
+				3A58F8352B5EB7F900421D08 /* FluidGradient */,
 			);
 			productName = JellyfinMusic;
 			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* AmpFin.app */;
@@ -993,6 +993,7 @@
 			packageReferences = (
 				3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */,
 				3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */,
+				3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 			);
 			productRefGroup = 3ABAFCAB2AA7D6C40011BFD6 /* Products */;
 			projectDirPath = "";
@@ -1137,9 +1138,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A882AC52B5A75DC00567106 /* NavigationRoot+ListenNow.swift in Sources */,
+				3A58F8372B5EB8F200421D08 /* ImageColors.swift in Sources */,
 				3ACD23BA2B5ABAA10047D8F7 /* NavigationRoot+NowPlaying.swift in Sources */,
 				3A882AC72B5A761D00567106 /* NavigationRoot+Albums.swift in Sources */,
+				3A58F83C2B5EB99D00421D08 /* UIImage+IsLight.swift in Sources */,
 				3A98E00F2B5C44DA00B96317 /* Double+Format.swift in Sources */,
+				3A58F8312B5EB5FC00421D08 /* NowPlayingView.swift in Sources */,
 				3ACE7AE12B5A5A070088D4E2 /* LoginView.swift in Sources */,
 				3ACD23BE2B5ABBCC0047D8F7 /* LargePlaylistItem.swift in Sources */,
 				3A882AC92B5A763500567106 /* NavigationRoot+Playlists.swift in Sources */,
@@ -1149,6 +1153,7 @@
 				3ACD23B52B5AB8BF0047D8F7 /* RowTitle.swift in Sources */,
 				3A73FF732B540B4C00933AE7 /* ContentView.swift in Sources */,
 				3ACD23C22B5ACA830047D8F7 /* Array+Get.swift in Sources */,
+				3A58F83B2B5EB99400421D08 /* UIColor+IsLight.swift in Sources */,
 				3A882AD22B5A7DA000567106 /* ItemImage.swift in Sources */,
 				3A882ACB2B5A766A00567106 /* NavigationRoot+Tracks.swift in Sources */,
 				3A98E00D2B5C3F0200B96317 /* PlaylistView.swift in Sources */,
@@ -1180,7 +1185,6 @@
 				3A21CF0F2B48C3140068ACB7 /* Intents.intentdefinition in Sources */,
 				3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */,
 				3A36A5A22ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift in Sources */,
-				3A2B28F62B437A3F00DF9731 /* CGPoint+Extensions.swift in Sources */,
 				3AEB323B2AA7FF1100853210 /* NavigationRoot.swift in Sources */,
 				3A98A0322AABA3DF00EA84CF /* ArtistLoadView.swift in Sources */,
 				3A6FC1F32ACC0BDB0070301B /* SpotlightHelper.swift in Sources */,
@@ -1191,8 +1195,6 @@
 				3A36A5A02ADEF99700D83BE7 /* AlbumView+Additional.swift in Sources */,
 				3AEB32332AA7EC3C00853210 /* LoginView.swift in Sources */,
 				3A7939022B387851001B3B3D /* OnlineLibraryDataProivder.swift in Sources */,
-				3A2B28F82B437A6000DF9731 /* FluidGradient.swift in Sources */,
-				3A2B28FA2B437A7300DF9731 /* FluidGradientView.swift in Sources */,
 				3AEB32402AA7FFF100853210 /* NavigationRoot+Library.swift in Sources */,
 				3A2B28E52B433C8A00DF9731 /* PlaylistsView.swift in Sources */,
 				3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */,
@@ -1200,7 +1202,6 @@
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,
 				3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */,
 				3ADE8EA72AA9464D009826A3 /* NowPlayingBarModifier.swift in Sources */,
-				3A2B28FC2B437A8100DF9731 /* ResizableLayer.swift in Sources */,
 				3A234E1E2AA8E6F600197AA7 /* PlayButtonStyle.swift in Sources */,
 				3A2B28FE2B437EFD00DF9731 /* ImageColors.swift in Sources */,
 				3A1CBC192B0D284200855A70 /* NavigationRoot+Notifications.swift in Sources */,
@@ -1221,7 +1222,6 @@
 				3A5B470F2B3B37A60075118F /* UIImage+IsLight.swift in Sources */,
 				3A98A0302AABA37B00EA84CF /* ErrorView.swift in Sources */,
 				3ADE8EA42AA94142009826A3 /* UINavigationController+Gesture.swift in Sources */,
-				3A2B28F42B437A0700DF9731 /* BlobLayer.swift in Sources */,
 				3A234E052AA88D6000197AA7 /* TracksView.swift in Sources */,
 				3AEB32322AA7EC3C00853210 /* LargeButtonStyle.swift in Sources */,
 				3AEB32312AA7EC3C00853210 /* ContentView.swift in Sources */,
@@ -1715,6 +1715,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Cindori/FluidGradient.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/FelixHerrmann/UIImageColors.git";
@@ -1737,6 +1745,21 @@
 		3A442BFF2B48410A008FECE2 /* AFBaseKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AFBaseKit;
+		};
+		3A58F8332B5EB7EA00421D08 /* FluidGradient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */;
+			productName = FluidGradient;
+		};
+		3A58F8352B5EB7F900421D08 /* FluidGradient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */;
+			productName = FluidGradient;
+		};
+		3A58F8392B5EB94E00421D08 /* UIImageColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */;
+			productName = UIImageColors;
 		};
 		3A73FF5E2B52D39A00933AE7 /* AFBaseKit */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -20,7 +20,7 @@ struct NavigationRoot: View {
                 .tag(Tab.playlists)
             TracksView()
                 .tag(Tab.tracks)
-            NowPlayingView()
+            NowPlayingTabView()
                 .tag(Tab.nowPlaying)
             SearchView()
                 .tag(Tab.search)
