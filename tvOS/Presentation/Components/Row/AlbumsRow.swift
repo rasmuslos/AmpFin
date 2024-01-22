@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 struct AlbumsRow: View {
     let albums: [Album]

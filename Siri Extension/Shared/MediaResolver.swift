@@ -7,9 +7,9 @@
 
 import Foundation
 import Intents
-import AFBaseKit
-import AFOfflineKit
-import AFPlaybackKit
+import AFBase
+import AFOffline
+import AFPlayback
 
 struct MediaResolver {
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WidgetKit
-import AFBaseKit
+import AFBase
 
 struct DebugTokenWidget: Widget {
     var body: some WidgetConfiguration {

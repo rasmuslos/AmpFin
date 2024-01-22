@@ -7,7 +7,7 @@
 
 import SwiftUI
 import UIImageColors
-import AFBaseKit
+import AFBase
 
 struct NowPlayingSheet: View {
     @Environment(\.presentationMode) var presentationMode

@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 public protocol LibraryDataProvider {
     var supportsArtistLookup: Bool { get }

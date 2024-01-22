@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 struct PlaylistView: View {
     let playlist: Playlist
@@ -46,39 +46,7 @@ struct PlaylistView: View {
                     Spacer()
                 }
             } else {
-                ScrollView {
-                    LazyVStack {
-                        ForEach(tracks) { track in
-                            Button {
-                                
-                            } label: {
-                                HStack(spacing: 40) {
-                                    ItemImage(cover: track.cover)
-                                        .frame(width: 75)
-                                    
-                                    VStack(alignment: .leading) {
-                                        Text(track.name)
-                                        
-                                        if let artistName = track.artistName {
-                                            Text(artistName)
-                                                .foregroundStyle(.secondary)
-                                                .font(.subheadline)
-                                        }
-                                    }
-                                    
-                                    Spacer()
-                                    
-                                    Text(track.runtime.timeLeft())
-                                        .fontDesign(.rounded)
-                                        .foregroundStyle(.secondary)
-                                }
-                            }
-                            .font(.body)
-                            .buttonStyle(.plain)
-                        }
-                    }
-                    .padding(.horizontal, 80)
-                }
+                TracksList(tracks: tracks, container: playlist)
             }
         }
         .ignoresSafeArea(edges: .trailing)

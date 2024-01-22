@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import AFBaseKit
-import AFPlaybackKit
+import AFBase
+import AFPlayback
 
 struct PlaybackIndicator<Placeholder: View>: View {
     let track: Track

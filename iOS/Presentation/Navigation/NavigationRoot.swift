@@ -7,8 +7,8 @@
 
 import SwiftUI
 import CoreSpotlight
-import AFBaseKit
-import AFOfflineKit
+import AFBase
+import AFOffline
 
 struct NavigationRoot: View {
     @State var activeTab: Tab = Self.getLastActiveTab()

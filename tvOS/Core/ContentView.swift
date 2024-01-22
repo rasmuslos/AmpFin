@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 struct ContentView: View {
     @State var isAuthorized = JellyfinClient.shared.isAuthorized

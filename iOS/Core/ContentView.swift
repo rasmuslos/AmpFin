@@ -8,14 +8,12 @@
 import SwiftUI
 import SwiftData
 import Intents
-import AFBaseKit
-import AFOfflineKit
-import AFPlaybackKit
+import AFBase
+import AFOffline
+import AFPlayback
 import CoreSpotlight
 
 struct ContentView: View {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
     @State var online = JellyfinClient.shared.isOnline
     @State var isAuthorized = JellyfinClient.shared.isAuthorized
     

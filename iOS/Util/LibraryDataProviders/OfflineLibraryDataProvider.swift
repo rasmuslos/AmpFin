@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import AFBaseKit
-import AFOfflineKit
+import AFBase
+import AFOffline
 
 public struct OfflineLibraryDataProvider: LibraryDataProvider {
     public var supportsArtistLookup: Bool = false

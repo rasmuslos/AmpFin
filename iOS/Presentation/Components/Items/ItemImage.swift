@@ -7,7 +7,7 @@
 
 import SwiftUI
 import NukeUI
-import AFBaseKit
+import AFBase
 
 struct ItemImage: View {
     let cover: Item.Cover?

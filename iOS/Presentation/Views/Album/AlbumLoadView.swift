@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 struct AlbumLoadView: View {
     @Environment(\.libraryDataProvider) var dataProvider

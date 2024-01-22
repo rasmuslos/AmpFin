@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import AFBaseKit
-import AFPlaybackKit
+import AFBase
+import AFPlayback
 
 struct SearchView: View {
     @State var query = ""

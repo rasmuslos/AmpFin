@@ -7,7 +7,7 @@
 
 import SwiftUI
 import UIImageColors
-import AFBaseKit
+import AFBase
 
 extension AlbumView {
     struct Header: View {

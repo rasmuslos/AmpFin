@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import AFBaseKit
-import AFOfflineKit
+import AFBase
+import AFOffline
 
 extension AlbumView {
     struct ToolbarModifier: ViewModifier {

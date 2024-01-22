@@ -17,6 +17,9 @@
         }
       }
     },
+    "favorite" : {
+
+    },
     "login.error.failed" : {
       "localizations" : {
         "de" : {
@@ -243,6 +246,18 @@
           }
         }
       }
+    },
+    "queue.last" : {
+
+    },
+    "queue.mix" : {
+
+    },
+    "queue.next" : {
+
+    },
+    "queue.now" : {
+
     },
     "row.favorites.albums" : {
       "localizations" : {

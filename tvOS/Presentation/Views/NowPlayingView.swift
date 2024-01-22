@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
-import AFBaseKit
-import AFPlaybackKit
+import AFBase
+import AFPlayback
 import FluidGradient
 
 struct NowPlayingView: View {
     @State var isPlaying = AudioPlayer.current.isPlaying()
     @State var currentTrack: Track?
     
+    @State var tabBarVisible = false
     @State var imageColors = ImageColors()
     
     var body: some View {
@@ -27,7 +28,8 @@ struct NowPlayingView: View {
                             .frame(width: 500)
                         
                         Text(currentTrack.name)
-                            .font(.headline)
+                            .bold()
+                            .font(.body)
                             .overlay(alignment: .leadingFirstTextBaseline) {
                                 Image(systemName: "waveform")
                                     .foregroundColor(.secondary)
@@ -45,7 +47,10 @@ struct NowPlayingView: View {
                 }
                 .ignoresSafeArea(edges: .all)
                 .frame(maxWidth: .infinity)
-                .toolbar(.hidden, for: .tabBar)
+                .toolbar(tabBarVisible ? .visible : .hidden, for: .tabBar)
+                .onExitCommand {
+                    tabBarVisible = true
+                }
             } else {
                 Text("playback.empty")
                     .font(.title3.smallCaps())
@@ -61,6 +66,7 @@ struct NowPlayingView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playPause)) { _ in
             isPlaying = AudioPlayer.current.isPlaying()
+            tabBarVisible = isPlaying
         }
         .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange)) { _ in
             currentTrack = AudioPlayer.current.nowPlaying

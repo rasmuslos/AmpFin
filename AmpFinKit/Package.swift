@@ -10,24 +10,24 @@ let package = Package(
         .tvOS(.v17),
     ],
     products: [
-        .library(name: "AFBaseKit", targets: ["AFBaseKit", "AFExtensionKit"]),
-        .library(name: "AFOfflineKit", targets: ["AFOfflineKit"]),
-        .library(name: "AFPlaybackKit", targets: ["AFPlaybackKit"]),
+        .library(name: "AFBase", targets: ["AFBase", "AFExtension"]),
+        .library(name: "AFOffline", targets: ["AFOffline"]),
+        .library(name: "AFPlayback", targets: ["AFPlayback"]),
     ],
     dependencies: [
         .package(url: "https://github.com/daltoniam/Starscream.git", from: "4.0.0")
     ],
     targets: [
         // Remove the underscore to disable app groups for sideloading
-        .target(name: "AFBaseKit", dependencies: [.byName(name: "Starscream")], swiftSettings: [.define("_DISABLE_APP_GROUP")]),
-        .target(name: "AFExtensionKit", dependencies: [.byName(name: "AFBaseKit"), .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))]),
-        .target(name: "AFOfflineKit", dependencies: [.byName(name: "AFBaseKit")], swiftSettings: [.define("_DISABLE_APP_GROUP")]),
+        .target(name: "AFBase", dependencies: [.byName(name: "Starscream")], swiftSettings: [.define("_DISABLE_APP_GROUP")]),
+        .target(name: "AFExtension", dependencies: [.byName(name: "AFBase"), .byName(name: "AFOffline", condition: .when(platforms: [.iOS]))]),
+        .target(name: "AFOffline", dependencies: [.byName(name: "AFBase")], swiftSettings: [.define("_DISABLE_APP_GROUP")]),
         .target(
-            name: "AFPlaybackKit",
+            name: "AFPlayback",
             dependencies: [
-                .byName(name: "AFBaseKit"),
-                .byName(name: "AFExtensionKit"),
-                .byName(name: "AFOfflineKit", condition: .when(platforms: [.iOS]))],
+                .byName(name: "AFBase"),
+                .byName(name: "AFExtension"),
+                .byName(name: "AFOffline", condition: .when(platforms: [.iOS]))],
             resources: [.process("RemoteAudioEndpoint/silence.wav")]),
     ]
 )

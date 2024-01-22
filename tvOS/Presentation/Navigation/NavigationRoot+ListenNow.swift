@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 extension NavigationRoot {
     struct ListenNowView: View {

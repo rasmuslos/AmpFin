@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 struct SortSelector: View {
     @Environment(\.libraryDataProvider) var dataProvider

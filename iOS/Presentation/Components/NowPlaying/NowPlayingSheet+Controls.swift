@@ -8,8 +8,8 @@
 import SwiftUI
 import AVKit
 import MediaPlayer
-import AFBaseKit
-import AFPlaybackKit
+import AFBase
+import AFPlayback
 
 extension NowPlayingSheet {
     struct Controls: View {

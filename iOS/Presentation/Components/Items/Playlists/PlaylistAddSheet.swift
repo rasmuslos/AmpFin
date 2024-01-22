@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 struct PlaylistAddSheet: View {
     @Environment(\.dismiss) var dismiss

@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import AFBaseKit
-import AFPlaybackKit
+import AFBase
+import AFPlayback
 
 struct LibraryView: View {
     @Environment(\.defaultMinListRowHeight) var minRowHeight

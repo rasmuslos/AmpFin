@@ -6,8 +6,8 @@
 //
 
 import Intents
-import AFBaseKit
-import AFPlaybackKit
+import AFBase
+import AFPlayback
 
 class IntentHandler: INExtension {
     override func handler(for intent: INIntent) -> Any {

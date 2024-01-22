@@ -9,8 +9,8 @@ import Foundation
 import CoreSpotlight
 import OSLog
 import Intents
-import AFBaseKit
-import AFOfflineKit
+import AFBase
+import AFOffline
 
 struct SpotlightHelper {
     static let waitTime: Double = 60 * 60 * 48

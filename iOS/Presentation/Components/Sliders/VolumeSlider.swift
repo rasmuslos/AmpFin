@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFPlaybackKit
+import AFPlayback
 import AVKit
 
 struct VolumeSlider: View {

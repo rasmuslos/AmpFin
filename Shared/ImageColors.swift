@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import AFBaseKit
+import AFBase
 import UIImageColors
 
 struct ImageColors {

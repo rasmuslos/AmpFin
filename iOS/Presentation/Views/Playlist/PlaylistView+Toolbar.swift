@@ -7,9 +7,9 @@
 
 import Foundation
 import SwiftUI
-import AFBaseKit
-import AFOfflineKit
-import AFPlaybackKit
+import AFBase
+import AFOffline
+import AFPlayback
 
 extension PlaylistView {
     struct ToolbarModifier: ViewModifier {

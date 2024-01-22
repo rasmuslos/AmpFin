@@ -54,7 +54,8 @@
 		3A442BF62B483C0D008FECE2 /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A442BE32B483C0B008FECE2 /* Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A442BFC2B483EC9008FECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A442BFB2B483EC9008FECE2 /* Localizable.xcstrings */; };
 		3A442BFE2B484026008FECE2 /* DebugTokenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */; };
-		3A442C002B48410A008FECE2 /* AFBaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A442BFF2B48410A008FECE2 /* AFBaseKit */; };
+		3A4CC6742B5EC2BC00C9356E /* TrackListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4CC6732B5EC2BC00C9356E /* TrackListRow.swift */; };
+		3A4CC6762B5EC34000C9356E /* TracksList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4CC6752B5EC34000C9356E /* TracksList.swift */; };
 		3A58F8312B5EB5FC00421D08 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A58F8302B5EB5FC00421D08 /* NowPlayingView.swift */; };
 		3A58F8342B5EB7EA00421D08 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = 3A58F8332B5EB7EA00421D08 /* FluidGradient */; };
 		3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = 3A58F8352B5EB7F900421D08 /* FluidGradient */; };
@@ -62,6 +63,15 @@
 		3A58F83A2B5EB94E00421D08 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3A58F8392B5EB94E00421D08 /* UIImageColors */; };
 		3A58F83B2B5EB99400421D08 /* UIColor+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E972AA92B47009826A3 /* UIColor+IsLight.swift */; };
 		3A58F83C2B5EB99D00421D08 /* UIImage+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */; };
+		3A5A4DC22B5F0BE700E72E8B /* AFBase in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DC12B5F0BE700E72E8B /* AFBase */; };
+		3A5A4DC42B5F0BE900E72E8B /* AFPlayback in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DC32B5F0BE900E72E8B /* AFPlayback */; };
+		3A5A4DC62B5F0BF200E72E8B /* AFBase in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DC52B5F0BF200E72E8B /* AFBase */; };
+		3A5A4DC82B5F0BF200E72E8B /* AFOffline in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DC72B5F0BF200E72E8B /* AFOffline */; };
+		3A5A4DCA2B5F0BF200E72E8B /* AFPlayback in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DC92B5F0BF200E72E8B /* AFPlayback */; };
+		3A5A4DCC2B5F0C0D00E72E8B /* AFBase in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DCB2B5F0C0D00E72E8B /* AFBase */; };
+		3A5A4DCE2B5F0C1800E72E8B /* AFBase in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DCD2B5F0C1800E72E8B /* AFBase */; };
+		3A5A4DD02B5F0C1800E72E8B /* AFOffline in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DCF2B5F0C1800E72E8B /* AFOffline */; };
+		3A5A4DD22B5F0C1800E72E8B /* AFPlayback in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DD12B5F0C1800E72E8B /* AFPlayback */; };
 		3A5B470F2B3B37A60075118F /* UIImage+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */; };
 		3A6565D72AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */; };
 		3A6F50A72AACA3D600FC8A29 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6F50A62AACA3D600FC8A29 /* SearchView.swift */; };
@@ -71,9 +81,6 @@
 		3A6FC1F32ACC0BDB0070301B /* SpotlightHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6FC1F12ACC0BDA0070301B /* SpotlightHelper.swift */; };
 		3A73FF5C2B52D0D200933AE7 /* MediaResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */; };
 		3A73FF5D2B52D0D500933AE7 /* MediaResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF5B2B52D0D200933AE7 /* MediaResolver.swift */; };
-		3A73FF5F2B52D39A00933AE7 /* AFBaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF5E2B52D39A00933AE7 /* AFBaseKit */; };
-		3A73FF612B52D39A00933AE7 /* AFOfflineKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF602B52D39A00933AE7 /* AFOfflineKit */; };
-		3A73FF632B52D39A00933AE7 /* AFPlaybackKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A73FF622B52D39A00933AE7 /* AFPlaybackKit */; };
 		3A73FF712B540B4C00933AE7 /* tvOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF702B540B4C00933AE7 /* tvOSApp.swift */; };
 		3A73FF732B540B4C00933AE7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73FF722B540B4C00933AE7 /* ContentView.swift */; };
 		3A73FF752B540B4E00933AE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A73FF742B540B4E00933AE7 /* Assets.xcassets */; };
@@ -83,10 +90,6 @@
 		3A7939012B387851001B3B3D /* MockLibraryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A22B386B20009000DD /* MockLibraryDataProvider.swift */; };
 		3A7939022B387851001B3B3D /* OnlineLibraryDataProivder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A02B386B20009000DD /* OnlineLibraryDataProivder.swift */; };
 		3A844DF22B398C150021BC63 /* AmpFinKit in Resources */ = {isa = PBXBuildFile; fileRef = 3A844DF12B398C150021BC63 /* AmpFinKit */; };
-		3A844DF42B398C5F0021BC63 /* AFBaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A844DF32B398C5F0021BC63 /* AFBaseKit */; };
-		3A844DF62B398C5F0021BC63 /* AFOfflineKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A844DF52B398C5F0021BC63 /* AFOfflineKit */; };
-		3A844DF82B398C5F0021BC63 /* AFPlaybackKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A844DF72B398C5F0021BC63 /* AFPlaybackKit */; settings = {ATTRIBUTES = (Required, ); }; };
-		3A882AC32B5A75A700567106 /* AFOfflineKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A882AC22B5A75A700567106 /* AFOfflineKit */; };
 		3A882AC52B5A75DC00567106 /* NavigationRoot+ListenNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A882AC42B5A75DC00567106 /* NavigationRoot+ListenNow.swift */; };
 		3A882AC72B5A761D00567106 /* NavigationRoot+Albums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A882AC62B5A761D00567106 /* NavigationRoot+Albums.swift */; };
 		3A882AC92B5A763500567106 /* NavigationRoot+Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A882AC82B5A763500567106 /* NavigationRoot+Playlists.swift */; };
@@ -125,8 +128,6 @@
 		3ACD23BC2B5ABAF20047D8F7 /* LargePlaylistRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACD23BB2B5ABAF20047D8F7 /* LargePlaylistRow.swift */; };
 		3ACD23BE2B5ABBCC0047D8F7 /* LargePlaylistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACD23BD2B5ABBCC0047D8F7 /* LargePlaylistItem.swift */; };
 		3ACD23C22B5ACA830047D8F7 /* Array+Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACD23C12B5ACA830047D8F7 /* Array+Get.swift */; };
-		3ACE7ADB2B5A59BC0088D4E2 /* AFBaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3ACE7ADA2B5A59BC0088D4E2 /* AFBaseKit */; };
-		3ACE7ADD2B5A59BF0088D4E2 /* AFPlaybackKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3ACE7ADC2B5A59BF0088D4E2 /* AFPlaybackKit */; };
 		3ACE7AE12B5A5A070088D4E2 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACE7AE02B5A5A070088D4E2 /* LoginView.swift */; };
 		3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */; };
 		3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3ADE8E932AA9275C009826A3 /* UIImageColors */; };
@@ -236,6 +237,9 @@
 		3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugTokenWidget.swift; sourceTree = "<group>"; };
 		3A442C012B4844A6008FECE2 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A442C092B485E56008FECE2 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		3A4CC6732B5EC2BC00C9356E /* TrackListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListRow.swift; sourceTree = "<group>"; };
+		3A4CC6752B5EC34000C9356E /* TracksList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksList.swift; sourceTree = "<group>"; };
+		3A4CC6772B5ECA4900C9356E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3A58F8302B5EB5FC00421D08 /* NowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
 		3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+IsLight.swift"; sourceTree = "<group>"; };
 		3A6565D62AAAADC400C1FBE9 /* NowPlayingSheet+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingSheet+Queue.swift"; sourceTree = "<group>"; };
@@ -322,8 +326,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A442BE72B483C0B008FECE2 /* SwiftUI.framework in Frameworks */,
-				3A442C002B48410A008FECE2 /* AFBaseKit in Frameworks */,
 				3A442BE52B483C0B008FECE2 /* WidgetKit.framework in Frameworks */,
+				3A5A4DCC2B5F0C0D00E72E8B /* AFBase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,11 +335,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A5A4DC22B5F0BE700E72E8B /* AFBase in Frameworks */,
+				3A5A4DC42B5F0BE900E72E8B /* AFPlayback in Frameworks */,
 				3A58F83A2B5EB94E00421D08 /* UIImageColors in Frameworks */,
-				3A882AC32B5A75A700567106 /* AFOfflineKit in Frameworks */,
 				3A58F8342B5EB7EA00421D08 /* FluidGradient in Frameworks */,
-				3ACE7ADB2B5A59BC0088D4E2 /* AFBaseKit in Frameworks */,
-				3ACE7ADD2B5A59BF0088D4E2 /* AFPlaybackKit in Frameworks */,
 				3A882AD42B5A7DAE00567106 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -344,10 +347,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A73FF612B52D39A00933AE7 /* AFOfflineKit in Frameworks */,
+				3A5A4DD22B5F0C1800E72E8B /* AFPlayback in Frameworks */,
+				3A5A4DCE2B5F0C1800E72E8B /* AFBase in Frameworks */,
+				3A5A4DD02B5F0C1800E72E8B /* AFOffline in Frameworks */,
 				3AAF0DEC2B4960EF0032DEFF /* Intents.framework in Frameworks */,
-				3A73FF5F2B52D39A00933AE7 /* AFBaseKit in Frameworks */,
-				3A73FF632B52D39A00933AE7 /* AFPlaybackKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,12 +358,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A844DF42B398C5F0021BC63 /* AFBaseKit in Frameworks */,
+				3A5A4DC62B5F0BF200E72E8B /* AFBase in Frameworks */,
 				3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */,
-				3A844DF62B398C5F0021BC63 /* AFOfflineKit in Frameworks */,
-				3A844DF82B398C5F0021BC63 /* AFPlaybackKit in Frameworks */,
 				3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */,
 				3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */,
+				3A5A4DCA2B5F0BF200E72E8B /* AFPlayback in Frameworks */,
+				3A5A4DC82B5F0BF200E72E8B /* AFOffline in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +483,8 @@
 		3A58F82F2B5EB3A000421D08 /* Tracks */ = {
 			isa = PBXGroup;
 			children = (
+				3A4CC6732B5EC2BC00C9356E /* TrackListRow.swift */,
+				3A4CC6752B5EC34000C9356E /* TracksList.swift */,
 			);
 			path = Tracks;
 			sourceTree = "<group>";
@@ -515,6 +520,7 @@
 		3A73FF6F2B540B4C00933AE7 /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
+				3A4CC6772B5ECA4900C9356E /* Info.plist */,
 				3ACD23BF2B5ACA710047D8F7 /* Util */,
 				3A73FF7C2B540BAE00933AE7 /* Core */,
 				3ACE7ADE2B5A59F10088D4E2 /* Presentation */,
@@ -740,8 +746,8 @@
 		3ACE7ADF2B5A59FC0088D4E2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3A98E00C2B5C3F0200B96317 /* PlaylistView.swift */,
 				3ACE7AE02B5A5A070088D4E2 /* LoginView.swift */,
+				3A98E00C2B5C3F0200B96317 /* PlaylistView.swift */,
 				3A58F8302B5EB5FC00421D08 /* NowPlayingView.swift */,
 			);
 			path = Views;
@@ -872,7 +878,7 @@
 			);
 			name = "Widget Extension";
 			packageProductDependencies = (
-				3A442BFF2B48410A008FECE2 /* AFBaseKit */,
+				3A5A4DCB2B5F0C0D00E72E8B /* AFBase */,
 			);
 			productName = widgetsExtension;
 			productReference = 3A442BE32B483C0B008FECE2 /* Widget Extension.appex */;
@@ -893,12 +899,11 @@
 			);
 			name = tvOS;
 			packageProductDependencies = (
-				3ACE7ADA2B5A59BC0088D4E2 /* AFBaseKit */,
-				3ACE7ADC2B5A59BF0088D4E2 /* AFPlaybackKit */,
-				3A882AC22B5A75A700567106 /* AFOfflineKit */,
 				3A882AD32B5A7DAE00567106 /* NukeUI */,
 				3A58F8332B5EB7EA00421D08 /* FluidGradient */,
 				3A58F8392B5EB94E00421D08 /* UIImageColors */,
+				3A5A4DC12B5F0BE700E72E8B /* AFBase */,
+				3A5A4DC32B5F0BE900E72E8B /* AFPlayback */,
 			);
 			productName = tvOS;
 			productReference = 3A73FF6E2B540B4C00933AE7 /* AmpFin.app */;
@@ -919,9 +924,9 @@
 			);
 			name = "Siri Extension";
 			packageProductDependencies = (
-				3A73FF5E2B52D39A00933AE7 /* AFBaseKit */,
-				3A73FF602B52D39A00933AE7 /* AFOfflineKit */,
-				3A73FF622B52D39A00933AE7 /* AFPlaybackKit */,
+				3A5A4DCD2B5F0C1800E72E8B /* AFBase */,
+				3A5A4DCF2B5F0C1800E72E8B /* AFOffline */,
+				3A5A4DD12B5F0C1800E72E8B /* AFPlayback */,
 			);
 			productName = "Siri Extension";
 			productReference = 3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */;
@@ -947,10 +952,10 @@
 			packageProductDependencies = (
 				3ADE8E932AA9275C009826A3 /* UIImageColors */,
 				3AE1B0E22ABCDCE80052C8AA /* NukeUI */,
-				3A844DF32B398C5F0021BC63 /* AFBaseKit */,
-				3A844DF52B398C5F0021BC63 /* AFOfflineKit */,
-				3A844DF72B398C5F0021BC63 /* AFPlaybackKit */,
 				3A58F8352B5EB7F900421D08 /* FluidGradient */,
+				3A5A4DC52B5F0BF200E72E8B /* AFBase */,
+				3A5A4DC72B5F0BF200E72E8B /* AFOffline */,
+				3A5A4DC92B5F0BF200E72E8B /* AFPlayback */,
 			);
 			productName = JellyfinMusic;
 			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* AmpFin.app */;
@@ -1155,10 +1160,12 @@
 				3ACD23C22B5ACA830047D8F7 /* Array+Get.swift in Sources */,
 				3A58F83B2B5EB99400421D08 /* UIColor+IsLight.swift in Sources */,
 				3A882AD22B5A7DA000567106 /* ItemImage.swift in Sources */,
+				3A4CC6742B5EC2BC00C9356E /* TrackListRow.swift in Sources */,
 				3A882ACB2B5A766A00567106 /* NavigationRoot+Tracks.swift in Sources */,
 				3A98E00D2B5C3F0200B96317 /* PlaylistView.swift in Sources */,
 				3A882AD02B5A78B500567106 /* AlbumsRow.swift in Sources */,
 				3A73FF712B540B4C00933AE7 /* tvOSApp.swift in Sources */,
+				3A4CC6762B5EC34000C9356E /* TracksList.swift in Sources */,
 				3A8B44222B5A68EB005DF9B7 /* NavigationRoot.swift in Sources */,
 				3A98E0112B5C450200B96317 /* String+Padding.swift in Sources */,
 				3A882ACD2B5A76B900567106 /* NavigationRoot+Search.swift in Sources */,
@@ -1365,6 +1372,7 @@
 				CODE_SIGN_ENTITLEMENTS = tvOS/tvOS.entitlements;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tvOS/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
@@ -1389,6 +1397,7 @@
 				CODE_SIGN_ENTITLEMENTS = tvOS/tvOS.entitlements;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tvOS/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
@@ -1742,10 +1751,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3A442BFF2B48410A008FECE2 /* AFBaseKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AFBaseKit;
-		};
 		3A58F8332B5EB7EA00421D08 /* FluidGradient */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */;
@@ -1761,46 +1766,46 @@
 			package = 3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */;
 			productName = UIImageColors;
 		};
-		3A73FF5E2B52D39A00933AE7 /* AFBaseKit */ = {
+		3A5A4DC12B5F0BE700E72E8B /* AFBase */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AFBaseKit;
+			productName = AFBase;
 		};
-		3A73FF602B52D39A00933AE7 /* AFOfflineKit */ = {
+		3A5A4DC32B5F0BE900E72E8B /* AFPlayback */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AFOfflineKit;
+			productName = AFPlayback;
 		};
-		3A73FF622B52D39A00933AE7 /* AFPlaybackKit */ = {
+		3A5A4DC52B5F0BF200E72E8B /* AFBase */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AFPlaybackKit;
+			productName = AFBase;
 		};
-		3A844DF32B398C5F0021BC63 /* AFBaseKit */ = {
+		3A5A4DC72B5F0BF200E72E8B /* AFOffline */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AFBaseKit;
+			productName = AFOffline;
 		};
-		3A844DF52B398C5F0021BC63 /* AFOfflineKit */ = {
+		3A5A4DC92B5F0BF200E72E8B /* AFPlayback */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AFOfflineKit;
+			productName = AFPlayback;
 		};
-		3A844DF72B398C5F0021BC63 /* AFPlaybackKit */ = {
+		3A5A4DCB2B5F0C0D00E72E8B /* AFBase */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AFPlaybackKit;
+			productName = AFBase;
 		};
-		3A882AC22B5A75A700567106 /* AFOfflineKit */ = {
+		3A5A4DCD2B5F0C1800E72E8B /* AFBase */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AFOfflineKit;
+			productName = AFBase;
+		};
+		3A5A4DCF2B5F0C1800E72E8B /* AFOffline */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AFOffline;
+		};
+		3A5A4DD12B5F0C1800E72E8B /* AFPlayback */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AFPlayback;
 		};
 		3A882AD32B5A7DAE00567106 /* NukeUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeUI;
-		};
-		3ACE7ADA2B5A59BC0088D4E2 /* AFBaseKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AFBaseKit;
-		};
-		3ACE7ADC2B5A59BF0088D4E2 /* AFPlaybackKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AFPlaybackKit;
 		};
 		3ADE8E932AA9275C009826A3 /* UIImageColors */ = {
 			isa = XCSwiftPackageProductDependency;

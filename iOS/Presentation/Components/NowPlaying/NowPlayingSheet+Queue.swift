@@ -7,8 +7,8 @@
 
 import SwiftUI
 import TipKit
-import AFBaseKit
-import AFPlaybackKit
+import AFBase
+import AFPlayback
 
 // MARK: Container
 

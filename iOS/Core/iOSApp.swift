@@ -8,8 +8,8 @@
 import SwiftUI
 import SwiftData
 import TipKit
-import AFBaseKit
-import AFOfflineKit
+import AFBase
+import AFOffline
 import CoreSpotlight
 
 @main

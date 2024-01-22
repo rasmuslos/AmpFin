@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBaseKit
+import AFBase
 import FluidGradient
 
 extension PlaylistView {

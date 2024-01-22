@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-import AFBaseKit
-import AFOfflineKit
-import AFPlaybackKit
+import AFBase
+import AFOffline
+import AFPlayback
 
 struct AlbumContextMenuModifier: ViewModifier {
     @Environment(\.libraryDataProvider) var dataProvider

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBaseKit
+import AFBase
 
 struct PlaylistsView: View {
     @Environment(\.libraryDataProvider) var dataProvider

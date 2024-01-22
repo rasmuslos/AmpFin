@@ -8,9 +8,9 @@
 import Foundation
 import Intents
 import OSLog
-import AFBaseKit
-import AFOfflineKit
-import AFPlaybackKit
+import AFBase
+import AFOffline
+import AFPlayback
 
 class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "SiriPlayIntent")
