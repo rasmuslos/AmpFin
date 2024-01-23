@@ -554,14 +554,14 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
-		3A85A2092B600B4400B7D7B4 /* Config */ = {
+		3A85A2092B600B4400B7D7B4 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
 				3A85A20B2B600C4500B7D7B4 /* Base.xcconfig */,
 				3A85A20A2B600B5800B7D7B4 /* Debug.xcconfig */,
 				3A85A2082B600AFF00B7D7B4 /* Release.xcconfig */,
 			);
-			path = Config;
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		3A882ABF2B5A746900567106 /* Components */ = {
@@ -697,7 +697,7 @@
 			isa = PBXGroup;
 			children = (
 				3A8286492AEC0D3400384BC9 /* README.md */,
-				3A85A2092B600B4400B7D7B4 /* Config */,
+				3A85A2092B600B4400B7D7B4 /* Configuration */,
 				3A58F8382B5EB92E00421D08 /* Shared */,
 				3AEB32192AA7EC3C00853210 /* iOS */,
 				3A73FF6F2B540B4C00933AE7 /* tvOS */,

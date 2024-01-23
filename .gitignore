@@ -217,4 +217,4 @@ xcuserdata/
 #
 
 # Debug build configuration:
-Config/Debug.xcconfig 
+Configuration/Debug.xcconfig 
