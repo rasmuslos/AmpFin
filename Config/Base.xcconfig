@@ -1,0 +1,11 @@
+//
+//  Base.xcconfig
+//  AmpFin
+//
+//  Created by Rasmus Krämer on 23.01.24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+MARKETING_VERSION = 1.2.2
