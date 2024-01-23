@@ -253,7 +253,7 @@
 		3A73FF702B540B4C00933AE7 /* tvOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tvOSApp.swift; sourceTree = "<group>"; };
 		3A73FF722B540B4C00933AE7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3A73FF742B540B4E00933AE7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3A73FF7D2B540BDB00933AE7 /* tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tvOS.entitlements; sourceTree = "<group>"; };
+		3A73FF7D2B540BDB00933AE7 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A73FF7F2B54578F00933AE7 /* PlaybackIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackIndicator.swift; sourceTree = "<group>"; };
 		3A8286492AEC0D3400384BC9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3A844DF12B398C150021BC63 /* AmpFinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AmpFinKit; sourceTree = "<group>"; };
@@ -527,7 +527,7 @@
 				3ACD23BF2B5ACA710047D8F7 /* Util */,
 				3A73FF7C2B540BAE00933AE7 /* Core */,
 				3ACE7ADE2B5A59F10088D4E2 /* Presentation */,
-				3A73FF7D2B540BDB00933AE7 /* tvOS.entitlements */,
+				3A73FF7D2B540BDB00933AE7 /* Entitlements.entitlements */,
 				3A73FF742B540B4E00933AE7 /* Assets.xcassets */,
 				3A8B441D2B5A5E9E005DF9B7 /* Localizable.xcstrings */,
 			);
@@ -1383,7 +1383,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = tvOS/tvOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = tvOS/Entitlements.entitlements;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = tvOS/Info.plist;
@@ -1408,7 +1408,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = tvOS/tvOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = tvOS/Entitlements.entitlements;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = tvOS/Info.plist;
