@@ -18,10 +18,9 @@ let package = Package(
         .package(url: "https://github.com/daltoniam/Starscream.git", from: "4.0.0")
     ],
     targets: [
-        // Remove the underscore to disable app groups for sideloading
-        .target(name: "AFBase", dependencies: [.byName(name: "Starscream")], swiftSettings: [.define("_DISABLE_APP_GROUP")]),
+        .target(name: "AFBase", dependencies: [.byName(name: "Starscream")]),
         .target(name: "AFExtension", dependencies: [.byName(name: "AFBase"), .byName(name: "AFOffline", condition: .when(platforms: [.iOS]))]),
-        .target(name: "AFOffline", dependencies: [.byName(name: "AFBase")], swiftSettings: [.define("_DISABLE_APP_GROUP")]),
+        .target(name: "AFOffline", dependencies: [.byName(name: "AFBase")]),
         .target(
             name: "AFPlayback",
             dependencies: [

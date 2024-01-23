@@ -17,6 +17,10 @@ struct iOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     init() {
+        #if !ENABLE_ALL_FEATURES
+        AFKIT_ENABLE_ALL_FEATURES = false
+        #endif
+        
         try? Tips.configure([
             .displayFrequency(.daily)
         ])

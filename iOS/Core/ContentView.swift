@@ -25,7 +25,9 @@ struct ContentView: View {
                 .onAppear {
                     SpotlightHelper.donate()
                     INMediaUserContext.donate()
+                    #if ENABLE_ALL_FEATURES
                     INPreferences.requestSiriAuthorization { _ in }
+                    #endif
                     
                     OfflineManager.shared.updateOfflineItems()
                     OfflineManager.shared.syncPlaysToJellyfinServer()

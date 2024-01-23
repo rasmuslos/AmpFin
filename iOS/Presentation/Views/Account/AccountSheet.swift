@@ -145,7 +145,7 @@ struct AccountSheet: View {
                 .foregroundStyle(.secondary)
             }
             
-            #if DEBUG
+            #if !ENABLE_ALL_FEATURES
             // quite ironic that this code is bad
             Section {
                 HStack {

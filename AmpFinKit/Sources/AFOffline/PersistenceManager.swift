@@ -20,12 +20,7 @@ public struct PersistenceManager {
             OfflinePlay.self,
             OfflineFavorite.self,
         ])
-        #if DISABLE_APP_GROUP
-        #warning("SwiftData database will not be stored in group container")
-        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: .identifier("group.io.rfk.ampfin"))
-        #else
-        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true)
-        #endif
+        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: AFKIT_ENABLE_ALL_FEATURES ? .identifier("group.io.rfk.ampfin") : .none)
         
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])

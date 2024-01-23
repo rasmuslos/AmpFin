@@ -47,7 +47,7 @@ struct LoginView: View {
             
             Spacer()
             
-            #if DEBUG
+            #if !ENABLE_ALL_FEATURES
             Text("developedBy")
                 .font(.caption)
                 .foregroundStyle(.secondary)
