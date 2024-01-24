@@ -19,3 +19,9 @@ extension UIColor {
         return (brightness > threshold)
     }
 }
+
+extension Color {
+    func isLight(threshold: Float = 0.5) -> Bool {
+        UIColor(self).isLight()
+    }
+}

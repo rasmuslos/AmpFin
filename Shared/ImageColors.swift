@@ -11,11 +11,11 @@ import AFBase
 import UIImageColors
 
 struct ImageColors {
-    var background = Color(UIColor.tintColor)
-    var primary = Color.accentColor
-    var secondary = Color.secondary
-    var detail = Color.gray
-    var isLight = UIColor.tintColor.isLight()
+    var background: Color = .gray
+    var primary: Color = .accentColor
+    var secondary: Color = .secondary
+    var detail: Color = .accentColor
+    var isLight = Color.gray.isLight()
     
     static func getImageColors(cover: Item.Cover?) async -> ImageColors? {
         if let cover = cover, let data = try? Data(contentsOf: cover.url) {

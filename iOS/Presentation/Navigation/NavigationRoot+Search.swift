@@ -12,9 +12,9 @@ extension NavigationRoot {
         var body: some View {
             SearchView()
                 .modifier(NowPlayingBarModifier())
-            .tabItem {
-                Label("tab.search", systemImage: "magnifyingglass")
-            }
+                .tabItem {
+                    Label("tab.search", systemImage: "magnifyingglass")
+                }
         }
     }
 }
