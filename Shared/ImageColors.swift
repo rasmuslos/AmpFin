@@ -11,7 +11,7 @@ import AFBase
 import UIImageColors
 
 struct ImageColors {
-    var background: Color = .gray
+    var background: Color = .gray.opacity(0.5)
     var primary: Color = .accentColor
     var secondary: Color = .secondary
     var detail: Color = .accentColor

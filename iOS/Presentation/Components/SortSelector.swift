@@ -84,7 +84,7 @@ extension SortSelector {
         if dataProvider.supportsAdvancedFilters {
             return JellyfinClient.ItemSortOrder.allCases
         } else {
-            return JellyfinClient.ItemSortOrder.allCases.filter { $0 != .added && $0 != .released && $0 != .plays && $0 != .runtime }
+            return JellyfinClient.ItemSortOrder.allCases.filter { $0 != .added && $0 != .released && $0 != .plays && $0 != .runtime && $0 != .lastPlayed }
         }
     }
     
