@@ -11,10 +11,10 @@ import AFBase
 import UIImageColors
 
 struct ImageColors {
-    var background: Color = .gray.opacity(0.5)
+    var background: Color = .gray.opacity(0.25)
     var primary: Color = .accentColor
-    var secondary: Color = .secondary
-    var detail: Color = .accentColor
+    var secondary: Color = .black.opacity(0.8)
+    var detail: Color = .secondary
     var isLight = Color.gray.isLight()
     
     static func getImageColors(cover: Item.Cover?) async -> ImageColors? {
