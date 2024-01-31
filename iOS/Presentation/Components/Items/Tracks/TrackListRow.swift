@@ -36,6 +36,7 @@ struct TrackListRow: View {
                     }
                 }
                 .frame(width: album == nil ? 45 : 23)
+                .id(track.id)
                 
                 VStack(alignment: .leading) {
                     Text(track.name)
