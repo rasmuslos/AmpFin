@@ -27,14 +27,16 @@ extension NowPlayingSheet {
         @State var currentTime: Double = AudioPlayer.current.currentTime()
         @State var playedPercentage: Double = (AudioPlayer.current.currentTime() / AudioPlayer.current.duration()) * 100
         
+        @State var dragging = false
         @State var queueTabActive = false
         
         var body: some View {
             VStack {
                 VStack {
-                    Slider(percentage: $playedPercentage, dragging: .constant(false), onEnded: {
+                    Slider(percentage: $playedPercentage, dragging: $dragging, onEnded: {
                         AudioPlayer.current.seek(seconds: duration * (playedPercentage / 100))
                     })
+                    .frame(height: 10)
                     .padding(.vertical, 10)
                     
                     HStack {
@@ -92,8 +94,8 @@ extension NowPlayingSheet {
                     .font(.system(size: 34))
                     .foregroundStyle(.primary)
                 }
-                .padding(.top, 30)
-                .padding(.bottom, 60)
+                .padding(.top, 35)
+                .padding(.bottom, 65)
                 
                 // The first view is the visible slider, the second one is there to hide the iOS indicator (10/10 hack)
                 VolumeSlider()

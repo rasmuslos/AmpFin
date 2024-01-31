@@ -22,7 +22,7 @@ extension NowPlayingSheet {
             
             ItemImage(cover: track.cover)
                 .scaleEffect(playing ? 1 : 0.8)
-                .animation(.spring(duration: 0.25, bounce: 0.5), value: playing)
+                .animation(.spring(duration: 0.3, bounce: 0.6), value: playing)
                 .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading)
             
             Spacer()

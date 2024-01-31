@@ -23,19 +23,16 @@ struct NowPlayingBarModifier: ViewModifier {
         content
             .safeAreaInset(edge: .bottom) {
                 if let currentTrack = currentTrack {
-                    ZStack {
+                    ZStack(alignment: .bottom) {
+                        Rectangle()
+                            .frame(width: UIScreen.main.bounds.width + 100, height: 300)
+                            .offset(y: 225)
+                            .blur(radius: 25)
+                            .foregroundStyle(.thinMaterial)
+                        
                         RoundedRectangle(cornerRadius: 15)
-                        // Set tabbar background
                             .toolbarBackground(.hidden, for: .tabBar)
-                            .background {
-                                Rectangle()
-                                    .frame(width: UIScreen.main.bounds.width + 100, height: 300)
-                                    .offset(y: 130)
-                                    .blur(radius: 25)
-                                    .foregroundStyle(.thinMaterial)
-                            }
                             .foregroundStyle(.ultraThinMaterial)
-                        // add content
                             .overlay {
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)
@@ -67,111 +64,109 @@ struct NowPlayingBarModifier: ViewModifier {
                                 .padding(.horizontal, 6)
                             }
                             .foregroundStyle(.primary)
-                        // style bar
-                            .padding(.horizontal, 15)
-                            .padding(.bottom, 10)
-                            .frame(height: 65)
+                            .frame(width: UIScreen.main.bounds.width - 30, height: 60)
                             .shadow(color: .black.opacity(0.25), radius: 20)
+                            .draggable(currentTrack) {
+                                TrackListRow.TrackPreview(track: currentTrack)
+                            }
+                            .contextMenu {
+                                Button {
+                                    Task {
+                                        await currentTrack.setFavorite(favorite: !currentTrack.favorite)
+                                    }
+                                } label: {
+                                    Label("favorite", systemImage: currentTrack.favorite ? "heart.fill" : "heart")
+                                }
+                                
+                                Button {
+                                    Task {
+                                        try? await currentTrack.startInstantMix()
+                                    }
+                                } label: {
+                                    Label("queue.mix", systemImage: "compass.drawing")
+                                }
+                                .disabled(!libraryOnline)
+                                
+                                Button {
+                                    addToPlaylistSheetPresented.toggle()
+                                } label: {
+                                    Label("playlist.add", systemImage: "plus")
+                                }
+                                .disabled(!libraryOnline)
+                                
+                                Divider()
+                                
+                                // why is SwiftUI so stupid?
+                                Button(action: {
+                                    NotificationCenter.default.post(name: NavigationRoot.navigateAlbumNotification, object: currentTrack.album.id)
+                                }) {
+                                    Label("album.view", systemImage: "square.stack")
+                                    
+                                    if let albumName = currentTrack.album.name {
+                                        Text(albumName)
+                                    }
+                                }
+                                
+                                if let artistId = currentTrack.artists.first?.id, let artistName = currentTrack.artists.first?.name {
+                                    Button(action: {
+                                        NotificationCenter.default.post(name: NavigationRoot.navigateArtistNotification, object: artistId)
+                                    }) {
+                                        Label("artist.view", systemImage: "music.mic")
+                                        Text(artistName)
+                                    }
+                                }
+                                
+                                Divider()
+                                
+                                Button {
+                                    AudioPlayer.current.backToPreviousItem()
+                                } label: {
+                                    Label("playback.back", systemImage: "backward")
+                                }
+                                
+                                Button {
+                                    AudioPlayer.current.advanceToNextTrack()
+                                } label: {
+                                    Label("playback.next", systemImage: "forward")
+                                }
+                                
+                                Divider()
+                                
+                                Button {
+                                    AudioPlayer.current.stopPlayback()
+                                } label: {
+                                    Label("playback.stop", systemImage: "stop.circle")
+                                }
+                                
+                                if AudioPlayer.current.source == .jellyfinRemote {
+                                    Button {
+                                        AudioPlayer.current.destroy()
+                                    } label: {
+                                        Label("remote.disconnect", systemImage: "xmark")
+                                    }
+                                }
+                            } preview: {
+                                VStack(alignment: .leading) {
+                                    ItemImage(cover: currentTrack.cover)
+                                        .padding(.bottom, 10)
+                                    
+                                    Text(currentTrack.name)
+                                    
+                                    if let artistName = currentTrack.artistName {
+                                        Text(artistName)
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                                .frame(width: 250)
+                                .padding()
+                                .background(.ultraThickMaterial)
+                            }
+                            .padding(.bottom, 10)
                             .onTapGesture {
                                 nowPlayingSheetPresented.toggle()
                             }
                             .modifier(NowPlayingSheetModifier(currentTrack: currentTrack, playing: $playing, nowPlayingSheetPresented: $nowPlayingSheetPresented))
-                    }
-                    .contextMenu {
-                        Button {
-                            Task {
-                                await currentTrack.setFavorite(favorite: !currentTrack.favorite)
-                            }
-                        } label: {
-                            Label("favorite", systemImage: currentTrack.favorite ? "heart.fill" : "heart")
-                        }
-                        
-                        Button {
-                            Task {
-                                try? await currentTrack.startInstantMix()
-                            }
-                        } label: {
-                            Label("queue.mix", systemImage: "compass.drawing")
-                        }
-                        .disabled(!libraryOnline)
-                        
-                        Button {
-                            addToPlaylistSheetPresented.toggle()
-                        } label: {
-                            Label("playlist.add", systemImage: "plus")
-                        }
-                        .disabled(!libraryOnline)
-                        
-                        Divider()
-                        
-                        // why is SwiftUI so stupid?
-                        Button(action: {
-                            NotificationCenter.default.post(name: NavigationRoot.navigateAlbumNotification, object: currentTrack.album.id)
-                        }) {
-                            Label("album.view", systemImage: "square.stack")
-                            
-                            if let albumName = currentTrack.album.name {
-                                Text(albumName)
-                            }
-                        }
-                        
-                        if let artistId = currentTrack.artists.first?.id, let artistName = currentTrack.artists.first?.name {
-                            Button(action: {
-                                NotificationCenter.default.post(name: NavigationRoot.navigateArtistNotification, object: artistId)
-                            }) {
-                                Label("artist.view", systemImage: "music.mic")
-                                Text(artistName)
-                            }
-                        }
-                        
-                        Divider()
-                        
-                        Button {
-                            AudioPlayer.current.backToPreviousItem()
-                        } label: {
-                            Label("playback.back", systemImage: "backward")
-                        }
-                        
-                        Button {
-                            AudioPlayer.current.advanceToNextTrack()
-                        } label: {
-                            Label("playback.next", systemImage: "forward")
-                        }
-                        
-                        Divider()
-                        
-                        Button {
-                            AudioPlayer.current.stopPlayback()
-                        } label: {
-                            Label("playback.stop", systemImage: "stop.circle")
-                        }
-                        
-                        if AudioPlayer.current.source == .jellyfinRemote {
-                            Button {
-                                AudioPlayer.current.destroy()
-                            } label: {
-                                Label("remote.disconnect", systemImage: "xmark")
-                            }
-                        }
-                    } preview: {
-                        VStack(alignment: .leading) {
-                            ItemImage(cover: currentTrack.cover)
-                                .padding(.bottom, 10)
-                            
-                            Text(currentTrack.name)
-                            
-                            if let artistName = currentTrack.artistName {
-                                Text(artistName)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        .frame(width: 250)
-                        .padding()
-                        .background(.ultraThickMaterial)
-                    }
-                    .draggable(currentTrack) {
-                        TrackListRow.TrackPreview(track: currentTrack)
                     }
                     .sheet(isPresented: $addToPlaylistSheetPresented) {
                         PlaylistAddSheet(track: currentTrack)

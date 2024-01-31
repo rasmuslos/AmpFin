@@ -26,7 +26,9 @@ struct SortSelector: View {
         Menu {
             ForEach(filter(), id: \.hashValue) { option in
                 Button {
-                    sortOrder = option
+                    withAnimation {
+                        sortOrder = option
+                    }
                 } label: {
                     let label = getOptionLabel(option: option)
                     
@@ -41,7 +43,9 @@ struct SortSelector: View {
             Divider()
             
             Button {
-                ascending.toggle()
+                withAnimation {
+                    ascending.toggle()
+                }
             } label: {
                 if ascending {
                     Label("ascending", systemImage: "checkmark")

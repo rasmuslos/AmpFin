@@ -17,7 +17,7 @@ struct SearchView: View {
     @State var albums = [Album]()
     @State var playlists = [Playlist]()
     
-    @State var library: Tab = .online
+    @State var library: Tab = UserDefaults.standard.bool(forKey: "searchOnline") ? .online : .offline
     @State var dataProvider: LibraryDataProvider = OnlineLibraryDataProvider()
     
     var body: some View {
@@ -74,6 +74,8 @@ struct SearchView: View {
             }
             // Online / Offline
             .onChange(of: library) {
+                UserDefaults.standard.set(library == .online, forKey: "searchOnline")
+                
                 task?.cancel()
                 
                 tracks = []

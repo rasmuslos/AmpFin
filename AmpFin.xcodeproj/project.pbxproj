@@ -561,8 +561,8 @@
 			children = (
 				3A1F53342B613080004EF56A /* Views */,
 				3AEB32252AA7EC3C00853210 /* Styles */,
-				3A234E132AA8DBB900197AA7 /* Components */,
 				3AEB323C2AA7FF4500853210 /* Navigation */,
+				3A234E132AA8DBB900197AA7 /* Components */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";

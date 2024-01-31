@@ -26,7 +26,7 @@ struct TrackList: View {
             }
             .searchable(text: $search, prompt: "search.tracks")
             .listRowSeparator(.hidden)
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
         }
         
         let disks = getDisks()

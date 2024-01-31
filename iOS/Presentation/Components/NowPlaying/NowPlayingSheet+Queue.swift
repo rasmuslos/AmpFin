@@ -42,6 +42,7 @@ extension NowPlayingSheet {
                         Image(systemName: "repeat")
                     }
                 }
+                .id(AudioPlayer.current.repeatMode)
                 .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
                 .padding(.horizontal, 4)
                 
