@@ -35,7 +35,7 @@ struct TrackListRow: View {
                         ItemImage(cover: track.cover)
                     }
                 }
-                .frame(width: album == nil ? 45 : 23)
+                .frame(width: album == nil ? 50 : 23)
                 .id(track.id)
                 
                 VStack(alignment: .leading) {

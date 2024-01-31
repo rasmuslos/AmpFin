@@ -154,7 +154,7 @@ extension NowPlayingSheet {
         var body: some View {
             HStack {
                 ItemImage(cover: track.cover)
-                    .frame(width: 45)
+                    .frame(width: 50)
                 
                 VStack(alignment: .leading) {
                     Text(track.name)
