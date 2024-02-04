@@ -60,9 +60,12 @@ extension PlaylistView {
                 try await JellyfinClient.shared.remove(trackId: track.id, playlistId: playlist.id)
                 
                 withAnimation {
-                    tracks = tracks.filter { $0 != track }
-                    playlist.trackCount = tracks.count
-                    playlist.duration = tracks.reduce(0, { $0 + $1.runtime })
+                    if let firstMatching = tracks.firstIndex(of: track) {
+                        tracks.remove(at: firstMatching)
+                        
+                        playlist.trackCount = tracks.count
+                        playlist.duration = tracks.reduce(0, { $0 + $1.runtime })
+                    }
                 }
             } catch {}
         }
