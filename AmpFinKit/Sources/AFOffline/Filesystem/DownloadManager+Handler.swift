@@ -30,6 +30,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                     track.downloadId = nil
                     
                     NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
+                    
                     for parentId in try OfflineManager.shared.getParentIds(childId: track.id) {
                         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: parentId)
                     }

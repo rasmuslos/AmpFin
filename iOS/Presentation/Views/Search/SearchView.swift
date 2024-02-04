@@ -66,7 +66,7 @@ struct SearchView: View {
             .modifier(NowPlayingBarSafeAreaModifier())
             .modifier(AccountToolbarButtonModifier())
             // Query
-            .searchable(text: $query, prompt: "search.placeholder")
+            .searchable(text: $query, isPresented: .constant(true), prompt: "search.placeholder")
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)
             .onChange(of: query) {

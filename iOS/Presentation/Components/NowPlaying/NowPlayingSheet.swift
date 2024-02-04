@@ -51,7 +51,10 @@ struct NowPlayingSheet: View {
                 Controls(playing: $playing, currentTab: $currentTab)
             }
         }
-        .background(Background(cover: track.cover))
+        .background {
+            Background(cover: track.cover)
+                .id(track.id)
+        }
         .padding(.horizontal, 30)
         .ignoresSafeArea(edges: .bottom)
         .preferredColorScheme(.dark)
@@ -99,7 +102,7 @@ extension NowPlayingSheet {
                     .task(priority: .medium) {
                         let imageColors = await ImageColors.getImageColors(cover: cover)
                         
-                        withAnimation(.spring) {
+                        withAnimation(.spring(duration: 0.5)) {
                             self.imageColors = imageColors
                         }
                     }

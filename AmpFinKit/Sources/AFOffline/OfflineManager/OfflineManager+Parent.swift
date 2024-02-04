@@ -26,22 +26,13 @@ extension OfflineManager {
     
     @MainActor
     func getParentIds(childId: String) throws -> [String] {
-        return []
+        // this is the best way to do this, fuck SwiftData
+        var parents = [OfflineParent]()
         
-        // this does not work because
-        #if false
-        let albumDescriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate {
-            $0.childrenIds.contains(childId)
-        })
-        let albums = try PersistenceManager.shared.modelContainer.mainContext.fetch(albumDescriptor)
+        parents += try getOfflineAlbums()
+        parents += try getOfflinePlaylists()
         
-        let playlistDescriptor = FetchDescriptor<OfflinePlaylist>(predicate: #Predicate {
-            $0.childrenIds.contains(childId)
-        })
-        let playlists = try PersistenceManager.shared.modelContainer.mainContext.fetch(playlistDescriptor)
-        
-        return albums.map { $0.id } + playlists.map { $0.id }
-        #endif
+        return parents.filter { $0.childrenIds.contains(childId) }.map { $0.id }
     }
     
     @MainActor

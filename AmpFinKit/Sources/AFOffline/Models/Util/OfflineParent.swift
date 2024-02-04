@@ -9,6 +9,7 @@ import Foundation
 import AFBase
 
 protocol OfflineParent {
+    var id: String { get }
     var childrenIds: [String] { get set }
 }
 

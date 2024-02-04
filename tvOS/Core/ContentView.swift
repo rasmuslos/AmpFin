@@ -16,7 +16,6 @@ struct ContentView: View {
             NavigationRoot()
         } else {
             LoginView() {
-                print("a")
                 isAuthorized = true
             }
         }

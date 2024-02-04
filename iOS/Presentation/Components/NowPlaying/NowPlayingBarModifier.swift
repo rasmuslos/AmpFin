@@ -119,6 +119,40 @@ struct NowPlayingBarModifier: ViewModifier {
                                 Divider()
                                 
                                 Button {
+                                    AudioPlayer.current.shuffle(!AudioPlayer.current.shuffled)
+                                } label: {
+                                    if AudioPlayer.current.shuffled {
+                                        Label("shuffle", systemImage: "checkmark")
+                                    } else {
+                                        Label("shuffle", systemImage: "shuffle")
+                                    }
+                                }
+                                
+                                Menu {
+                                    Button {
+                                        AudioPlayer.current.setRepeatMode(.none)
+                                    } label: {
+                                        Label("repeat.none", systemImage: "slash.circle")
+                                    }
+                                    
+                                    Button {
+                                        AudioPlayer.current.setRepeatMode(.queue)
+                                    } label: {
+                                        Label("repeat.queue", systemImage: "repeat")
+                                    }
+                                    
+                                    Button {
+                                        AudioPlayer.current.setRepeatMode(.track)
+                                    } label: {
+                                        Label("repeat.track", systemImage: "repeat.1")
+                                    }
+                                } label: {
+                                    Label("repeat", systemImage: "repeat")
+                                }
+                                
+                                Divider()
+                                
+                                Button {
                                     AudioPlayer.current.backToPreviousItem()
                                 } label: {
                                     Label("playback.back", systemImage: "backward")

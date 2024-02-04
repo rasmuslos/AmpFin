@@ -9,6 +9,7 @@ import Foundation
 import AVKit
 import OSLog
 import AFBase
+import SwiftUI
 import MediaPlayer
 
 #if canImport(UIKit)
@@ -19,6 +20,7 @@ import UIKit
 import AFOffline
 #endif
 
+@Observable
 class LocalAudioEndpoint: AudioEndpoint {
     fileprivate let audioPlayer: AVQueuePlayer
     fileprivate var audioSession: AVAudioSession
