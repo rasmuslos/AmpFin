@@ -370,6 +370,22 @@
         }
       }
     },
+    "download.remove.force" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entfernen erzwingen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Force remove"
+          }
+        }
+      }
+    },
     "error.unavailable.text" : {
       "localizations" : {
         "de" : {
@@ -1410,7 +1426,7 @@
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Zufällig"
           }
         },

@@ -15,7 +15,7 @@ struct ImageColors {
     var primary: Color = .accentColor
     var secondary: Color = .black.opacity(0.6)
     var detail: Color = .secondary
-    var isLight = Color.gray.isLight()
+    var isLight = true
     
     static func getImageColors(cover: Item.Cover?) async -> ImageColors? {
         if let cover = cover, let data = try? Data(contentsOf: cover.url) {

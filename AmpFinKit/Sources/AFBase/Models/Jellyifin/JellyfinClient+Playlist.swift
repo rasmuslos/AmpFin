@@ -16,8 +16,8 @@ extension JellyfinClient {
         let Id: String
         let Name: String
         
-        let ChildCount: Int
-        let RunTimeTicks: UInt64
+        let ChildCount: Int?
+        let RunTimeTicks: UInt64?
         
         let UserData: UserData
         let ImageTags: ImageTags
