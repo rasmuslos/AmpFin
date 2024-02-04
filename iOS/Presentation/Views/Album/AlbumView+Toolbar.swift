@@ -124,13 +124,23 @@ extension AlbumView {
                                 Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                             }
                             
-                            Divider()
-                            
                             if let first = album.artists.first {
+                                Divider()
+                                
                                 NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
                                     Label("artist.view", systemImage: "music.mic")
                                 }
                                 .disabled(!dataProvider.supportsArtistLookup)
+                            }
+                            
+                            if offlineTracker.status != .none {
+                                Divider()
+                                
+                                Button {
+                                    try? OfflineManager.shared.delete(albumId: album.id)
+                                } label: {
+                                    Label("download.remove.force", systemImage: "trash")
+                                }
                             }
                         } label: {
                             // for some reason it did show the label...
