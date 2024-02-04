@@ -18,7 +18,7 @@ struct SearchView: View {
     @State var playlists = [Playlist]()
     
     @State var library: Tab = UserDefaults.standard.bool(forKey: "searchOnline") ? .online : .offline
-    @State var dataProvider: LibraryDataProvider = OnlineLibraryDataProvider()
+    @State var dataProvider: LibraryDataProvider = UserDefaults.standard.bool(forKey: "searchOnline") ? OnlineLibraryDataProvider() : OfflineLibraryDataProvider()
     
     var body: some View {
         NavigationStack {

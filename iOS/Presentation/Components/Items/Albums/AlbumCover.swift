@@ -12,12 +12,15 @@ struct AlbumCover: View {
     let album: Album
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             ItemImage(cover: album.cover)
             
             Group {
                 Text(album.name)
                     .font(.callout)
+                    .padding(.top, 7)
+                    .padding(.bottom, 2)
+                
                 Text(album.artistName)
                     .font(.footnote)
                     .foregroundStyle(.secondary)

@@ -21,6 +21,7 @@ struct TrackListRow: View {
     @State var addToPlaylistSheetPresented = false
     
     var body: some View {
+        let size: CGFloat = album == nil ? 50 : 23
         let showArtist = album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
         
         HStack {
@@ -35,7 +36,7 @@ struct TrackListRow: View {
                         ItemImage(cover: track.cover)
                     }
                 }
-                .frame(width: album == nil ? 50 : 23)
+                .frame(width: size, height: size)
                 .id(track.id)
                 
                 VStack(alignment: .leading) {

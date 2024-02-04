@@ -164,6 +164,9 @@ extension NowPlayingSheet {
                             Image(systemName: "xmark")
                         }
                         .buttonStyle(SymbolButtonStyle(active: false))
+                    } else {
+                        Image(systemName: "command")
+                            .buttonStyle(SymbolButtonStyle(active: false))
                     }
                     
                     Spacer()

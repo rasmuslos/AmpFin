@@ -27,6 +27,7 @@ struct PlaylistView: View {
                 }
                 .foregroundStyle(.secondary)
                 .font(.subheadline)
+                
                 Text(playlist.name)
                     .font(.title3)
             }

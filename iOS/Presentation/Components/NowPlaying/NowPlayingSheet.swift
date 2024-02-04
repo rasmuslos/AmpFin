@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UIImageColors
+import FluidGradient
 import AFBase
 
 struct NowPlayingSheet: View {
@@ -50,7 +51,7 @@ struct NowPlayingSheet: View {
                 Controls(playing: $playing, currentTab: $currentTab)
             }
         }
-        .background(BackgroundImage(cover: track.cover))
+        .background(Background(cover: track.cover))
         .padding(.horizontal, 30)
         .ignoresSafeArea(edges: .bottom)
         .preferredColorScheme(.dark)
@@ -83,23 +84,26 @@ struct NowPlayingSheet: View {
 // MARK: Background
 
 extension NowPlayingSheet {
-    struct BackgroundImage: View {
+    struct Background: View {
         let cover: Item.Cover?
         
-        @State var imageOffset: CGFloat = 1
+        @State var imageColors: ImageColors?
         
         var body: some View {
-            ItemImage(cover: cover)
-                .offset(x: imageOffset * 25, y: imageOffset * -25)
-                .rotationEffect(.degrees(imageOffset * 30))
-                .frame(width: 1000, height: 1000)
-                .overlay(.black.opacity(0.25))
-                .blur(radius: 80)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 10).repeatForever(autoreverses: true)) {
-                        imageOffset *= Double.random(in: -6..<6)
+            if let imageColors = imageColors {
+                FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+                    .overlay(.black.opacity(0.25))
+            } else {
+                Color.clear
+                    .task(priority: .medium) {
+                        let imageColors = await ImageColors.getImageColors(cover: cover)
+                        
+                        withAnimation(.spring) {
+                            self.imageColors = imageColors
+                        }
                     }
-                }
+            }
         }
     }
 }

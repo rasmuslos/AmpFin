@@ -57,6 +57,15 @@ extension PlaylistView {
                         .offset(y: -offset)
                         .frame(height: height + offset * 2)
                 }
+                
+                VStack {
+                    Rectangle()
+                        .foregroundStyle(.linearGradient(colors: [.gray.opacity(0.3), .clear], startPoint: .top, endPoint: .bottom))
+                        .frame(height: 225)
+                        .offset(y: -offset)
+                    
+                    Spacer()
+                }
             }
         }
     }
