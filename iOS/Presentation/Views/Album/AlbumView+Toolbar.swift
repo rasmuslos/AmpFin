@@ -140,7 +140,7 @@ extension AlbumView {
                                     try? OfflineManager.shared.delete(albumId: album.id)
                                 } label: {
                                     Label("download.remove.force", systemImage: "trash")
-                                        .tint(.red)
+                                        .foregroundStyle(.red)
                                 }
                             }
                         } label: {

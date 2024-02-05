@@ -93,7 +93,7 @@ public extension AudioPlayer {
 extension AudioPlayer {
     static func setupAudioSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: .longFormAudio, options: [])
+            try AVAudioSession.sharedInstance().setCategory(.playback)
         } catch {
             logger.fault("Failed to setup audio session")
         }
