@@ -93,19 +93,26 @@ extension NowPlayingSheet {
         @State var imageColors: ImageColors?
         
         var body: some View {
-            if let imageColors = imageColors {
-                FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
-                    .overlay(.black.opacity(0.25))
-            } else {
-                Color.clear
-                    .task(priority: .medium) {
-                        let imageColors = await ImageColors.getImageColors(cover: cover)
-                        
-                        withAnimation(.spring(duration: 0.5)) {
-                            self.imageColors = imageColors
+            ZStack {
+                ItemImage(cover: cover)
+                    .blur(radius: 100)
+                    .frame(width: 1000, height: 1000)
+                
+                if let imageColors = imageColors {
+                    FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
+                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+                        .overlay(.black.opacity(0.25))
+                } else {
+                    Color.clear
+                        .task(priority: .medium) {
+                            let imageColors = await ImageColors.getImageColors(cover: cover)
+                            imageColors?.updateHue(saturation: 0.6, luminance: 0.6)
+                            
+                            withAnimation(.spring(duration: 1)) {
+                                self.imageColors = imageColors
+                            }
                         }
-                    }
+                }
             }
         }
     }
