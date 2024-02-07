@@ -538,13 +538,13 @@
 		3A73FF6F2B540B4C00933AE7 /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
-				3A4CC6772B5ECA4900C9356E /* Info.plist */,
 				3ACD23BF2B5ACA710047D8F7 /* Util */,
 				3A73FF7C2B540BAE00933AE7 /* Core */,
 				3ACE7ADE2B5A59F10088D4E2 /* Presentation */,
-				3A73FF7D2B540BDB00933AE7 /* Entitlements.entitlements */,
+				3A4CC6772B5ECA4900C9356E /* Info.plist */,
 				3A73FF742B540B4E00933AE7 /* Assets.xcassets */,
 				3A8B441D2B5A5E9E005DF9B7 /* Localizable.xcstrings */,
+				3A73FF7D2B540BDB00933AE7 /* Entitlements.entitlements */,
 			);
 			path = tvOS;
 			sourceTree = "<group>";

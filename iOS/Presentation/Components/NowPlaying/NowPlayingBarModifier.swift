@@ -16,6 +16,9 @@ struct NowPlayingBarModifier: ViewModifier {
     @State var playing = AudioPlayer.current.isPlaying()
     @State var currentTrack = AudioPlayer.current.nowPlaying
     
+    @State var animateImage = false
+    @State var animateForwards = false
+    
     @State var nowPlayingSheetPresented = false
     @State var addToPlaylistSheetPresented = false
     
@@ -49,13 +52,24 @@ struct NowPlayingBarModifier: ViewModifier {
                                             AudioPlayer.current.setPlaying(!playing)
                                         } label: {
                                             Image(systemName: playing ?  "pause.fill" : "play.fill")
-                                                .contentTransition(.symbolEffect(.replace))
+                                                .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+                                                .scaleEffect(animateImage ? AudioPlayer.current.isPlaying() ? 1.1 : 0.9 : 1)
+                                                .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
+                                                .onChange(of: AudioPlayer.playPause) {
+                                                    withAnimation {
+                                                        animateImage = true
+                                                    } completion: {
+                                                        animateImage = false
+                                                    }
+                                                }
                                         }
                                         
                                         Button {
+                                            animateForwards.toggle()
                                             AudioPlayer.current.advanceToNextTrack()
                                         } label: {
                                             Image(systemName: "forward.fill")
+                                                .symbolEffect(.bounce.up, value: animateForwards)
                                         }
                                         .padding(.horizontal, 10)
                                     }
@@ -159,6 +173,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                 }
                                 
                                 Button {
+                                    animateForwards.toggle()
                                     AudioPlayer.current.advanceToNextTrack()
                                 } label: {
                                     Label("playback.next", systemImage: "forward")
