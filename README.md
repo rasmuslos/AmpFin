@@ -9,7 +9,7 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 - **Queue with History**: Take control of your playback experience by creating queues and accessing your listening history.
 - **Remote control**: Control AmpFin using another supported Jellyfin client or just take over control of one right inside the app
 - **Siri / Spotlight integration**: Play your music using Siri and access your library through Spotlight
-- **Automatic updates**: Updated a playlist / album? AmpFin will detect changes and update your downloaded items accordingly
+- **Automatic updates**: Added a track to a downloaded playlist? AmpFin will download it automatically
 
 ## Roadmap
 
