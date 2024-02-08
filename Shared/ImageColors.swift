@@ -22,7 +22,8 @@ class ImageColors {
         primary = .accentColor
         secondary = .black.opacity(0.6)
         detail = .secondary
-        isLight = true
+        
+        isLight = !UIViewController().isDarkMode
     }
     
     init(background: Color, primary: Color, secondary: Color, detail: Color, isLight: Bool = true) {

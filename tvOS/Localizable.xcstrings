@@ -260,6 +260,7 @@
 
     },
     "row.favorites.albums" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -276,6 +277,7 @@
       }
     },
     "row.favorites.playlists" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -292,6 +294,7 @@
       }
     },
     "row.new.albums" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -308,6 +311,7 @@
       }
     },
     "row.new.playlists" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -324,6 +328,7 @@
       }
     },
     "row.random.albums" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -340,6 +345,7 @@
       }
     },
     "row.random.playlists" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -356,6 +362,7 @@
       }
     },
     "row.recent" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

@@ -27,6 +27,17 @@ extension NavigationRoot {
                     ProgressView()
                 } else {
                     ScrollView {
+                        // LazyHStack {
+                            RowTitle(title: "balls")
+                            LargePlaylistGrid(playlists: newPlaylists)
+                            
+                            AlbumGrid(albums: recentAlbums)
+                            AlbumGrid(albums: recentAlbums)
+                            AlbumGrid(albums: recentAlbums)
+                            AlbumGrid(albums: recentAlbums)
+                            AlbumGrid(albums: recentAlbums)
+                        // }
+                        /*
                         if !newPlaylists.isEmpty {
                             RowTitle(title: String(localized: "row.new.playlists"))
                                 .padding(.bottom, -45)
@@ -56,6 +67,7 @@ extension NavigationRoot {
                         if !favoritePlaylists.isEmpty {
                             PlaylistsRowTitle(title: String(localized: "row.favorites.playlists"), playlists: favoritePlaylists)
                         }
+                         */
                     }
                     .ignoresSafeArea(edges: .horizontal)
                 }

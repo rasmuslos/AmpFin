@@ -47,7 +47,7 @@ struct PlaylistView: View {
                     Spacer()
                 }
             } else {
-                TracksList(tracks: tracks, container: playlist)
+                TrackList(tracks: tracks, container: playlist)
             }
         }
         .ignoresSafeArea(edges: .trailing)

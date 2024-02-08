@@ -9,7 +9,7 @@ import SwiftUI
 import AFBase
 import AFPlayback
 
-struct TracksList: View {
+struct TrackList: View {
     let tracks: [Track]
     let container: Item?
     
@@ -20,7 +20,7 @@ struct TracksList: View {
                     Button {
                         startPlayback(track: track)
                     } label: {
-                        TrackListRow(track: track)
+                        TrackRow(track: track)
                     }
                     .buttonStyle(.plain)
                     .onPlayPauseCommand {
@@ -74,14 +74,45 @@ struct TracksList: View {
     }
 }
 
-extension TracksList {
+extension TrackList {
+    struct TrackRow: View {
+        let track: Track
+        
+        var body: some View {
+            HStack(spacing: 40) {
+                ItemImage(cover: track.cover)
+                    .frame(width: 75)
+                
+                VStack(alignment: .leading) {
+                    Text(track.name)
+                    
+                    if let artistName = track.artistName {
+                        Text(artistName)
+                            .foregroundStyle(.secondary)
+                            .font(.subheadline)
+                    }
+                }
+                
+                Spacer()
+                
+                Text(track.runtime.timeLeft())
+                    .fontDesign(.rounded)
+                    .foregroundStyle(.secondary)
+            }
+            .font(.body)
+        }
+    }
+
+}
+
+extension TrackList {
     func startPlayback(track: Track) {
         AudioPlayer.current.startPlayback(tracks: tracks, startIndex: tracks.firstIndex(of: track)!, shuffle: false, playbackInfo: container == nil ? .init() : .init(container: container!))
     }
 }
 
 #Preview {
-    TracksList(tracks: [
+    TrackList(tracks: [
         Track.fixture,
         Track.fixture,
         Track.fixture,
