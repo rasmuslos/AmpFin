@@ -129,6 +129,7 @@ extension AlbumView {
                                 
                                 NavigationLink(destination: ArtistLoadView(artistId: first.id)) {
                                     Label("artist.view", systemImage: "music.mic")
+                                    Text(first.name)
                                 }
                                 .disabled(!dataProvider.supportsArtistLookup)
                             }
@@ -136,7 +137,7 @@ extension AlbumView {
                             if offlineTracker.status != .none {
                                 Divider()
                                 
-                                Button {
+                                Button(role: .destructive) {
                                     try? OfflineManager.shared.delete(albumId: album.id)
                                 } label: {
                                     Label("download.remove.force", systemImage: "trash")
