@@ -12,6 +12,7 @@ import AFBase
 import AFOffline
 import AFPlayback
 import CoreSpotlight
+import Network
 
 struct ContentView: View {
     @State var online = JellyfinClient.shared.isOnline
@@ -23,14 +24,18 @@ struct ContentView: View {
                 .environment(\.libraryOnline, online)
                 .onContinueUserActivity(CSSearchableItemActionType, perform: SpotlightHelper.handleSpotlight)
                 .onAppear {
-                    SpotlightHelper.donate()
-                    INMediaUserContext.donate()
                     #if ENABLE_ALL_FEATURES
                     INPreferences.requestSiriAuthorization { _ in }
                     #endif
                     
-                    OfflineManager.shared.updateOfflineItems()
-                    OfflineManager.shared.syncPlaysToJellyfinServer()
+                    let path = NWPathMonitor().currentPath
+                    if !path.isExpensive && !path.isConstrained {
+                        SpotlightHelper.donate()
+                        INMediaUserContext.donate()
+                        
+                        OfflineManager.shared.updateOfflineItems()
+                        OfflineManager.shared.syncPlaysToJellyfinServer()
+                    }
                     
                     JellyfinWebSocket.shared.connect()
                     AudioPlayer.current.allowRemoteControl = true
