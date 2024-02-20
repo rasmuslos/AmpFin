@@ -1036,13 +1036,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "one song"
+                  "value" : "ein Lied"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld Songs"
+                  "value" : "%lld Lieder"
                 }
               }
             }
@@ -1265,7 +1265,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Song"
+            "value" : "Lied"
           }
         },
         "en" : {
@@ -1347,7 +1347,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suche nach Alben oder Songs"
+            "value" : "Suche nach Alben oder Liedern"
           }
         },
         "en" : {
@@ -1363,7 +1363,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Songs durchsuchen"
+            "value" : "Lieder durchsuchen"
           }
         },
         "en" : {
@@ -1411,7 +1411,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Songs"
+            "value" : "Lieder"
           }
         },
         "en" : {
@@ -1699,7 +1699,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generiere eine dynamische Playlist basierend auf dem Song den du auswählst"
+            "value" : "Generiere eine dynamische Playlist basierend auf dem Lied welches du auswählst"
           }
         },
         "en" : {
@@ -1843,7 +1843,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Songs"
+            "value" : "Lieder"
           }
         },
         "en" : {
