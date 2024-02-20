@@ -103,7 +103,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
         ], userId: true))
         
-        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
+        return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
     
     func getTrackPlaylistIdsMapping(playlistId: String) async throws -> [String: String] {

@@ -26,7 +26,7 @@ public extension JellyfinClient {
         let ArtistItems: [JellyfinArtist]
         
         let Album: String?
-        let AlbumId: String
+        let AlbumId: String?
         let AlbumArtists: [JellyfinArtist]
         
         let ImageTags: ImageTags

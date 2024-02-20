@@ -10,7 +10,7 @@ import Foundation
 public extension JellyfinClient {
     func getTrack(id: String) async throws -> Track {
         let track = try await request(ClientRequest<JellyfinTrackItem>(path: "Items/\(id)", method: "GET", userPrefix: true))
-        return Track.convertFromJellyfin(track)
+        return try Track.convertFromJellyfin(track)
     }
     
     // MARK: Get Tracks
@@ -35,7 +35,7 @@ public extension JellyfinClient {
         }
         
         let response = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
-        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
+        return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
     
     /// Get all tracks that are children of the specified album
@@ -50,7 +50,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
         ], userPrefix: true))
         
-        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
+        return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
     
     /// Get all tracks (limited to 20) matching the query
@@ -64,7 +64,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
         ], userPrefix: true))
-        return tracks.Items.map { Track.convertFromJellyfin($0, fallbackIndex: 0) }
+        return tracks.Items.compactMap { try? Track.convertFromJellyfin($0, fallbackIndex: 0) }
     }
     
     /// Get instant mix tracks
@@ -73,7 +73,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "limit", value: "200"),
         ], userId: true))
         
-        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
+        return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
     
     // MARK: Other
@@ -87,7 +87,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
         ], userPrefix: true)) {
-            return Track.convertFromJellyfin(album)
+            return try? Track.convertFromJellyfin(album)
         }
         
         return nil

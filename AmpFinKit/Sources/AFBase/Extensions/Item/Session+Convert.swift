@@ -14,7 +14,7 @@ extension Session {
             name: session.DeviceName,
             client: session.Client,
             clientId: session.DeviceId,
-            nowPlaying: session.NowPlayingItem != nil ? Track.convertFromJellyfin(session.NowPlayingItem!) : nil,
+            nowPlaying: session.NowPlayingItem != nil ? try! Track.convertFromJellyfin(session.NowPlayingItem!) : nil,
             position: Double(session.PlayState.PositionTicks ?? 0) / 10_000_000,
             canSeek: session.PlayState.CanSeek,
             canSetVolume: session.Capabilities.SupportedCommands.contains("SetVolume"),

@@ -51,6 +51,6 @@ public extension JellyfinClient {
             URLQueryItem(name: "Limit", value: "100"),
         ], userPrefix: true))
         
-        return response.Items.enumerated().map { Track.convertFromJellyfin($1, fallbackIndex: $0) }
+        return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
 }
