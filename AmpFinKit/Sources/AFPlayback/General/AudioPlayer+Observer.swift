@@ -44,6 +44,11 @@ extension AudioPlayer {
             } else if command == "seek" {
                 let position = notification.userInfo?["position"] as? UInt64 ?? 0
                 seek(seconds: Double(position / 10_000_000))
+            } else if command == "repeatMode" {
+                let mode = notification.userInfo?["repeatMode"] as? String
+                setRepeatMode(mode == "RepeatAll" ? .queue : mode == "RepeatNone" ? .none : .track)
+            } else if command == "shuffleMode" {
+                shuffle(notification.userInfo?["shuffleMode"] as? String == "Shuffle")
             }
         }
         

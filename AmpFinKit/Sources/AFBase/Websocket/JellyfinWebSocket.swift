@@ -130,6 +130,22 @@ extension JellyfinWebSocket: WebSocketDelegate {
                 guard let observedSession = sessionMessage.Data?.filter({ $0.DeviceId == observedClientId }).first else { return }
                 
                 NotificationCenter.default.post(name: Self.sessionUpdateNotification, object: Session.convertFromJellyfin(observedSession))
+            } else if parsed.MessageType == "GeneralCommand" {
+                let sessionMessage = try JSONDecoder().decode(GeneralCommandMessage.self, from: data)
+                
+                // this would work if something would work
+                
+                if sessionMessage.Name == "SetRepeatMode" {
+                    NotificationCenter.default.post(name: Self.playStateCommandIssuedNotification, object: nil, userInfo: [
+                        "command": "repeatMode",
+                        "repeatMode": sessionMessage.Arguments?.RepeatMode as Any,
+                    ])
+                } else if sessionMessage.Name == "SetShuffleQueue" {
+                    NotificationCenter.default.post(name: Self.playStateCommandIssuedNotification, object: nil, userInfo: [
+                        "command": "shuffleMode",
+                        "shuffleMode": sessionMessage.Arguments?.ShuffleMode as Any,
+                    ])
+                }
             } else {
                 throw JellyfinClientError.unknownMessage
             }

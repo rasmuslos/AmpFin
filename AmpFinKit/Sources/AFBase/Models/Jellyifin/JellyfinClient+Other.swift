@@ -80,6 +80,8 @@ extension JellyfinClient {
             let IsMuted: Bool
             let VolumeLevel: Int?
             let RepeatMode: String
+            // only available in 10.9
+            let PlaybackOrder: String?
         }
         struct JellyfinCapabilities: Codable {
             let PlayableMediaTypes: [String]

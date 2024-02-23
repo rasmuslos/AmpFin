@@ -21,6 +21,7 @@ extension Session {
             isPaused: session.PlayState.IsPaused,
             isMuted: session.PlayState.IsMuted,
             volumeLevel: Float(session.PlayState.VolumeLevel ?? 0) / 100,
-            repeatMode: session.PlayState.RepeatMode == "RepeatNone" ? .none : session.PlayState.RepeatMode == "RepeatOne" ? .track : .queue)
+            repeatMode: session.PlayState.RepeatMode == "RepeatNone" ? .none : session.PlayState.RepeatMode == "RepeatOne" ? .track : .queue,
+            shuffled: session.PlayState.PlaybackOrder == "Shuffle")
     }
 }

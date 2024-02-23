@@ -24,7 +24,6 @@ class RemoteAudioEndpoint {
     var position: Double
     var volume: Float
     
-    // these are not supported by the server (apparently)
     var shuffled: Bool
     var repeatMode: RepeatMode
     
@@ -47,7 +46,7 @@ class RemoteAudioEndpoint {
         canSetVolume = session.canSetVolume
         position = session.position
         volume = session.volumeLevel
-        shuffled = false
+        shuffled = session.shuffled
         repeatMode = .none
         
         setupObserver()
@@ -87,6 +86,7 @@ extension RemoteAudioEndpoint {
             self?.position = session.position
             self?.volume = session.volumeLevel
             self?.repeatMode = session.repeatMode
+            self?.shuffled = session.shuffled
             
             self?.updateNowPlayingWidget()
             
@@ -108,6 +108,7 @@ extension RemoteAudioEndpoint {
         let url = NSURL.fileURL(withPath: path!)
         let asset = AVAsset(url: url)
         let playerItem = AVPlayerItem(asset: asset)
+        
         queuePlayer = AVQueuePlayer(playerItem: playerItem)
         let _ = AVPlayerLooper(player: queuePlayer, templateItem: playerItem)
     }

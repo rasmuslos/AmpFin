@@ -26,8 +26,9 @@ public class Session: Identifiable, Codable {
     
     public let volumeLevel: Float
     public let repeatMode: RepeatMode
+    public let shuffled: Bool
     
-    public init(id: String, name: String, client: String, clientId: String, nowPlaying: Track?, position: Double, canSeek: Bool, canSetVolume: Bool, isPaused: Bool, isMuted: Bool, volumeLevel: Float, repeatMode: RepeatMode) {
+    public init(id: String, name: String, client: String, clientId: String, nowPlaying: Track?, position: Double, canSeek: Bool, canSetVolume: Bool, isPaused: Bool, isMuted: Bool, volumeLevel: Float, repeatMode: RepeatMode, shuffled: Bool) {
         self.id = id
         self.name = name
         self.client = client
@@ -40,9 +41,7 @@ public class Session: Identifiable, Codable {
         self.isMuted = isMuted
         self.volumeLevel = volumeLevel
         self.repeatMode = repeatMode
-        
-        // TODO: it seems like shuffled is not send at the moment, this should be implemented on the server...
-        // also the send queue is useless
+        self.shuffled = shuffled
     }
     
     public required init(from decoder: Decoder) throws {
@@ -59,6 +58,7 @@ public class Session: Identifiable, Codable {
         self.isMuted = try container.decode(Bool.self, forKey: .isMuted)
         self.volumeLevel = try container.decode(Float.self, forKey: .volumeLevel)
         self.repeatMode = try container.decode(RepeatMode.self, forKey: .repeatMode)
+        self.shuffled = try container.decode(Bool.self, forKey: .shuffled)
     }
     
     enum CodingKeys: CodingKey {
@@ -74,6 +74,7 @@ public class Session: Identifiable, Codable {
         case isMuted
         case volumeLevel
         case repeatMode
+        case shuffled
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -90,6 +91,7 @@ public class Session: Identifiable, Codable {
         try container.encode(self.isMuted, forKey: .isMuted)
         try container.encode(self.volumeLevel, forKey: .volumeLevel)
         try container.encode(self.repeatMode, forKey: .repeatMode)
+        try container.encode(self.shuffled, forKey: .shuffled)
     }
     
 }

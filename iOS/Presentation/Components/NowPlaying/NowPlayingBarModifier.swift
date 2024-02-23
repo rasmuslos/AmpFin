@@ -35,7 +35,7 @@ struct NowPlayingBarModifier: ViewModifier {
                         
                         RoundedRectangle(cornerRadius: 15)
                             .toolbarBackground(.hidden, for: .tabBar)
-                            .foregroundStyle(.thinMaterial)
+                            .foregroundStyle(.ultraThinMaterial)
                             .overlay {
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)

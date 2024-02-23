@@ -35,4 +35,14 @@ extension JellyfinWebSocket {
     struct SessionMessage: Codable {
         let Data: [JellyfinClient.JellyfinSession]?
     }
+    
+    struct GeneralCommandMessage: Codable {
+        let Name: String?
+        let Arguments: Arguments?
+        
+        struct Arguments: Codable {
+            let RepeatMode: String?
+            let ShuffleMode: String?
+        }
+    }
 }

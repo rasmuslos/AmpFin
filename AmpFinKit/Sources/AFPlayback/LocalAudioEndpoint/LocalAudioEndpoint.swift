@@ -326,17 +326,17 @@ extension LocalAudioEndpoint {
     private func trackDidFinish() {
         if let nowPlaying = nowPlaying {
             history.append(nowPlaying)
-            // TODO: this
-            // UserContext.donateTrack(nowPlaying, shuffle: shuffled, repeatMode: repeatMode)
         }
         
-        if queue.count <= 0 {
+        if queue.isEmpty {
             audioPlayer.removeAllItems()
             
             queue = history
             history = []
             
             populateQueue()
+            
+            setNowPlaying(track: queue.removeFirst())
             setPlaying(repeatMode != .none)
         } else {
             setNowPlaying(track: queue.removeFirst())
@@ -427,7 +427,7 @@ extension LocalAudioEndpoint {
                 nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = nowPlaying.album.artistName
                 
                 nowPlayingInfo[MPMediaItemPropertyPersistentID] = nowPlaying.id
-                nowPlayingInfo[MPNowPlayingInfoPropertyExternalContentIdentifier] = nowPlaying.id
+                // nowPlayingInfo[MPNowPlayingInfoPropertyExternalContentIdentifier] = nowPlaying.id
                 
                 nowPlayingInfo[MPMediaItemPropertyAlbumPersistentID] = nowPlaying.album.id
                 nowPlayingInfo[MPMediaItemPropertyArtistPersistentID] = nowPlaying.artists.first?.id
