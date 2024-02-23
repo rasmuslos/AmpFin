@@ -31,11 +31,11 @@ struct NowPlayingBarModifier: ViewModifier {
                             .frame(width: UIScreen.main.bounds.width + 100, height: 300)
                             .offset(y: 225)
                             .blur(radius: 25)
-                            .foregroundStyle(.thinMaterial)
+                            .foregroundStyle(.ultraThinMaterial)
                         
                         RoundedRectangle(cornerRadius: 15)
                             .toolbarBackground(.hidden, for: .tabBar)
-                            .foregroundStyle(.ultraThinMaterial)
+                            .foregroundStyle(.thinMaterial)
                             .overlay {
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)

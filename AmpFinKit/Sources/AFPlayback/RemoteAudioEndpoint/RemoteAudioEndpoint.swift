@@ -7,8 +7,10 @@
 
 import Foundation
 import MediaPlayer
+import SwiftUI
 import AFBase
 
+@Observable
 class RemoteAudioEndpoint {
     let clientId: String
     let sessionId: String

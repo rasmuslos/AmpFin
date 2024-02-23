@@ -37,7 +37,7 @@ extension NowPlayingSheet {
                         AudioPlayer.current.seek(seconds: duration * (playedPercentage / 100))
                     })
                     .frame(height: 10)
-                    .padding(.vertical, 10)
+                    .padding(.bottom, 10)
                     
                     HStack {
                         Group {
@@ -165,8 +165,16 @@ extension NowPlayingSheet {
                         }
                         .buttonStyle(SymbolButtonStyle(active: false))
                     } else {
-                        Image(systemName: "command")
-                            .buttonStyle(SymbolButtonStyle(active: false))
+                        Button {
+                            if currentTab == .queue {
+                                currentTab = .cover
+                            } else {
+                                currentTab = .queue
+                            }
+                        } label: {
+                            Image(systemName: "command")
+                        }
+                        .buttonStyle(SymbolButtonStyle(active: currentTab == .queue))
                     }
                     
                     Spacer()

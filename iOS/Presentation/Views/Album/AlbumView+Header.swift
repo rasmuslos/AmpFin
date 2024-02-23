@@ -64,6 +64,7 @@ extension AlbumView {
                         if let releaseDate = album.releaseDate {
                             Text(String(releaseDate.get(.year)))
                         }
+                        
                         Text(album.genres.joined(separator: String(localized: "genres.separator")))
                             .lineLimit(1)
                     }

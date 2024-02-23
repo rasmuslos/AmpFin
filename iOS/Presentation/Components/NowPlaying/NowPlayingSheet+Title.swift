@@ -28,12 +28,13 @@ extension NowPlayingSheet {
             Spacer()
             
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 3) {
                     Text(track.name)
                         .bold()
                         .lineLimit(1)
                         .foregroundStyle(.primary)
                         .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading)
+                    
                     ArtistsMenu(track: track)
                         .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading)
                 }
@@ -58,9 +59,9 @@ extension NowPlayingSheet {
         @Binding var currentTab: Tab
         
         var body: some View {
-            HStack() {
+            HStack {
                 ItemImage(cover: track.cover)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 70, height: 70)
                     .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading)
                     .onTapGesture {
                         withAnimation {
@@ -68,12 +69,13 @@ extension NowPlayingSheet {
                         }
                     }
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(track.name)
                         .lineLimit(1)
                         .font(.headline)
                         .foregroundStyle(.primary)
                         .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading)
+                    
                     ArtistsMenu(track: track)
                         .font(.subheadline)
                         .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading)
@@ -144,7 +146,6 @@ extension NowPlayingSheet {
                     .lineLimit(1)
             }
             .foregroundStyle(.secondary)
-            .padding(.vertical, -9)
         }
     }
 }
