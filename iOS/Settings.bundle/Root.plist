@@ -26,6 +26,24 @@
 			<key>DefaultValue</key>
 			<false/>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Siri integration</string>
+			<key>FooterText</key>
+			<string>Enabling offline mode will prevent Siri from discovering items that are not downloaded.</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Siri offline mode</string>
+			<key>Key</key>
+			<string>siriOfflineMode</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
 	</array>
 </dict>
 </plist>

@@ -26,7 +26,7 @@ extension MediaResolver {
             tracks += offlineTracks
         }
         
-        if let fetchedTracks = try? await JellyfinClient.shared.getTracks(query: name) {
+        if !UserDefaults.standard.bool(forKey: "siriOfflineMode"), let fetchedTracks = try? await JellyfinClient.shared.getTracks(query: name) {
             tracks += fetchedTracks.filter { !tracks.contains($0) }
         }
         
@@ -70,7 +70,7 @@ extension MediaResolver {
             albums += offlineAlbums
         }
         
-        if let fetchedAlbums = try? await JellyfinClient.shared.getAlbums(query: name) {
+        if !UserDefaults.standard.bool(forKey: "siriOfflineMode"), let fetchedAlbums = try? await JellyfinClient.shared.getAlbums(query: name) {
             albums += fetchedAlbums.filter { !albums.contains($0) }
         }
         
@@ -122,7 +122,7 @@ extension MediaResolver {
             result += offlinePlaylists
         }
         
-        if let fetchedPlaylists = try? await JellyfinClient.shared.getPlaylists(query: name) {
+        if !UserDefaults.standard.bool(forKey: "siriOfflineMode"), let fetchedPlaylists = try? await JellyfinClient.shared.getPlaylists(query: name) {
             result += fetchedPlaylists.filter { !result.contains($0) }
         }
         
