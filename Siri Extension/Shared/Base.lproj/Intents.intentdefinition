@@ -11,9 +11,9 @@
 	<key>INIntentDefinitionSystemVersion</key>
 	<string>23C71</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>15C65</string>
+	<string>15C500b</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>15.1</string>
+	<string>15.2</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -55,6 +55,21 @@
 					<string>PLAY_PLAY</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>VZVq43</string>
+				</dict>
+				<key>mediaItems</key>
+				<dict>
+					<key>INIntentParameterCombinationIsPrimary</key>
+					<true/>
+					<key>INIntentParameterCombinationSubtitle</key>
+					<string>Play ${mediaItems}</string>
+					<key>INIntentParameterCombinationSubtitleID</key>
+					<string>wx3oQw</string>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Play media</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>2TeLRC</string>
 				</dict>
 			</dict>
 			<key>INIntentParameters</key>

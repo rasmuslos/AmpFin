@@ -10,6 +10,8 @@
 	<array>
 		<string>INMediaCategoryMusic</string>
 	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>INPlayMediaIntent</string>
@@ -18,7 +20,5 @@
 	<array>
 		<string>audio</string>
 	</array>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 </dict>
 </plist>

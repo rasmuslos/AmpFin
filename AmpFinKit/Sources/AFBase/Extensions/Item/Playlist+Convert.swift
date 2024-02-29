@@ -14,7 +14,7 @@ extension Playlist {
             name: item.Name,
             cover: Cover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id),
             favorite: item.UserData.IsFavorite,
-            duration: Double(item.RunTimeTicks ?? 0 / 10_000_000),
+            duration: Double((item.RunTimeTicks ?? 0) / 10_000_000),
             trackCount: item.ChildCount ?? 0)
     }
 }

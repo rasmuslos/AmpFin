@@ -17,6 +17,7 @@
 			<key>IntentsSupported</key>
 			<array>
 				<string>INAddMediaIntent</string>
+				<string>INPlayMediaIntent</string>
 			</array>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
