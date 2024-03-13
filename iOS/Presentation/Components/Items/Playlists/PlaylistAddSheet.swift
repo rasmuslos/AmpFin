@@ -14,12 +14,13 @@ struct PlaylistAddSheet: View {
     
     let track: Track
     
-    @State var creatingNewPlaylist = false
-    @State var newPlaylistName = ""
+    @State private var creatingNewPlaylist = false
+    @State private var newPlaylistName = ""
     
-    @State var failed = false
+    @State private var failed = false
+    @State private var working = false
     
-    @State var playlists: [Playlist]?
+    @State private var playlists: [Playlist]?
     
     var body: some View {
         NavigationStack {
@@ -42,6 +43,8 @@ struct PlaylistAddSheet: View {
                                 Button {
                                     Task {
                                         do {
+                                            working = true
+                                            
                                             try await JellyfinClient.shared.create(playlistName: newPlaylistName, trackIds: [track.id])
                                             dismiss()
                                         } catch {
@@ -68,6 +71,8 @@ struct PlaylistAddSheet: View {
                                     Button {
                                         Task {
                                             do {
+                                                working = true
+                                                
                                                 try await playlist.add(trackIds: [track.id])
                                                 dismiss()
                                             } catch {
@@ -93,6 +98,7 @@ struct PlaylistAddSheet: View {
                             }
                         }
                     }
+                    .disabled(working)
                 } else {
                     ErrorView()
                 }
