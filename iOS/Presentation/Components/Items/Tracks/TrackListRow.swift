@@ -32,6 +32,7 @@ struct TrackListRow: View {
                     if album != nil {
                         Text(String(track.index.index))
                             .fontDesign(.rounded)
+                            .bold(track.favorite)
                     } else {
                         ItemImage(cover: track.cover)
                     }
@@ -43,6 +44,7 @@ struct TrackListRow: View {
                     Text(track.name)
                         .lineLimit(1)
                         .font(.body)
+                        .bold(track.favorite && album == nil)
                         .padding(.vertical, showArtist ? 0 : 6)
                     
                     if showArtist, let artistName = track.artistName {
