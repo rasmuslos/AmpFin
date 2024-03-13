@@ -12,6 +12,10 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 - **Siri / Spotlight integration**: Play your music using Siri and access your library through Spotlight
 - **Automatic updates**: Added a track to a downloaded playlist? AmpFin will download it automatically
 
+## Download
+
+<a href="https://apps.apple.com/de/app/ampfin/id6473753735?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1710288000" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
+
 ## Roadmap
 
 Short term: https://nextcloud.rfk.io/s/iaaAKsad8SxQLfa
