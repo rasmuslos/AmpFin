@@ -121,6 +121,8 @@ extension NowPlayingSheet {
     struct ArtistsMenu: View {
         let track: Track
         
+        @State private var addToPlaylistSheetPresented = false
+        
         var body: some View {
             Menu {
                 Button(action: {
@@ -141,11 +143,20 @@ extension NowPlayingSheet {
                         Text(artistName)
                     }
                 }
+                
+                Button {
+                    addToPlaylistSheetPresented.toggle()
+                } label: {
+                    Label("playlist.add", systemImage: "plus")
+                }
             } label: {
                 Text(track.artistName ?? String(localized: "artist.unknown"))
                     .lineLimit(1)
             }
             .foregroundStyle(.secondary)
+            .sheet(isPresented: $addToPlaylistSheetPresented) {
+                PlaylistAddSheet(track: track)
+            }
         }
     }
 }

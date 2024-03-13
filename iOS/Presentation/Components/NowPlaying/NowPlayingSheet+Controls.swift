@@ -20,15 +20,15 @@ extension NowPlayingSheet {
             }
         }
         
-        @State var buffering: Bool = AudioPlayer.current.buffering
-        @State var quality: String?
+        @State private var buffering: Bool = AudioPlayer.current.buffering
+        @State private var quality: String?
         
-        @State var duration: Double = AudioPlayer.current.duration()
-        @State var currentTime: Double = AudioPlayer.current.currentTime()
-        @State var playedPercentage: Double = (AudioPlayer.current.currentTime() / AudioPlayer.current.duration()) * 100
+        @State private var duration: Double = AudioPlayer.current.duration()
+        @State private var currentTime: Double = AudioPlayer.current.currentTime()
+        @State private var playedPercentage: Double = (AudioPlayer.current.currentTime() / AudioPlayer.current.duration()) * 100
         
-        @State var dragging = false
-        @State var queueTabActive = false
+        @State private var dragging = false
+        @State private var queueTabActive = false
         
         var body: some View {
             VStack {
