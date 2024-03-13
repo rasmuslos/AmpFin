@@ -42,7 +42,7 @@ extension PlaylistView {
                     HStack {
                         Text("playlist.trackCount \(playlist.trackCount)")
                         + Text(verbatim: " • ")
-                        + Text(formatDuration())
+                        + Text(playlist.duration.formatDuration())
                     }
                     .font(.subheadline)
                     .fontDesign(.rounded)
@@ -67,19 +67,6 @@ extension PlaylistView {
                     Spacer()
                 }
             }
-        }
-    }
-}
-
-extension PlaylistView.Header {
-    func formatDuration() -> String {
-        let seconds = Int(playlist.duration)
-        let hours = seconds / 3600
-        
-        if hours > 0 {
-            return String(localized: "hours \(hours)")
-        } else {
-            return String(localized: "minutes \((seconds % 3600) / 60)")
         }
     }
 }

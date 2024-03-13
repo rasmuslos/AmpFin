@@ -33,6 +33,17 @@ struct AlbumView: View {
                 Text(overview)
             }
             
+            VStack(alignment: .leading) {
+                if let releaseDate = album.releaseDate {
+                    Text(releaseDate, style: .date)
+                }
+                
+                Text(tracks.reduce(0, { $0 + $1.runtime }).formatDuration())
+            }
+            .font(.subheadline)
+            .listRowSeparator(.hidden)
+            .foregroundStyle(.secondary)
+            
             AdditionalAlbums(album: album)
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }

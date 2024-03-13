@@ -55,6 +55,7 @@
 		3A442BF62B483C0D008FECE2 /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A442BE32B483C0B008FECE2 /* Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A442BFC2B483EC9008FECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A442BFB2B483EC9008FECE2 /* Localizable.xcstrings */; };
 		3A442BFE2B484026008FECE2 /* DebugTokenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */; };
+		3A44B06D2BA194410013E4EF /* Double+Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A44B06C2BA194410013E4EF /* Double+Duration.swift */; };
 		3A4CC6762B5EC34000C9356E /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4CC6752B5EC34000C9356E /* TrackList.swift */; };
 		3A58F8312B5EB5FC00421D08 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A58F8302B5EB5FC00421D08 /* NowPlayingView.swift */; };
 		3A58F8342B5EB7EA00421D08 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = 3A58F8332B5EB7EA00421D08 /* FluidGradient */; };
@@ -237,6 +238,7 @@
 		3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugTokenWidget.swift; sourceTree = "<group>"; };
 		3A442C012B4844A6008FECE2 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A442C092B485E56008FECE2 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		3A44B06C2BA194410013E4EF /* Double+Duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Duration.swift"; sourceTree = "<group>"; };
 		3A4CC6752B5EC34000C9356E /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
 		3A4CC6772B5ECA4900C9356E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3A58F8302B5EB5FC00421D08 /* NowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
@@ -763,6 +765,7 @@
 			isa = PBXGroup;
 			children = (
 				3ADE8E9C2AA93A2F009826A3 /* Date+Get.swift */,
+				3A44B06C2BA194410013E4EF /* Double+Duration.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
 			);
 			path = Extensions;
@@ -1235,6 +1238,7 @@
 				3A234E182AA8E0AD00197AA7 /* TrackListRow.swift in Sources */,
 				3A6F50A92AACA48400FC8A29 /* SearchView+Picker.swift in Sources */,
 				3A8B99452AAA08B1004AAA7B /* Slider.swift in Sources */,
+				3A44B06D2BA194410013E4EF /* Double+Duration.swift in Sources */,
 				3A2B28ED2B43739100DF9731 /* PlaylistView.swift in Sources */,
 				3A7938FF2B387851001B3B3D /* LibraryDataProvider.swift in Sources */,
 				3AEB322B2AA7EC3C00853210 /* iOSApp.swift in Sources */,
