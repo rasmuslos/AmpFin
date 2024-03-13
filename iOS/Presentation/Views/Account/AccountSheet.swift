@@ -39,14 +39,6 @@ struct AccountSheet: View {
                 .padding(.trailing, 5)
             }
             
-            Section {
-                Button {
-                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                } label: {
-                    Text("account.settings")
-                }
-            }
-            
             Section("account.remote") {
                 if JellyfinWebSocket.shared.isConnected {
                     if AudioPlayer.current.source == .jellyfinRemote {
@@ -96,6 +88,14 @@ struct AccountSheet: View {
                     } label: {
                         Text("remote.connect")
                     }
+                }
+            }
+            
+            Section {
+                Button {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                } label: {
+                    Text("account.settings")
                 }
             }
             

@@ -98,6 +98,9 @@ struct TrackListRow: View {
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             FavoriteButton(track: track)
         }
+        .swipeActions(edge: .trailing) {
+            AddToPlaylistButton(track: track, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
+        }
     }
 }
 
@@ -156,12 +159,7 @@ extension TrackListRow {
             }
             .disabled(!libraryOnline)
             
-            Button {
-                addToPlaylistSheetPresented.toggle()
-            } label: {
-                Label("playlist.add", systemImage: "plus")
-            }
-            .disabled(!libraryOnline)
+            AddToPlaylistButton(track: track, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
             
             Divider()
             
@@ -232,6 +230,23 @@ extension TrackListRow {
                 Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
             }
             .tint(.orange)
+        }
+    }
+    
+    struct AddToPlaylistButton: View {
+        @Environment(\.libraryOnline) var libraryOnline
+        
+        let track: Track
+        @Binding var addToPlaylistSheetPresented: Bool
+        
+        var body: some View {
+            Button {
+                addToPlaylistSheetPresented.toggle()
+            } label: {
+                Label("playlist.add", systemImage: "plus")
+            }
+            .disabled(!libraryOnline)
+            .tint(.green)
         }
     }
 }
