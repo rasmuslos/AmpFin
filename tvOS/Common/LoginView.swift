@@ -14,7 +14,7 @@ struct LoginView: View {
     @State var loginSheetPresented = false
     @State var loginFlowState: LoginFlowState = .server
     
-    @State var server = JellyfinClient.shared.serverUrl?.absoluteString ?? ""
+    @State var server = JellyfinClient.shared.serverUrl?.absoluteString ?? "https://"
     @State var username = ""
     @State var password = ""
     
