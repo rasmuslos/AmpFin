@@ -205,6 +205,9 @@
 		3A24E5D82B4BF5850052DD20 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		3A24E5DD2B4BF7860052DD20 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
 		3A24E5DF2B4BF7890052DD20 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = de; path = de.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
+		3A2657EF2BA340EC000C62E3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3A2657F02BA34113000C62E3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3A2657F12BA34126000C62E3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3A2B28E42B433C8A00DF9731 /* PlaylistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistsView.swift; sourceTree = "<group>"; };
 		3A2B28E72B43422800DF9731 /* PlaylistsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistsList.swift; sourceTree = "<group>"; };
 		3A2B28E92B4342F000DF9731 /* PlaylistListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListRow.swift; sourceTree = "<group>"; };
@@ -490,6 +493,7 @@
 				3A442BF32B483C0D008FECE2 /* Info.plist */,
 				3A442BF12B483C0D008FECE2 /* Assets.xcassets */,
 				3A442BFB2B483EC9008FECE2 /* Localizable.xcstrings */,
+				3A2657F12BA34126000C62E3 /* PrivacyInfo.xcprivacy */,
 				3A442C012B4844A6008FECE2 /* Entitlements.entitlements */,
 			);
 			path = "Widget Extension";
@@ -673,6 +677,7 @@
 				3A73FF5A2B52D0C300933AE7 /* Shared */,
 				3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */,
 				3AAF0DF02B4960EF0032DEFF /* Info.plist */,
+				3A2657F02BA34113000C62E3 /* PrivacyInfo.xcprivacy */,
 				3A03450A2B49613C007D6171 /* Entitlements.entitlements */,
 			);
 			path = "Siri Extension";
@@ -807,6 +812,7 @@
 				3AEB321F2AA7EC3C00853210 /* Assets.xcassets */,
 				3A0A49282B6C1EDC00AAA647 /* InfoPlist.xcstrings */,
 				3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */,
+				3A2657EF2BA340EC000C62E3 /* PrivacyInfo.xcprivacy */,
 				3AEB32222AA7EC3C00853210 /* Entitlements.entitlements */,
 				3A24E5DE2B4BF7860052DD20 /* AppIntentVocabulary.plist */,
 			);
