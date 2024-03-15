@@ -9,11 +9,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>jW9NRQ</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>23C71</string>
+	<string>23E214</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>15C500b</string>
+	<string>15E204a</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>15.2</string>
+	<string>15.3</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -28,7 +28,7 @@
 			<key>INIntentDefaultImageName</key>
 			<string>Logo</string>
 			<key>INIntentDescription</key>
-			<string>PLAY_MEDIA_DESCRIPTION</string>
+			<string>Play tracks, albums or playlists</string>
 			<key>INIntentDescriptionID</key>
 			<string>LdrEPN</string>
 			<key>INIntentDomain</key>
@@ -43,31 +43,18 @@
 			<string>PlayMedia</string>
 			<key>INIntentParameterCombinations</key>
 			<dict>
-				<key></key>
-				<dict>
-					<key>INIntentParameterCombinationSubtitle</key>
-					<string>PLAY_PLAY_DESCRIPTION</string>
-					<key>INIntentParameterCombinationSubtitleID</key>
-					<string>2BXT56</string>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>PLAY_PLAY</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>VZVq43</string>
-				</dict>
 				<key>mediaItems</key>
 				<dict>
 					<key>INIntentParameterCombinationIsPrimary</key>
 					<true/>
 					<key>INIntentParameterCombinationSubtitle</key>
-					<string>Play ${mediaItems}</string>
+					<string>Start playing ${mediaItems}</string>
 					<key>INIntentParameterCombinationSubtitleID</key>
 					<string>wx3oQw</string>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
 					<key>INIntentParameterCombinationTitle</key>
-					<string>Play media</string>
+					<string>Play ${mediaItems}</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>2TeLRC</string>
 				</dict>
@@ -269,7 +256,7 @@
 				</dict>
 			</array>
 			<key>INIntentTitle</key>
-			<string>PLAY_MEDIA</string>
+			<string>Play media</string>
 			<key>INIntentTitleID</key>
 			<string>G3J6fP</string>
 			<key>INIntentType</key>

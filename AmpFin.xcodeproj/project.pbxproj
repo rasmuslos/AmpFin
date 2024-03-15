@@ -193,8 +193,6 @@
 		3A1CBC1A2B0D2A6400855A70 /* NavigationRoot+Destinations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationRoot+Destinations.swift"; sourceTree = "<group>"; };
 		3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
 		3A21CF112B48C3140068ACB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Intents.intentdefinition; sourceTree = "<group>"; };
-		3A21CF142B48C3340068ACB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Intents.strings; sourceTree = "<group>"; };
-		3A21CF162B48C3340068ACB7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
 		3A234DFA2AA883EC00197AA7 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3A234DFC2AA884FF00197AA7 /* LibraryView+Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView+Links.swift"; sourceTree = "<group>"; };
 		3A234E042AA88D6000197AA7 /* TracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksView.swift; sourceTree = "<group>"; };
@@ -1291,8 +1289,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				3A21CF112B48C3140068ACB7 /* Base */,
-				3A21CF142B48C3340068ACB7 /* en */,
-				3A21CF162B48C3340068ACB7 /* de */,
 			);
 			name = Intents.intentdefinition;
 			sourceTree = "<group>";
