@@ -25,47 +25,52 @@ struct ArtistView: View {
     
     var body: some View {
         ScrollView {
-            if artist.cover != nil {
-                Header(artist: artist)
-            } else {
-                Color.clear
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button {
-                                if UserDefaults.standard.bool(forKey: "artistInstantMix") {
-                                    Task {
-                                        try? await artist.startInstantMix()
+            VStack(spacing: 0) {
+                if artist.cover != nil {
+                    Header(artist: artist)
+                } else {
+                    Color.clear
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button {
+                                    if UserDefaults.standard.bool(forKey: "artistInstantMix") {
+                                        Task {
+                                            try? await artist.startInstantMix()
+                                        }
+                                    } else {
+                                        Task {
+                                            let tracks = try await dataProvider.getArtistTracks(id: artist.id)
+                                            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init())
+                                        }
                                     }
-                                } else {
-                                    Task {
-                                        let tracks = try await dataProvider.getArtistTracks(id: artist.id)
-                                        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init())
-                                    }
+                                } label: {
+                                    Image(systemName: "play.circle.fill")
                                 }
-                            } label: {
-                                Image(systemName: "play.circle.fill")
                             }
                         }
-                    }
-            }
-            
-            if let albums = albums, !albums.isEmpty {
-                HStack {
-                    Text("artist.albums")
-                        .font(.headline)
-                    
-                    Spacer()
                 }
-                .padding(.top, artist.cover == nil ? 0 : 17)
-                .padding(.horizontal)
                 
-                AlbumsGrid(albums: albums)
-                    .padding()
-            } else {
-                Text("artist.empty")
-                    .font(.headline.smallCaps())
-                    .foregroundStyle(.secondary)
-                    .padding(.top, 100)
+                VStack {
+                    if let albums = albums, !albums.isEmpty {
+                        HStack {
+                            Text("artist.albums")
+                                .font(.headline)
+                            
+                            Spacer()
+                        }
+                        .padding(.top, artist.cover == nil ? 0 : 17)
+                        .padding(.horizontal)
+                        
+                        AlbumsGrid(albums: albums)
+                            .padding()
+                    } else {
+                        Text("artist.empty")
+                            .font(.headline.smallCaps())
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 100)
+                    }
+                }
+                .background(.background)
             }
         }
         .toolbar {

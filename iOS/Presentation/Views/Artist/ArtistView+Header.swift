@@ -16,7 +16,8 @@ extension ArtistView {
         let artist: Artist
         
         @State var width: CGFloat = .zero
-        @State var offset: CGFloat = .zero
+        @State var parallax: CGFloat = .zero
+        @State var overscroll: CGFloat = .zero
         
         @State var showNavigationBar = false
         @State var overviewSheetPresented = false
@@ -33,9 +34,11 @@ extension ArtistView {
                             let offset = proxy.frame(in: .global).minY
                             
                             if offset > 0 {
-                                self.offset = offset
+                                parallax = 0
+                                overscroll = offset
                             } else {
-                                self.offset = 0
+                                parallax = -offset
+                                overscroll = 0
                             }
                             
                             width = proxy.size.width
@@ -46,11 +49,11 @@ extension ArtistView {
                 .background {
                     ItemImage(cover: artist.cover, cornerRadius: 0)
                         .scaledToFill()
-                        .frame(width: width, height: width + offset)
-                        .offset(y: offset / -2)
+                        .frame(width: width, height: width + overscroll)
+                        .offset(y: (overscroll + parallax) / 2)
                 }
                 
-                VStack {
+                VStack(spacing: 0) {
                     Spacer()
                     
                     ZStack(alignment: .bottom) {

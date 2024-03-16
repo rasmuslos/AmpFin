@@ -33,6 +33,7 @@ struct TrackListRow: View {
                         Text(String(track.index.index))
                             .fontDesign(.rounded)
                             .bold(track.favorite)
+                            .foregroundStyle(.secondary)
                     } else {
                         ItemImage(cover: track.cover)
                     }
@@ -142,9 +143,14 @@ extension TrackListRow {
         @Binding var addToPlaylistSheetPresented: Bool
         
         var body: some View {
+            Button {
+                AudioPlayer.current.startPlayback(tracks: [track], startIndex: 0, shuffle: false, playbackInfo: .init())
+            } label: {
+                Label("play", systemImage: "play")
+            }
+            
             PlayNextButton(track: track)
             PlayLastButton(track: track)
-            
             
             Divider()
             
