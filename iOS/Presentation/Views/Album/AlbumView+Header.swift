@@ -62,7 +62,7 @@ extension AlbumView {
                     
                     HStack {
                         if let releaseDate = album.releaseDate {
-                            Text(String(releaseDate.get(.year)))
+                            Text(releaseDate, style: .date)
                         }
                         
                         Text(album.genres.joined(separator: String(localized: "genres.separator")))

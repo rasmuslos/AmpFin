@@ -44,7 +44,7 @@ extension AlbumView {
                                     .font(.headline)
                                     .lineLimit(1)
                                 if let releaseDate = album.releaseDate {
-                                    Text(String(releaseDate.get(.year)))
+                                    Text(releaseDate, style: .date)
                                         .font(.caption2)
                                         .lineLimit(1)
                                 }
