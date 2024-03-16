@@ -166,11 +166,7 @@ extension NowPlayingSheet {
                         .buttonStyle(SymbolButtonStyle(active: false))
                     } else {
                         Button {
-                            if currentTab == .queue {
-                                currentTab = .cover
-                            } else {
-                                currentTab = .queue
-                            }
+                            setActiveTab(currentTab == .cover ? .queue : .cover)
                         } label: {
                             Image(systemName: "command")
                         }

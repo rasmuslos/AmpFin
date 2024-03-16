@@ -14,7 +14,9 @@ import AFPlayback
 extension NowPlayingSheet {
     struct Cover: View {
         let track: Track
+        let currentTab: Tab
         let namespace: Namespace.ID
+        
         @Binding var playing: Bool
         
         var body: some View {
@@ -23,7 +25,7 @@ extension NowPlayingSheet {
             ItemImage(cover: track.cover)
                 .scaleEffect(playing ? 1 : 0.8)
                 .animation(.spring(duration: 0.3, bounce: 0.6), value: playing)
-                .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading)
+                .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab == .cover)
             
             Spacer()
             
@@ -33,17 +35,17 @@ extension NowPlayingSheet {
                         .bold()
                         .lineLimit(1)
                         .foregroundStyle(.primary)
-                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading)
+                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .top)
                     
                     ArtistsMenu(track: track)
-                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading)
+                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .top)
                 }
                 .font(.system(size: 18))
                 
                 Spacer()
                 
                 FavoriteButton(track: track)
-                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topLeading)
+                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .top)
             }
             .padding(.vertical)
         }
@@ -62,7 +64,7 @@ extension NowPlayingSheet {
             HStack {
                 ItemImage(cover: track.cover)
                     .frame(width: 70, height: 70)
-                    .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading)
+                    .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .bottomTrailing, isSource: currentTab != .cover)
                     .onTapGesture {
                         withAnimation {
                             currentTab = .cover
@@ -74,17 +76,17 @@ extension NowPlayingSheet {
                         .lineLimit(1)
                         .font(.headline)
                         .foregroundStyle(.primary)
-                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topLeading)
+                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .bottom)
                     
                     ArtistsMenu(track: track)
                         .font(.subheadline)
-                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topLeading)
+                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .bottom)
                 }
                 
                 Spacer()
                 
                 FavoriteButton(track: track)
-                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topLeading)
+                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .bottom)
             }
             .padding(.top, 40)
         }

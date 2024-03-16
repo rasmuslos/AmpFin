@@ -25,7 +25,7 @@ struct NowPlayingSheet: View {
     var body: some View {
         VStack {
             if currentTab == .cover {
-                Cover(track: track, namespace: namespace, playing: $playing)
+                Cover(track: track, currentTab: currentTab, namespace: namespace, playing: $playing)
             } else {
                 SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                 
