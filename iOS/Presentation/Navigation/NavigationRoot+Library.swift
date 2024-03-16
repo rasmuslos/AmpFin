@@ -23,7 +23,6 @@ extension NavigationRoot {
                     }
             }
             .environment(\.libraryDataProvider, OnlineLibraryDataProvider())
-            .modifier(NowPlayingBarModifier())
             .onReceive(NotificationCenter.default.publisher(for: NavigationRoot.navigateNotification)) { notification in
                 if let albumId = notification.userInfo?["albumId"] as? String {
                     navigationPath.append(AlbumLoadDestination(albumId: albumId))

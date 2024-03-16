@@ -95,7 +95,7 @@ struct ArtistView: View {
                 await loadAlbums()
             }
         }
-        .modifier(NowPlayingBarSafeAreaModifier())
+        .modifier(NowPlayingBarModifier())
         .modifier(IgnoreSafeAreaModifier(ignoreSafeArea: artist.cover != nil))
         .task(loadAlbums)
         .userActivity("io.rfk.ampfin.artist") {

@@ -34,7 +34,7 @@ struct PlaylistView: View {
         .ignoresSafeArea(edges: .top)
         .navigationTitle(playlist.name)
         .modifier(ToolbarModifier(playlist: playlist, tracks: $tracks, editMode: $editMode))
-        .modifier(NowPlayingBarSafeAreaModifier())
+        .modifier(NowPlayingBarModifier())
         .userActivity("io.rfk.ampfin.playlist") {
             $0.title = playlist.name
             $0.isEligibleForHandoff = true

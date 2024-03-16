@@ -9,41 +9,44 @@ import SwiftUI
 import AFBase
 import AFPlayback
 
+// For some fucking reason animations do not work on `NavigationStack`, so this has to be added to every view... WHY?
+
 struct NowPlayingBarModifier: ViewModifier {
-    @Environment(\.libraryDataProvider) var dataProvider
-    @Environment(\.libraryOnline) var libraryOnline
+    @Environment(NowPlayingViewState.self) private var nowPlayingViewState
+    @Environment(\.libraryDataProvider) private var dataProvider
     
     @State var playing = AudioPlayer.current.isPlaying()
     @State var currentTrack = AudioPlayer.current.nowPlaying
     
-    @State var animateImage = false
-    @State var animateForwards = false
-    
-    @State var nowPlayingSheetPresented = false
-    @State var addToPlaylistSheetPresented = false
+    @State private var animateImage = false
+    @State private var animateForwards = false
     
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom) {
-                if let currentTrack = currentTrack {
+                if !nowPlayingViewState.presented, let currentTrack = currentTrack {
                     ZStack(alignment: .bottom) {
                         Rectangle()
                             .frame(width: UIScreen.main.bounds.width + 100, height: 300)
-                            .offset(y: 225)
+                            .padding(.bottom, -225)
                             .blur(radius: 25)
                             .foregroundStyle(.thinMaterial)
                         
                         RoundedRectangle(cornerRadius: 15)
                             .toolbarBackground(.hidden, for: .tabBar)
                             .foregroundStyle(.ultraThinMaterial)
+                            .matchedGeometryEffect(id: "nowPlaying", in: nowPlayingViewState.namespace, properties: .position, anchor: .center, isSource: nowPlayingViewState.presented != true)
+                            .transition(.opacity.animation(.easeInOut(duration: 0.25)))
                             .overlay {
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)
                                         .frame(width: 40, height: 40)
                                         .padding(.leading, 5)
+                                        .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
                                     
                                     Text(currentTrack.name)
                                         .lineLimit(1)
+                                        .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
                                     
                                     Spacer()
                                     
@@ -76,6 +79,9 @@ struct NowPlayingBarModifier: ViewModifier {
                                     .imageScale(.large)
                                 }
                                 .padding(.horizontal, 6)
+                                .transition(.asymmetric(
+                                    insertion: .opacity.animation(.easeInOut(duration: 0.2).delay(0.4)),
+                                    removal: .opacity.animation(.easeInOut(duration: 0.1))))
                             }
                             .foregroundStyle(.primary)
                             .frame(width: UIScreen.main.bounds.width - 30, height: 60)
@@ -83,142 +89,11 @@ struct NowPlayingBarModifier: ViewModifier {
                             .draggable(currentTrack) {
                                 TrackListRow.TrackPreview(track: currentTrack)
                             }
-                            .contextMenu {
-                                Button {
-                                    Task {
-                                        await currentTrack.setFavorite(favorite: !currentTrack.favorite)
-                                    }
-                                } label: {
-                                    Label("favorite", systemImage: currentTrack.favorite ? "heart.fill" : "heart")
-                                }
-                                
-                                Button {
-                                    Task {
-                                        try? await currentTrack.startInstantMix()
-                                    }
-                                } label: {
-                                    Label("queue.mix", systemImage: "compass.drawing")
-                                }
-                                .disabled(!libraryOnline)
-                                
-                                Button {
-                                    addToPlaylistSheetPresented.toggle()
-                                } label: {
-                                    Label("playlist.add", systemImage: "plus")
-                                }
-                                .disabled(!libraryOnline)
-                                
-                                Divider()
-                                
-                                // why is SwiftUI so stupid?
-                                Button(action: {
-                                    NotificationCenter.default.post(name: NavigationRoot.navigateAlbumNotification, object: currentTrack.album.id)
-                                }) {
-                                    Label("album.view", systemImage: "square.stack")
-                                    
-                                    if let albumName = currentTrack.album.name {
-                                        Text(albumName)
-                                    }
-                                }
-                                
-                                if let artistId = currentTrack.artists.first?.id, let artistName = currentTrack.artists.first?.name {
-                                    Button(action: {
-                                        NotificationCenter.default.post(name: NavigationRoot.navigateArtistNotification, object: artistId)
-                                    }) {
-                                        Label("artist.view", systemImage: "music.mic")
-                                        Text(artistName)
-                                    }
-                                }
-                                
-                                Divider()
-                                
-                                Button {
-                                    AudioPlayer.current.shuffle(!AudioPlayer.current.shuffled)
-                                } label: {
-                                    if AudioPlayer.current.shuffled {
-                                        Label("shuffle", systemImage: "checkmark")
-                                    } else {
-                                        Label("shuffle", systemImage: "shuffle")
-                                    }
-                                }
-                                
-                                Menu {
-                                    Button {
-                                        AudioPlayer.current.setRepeatMode(.none)
-                                    } label: {
-                                        Label("repeat.none", systemImage: "slash.circle")
-                                    }
-                                    
-                                    Button {
-                                        AudioPlayer.current.setRepeatMode(.queue)
-                                    } label: {
-                                        Label("repeat.queue", systemImage: "repeat")
-                                    }
-                                    
-                                    Button {
-                                        AudioPlayer.current.setRepeatMode(.track)
-                                    } label: {
-                                        Label("repeat.track", systemImage: "repeat.1")
-                                    }
-                                } label: {
-                                    Label("repeat", systemImage: "repeat")
-                                }
-                                
-                                Divider()
-                                
-                                Button {
-                                    AudioPlayer.current.backToPreviousItem()
-                                } label: {
-                                    Label("playback.back", systemImage: "backward")
-                                }
-                                
-                                Button {
-                                    animateForwards.toggle()
-                                    AudioPlayer.current.advanceToNextTrack()
-                                } label: {
-                                    Label("playback.next", systemImage: "forward")
-                                }
-                                
-                                Divider()
-                                
-                                Button {
-                                    AudioPlayer.current.stopPlayback()
-                                } label: {
-                                    Label("playback.stop", systemImage: "stop.circle")
-                                }
-                                
-                                if AudioPlayer.current.source == .jellyfinRemote {
-                                    Button {
-                                        AudioPlayer.current.destroy()
-                                    } label: {
-                                        Label("remote.disconnect", systemImage: "xmark")
-                                    }
-                                }
-                            } preview: {
-                                VStack(alignment: .leading) {
-                                    ItemImage(cover: currentTrack.cover)
-                                        .padding(.bottom, 10)
-                                    
-                                    Text(currentTrack.name)
-                                    
-                                    if let artistName = currentTrack.artistName {
-                                        Text(artistName)
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                                .frame(width: 250)
-                                .padding()
-                                .background(.ultraThickMaterial)
-                            }
+                            .modifier(ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                             .padding(.bottom, 10)
                             .onTapGesture {
-                                nowPlayingSheetPresented.toggle()
+                                nowPlayingViewState.setNowPlayingViewPresented(true)
                             }
-                            .modifier(NowPlayingSheetModifier(currentTrack: currentTrack, playing: $playing, nowPlayingSheetPresented: $nowPlayingSheetPresented))
-                    }
-                    .sheet(isPresented: $addToPlaylistSheetPresented) {
-                        PlaylistAddSheet(track: currentTrack)
                     }
                 }
             }
@@ -236,63 +111,18 @@ struct NowPlayingBarModifier: ViewModifier {
                     playing = AudioPlayer.current.isPlaying()
                 }
             })
-            .onReceive(NotificationCenter.default.publisher(for: NavigationRoot.navigateNotification)) { _ in
-                withAnimation {
-                    nowPlayingSheetPresented = false
-                }
-            }
-    }
-}
-
-struct NowPlayingSheetModifier: ViewModifier {
-    var currentTrack: Track
-    
-    @Binding var playing: Bool
-    @Binding var nowPlayingSheetPresented: Bool
-    
-    @AppStorage("presentModally") var presentModally: Bool = false
-    
-    func body(content: Content) -> some View {
-        Group {
-            if presentModally {
-                content
-                    .sheet(isPresented: $nowPlayingSheetPresented) {
-                        NowPlayingSheet(track: currentTrack, showDragIndicator: false, playing: $playing)
-                            .presentationDetents([.large])
-                            .presentationDragIndicator(.visible)
-                    }
-            } else {
-                content
-                    .fullScreenCover(isPresented: $nowPlayingSheetPresented) {
-                        NowPlayingSheet(track: currentTrack, showDragIndicator: true, playing: $playing)
-                    }
-            }
-        }
-        .onChange(of: NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) {
-            presentModally = UserDefaults.standard.bool(forKey: "presentModally")
-        }
-    }
-}
-
-struct NowPlayingBarSafeAreaModifier: ViewModifier {
-    @State var isVisible = AudioPlayer.current.nowPlaying != nil
-    
-    func body(content: Content) -> some View {
-        content
-            .safeAreaPadding(.bottom, isVisible ? 75 : 0)
-            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
-                withAnimation {
-                    isVisible = AudioPlayer.current.nowPlaying != nil
-                }
-            })
     }
 }
 
 #Preview {
-    NavigationStack {
-        Rectangle()
-            .foregroundStyle(.red)
-            .ignoresSafeArea()
+    TabView {
+        NavigationStack {
+            Rectangle()
+                .foregroundStyle(.red)
+                .ignoresSafeArea()
+                .modifier(NowPlayingBarModifier(playing: true, currentTrack: Track.fixture))
+        }
+        .tabItem { Label(":)", systemImage: "command") }
     }
-    .modifier(NowPlayingBarModifier(playing: true, currentTrack: Track.fixture))
+    .modifier(NowPlayingViewModifier())
 }

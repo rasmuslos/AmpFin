@@ -63,7 +63,7 @@ struct SearchView: View {
             }
             .listStyle(.plain)
             .navigationTitle("title.search")
-            .modifier(NowPlayingBarSafeAreaModifier())
+            .modifier(NowPlayingBarModifier())
             .modifier(AccountToolbarButtonModifier())
             // Query
             .searchable(text: $query, prompt: "search.placeholder")

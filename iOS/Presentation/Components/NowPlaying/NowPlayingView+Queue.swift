@@ -1,5 +1,5 @@
 //
-//  NowPlayingSheet+Queue.swift
+//  NowPlayingView+Queue.swift
 //  Music
 //
 //  Created by Rasmus Krämer on 08.09.23.
@@ -12,7 +12,7 @@ import AFPlayback
 
 // MARK: Container
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct Queue: View {
         @State var history = AudioPlayer.current.history
         @State var queue = AudioPlayer.current.queue
@@ -147,7 +147,7 @@ extension NowPlayingSheet {
 
 // MARK: Item
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct QueueTrackRow: View {
         let track: Track
         let draggable: Bool

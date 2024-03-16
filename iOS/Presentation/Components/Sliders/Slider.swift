@@ -17,9 +17,9 @@ struct Slider: View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Rectangle()
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(.white.tertiary)
                 Rectangle()
-                    .foregroundStyle(dragging ? Color.primary : Color.primary.opacity(0.8))
+                    .foregroundStyle(dragging ? Color.white : Color.white.opacity(0.8))
                     .frame(width: geometry.size.width * CGFloat(self.percentage / 100))
             }
             .cornerRadius(7)

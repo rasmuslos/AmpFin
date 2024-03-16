@@ -1,5 +1,5 @@
 //
-//  NowPlayingSheet+Title.swift
+//  NowPlayingView+Title.swift
 //  Music
 //
 //  Created by Rasmus Krämer on 07.09.23.
@@ -11,7 +11,7 @@ import AFPlayback
 
 // MARK: Cover
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct Cover: View {
         let track: Track
         let currentTab: Tab
@@ -23,6 +23,7 @@ extension NowPlayingSheet {
             Spacer()
             
             ItemImage(cover: track.cover)
+                .id(track.id)
                 .scaleEffect(playing ? 1 : 0.8)
                 .animation(.spring(duration: 0.3, bounce: 0.6), value: playing)
                 .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab == .cover)
@@ -54,7 +55,7 @@ extension NowPlayingSheet {
 
 // MARK: Small Title
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct SmallTitle: View {
         let track: Track
         let namespace: Namespace.ID
@@ -64,7 +65,7 @@ extension NowPlayingSheet {
             HStack {
                 ItemImage(cover: track.cover)
                     .frame(width: 70, height: 70)
-                    .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .bottomTrailing, isSource: currentTab != .cover)
+                    .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab != .cover)
                     .onTapGesture {
                         withAnimation {
                             currentTab = .cover
@@ -95,7 +96,7 @@ extension NowPlayingSheet {
 
 // MARK: favorite button
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct FavoriteButton: View {
         let track: Track
         
@@ -119,7 +120,7 @@ extension NowPlayingSheet {
 
 // MARK: artist menu
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct ArtistsMenu: View {
         let track: Track
         

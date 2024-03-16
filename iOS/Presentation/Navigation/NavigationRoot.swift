@@ -22,6 +22,7 @@ struct NavigationRoot: View {
             SearchTab()
                 .tag(Tab.search)
         }
+        .modifier(NowPlayingViewModifier())
         .onReceive(NotificationCenter.default.publisher(for: Self.navigateArtistNotification)) { notification in
             if let id = notification.object as? String {
                 withAnimation {

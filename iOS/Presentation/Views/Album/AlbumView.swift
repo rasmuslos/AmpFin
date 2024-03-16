@@ -58,7 +58,7 @@ struct AlbumView: View {
                     index: next ? 0 : AudioPlayer.current.queue.count)
             }, toolbarBackgroundVisible: $toolbarBackgroundVisible, imageColors: $imageColors)
         )
-        .modifier(NowPlayingBarSafeAreaModifier())
+        .modifier(NowPlayingBarModifier())
         .userActivity("io.rfk.ampfin.album") {
             $0.title = album.name
             $0.isEligibleForHandoff = true

@@ -44,7 +44,7 @@ struct LibraryView: View {
             
             Spacer()
         }
-        .modifier(NowPlayingBarSafeAreaModifier())
+        .modifier(NowPlayingBarModifier())
         .onAppear(perform: loadRecentAlbums)
         .refreshable(action: loadRecentAlbums)
     }

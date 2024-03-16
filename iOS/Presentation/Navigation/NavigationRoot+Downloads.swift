@@ -20,7 +20,6 @@ extension NavigationRoot {
                     }
             }
             .environment(\.libraryDataProvider, OfflineLibraryDataProvider())
-            .modifier(NowPlayingBarModifier())
             .onReceive(NotificationCenter.default.publisher(for: NavigationRoot.navigateNotification)) { notification in
                 if let albumId = notification.userInfo?["offlineAlbumId"] as? String {
                     navigationPath.append(AlbumLoadDestination(albumId: albumId))

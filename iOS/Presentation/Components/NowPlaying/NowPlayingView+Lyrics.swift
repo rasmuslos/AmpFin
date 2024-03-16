@@ -1,5 +1,5 @@
 //
-//  NowPlayingSheet+Lyrics.swift
+//  NowPlayingView+Lyrics.swift
 //  Music
 //
 //  Created by Rasmus Krämer on 07.09.23.
@@ -12,7 +12,7 @@ import AFPlayback
 
 // MARK: Container
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct LyricsContainer: View {
         @Binding var controlsVisible: Bool
         
@@ -136,7 +136,7 @@ extension NowPlayingSheet {
 
 // MARK: Line
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct LyricLine: View {
         let index: Int
         let text: String?

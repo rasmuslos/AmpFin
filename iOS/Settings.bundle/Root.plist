@@ -10,16 +10,6 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Present Now-Playing view modally</string>
-			<key>Key</key>
-			<string>presentModally</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
 			<string>Play artist instant mix</string>
 			<key>Key</key>
 			<string>artistInstantMix</string>

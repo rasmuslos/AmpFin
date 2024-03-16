@@ -1,5 +1,5 @@
 //
-//  NowPlayingSheet+Controls.swift
+//  NowPlayingView+Controls.swift
 //  Music
 //
 //  Created by Rasmus Krämer on 07.09.23.
@@ -11,7 +11,7 @@ import MediaPlayer
 import AFBase
 import AFPlayback
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct Controls: View {
         @Binding var playing: Bool
         @Binding var currentTab: Tab {
@@ -52,12 +52,13 @@ extension NowPlayingSheet {
                         
                         if let quality = quality {
                             Spacer()
+                            
                             Text(quality)
                                 .font(.caption2)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.primary)
                                 .padding(.vertical, 4)
                                 .padding(.horizontal, 8)
-                                .background(.ultraThinMaterial)
+                                .background(.tertiary)
                                 .clipShape(RoundedRectangle(cornerRadius: 3))
                         }
                         Spacer()
@@ -210,7 +211,7 @@ extension NowPlayingSheet {
 
 // MARK: Helper
 
-extension NowPlayingSheet.Controls {
+extension NowPlayingViewModifier.Controls {
     func fetchQuality() {
         Task.detached {
             if let data = await AudioPlayer.current.getTrackData() {
@@ -230,13 +231,13 @@ extension NowPlayingSheet.Controls {
 
 // MARK: Airplay view
 
-extension NowPlayingSheet {
+extension NowPlayingViewModifier {
     struct AirPlayView: UIViewRepresentable {
         func makeUIView(context: Context) -> UIView {
             let routePickerView = AVRoutePickerView()
             routePickerView.backgroundColor = UIColor.clear
             routePickerView.activeTintColor = UIColor(Color.accentColor)
-            routePickerView.tintColor = UIColor(Color.secondary)
+            routePickerView.tintColor = UIColor(Color.white.opacity(0.6))
             
             return routePickerView
         }
