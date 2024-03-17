@@ -47,7 +47,7 @@ struct NowPlayingViewModifier: ViewModifier {
                     .background {
                         Background(cover: track.cover)
                             .id(track.id)
-                            .transition(.opacity.animation(.easeInOut(duration: 0.3)))
+                            .transition(.move(edge: .bottom))
                             .matchedGeometryEffect(id: "nowPlaying", in: namespace, properties: .size, anchor: .top, isSource: viewState.presented == true)
                     }
                     .zIndex(2)
@@ -68,10 +68,10 @@ struct NowPlayingViewModifier: ViewModifier {
                         }
                         .transition(.asymmetric(
                             insertion:
-                                    .push(from: .bottom).animation(.easeIn.delay(0.1))
+                                    .push(from: .bottom).animation(.spring.delay(0.1))
                                     .combined(with: .opacity),
                             removal:
-                                    .push(from: .top).animation(.easeOut.logicallyComplete(after: 0.1))
+                                    .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))
                                     .combined(with: .opacity)
                         ))
                     }
@@ -93,8 +93,8 @@ struct NowPlayingViewModifier: ViewModifier {
                 .padding(.horizontal, 30)
                 .ignoresSafeArea(edges: .bottom)
                 .gesture(
-                    DragGesture(minimumDistance: 150).onEnded { value in
-                        if value.location.y - value.startLocation.y > 150 {
+                    DragGesture(minimumDistance: 150).onEnded {
+                        if $0.location.y - $0.startLocation.y > 150 {
                             viewState.setNowPlayingViewPresented(false)
                         }
                     }
@@ -154,7 +154,7 @@ class NowPlayingViewState {
     private(set) var presented = false
     
     func setNowPlayingViewPresented(_ presented: Bool) {
-        withAnimation(.easeInOut(duration: 0.5)) {
+        withAnimation(.spring(duration: 0.4)) {
             self.presented = presented
         }
     }
