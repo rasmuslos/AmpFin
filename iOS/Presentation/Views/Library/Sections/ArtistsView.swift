@@ -27,7 +27,7 @@ struct ArtistsView: View {
             }
         }
         .navigationTitle(albumOnly ? "title.albumArtists" : "title.artists")
-        .modifier(NowPlayingBarModifier())
+        .modifier(NowPlayingBarSafeAreaModifier())
         .task(loadArtists)
     }
 }

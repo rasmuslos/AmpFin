@@ -31,7 +31,7 @@ struct AlbumRow: View {
                     }
                     .navigationTitle(title)
                     .padding(.horizontal)
-                    .modifier(NowPlayingBarModifier())
+                    .modifier(NowPlayingBarSafeAreaModifier())
                 } label: {
                     EmptyView()
                 }

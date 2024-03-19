@@ -29,7 +29,7 @@ struct PlaylistsView: View {
         .navigationTitle("title.playlists")
         .task(loadPlaylists)
         .refreshable(action: loadPlaylists)
-        .modifier(NowPlayingBarModifier())
+        .modifier(NowPlayingBarSafeAreaModifier())
     }
 }
 
