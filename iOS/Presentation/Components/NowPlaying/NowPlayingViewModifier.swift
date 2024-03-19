@@ -19,6 +19,8 @@ struct NowPlayingViewModifier: ViewModifier {
     @State private var controlsVisible = true
     @State private var currentTab = Tab.cover
     
+    @State private var dragOffset: CGFloat = .zero
+    
     func body(content: Content) -> some View {
         ZStack {
             content
@@ -31,69 +33,84 @@ struct NowPlayingViewModifier: ViewModifier {
                 }
             
             if viewState.presented, let track = AudioPlayer.current.nowPlaying {
-                Color.clear
-                    .background {
-                        Background(cover: track.cover)
-                            .id(track.id)
-                            .transition(.move(edge: .bottom))
-                            .matchedGeometryEffect(id: "nowPlaying", in: namespace, properties: .size, anchor: .top, isSource: viewState.presented == true)
-                    }
-                    .zIndex(2)
-                
-                VStack {
-                    if currentTab == .cover {
-                        Cover(track: track, currentTab: currentTab, namespace: namespace)
-                    } else {
-                        SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
-                        
-                        Group {
-                            if currentTab == .lyrics {
-                                LyricsContainer(controlsVisible: $controlsVisible)
-                            } else if currentTab == .queue {
-                                Queue()
-                                    .padding(.horizontal, -30)
-                            }
+                Group {
+                    Background(cover: track.cover)
+                        .id(track.id)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .onAppear {
+                            dragOffset = 0
                         }
-                        .transition(.asymmetric(
-                            insertion:
-                                    .push(from: .bottom).animation(.spring.delay(0.1))
-                                    .combined(with: .opacity),
-                            removal:
-                                    .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))
-                                    .combined(with: .opacity)
-                        ))
-                    }
+                        .onDisappear {
+                            dragOffset = 0
+                        }
+                        .zIndex(2)
                     
-                    if controlsVisible {
-                        Controls(currentTab: $currentTab)
-                    }
-                }
-                .foregroundStyle(.white)
-                .overlay(alignment: .top) {
-                    Rectangle()
-                        .foregroundStyle(.white.secondary.opacity(0.75))
-                        .frame(width: 50, height: 7)
-                        .clipShape(RoundedRectangle(cornerRadius: 10000))
-                        .onTapGesture {
-                            viewState.setNowPlayingViewPresented(false)
+                    VStack {
+                        if currentTab == .cover {
+                            Cover(track: track, currentTab: currentTab, namespace: namespace)
+                        } else {
+                            SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
+                            
+                            Group {
+                                if currentTab == .lyrics {
+                                    LyricsContainer(controlsVisible: $controlsVisible)
+                                } else if currentTab == .queue {
+                                    Queue()
+                                        .padding(.horizontal, -30)
+                                }
+                            }
+                            .transition(.asymmetric(
+                                insertion:
+                                        .push(from: .bottom).animation(.spring.delay(0.2))
+                                        .combined(with: .opacity),
+                                removal:
+                                        .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))
+                                        .combined(with: .opacity)
+                            ))
                         }
-                }
-                .padding(.horizontal, 30)
-                .ignoresSafeArea(edges: .bottom)
-                .gesture(
-                    DragGesture(minimumDistance: 150).onEnded {
-                        if $0.location.y - $0.startLocation.y > 150 {
-                            viewState.setNowPlayingViewPresented(false)
+                        
+                        if controlsVisible {
+                            Controls(currentTab: $currentTab)
                         }
                     }
-                )
-                .onChange(of: currentTab) {
-                    if currentTab == .cover {
-                        controlsVisible = true
+                    .foregroundStyle(.white)
+                    .overlay(alignment: .top) {
+                        Rectangle()
+                            .foregroundStyle(.white.secondary.opacity(0.75))
+                            .frame(width: 50, height: 7)
+                            .clipShape(RoundedRectangle(cornerRadius: 10000))
+                            .onTapGesture {
+                                viewState.setNowPlayingViewPresented(false)
+                            }
                     }
+                    .padding(.horizontal, 30)
+                    .ignoresSafeArea(edges: .bottom)
+                    .simultaneousGesture(
+                        DragGesture(minimumDistance: 25, coordinateSpace: .global)
+                            .onChanged {
+                                dragOffset = max(0, $0.translation.height)
+                            }
+                            .onEnded {
+                                if $0.location.y - $0.startLocation.y > 200 {
+                                    viewState.setNowPlayingViewPresented(false)
+                                } else {
+                                    dragOffset = 0
+                                }
+                            }
+                    )
+                    .onChange(of: currentTab) {
+                        if currentTab == .cover {
+                            controlsVisible = true
+                        }
+                    }
+                    .zIndex(3)
                 }
                 // SwiftUI z-index is my new favorite worst piece of shit
-                .zIndex(3)
+                // This is very reasonable and sane
+                .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
+                .frame(height: UIScreen.main.bounds.height)
+                .offset(y: dragOffset)
+                .animation(.interactiveSpring, value: dragOffset)
             }
         }
     }
@@ -142,7 +159,7 @@ class NowPlayingViewState {
     private(set) var presented = false
     
     func setNowPlayingViewPresented(_ presented: Bool) {
-        withAnimation(.spring(duration: 0.4, bounce: 0.25, blendDuration: 1)) {
+        withAnimation(.interactiveSpring(duration: 0.7, extraBounce: 0.1)) {
             self.presented = presented
         }
     }

@@ -8,7 +8,6 @@
 import Foundation
 import AFBase
 import AVKit
-import MediaPlayer
 
 internal extension LocalAudioEndpoint {
     func _setPlaying(_ playing: Bool) {
@@ -29,12 +28,6 @@ internal extension LocalAudioEndpoint {
         audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000)) { _ in
             self.updatePlaybackReporter(scheduled: false)
         }
-    }
-    
-    func _setVolume(_ volume: Float) {
-        #if os(iOS)
-        MPVolumeView.setVolume(volume)
-        #endif
     }
 }
 

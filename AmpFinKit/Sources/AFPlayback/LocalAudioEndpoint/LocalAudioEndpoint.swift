@@ -9,6 +9,7 @@ import Foundation
 import AVKit
 import OSLog
 import AFBase
+import MediaPlayer
 
 @Observable
 internal class LocalAudioEndpoint: AudioEndpoint {
@@ -69,7 +70,9 @@ internal class LocalAudioEndpoint: AudioEndpoint {
             audioSession.outputVolume
         }
         set {
-            _setVolume(newValue)
+            #if os(iOS)
+            MPVolumeView.setVolume(newValue)
+            #endif
         }
     }
     

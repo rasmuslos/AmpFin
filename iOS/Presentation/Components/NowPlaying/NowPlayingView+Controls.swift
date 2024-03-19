@@ -63,7 +63,7 @@ extension NowPlayingViewModifier {
                         }
                         Spacer()
                         
-                        Text(Duration.seconds(AudioPlayer.current.currentTime).formatted(.time(pattern: .minuteSecond)))
+                        Text(Duration.seconds(AudioPlayer.current.duration).formatted(.time(pattern: .minuteSecond)))
                             .frame(width: 65, alignment: .trailing)
                     }
                     .font(.caption)
