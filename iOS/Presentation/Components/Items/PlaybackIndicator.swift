@@ -13,35 +13,21 @@ struct PlaybackIndicator<Placeholder: View>: View {
     let track: Track
     let placeholder: Placeholder
     
-    @State var isActive: Bool
-    @State var isPlaying: Bool
-    
     init(track: Track, @ViewBuilder placeholder: () -> Placeholder) {
         self.track = track
         self.placeholder = placeholder()
-        
-        _isActive = State(initialValue: AudioPlayer.current.nowPlaying == track)
-        _isPlaying = State(initialValue: AudioPlayer.current.isPlaying())
     }
     
     var body: some View {
         Group {
-            if isActive {
+            if AudioPlayer.current.nowPlaying == track {
                 Image(systemName: "waveform")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                    .symbolEffect(.variableColor.iterative, isActive: isPlaying)
+                    .symbolEffect(.variableColor.iterative, isActive: AudioPlayer.current.playing)
             } else {
                 placeholder
             }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange)) { _ in
-            withAnimation {
-                isActive = AudioPlayer.current.nowPlaying == track
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playPause)) { _ in
-            isPlaying = AudioPlayer.current.isPlaying()
         }
     }
 }

@@ -95,21 +95,21 @@ extension NowPlayingViewModifier {
                 )
             }
             .onAppear(perform: fetchLyrics)
-            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
+            .onChange(of: AudioPlayer.current.nowPlaying) {
                 lyrics = nil
                 activeLineIndex = 0
                 fetchLyrics()
-            })
-            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.positionUpdated), perform: { _ in
+            }
+            .onChange(of: AudioPlayer.current.currentTime) {
                 updateLyricsIndex()
-            })
+            }
         }
         
         // MARK: Helper
         
         func updateLyricsIndex() {
             if let lyrics = lyrics, !lyrics.isEmpty {
-                let currentTime = AudioPlayer.current.currentTime()
+                let currentTime = AudioPlayer.current.currentTime
                 if let index = Array(lyrics.keys).sorted(by: <).lastIndex(where: { $0 <= currentTime }) {
                     activeLineIndex = index
                 } else {

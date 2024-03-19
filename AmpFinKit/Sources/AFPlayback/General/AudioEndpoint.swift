@@ -9,36 +9,32 @@ import Foundation
 import AFBase
 
 protocol AudioEndpoint {
+    // MARK: Computed properties
+    
+    var playing: Bool { get set }
+    var volume: Float { get set }
+    
+    var duration: Double { get }
+    var currentTime: Double { get set }
+    
     var history: [Track] { get }
     var nowPlaying: Track? { get }
     var queue: [Track] { get }
     
     var buffering: Bool { get }
     
-    var shuffled: Bool { get }
-    var repeatMode: RepeatMode { get }
+    var shuffled: Bool { get set }
+    var repeatMode: RepeatMode { get set }
     
-    var volume: Float { get }
+    // MARK: Functions
     
-    func setPlaying(_ playing: Bool)
-    func isPlaying() -> Bool
-    
-    func seek(seconds: Double)
     func seek(seconds: Double) async
-    
-    func duration() -> Double
-    func currentTime() -> Double
-    
-    func setVolume(_ volume: Float)
     
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool)
     func stopPlayback()
     
     func advanceToNextTrack()
     func backToPreviousItem()
-    
-    func shuffle(_ shuffle: Bool)
-    func setRepeatMode(_ repeatMode: RepeatMode)
     
     func removeHistoryTrack(index: Int)
     

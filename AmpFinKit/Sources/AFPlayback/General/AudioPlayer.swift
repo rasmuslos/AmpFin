@@ -118,6 +118,57 @@ extension AudioPlayer {
 // MARK: General methods
 
 extension AudioPlayer: AudioEndpoint {
+    public var playing: Bool {
+        get {
+            endpoint?.playing ?? false
+        }
+        set {
+            endpoint?.playing = newValue
+        }
+    }
+    
+    public var duration: Double {
+        endpoint?.duration ?? 0
+    }
+    public var currentTime: Double {
+        get {
+            endpoint?.currentTime ?? 0
+        }
+        set {
+            endpoint?.currentTime = newValue
+        }
+    }
+    
+    public var buffering: Bool {
+        endpoint?.buffering ?? true
+    }
+    
+    public var shuffled: Bool {
+        get {
+            endpoint?.shuffled ?? false
+        }
+        set {
+            endpoint?.shuffled = newValue
+        }
+    }
+    public var repeatMode: RepeatMode {
+        get {
+            endpoint?.repeatMode ?? .none
+        }
+        set {
+            endpoint?.repeatMode = newValue
+        }
+    }
+    
+    public var volume: Float {
+        get {
+            endpoint?.volume ?? 0.5
+        }
+        set {
+            endpoint?.volume = newValue
+        }
+    }
+    
     public var history: [Track] {
         endpoint?.history ?? []
     }
@@ -130,55 +181,15 @@ extension AudioPlayer: AudioEndpoint {
         endpoint?.queue ?? []
     }
     
-    public var buffering: Bool {
-        endpoint?.buffering ?? true
-    }
-    
-    public var shuffled: Bool {
-        endpoint?.shuffled ?? false
-    }
-    
-    public var repeatMode: RepeatMode {
-        endpoint?.repeatMode ?? .none
-    }
-    
-    public var volume: Float {
-        endpoint?.volume ?? 0.5
-    }
-    
-    public func setPlaying(_ playing: Bool) {
-        endpoint?.setPlaying(playing)
-    }
-    
-    public func isPlaying() -> Bool {
-        endpoint?.isPlaying() ?? false
-    }
-    
-    public func seek(seconds: Double) {
-        endpoint?.seek(seconds: seconds)
-    }
-    
     public func seek(seconds: Double) async {
         await endpoint?.seek(seconds: seconds)
-    }
-    
-    public func duration() -> Double {
-        endpoint?.duration() ?? 0
-    }
-    
-    public func currentTime() -> Double {
-        endpoint?.currentTime() ?? 0
-    }
-    
-    public func setVolume(_ volume: Float) {
-        endpoint?.setVolume(volume)
     }
     
     public func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool, playbackInfo: PlaybackInfo) {
         self.playbackInfo = playbackInfo
         startPlayback(tracks: tracks, startIndex: startIndex, shuffle: shuffle)
     }
-    func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
+    public func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
         if source == .none {
             setupLocalPlayback()
         }
@@ -197,14 +208,6 @@ extension AudioPlayer: AudioEndpoint {
     
     public func backToPreviousItem() {
         endpoint?.backToPreviousItem()
-    }
-    
-    public func shuffle(_ shuffle: Bool) {
-        endpoint?.shuffle(shuffle)
-    }
-    
-    public func setRepeatMode(_ repeatMode: RepeatMode) {
-        endpoint?.setRepeatMode(repeatMode)
     }
     
     public func removeHistoryTrack(index: Int) {

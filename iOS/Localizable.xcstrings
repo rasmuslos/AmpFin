@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    ":)" : {
-
-    },
     "account.deleteDownloads" : {
       "localizations" : {
         "de" : {

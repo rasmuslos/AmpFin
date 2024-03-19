@@ -17,15 +17,13 @@ extension NowPlayingViewModifier {
         let currentTab: Tab
         let namespace: Namespace.ID
         
-        @Binding var playing: Bool
-        
         var body: some View {
             Spacer()
             
             ItemImage(cover: track.cover)
                 .id(track.id)
-                .scaleEffect(playing ? 1 : 0.8)
-                .animation(.spring(duration: 0.3, bounce: 0.6), value: playing)
+                .scaleEffect(AudioPlayer.current.playing ? 1 : 0.8)
+                .animation(.spring(duration: 0.3, bounce: 0.6), value: AudioPlayer.current.playing)
                 .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab == .cover)
             
             Spacer()

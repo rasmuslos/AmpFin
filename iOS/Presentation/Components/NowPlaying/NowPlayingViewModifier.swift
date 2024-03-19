@@ -14,9 +14,7 @@ import AFPlayback
 struct NowPlayingViewModifier: ViewModifier {
     @Namespace var namespace
     
-    @State private var track = AudioPlayer.current.nowPlaying
     @State private var viewState = NowPlayingViewState.init()
-    @State private var playing = AudioPlayer.current.isPlaying()
     
     @State private var controlsVisible = true
     @State private var currentTab = Tab.cover
@@ -28,21 +26,11 @@ struct NowPlayingViewModifier: ViewModifier {
                     viewState.namespace = namespace
                 }
                 .environment(viewState)
-                .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
-                    withAnimation {
-                        track = AudioPlayer.current.nowPlaying
-                    }
-                })
-                .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playPause), perform: { _ in
-                    withAnimation {
-                        playing = AudioPlayer.current.isPlaying()
-                    }
-                })
                 .onReceive(NotificationCenter.default.publisher(for: NavigationRoot.navigateNotification)) { _ in
                     viewState.setNowPlayingViewPresented(false)
                 }
             
-            if viewState.presented, let track = track {
+            if viewState.presented, let track = AudioPlayer.current.nowPlaying {
                 Color.clear
                     .background {
                         Background(cover: track.cover)
@@ -54,7 +42,7 @@ struct NowPlayingViewModifier: ViewModifier {
                 
                 VStack {
                     if currentTab == .cover {
-                        Cover(track: track, currentTab: currentTab, namespace: namespace, playing: $playing)
+                        Cover(track: track, currentTab: currentTab, namespace: namespace)
                     } else {
                         SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                         
@@ -77,7 +65,7 @@ struct NowPlayingViewModifier: ViewModifier {
                     }
                     
                     if controlsVisible {
-                        Controls(playing: $playing, currentTab: $currentTab)
+                        Controls(currentTab: $currentTab)
                     }
                 }
                 .foregroundStyle(.white)

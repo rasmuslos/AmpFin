@@ -14,9 +14,6 @@ import AFPlayback
 
 extension NowPlayingViewModifier {
     struct Queue: View {
-        @State var history = AudioPlayer.current.history
-        @State var queue = AudioPlayer.current.queue
-        
         @State var showHistory = false
         
         var body: some View {
@@ -29,11 +26,11 @@ extension NowPlayingViewModifier {
                 
                 Button {
                     if AudioPlayer.current.repeatMode == .none {
-                        AudioPlayer.current.setRepeatMode(.queue)
+                        AudioPlayer.current.repeatMode = .queue
                     } else if AudioPlayer.current.repeatMode == .queue {
-                        AudioPlayer.current.setRepeatMode(.track)
+                        AudioPlayer.current.repeatMode = .track
                     } else if AudioPlayer.current.repeatMode == .track {
-                        AudioPlayer.current.setRepeatMode(.none)
+                        AudioPlayer.current.repeatMode = .none
                     }
                 } label: {
                     if AudioPlayer.current.repeatMode == .track {
@@ -47,7 +44,7 @@ extension NowPlayingViewModifier {
                 .padding(.horizontal, 4)
                 
                 Button {
-                    AudioPlayer.current.shuffle(!AudioPlayer.current.shuffled)
+                    AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
                 } label: {
                     Image(systemName: "shuffle")
                 }
@@ -69,10 +66,10 @@ extension NowPlayingViewModifier {
             
             List {
                 if showHistory {
-                    ForEach(Array(history.enumerated()), id: \.offset) { index, track in
+                    ForEach(Array(AudioPlayer.current.history.enumerated()), id: \.offset) { index, track in
                         QueueTrackRow(track: track, draggable: false)
                             .padding(.top, index == 0 ? 15 : 0)
-                            .padding(.bottom, (index == history.count - 1) ? 15 : 0)
+                            .padding(.bottom, (index == AudioPlayer.current.history.count - 1) ? 15 : 0)
                             .onTapGesture {
                                 AudioPlayer.current.restoreHistory(index: index)
                             }
@@ -102,14 +99,14 @@ extension NowPlayingViewModifier {
                         .listRowBackground(Color.clear)
                         .padding(.top, 20)
                     
-                    ForEach(Array(queue.enumerated()), id: \.offset) { index, track in
+                    ForEach(Array(AudioPlayer.current.queue.enumerated()), id: \.offset) { index, track in
                         QueueTrackRow(track: track, draggable: true)
                             .id(UUID())
                             .onTapGesture {
                                 AudioPlayer.current.skip(to: index)
                             }
                             .padding(.top, index == 0 ? 15 : 0)
-                            .padding(.bottom, (index == queue.count - 1) ? 15 : 0)
+                            .padding(.bottom, (index == AudioPlayer.current.queue.count - 1) ? 15 : 0)
                     }
                     .onMove { from, to in
                         from.forEach {
@@ -137,10 +134,6 @@ extension NowPlayingViewModifier {
                         .frame(height: 40)
                 }
             )
-            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.queueUpdated), perform: { _ in
-                history = AudioPlayer.current.history
-                queue = AudioPlayer.current.queue
-            })
         }
     }
 }

@@ -17,15 +17,15 @@ class RemoteAudioEndpoint {
     
     var nowPlaying: Track?
     
-    var playing: Bool
+    var _playing: Bool
     var canSeek: Bool
     var canSetVolume: Bool
     
-    var position: Double
-    var volume: Float
+    var _currentTime: Double
+    var _volume: Float
     
-    var shuffled: Bool
-    var repeatMode: RepeatMode
+    var _shuffled: Bool
+    var _repeatMode: RepeatMode
     
     var active: Bool
     var token: Any!
@@ -41,21 +41,19 @@ class RemoteAudioEndpoint {
         active = false
         
         nowPlaying = session.nowPlaying
-        playing = !session.isPaused
+        _playing = !session.isPaused
         canSeek = session.canSeek
         canSetVolume = session.canSetVolume
-        position = session.position
-        volume = session.volumeLevel
-        shuffled = session.shuffled
-        repeatMode = .none
+        _currentTime = session.position
+        _volume = session.volumeLevel
+        _shuffled = session.shuffled
+        _repeatMode = .none
         
         setupObserver()
         AudioPlayer.setupAudioSession()
         
         startDummyAudioPlayer()
         updateNowPlayingWidget()
-        
-        NotificationCenter.default.post(name: AudioPlayer.playbackStarted, object: nil)
     }
     
     deinit {
@@ -67,10 +65,6 @@ class RemoteAudioEndpoint {
             queuePlayer.pause()
             queuePlayer.removeAllItems()
         }
-        
-        Task { @MainActor in
-            NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
-        }
     }
 }
 
@@ -80,25 +74,19 @@ extension RemoteAudioEndpoint {
             guard let session = notification.object as? Session else { return }
             
             self?.nowPlaying = session.nowPlaying
-            self?.playing = !session.isPaused
+            self?._playing = !session.isPaused
             self?.canSeek = session.canSeek
             self?.canSetVolume = session.canSetVolume
-            self?.position = session.position
-            self?.volume = session.volumeLevel
-            self?.repeatMode = session.repeatMode
-            self?.shuffled = session.shuffled
+            self?._currentTime = session.position
+            self?._volume = session.volumeLevel
+            self?._repeatMode = session.repeatMode
+            self?._shuffled = session.shuffled
             
             self?.updateNowPlayingWidget()
             
             if self?.lastTrackId != session.nowPlaying?.id {
                 self?.lastTrackId = session.nowPlaying?.id
-                NotificationCenter.default.post(name: AudioPlayer.trackChange, object: nil)
             }
-            
-            NotificationCenter.default.post(name: AudioPlayer.volumeChange, object: nil)
-            
-            NotificationCenter.default.post(name: AudioPlayer.playPause, object: nil)
-            NotificationCenter.default.post(name: AudioPlayer.positionUpdated, object: nil)
         }
     }
     
@@ -115,7 +103,7 @@ extension RemoteAudioEndpoint {
     
     func updateNowPlayingWidget() {
         if let nowPlaying = nowPlaying {
-            if isPlaying() {
+            if playing {
                 queuePlayer.play()
             } else {
                 queuePlayer.pause()
@@ -127,20 +115,19 @@ extension RemoteAudioEndpoint {
             nowPlayingInfo[MPMediaItemPropertyArtist] = nowPlaying.artistName
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = nowPlaying.album.name
             nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = nowPlaying.album.artistName
-            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration()
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime()
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackProgress] = currentTime() / duration()
+            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackProgress] = currentTime / duration
             
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = isPlaying() ? 1.0 : 0.0
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playing ? 1.0 : 0.0
             
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            MPNowPlayingInfoCenter.default().playbackState = isPlaying() ? .playing : .paused
+            MPNowPlayingInfoCenter.default().playbackState = playing ? .playing : .paused
             
             updateNowPlayingCover()
         }
         
         if nowPlaying != nil && active == false {
-            NotificationCenter.default.post(name: AudioPlayer.playbackStarted, object: nil)
             AudioPlayer.updateAudioSession(active: true)
             
             active = true
@@ -176,38 +163,69 @@ extension RemoteAudioEndpoint {
 }
 
 extension RemoteAudioEndpoint: AudioEndpoint {
-    func setPlaying(_ playing: Bool) {
-        Task {
-            try? await JellyfinClient.shared.issuePlayStateCommand(sessionId: sessionId, command: isPlaying() ? .pause : .play)
+    var playing: Bool {
+        get {
+            _playing
+        }
+        set {
+            Task {
+                try? await JellyfinClient.shared.issuePlayStateCommand(sessionId: sessionId, command: _playing ? .pause : .play)
+            }
         }
     }
     
-    func isPlaying() -> Bool {
-        playing
+    var duration: Double {
+        nowPlaying?.runtime ?? 0
+    }
+    var currentTime: Double {
+        get {
+            _currentTime
+        }
+        set {
+            Task {
+                await seek(seconds: newValue)
+            }
+        }
     }
     
-    func seek(seconds: Double) {
-        Task {
-            await seek(seconds: seconds)
+    var shuffled: Bool {
+        get {
+            _shuffled
+        }
+        set {
+            _shuffled = newValue
+            
+            Task {
+                try? await JellyfinClient.shared.setShuffleMode(sessionId: sessionId, shuffled: newValue)
+            }
+        }
+    }
+    var repeatMode: RepeatMode {
+        get {
+            _repeatMode
+        }
+        set {
+            _repeatMode = newValue
+            
+            Task {
+                try? await JellyfinClient.shared.setRepeatMode(sessionId: sessionId, repeatMode: newValue)
+            }
+        }
+    }
+    
+    public var volume: Float {
+        get {
+            _volume
+        }
+        set {
+            Task {
+                try? await JellyfinClient.shared.setOutputVolume(sessionId: sessionId, volume: newValue)
+            }
         }
     }
     
     func seek(seconds: Double) async {
         try? await JellyfinClient.shared.seek(sessionId: sessionId, positionSeconds: seconds)
-    }
-    
-    func duration() -> Double {
-        nowPlaying?.runtime ?? 0
-    }
-    
-    func currentTime() -> Double {
-        position
-    }
-    
-    func setVolume(_ volume: Float) {
-        Task {
-            try? await JellyfinClient.shared.setOutputVolume(sessionId: sessionId, volume: volume)
-        }
     }
     
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
@@ -246,22 +264,6 @@ extension RemoteAudioEndpoint: AudioEndpoint {
     func queueTracks(_ tracks: [Track], index: Int) {
         Task {
             try? await JellyfinClient.shared.queueTracks(sessionId: sessionId, tracks: tracks, queuePosition: index == 0 ? .next : .last)
-        }
-    }
-    
-    func shuffle(_ shuffle: Bool) {
-        shuffled = shuffle
-        
-        Task {
-            try? await JellyfinClient.shared.setShuffleMode(sessionId: sessionId, shuffled: shuffle)
-        }
-    }
-    
-    func setRepeatMode(_ repeatMode: RepeatMode) {
-        self.repeatMode = repeatMode
-        
-        Task {
-            try? await JellyfinClient.shared.setRepeatMode(sessionId: sessionId, repeatMode: repeatMode)
         }
     }
     

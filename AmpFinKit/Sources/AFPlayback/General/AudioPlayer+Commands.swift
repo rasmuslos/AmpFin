@@ -13,22 +13,22 @@ extension AudioPlayer {
         let commandCenter = MPRemoteCommandCenter.shared()
         
         commandCenter.playCommand.addTarget { [unowned self] event in
-            setPlaying(true)
+            playing = true
             return .success
         }
         commandCenter.pauseCommand.addTarget { [unowned self] event in
-            setPlaying(false)
+            playing = false
             return .success
         }
         commandCenter.togglePlayPauseCommand.addTarget { [unowned self] event in
-            setPlaying(!isPlaying())
+            playing = !playing
             return .success
         }
         
         commandCenter.changePlaybackPositionCommand.addTarget { [unowned self] event in
             if let changePlaybackPositionCommandEvent = event as? MPChangePlaybackPositionCommandEvent {
                 let positionSeconds = changePlaybackPositionCommandEvent.positionTime
-                endpoint?.seek(seconds: positionSeconds)
+                currentTime = positionSeconds
                 
                 return .success
             }
@@ -67,9 +67,9 @@ extension AudioPlayer {
             if let event = event as? MPChangeShuffleModeCommandEvent {
                 switch event.shuffleType {
                     case .off:
-                        self.shuffle(false)
+                        self.shuffled = false
                     default:
-                        self.shuffle(true)
+                        self.shuffled = true
                 }
                 
                 return .success
@@ -83,11 +83,11 @@ extension AudioPlayer {
             if let event = event as? MPChangeRepeatModeCommandEvent {
                 switch event.repeatType {
                     case .off:
-                        self.setRepeatMode(.none)
+                        self.repeatMode = .none
                     case .one:
-                        self.setRepeatMode(.track)
+                        self.repeatMode = .track
                     case .all:
-                        self.setRepeatMode(.queue)
+                        self.repeatMode = .queue
                     @unknown default:
                         Self.logger.error("Unknown repeat type")
                 }

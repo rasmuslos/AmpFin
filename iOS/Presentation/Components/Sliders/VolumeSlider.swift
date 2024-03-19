@@ -30,16 +30,9 @@ struct VolumeSlider: View {
         .animation(.easeInOut, value: isDragging)
         .onChange(of: volume) {
             if isDragging {
-                AudioPlayer.current.setVolume(Float(volume / 100))
+                AudioPlayer.current.volume = Float(volume / 100)
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.volumeChange), perform: { _ in
-            if !isDragging {
-                withAnimation {
-                    volume = Double(AudioPlayer.current.volume) * 100
-                }
-            }
-        })
         // because apple makes stupid software i guess
         .onReceive(AVAudioSession.sharedInstance().publisher(for: \.outputVolume), perform: { value in
             if !isDragging && AudioPlayer.current.source == .local {

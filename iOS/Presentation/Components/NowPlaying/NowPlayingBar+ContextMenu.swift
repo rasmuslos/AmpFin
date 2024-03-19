@@ -70,7 +70,7 @@ extension NowPlayingBarModifier {
                     Divider()
                     
                     Button {
-                        AudioPlayer.current.shuffle(!AudioPlayer.current.shuffled)
+                        AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
                     } label: {
                         if AudioPlayer.current.shuffled {
                             Label("shuffle", systemImage: "checkmark")
@@ -81,19 +81,19 @@ extension NowPlayingBarModifier {
                     
                     Menu {
                         Button {
-                            AudioPlayer.current.setRepeatMode(.none)
+                            AudioPlayer.current.repeatMode = .none
                         } label: {
                             Label("repeat.none", systemImage: "slash.circle")
                         }
                         
                         Button {
-                            AudioPlayer.current.setRepeatMode(.queue)
+                            AudioPlayer.current.repeatMode = .queue
                         } label: {
                             Label("repeat.queue", systemImage: "repeat")
                         }
                         
                         Button {
-                            AudioPlayer.current.setRepeatMode(.track)
+                            AudioPlayer.current.repeatMode = .track
                         } label: {
                             Label("repeat.track", systemImage: "repeat.1")
                         }

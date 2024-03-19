@@ -171,14 +171,14 @@ extension MediaResolver {
     }
     private static func convertType(type: Item.ItemType) -> INMediaItemType {
         switch type {
-        case .album:
-            return .album
-        case .artist:
-            return .artist
-        case .track:
-            return .song
-        case .playlist:
-            return .playlist
+            case .album:
+                return .album
+            case .artist:
+                return .artist
+            case .track:
+                return .song
+            case .playlist:
+                return .playlist
         }
     }
     
@@ -195,7 +195,7 @@ extension MediaResolver {
             AudioPlayer.current.queueTracks(tracks, index: queueLocation == .next ? 0 : AudioPlayer.current.queue.count)
             
             if let shuffle = shuffle {
-                AudioPlayer.current.shuffle(shuffle)
+                AudioPlayer.current.shuffled = shuffle
             }
         } else {
             AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle ?? false, playbackInfo: .init(disable: true))
@@ -203,17 +203,17 @@ extension MediaResolver {
         
         if let repeatMode = repeatMode {
             switch repeatMode {
-            case .all:
-                AudioPlayer.current.setRepeatMode(.queue)
-                break
-            case .one:
-                AudioPlayer.current.setRepeatMode(.track)
-                break
-            case .none:
-                AudioPlayer.current.setRepeatMode(.none)
-                break
-            default:
-                break
+                case .all:
+                    AudioPlayer.current.repeatMode = .queue
+                    break
+                case .one:
+                    AudioPlayer.current.repeatMode = .track
+                    break
+                case .none:
+                    AudioPlayer.current.repeatMode = .none
+                    break
+                default:
+                    break
             }
         }
     }

@@ -15,16 +15,13 @@ struct NowPlayingBarModifier: ViewModifier {
     @Environment(NowPlayingViewState.self) private var nowPlayingViewState
     @Environment(\.libraryDataProvider) private var dataProvider
     
-    @State var playing = AudioPlayer.current.isPlaying()
-    @State var currentTrack = AudioPlayer.current.nowPlaying
-    
     @State private var animateImage = false
     @State private var animateForwards = false
     
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom) {
-                if !nowPlayingViewState.presented, let currentTrack = currentTrack {
+                if !nowPlayingViewState.presented, let currentTrack = AudioPlayer.current.nowPlaying {
                     ZStack(alignment: .bottom) {
                         Rectangle()
                             .frame(width: UIScreen.main.bounds.width + 100, height: 300)
@@ -52,13 +49,13 @@ struct NowPlayingBarModifier: ViewModifier {
                                     
                                     Group {
                                         Button {
-                                            AudioPlayer.current.setPlaying(!playing)
+                                            AudioPlayer.current.playing = !AudioPlayer.current.playing
                                         } label: {
-                                            Image(systemName: playing ?  "pause.fill" : "play.fill")
+                                            Image(systemName: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
                                                 .contentTransition(.symbolEffect(.replace.byLayer.downUp))
-                                                .scaleEffect(animateImage ? AudioPlayer.current.isPlaying() ? 1.1 : 0.9 : 1)
+                                                .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
                                                 .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
-                                                .onChange(of: AudioPlayer.playPause) {
+                                                .onChange(of: AudioPlayer.current.playing) {
                                                     withAnimation {
                                                         animateImage = true
                                                     } completion: {
@@ -101,28 +98,5 @@ struct NowPlayingBarModifier: ViewModifier {
                 AudioPlayer.current.queueTracks(tracks, index: 0)
                 return true
             }
-            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.trackChange), perform: { _ in
-                withAnimation {
-                    currentTrack = AudioPlayer.current.nowPlaying
-                }
-            })
-            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.playPause), perform: { _ in
-                withAnimation {
-                    playing = AudioPlayer.current.isPlaying()
-                }
-            })
     }
-}
-
-#Preview {
-    TabView {
-        NavigationStack {
-            Rectangle()
-                .foregroundStyle(.red)
-                .ignoresSafeArea()
-                .modifier(NowPlayingBarModifier(playing: true, currentTrack: Track.fixture))
-        }
-        .tabItem { Label(":)", systemImage: "command") }
-    }
-    .modifier(NowPlayingViewModifier())
 }

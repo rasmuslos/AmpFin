@@ -20,12 +20,14 @@ extension AudioPlayer {
             updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
         }
         
+        /*
         NotificationCenter.default.addObserver(forName: Self.trackChange, object: nil, queue: nil) { [self] _ in
             if let playbackInfo = playbackInfo, let nowPlaying = nowPlaying {
                 Self.logger.info("Donating \(nowPlaying.name) to system")
                 playbackInfo.donate(nowPlaying: nowPlaying, shuffled: shuffled, repeatMode: repeatMode, resumePlayback: true)
             }
         }
+         */
         
         // For some reason queue & repeat mode don't work
         // TODO: GeneralCommand/SetVolume
@@ -36,19 +38,19 @@ extension AudioPlayer {
             if command == "stop" {
                 stopPlayback()
             } else if command == "playpause" {
-                setPlaying(!isPlaying())
+                playing = !playing
             } else if command == "previoustrack" {
                 backToPreviousItem()
             } else if command == "nexttrack" {
                 advanceToNextTrack()
             } else if command == "seek" {
                 let position = notification.userInfo?["position"] as? UInt64 ?? 0
-                seek(seconds: Double(position / 10_000_000))
+                currentTime = Double(position / 10_000_000)
             } else if command == "repeatMode" {
                 let mode = notification.userInfo?["repeatMode"] as? String
-                setRepeatMode(mode == "RepeatAll" ? .queue : mode == "RepeatNone" ? .none : .track)
+                repeatMode = mode == "RepeatAll" ? .queue : mode == "RepeatNone" ? .none : .track
             } else if command == "shuffleMode" {
-                shuffle(notification.userInfo?["shuffleMode"] as? String == "Shuffle")
+                shuffled = notification.userInfo?["shuffleMode"] as? String == "Shuffle"
             }
         }
         
