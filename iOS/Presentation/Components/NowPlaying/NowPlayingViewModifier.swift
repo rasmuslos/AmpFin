@@ -137,7 +137,7 @@ extension NowPlayingViewModifier {
                             let imageColors = await ImageColors.getImageColors(cover: cover)
                             imageColors?.updateHue(saturation: 0.6, luminance: 0.6)
                             
-                            withAnimation(.spring(duration: 1)) {
+                            withAnimation(.easeInOut(duration: 1)) {
                                 self.imageColors = imageColors
                             }
                         }
@@ -154,7 +154,7 @@ class NowPlayingViewState {
     private(set) var presented = false
     
     func setNowPlayingViewPresented(_ presented: Bool) {
-        withAnimation(.spring(duration: 0.4)) {
+        withAnimation(.spring(duration: 0.4, bounce: 0.25, blendDuration: 1)) {
             self.presented = presented
         }
     }

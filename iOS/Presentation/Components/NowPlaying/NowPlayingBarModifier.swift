@@ -36,7 +36,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             .toolbarBackground(.hidden, for: .tabBar)
                             .foregroundStyle(.ultraThinMaterial)
                             .matchedGeometryEffect(id: "nowPlaying", in: nowPlayingViewState.namespace, properties: .position, anchor: .center, isSource: nowPlayingViewState.presented != true)
-                            .transition(.opacity.animation(.spring(duration: 0.1)))
+                            .transition(.opacity.animation(.easeInOut(duration: 0.1)))
                             .overlay {
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)
@@ -80,7 +80,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                 }
                                 .padding(.horizontal, 6)
                                 .transition(.asymmetric(
-                                    insertion: .opacity.animation(.spring(duration: 0.1).delay(0.2)),
+                                    insertion: .opacity.animation(.spring(duration: 0.1).delay(0.25)),
                                     removal: .opacity.animation(.spring(duration: 0.1))))
                             }
                             .foregroundStyle(.primary)

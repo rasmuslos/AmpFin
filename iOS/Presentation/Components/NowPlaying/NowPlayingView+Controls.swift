@@ -198,7 +198,7 @@ extension NowPlayingViewModifier {
         
         // this has to be here for reasons that are beyond me
         func setActiveTab(_ tab: Tab) {
-            withAnimation(.easeInOut(duration: 0.25)) {
+            withAnimation(.spring(duration: 0.3, bounce: 0.25, blendDuration: 1)) {
                 if currentTab == tab {
                     currentTab = .cover
                 } else {
