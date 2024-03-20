@@ -37,12 +37,6 @@ struct NowPlayingViewModifier: ViewModifier {
                     Background(cover: track.cover)
                         .id(track.id)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .onAppear {
-                            dragOffset = 0
-                        }
-                        .onDisappear {
-                            dragOffset = 0
-                        }
                         .zIndex(2)
                     
                     VStack {
@@ -79,20 +73,23 @@ struct NowPlayingViewModifier: ViewModifier {
                             .foregroundStyle(.white.secondary.opacity(0.75))
                             .frame(width: 50, height: 7)
                             .clipShape(RoundedRectangle(cornerRadius: 10000))
+                            .transition(.opacity.animation(.linear(duration: 0.1)))
                             .onTapGesture {
                                 viewState.setNowPlayingViewPresented(false)
                             }
                     }
                     .padding(.horizontal, 30)
                     .ignoresSafeArea(edges: .bottom)
-                    .simultaneousGesture(
+                    .highPriorityGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
                                 dragOffset = max(0, $0.translation.height)
                             }
                             .onEnded {
-                                if $0.location.y - $0.startLocation.y > 200 {
-                                    viewState.setNowPlayingViewPresented(false)
+                                if $0.velocity.height > 750 || $0.location.y - $0.startLocation.y > 200 {
+                                    viewState.setNowPlayingViewPresented(false) {
+                                        dragOffset = 0
+                                    }
                                 } else {
                                     dragOffset = 0
                                 }
@@ -158,9 +155,11 @@ class NowPlayingViewState {
     var namespace: Namespace.ID!
     private(set) var presented = false
     
-    func setNowPlayingViewPresented(_ presented: Bool) {
-        withAnimation(.interactiveSpring(duration: 0.7, extraBounce: 0.1)) {
+    func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
+        withAnimation(.spring(duration: 0.6, bounce: 0.2)) {
             self.presented = presented
+        } completion: {
+            completion?()
         }
     }
 }
