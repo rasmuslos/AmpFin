@@ -35,7 +35,6 @@ struct NowPlayingViewModifier: ViewModifier {
             if viewState.presented, let track = AudioPlayer.current.nowPlaying {
                 Group {
                     Background(cover: track.cover)
-                        .id(track.id)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                         .zIndex(2)
                     
@@ -83,10 +82,16 @@ struct NowPlayingViewModifier: ViewModifier {
                     .highPriorityGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
-                                dragOffset = max(0, $0.translation.height)
+                                if $0.velocity.height > 1750 {
+                                    viewState.setNowPlayingViewPresented(false) {
+                                        dragOffset = 0
+                                    }
+                                } else {
+                                    dragOffset = max(0, $0.translation.height)
+                                }
                             }
                             .onEnded {
-                                if $0.velocity.height > 750 || $0.location.y - $0.startLocation.y > 200 {
+                                if $0.location.y - $0.startLocation.y > 200 {
                                     viewState.setNowPlayingViewPresented(false) {
                                         dragOffset = 0
                                     }
@@ -126,6 +131,7 @@ extension NowPlayingViewModifier {
                 Color.black
                 
                 ItemImage(cover: cover)
+                    .id(cover?.url)
                     .blur(radius: 100)
                     .frame(width: 1000, height: 1000)
                 
@@ -133,19 +139,25 @@ extension NowPlayingViewModifier {
                     FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
                         .overlay(.black.opacity(0.25))
+                        .onChange(of: cover?.url) { determineImageColors() }
                 } else {
                     Color.clear
-                        .task(priority: .medium) {
-                            let imageColors = await ImageColors.getImageColors(cover: cover)
-                            imageColors?.updateHue(saturation: 0.6, luminance: 0.6)
-                            
-                            withAnimation(.easeInOut(duration: 1)) {
-                                self.imageColors = imageColors
-                            }
-                        }
+                        .onAppear { determineImageColors() }
                 }
             }
+            .ignoresSafeArea(edges: .all)
             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        }
+        
+        func determineImageColors() {
+            Task.detached {
+                let imageColors = await ImageColors.getImageColors(cover: cover)
+                imageColors?.updateHue(saturation: 0.6, luminance: 0.6)
+                
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.imageColors = imageColors
+                }
+            }
         }
     }
 }
@@ -156,7 +168,7 @@ class NowPlayingViewState {
     private(set) var presented = false
     
     func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
-        withAnimation(.spring(duration: 0.6, bounce: 0.2)) {
+        withAnimation(.spring(duration: 0.7, bounce: 0.25)) {
             self.presented = presented
         } completion: {
             completion?()
