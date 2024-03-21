@@ -35,7 +35,7 @@ struct NowPlayingViewModifier: ViewModifier {
             if viewState.presented, let track = AudioPlayer.current.nowPlaying {
                 Group {
                     Background(cover: track.cover)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .transition(.move(edge: .bottom).combined(with: .blurReplace))
                         .zIndex(2)
                     
                     VStack {
@@ -82,7 +82,7 @@ struct NowPlayingViewModifier: ViewModifier {
                     .highPriorityGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
-                                if $0.velocity.height > 1750 {
+                                if $0.velocity.height > 2000 {
                                     viewState.setNowPlayingViewPresented(false) {
                                         dragOffset = 0
                                     }
@@ -91,7 +91,7 @@ struct NowPlayingViewModifier: ViewModifier {
                                 }
                             }
                             .onEnded {
-                                if $0.location.y - $0.startLocation.y > 200 {
+                                if $0.translation.height > 200 {
                                     viewState.setNowPlayingViewPresented(false) {
                                         dragOffset = 0
                                     }
