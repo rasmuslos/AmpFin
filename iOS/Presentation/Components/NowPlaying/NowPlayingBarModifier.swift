@@ -104,12 +104,12 @@ struct NowPlayingBarModifier: ViewModifier {
 }
 
 struct NowPlayingBarSafeAreaModifier: ViewModifier {
+    private var isVisible: Bool {
+        AudioPlayer.current.nowPlaying != nil
+    }
+    
     func body(content: Content) -> some View {
-        if AudioPlayer.current.nowPlaying != nil {
-            content
-                .safeAreaPadding(.bottom, 75)
-        } else {
-            content
-        }
+        content
+            .safeAreaPadding(.bottom, isVisible ? 75 : 0)
     }
 }
