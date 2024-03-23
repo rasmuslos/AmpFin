@@ -18,27 +18,58 @@ struct TrackListRow: View {
     
     var disableMenu: Bool = false
     
-    @State var addToPlaylistSheetPresented = false
+    @State private var addToPlaylistSheetPresented = false
+    
+    private var size: CGFloat {
+        album == nil ? 50 : 23
+    }
+    private var showArtist: Bool {
+        album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
+    }
+    
+    private var playbackIndicator: some View {
+        Image(systemName: "waveform")
+            .symbolEffect(.variableColor.iterative, isActive: AudioPlayer.current.playing)
+    }
+    private var isPlaying: Bool {
+        AudioPlayer.current.nowPlaying == track
+    }
     
     var body: some View {
-        let size: CGFloat = album == nil ? 50 : 23
-        let showArtist = album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
-        
         HStack {
             Button {
                 startPlayback()
             } label: {
-                PlaybackIndicator(track: track) {
+                Group {
                     if album != nil {
-                        Text(String(track.index.index))
-                            .fontDesign(.rounded)
-                            .bold(track.favorite)
-                            .foregroundStyle(.secondary)
+                        if isPlaying {
+                            playbackIndicator
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        } else {
+                            Text(String(track.index.index))
+                                .fontDesign(.rounded)
+                                .bold(track.favorite)
+                                .foregroundStyle(.secondary)
+                        }
                     } else {
                         ItemImage(cover: track.cover)
+                            .overlay {
+                                if isPlaying {
+                                    ZStack {
+                                        Color.black.opacity(0.2)
+                                            .clipShape(RoundedRectangle(cornerRadius: 7))
+                                        
+                                        playbackIndicator
+                                            .font(.body)
+                                            .foregroundStyle(.white)
+                                    }
+                                }
+                            }
                     }
                 }
                 .frame(width: size, height: size)
+                .transition(.blurReplace)
                 .id(track.id)
                 
                 VStack(alignment: .leading) {
