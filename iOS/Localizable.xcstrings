@@ -1678,6 +1678,38 @@
         }
       }
     },
+    "tip.artistPlayback.message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es kann in der Einstellungs-App geändert werden, was dieser Knopf abspielt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can change what you want to her when tapping this button in the Settings-app"
+          }
+        }
+      }
+    },
+    "tip.artistPlayback.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instant-Mix oder zufällige Lieder"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instant mix or shuffle"
+          }
+        }
+      }
+    },
     "tip.download.message" : {
       "localizations" : {
         "de" : {
@@ -1770,6 +1802,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Instant mix"
+          }
+        }
+      }
+    },
+    "tip.remote.message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es ist möglich eine andere unterstütze Anwendung (z.B. Jellyfin-Web) mit AmpFin zu steuern. Es können auch Befehle an diese App gesendet werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can control playback on another supported Jellyfin client (e.g. Jellyfin-Web) using AmpFin. You can also send commands to this app"
+          }
+        }
+      }
+    },
+    "tip.remote.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ferbendiehung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remote control"
           }
         }
       }
