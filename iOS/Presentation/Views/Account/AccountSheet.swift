@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 import AFBase
 import AFOffline
 import AFPlayback
@@ -90,6 +91,7 @@ struct AccountSheet: View {
                     }
                 }
             }
+            .popoverTip(RemoteTip())
             
             Section {
                 Button {

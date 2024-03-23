@@ -108,6 +108,7 @@ extension ArtistView {
                             }
                             .font(.title)
                             .padding(.leading)
+                            .popoverTip(ArtistPlaybackTip())
                         }
                         .padding()
                     }

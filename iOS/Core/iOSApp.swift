@@ -21,6 +21,10 @@ struct iOSApp: App {
         AFKIT_ENABLE_ALL_FEATURES = false
         #endif
         
+        #if DEBUG
+        Tips.showAllTipsForTesting()
+        #endif
+        
         try? Tips.configure([
             .displayFrequency(.daily)
         ])
