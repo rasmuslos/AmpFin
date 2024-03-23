@@ -35,8 +35,8 @@ struct NowPlayingViewModifier: ViewModifier {
             if viewState.presented, let track = AudioPlayer.current.nowPlaying {
                 Group {
                     Background(cover: track.cover)
-                        .transition(.move(edge: .bottom).combined(with: .blurReplace))
                         .zIndex(2)
+                        .matchedGeometryEffect(id: "nowPlaying", in: namespace, properties: .frame, anchor: .top, isSource: viewState.presented)
                     
                     VStack {
                         if currentTab == .cover {

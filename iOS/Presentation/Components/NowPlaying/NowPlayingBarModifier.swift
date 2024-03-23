@@ -33,7 +33,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             Group {
                                 RoundedRectangle(cornerRadius: 15)
                                     .foregroundStyle(.ultraThinMaterial)
-                                    .transition(.move(edge: .bottom))
+                                    .matchedGeometryEffect(id: "nowPlaying", in: nowPlayingViewState.namespace, properties: .position, anchor: .center, isSource: !nowPlayingViewState.presented)
                                 
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)

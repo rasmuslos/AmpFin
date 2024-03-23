@@ -118,6 +118,7 @@
 		3A98E00D2B5C3F0200B96317 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98E00C2B5C3F0200B96317 /* PlaylistView.swift */; };
 		3A98E00F2B5C44DA00B96317 /* Double+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98E00E2B5C44DA00B96317 /* Double+Format.swift */; };
 		3A98E0112B5C450200B96317 /* String+Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98E0102B5C450200B96317 /* String+Padding.swift */; };
+		3AA54D512BADB3DD00BA157A /* Transition+Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA54D502BADB3DD00BA157A /* Transition+Opacity.swift */; };
 		3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC768C2B02C68600E337C1 /* ItemImage.swift */; };
 		3AAF0DEC2B4960EF0032DEFF /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A442C092B485E56008FECE2 /* Intents.framework */; };
 		3AAF0DEF2B4960EF0032DEFF /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */; };
@@ -288,6 +289,7 @@
 		3A98E00C2B5C3F0200B96317 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
 		3A98E00E2B5C44DA00B96317 /* Double+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Format.swift"; sourceTree = "<group>"; };
 		3A98E0102B5C450200B96317 /* String+Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Padding.swift"; sourceTree = "<group>"; };
+		3AA54D502BADB3DD00BA157A /* Transition+Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transition+Opacity.swift"; sourceTree = "<group>"; };
 		3AAC768C2B02C68600E337C1 /* ItemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemImage.swift; sourceTree = "<group>"; };
 		3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Siri Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
@@ -768,6 +770,7 @@
 			isa = PBXGroup;
 			children = (
 				3A44B06C2BA194410013E4EF /* Double+Duration.swift */,
+				3AA54D502BADB3DD00BA157A /* Transition+Opacity.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
 			);
 			path = Extensions;
@@ -1205,6 +1208,7 @@
 				3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */,
 				3A8850602AA90CA200456DDD /* AlbumsGrid.swift in Sources */,
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,
+				3AA54D512BADB3DD00BA157A /* Transition+Opacity.swift in Sources */,
 				3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */,
 				3ADE8EA72AA9464D009826A3 /* NowPlayingBarModifier.swift in Sources */,
 				3A234E1E2AA8E6F600197AA7 /* PlayButtonStyle.swift in Sources */,
