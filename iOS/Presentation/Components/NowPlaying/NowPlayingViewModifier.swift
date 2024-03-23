@@ -24,6 +24,7 @@ struct NowPlayingViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             content
+                .allowsHitTesting(!viewState.presented)
                 .onAppear {
                     viewState.namespace = namespace
                 }
@@ -35,8 +36,8 @@ struct NowPlayingViewModifier: ViewModifier {
             if viewState.presented, let track = AudioPlayer.current.nowPlaying {
                 Group {
                     Background(cover: track.cover)
-                        .zIndex(2)
-                        // .matchedGeometryEffect(id: "nowPlaying", in: namespace, properties: .frame, anchor: .top, isSource: viewState.presented)
+                        .zIndex(4)
+                        .allowsHitTesting(false)
                         .transition(.move(edge: .bottom).combined(with: .opacity(min: 0.2)))
                     
                     VStack {
@@ -109,7 +110,7 @@ struct NowPlayingViewModifier: ViewModifier {
                             controlsVisible = true
                         }
                     }
-                    .zIndex(3)
+                    .zIndex(5)
                 }
                 // SwiftUI z-index is my new favorite worst piece of shit
                 // This is very reasonable and sane
