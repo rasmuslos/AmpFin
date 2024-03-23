@@ -168,7 +168,7 @@ class NowPlayingViewState {
     private(set) var presented = false
     
     func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
-        withAnimation(.spring(duration: 0.7, bounce: 0.25)) {
+        withAnimation(.spring(duration: 0.7, bounce: 0.2)) {
             self.presented = presented
         } completion: {
             completion?()
