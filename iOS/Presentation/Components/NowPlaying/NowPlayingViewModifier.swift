@@ -36,7 +36,8 @@ struct NowPlayingViewModifier: ViewModifier {
                 Group {
                     Background(cover: track.cover)
                         .zIndex(2)
-                        .matchedGeometryEffect(id: "nowPlaying", in: namespace, properties: .frame, anchor: .top, isSource: viewState.presented)
+                        // .matchedGeometryEffect(id: "nowPlaying", in: namespace, properties: .frame, anchor: .top, isSource: viewState.presented)
+                        .transition(.move(edge: .bottom).combined(with: .opacity(min: 0.2)))
                     
                     VStack {
                         if currentTab == .cover {
@@ -68,30 +69,33 @@ struct NowPlayingViewModifier: ViewModifier {
                     }
                     .foregroundStyle(.white)
                     .overlay(alignment: .top) {
-                        Rectangle()
-                            .foregroundStyle(.white.secondary.opacity(0.75))
-                            .frame(width: 50, height: 7)
-                            .clipShape(RoundedRectangle(cornerRadius: 10000))
-                            .transition(.opacity.animation(.linear(duration: 0.1)))
-                            .onTapGesture {
-                                viewState.setNowPlayingViewPresented(false)
-                            }
+                        Button {
+                            viewState.setNowPlayingViewPresented(false)
+                        } label: {
+                            Rectangle()
+                                .foregroundStyle(.white.secondary.opacity(0.75))
+                                .frame(width: 50, height: 7)
+                                .clipShape(RoundedRectangle(cornerRadius: 10000))
+                        }
+                        .transition(.opacity.animation(.linear(duration: 0.1)))
                     }
                     .padding(.horizontal, 30)
                     .ignoresSafeArea(edges: .bottom)
                     .highPriorityGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
-                                if $0.velocity.height > 2000 {
+                                if $0.velocity.height > 3000 {
                                     viewState.setNowPlayingViewPresented(false) {
                                         dragOffset = 0
                                     }
+                                } else if $0.velocity.height < -3000 {
+                                    dragOffset = 0
                                 } else {
                                     dragOffset = max(0, $0.translation.height)
                                 }
                             }
                             .onEnded {
-                                if $0.translation.height > 200 {
+                                if $0.translation.height > 200 && dragOffset != 0 {
                                     viewState.setNowPlayingViewPresented(false) {
                                         dragOffset = 0
                                     }
@@ -168,7 +172,7 @@ class NowPlayingViewState {
     private(set) var presented = false
     
     func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
-        withAnimation(.spring(duration: 0.7, bounce: 0.2)) {
+        withAnimation(.spring(duration: 0.6, bounce: 0.2)) {
             self.presented = presented
         } completion: {
             completion?()

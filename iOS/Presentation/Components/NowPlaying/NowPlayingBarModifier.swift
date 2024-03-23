@@ -33,7 +33,9 @@ struct NowPlayingBarModifier: ViewModifier {
                             Group {
                                 RoundedRectangle(cornerRadius: 15)
                                     .foregroundStyle(.ultraThinMaterial)
-                                    .matchedGeometryEffect(id: "nowPlaying", in: nowPlayingViewState.namespace, properties: .position, anchor: .center, isSource: !nowPlayingViewState.presented)
+                                    // .matchedGeometryEffect(id: "nowPlaying", in: nowPlayingViewState.namespace, properties: .position, anchor: .center, isSource: !nowPlayingViewState.presented)
+                                    .transition(.move(edge: .top))
+                                    .zIndex(2)
                                 
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)
@@ -76,6 +78,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                     .imageScale(.large)
                                 }
                                 .padding(.horizontal, 6)
+                                .zIndex(3)
                             }
                             .toolbarBackground(.hidden, for: .tabBar)
                             .foregroundStyle(.primary)
