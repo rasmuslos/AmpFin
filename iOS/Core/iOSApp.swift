@@ -22,7 +22,7 @@ struct iOSApp: App {
         #endif
         
         #if DEBUG
-        Tips.showAllTipsForTesting()
+        // Tips.showAllTipsForTesting()
         #endif
         
         try? Tips.configure([

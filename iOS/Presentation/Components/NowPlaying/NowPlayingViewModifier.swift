@@ -37,7 +37,6 @@ struct NowPlayingViewModifier: ViewModifier {
                 Group {
                     Background(cover: track.cover)
                         .zIndex(4)
-                        .allowsHitTesting(false)
                         .transition(.move(edge: .bottom).combined(with: .opacity(min: 0.2)))
                     
                     VStack {
@@ -117,7 +116,7 @@ struct NowPlayingViewModifier: ViewModifier {
                 .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
                 .frame(height: UIScreen.main.bounds.height)
                 .offset(y: dragOffset)
-                .animation(.interactiveSpring, value: dragOffset)
+                .animation(.spring, value: dragOffset)
             }
         }
     }
@@ -143,15 +142,16 @@ extension NowPlayingViewModifier {
                 if let imageColors = imageColors {
                     FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
-                        .overlay(.black.opacity(0.25))
                         .onChange(of: cover?.url) { determineImageColors() }
                 } else {
                     Color.clear
                         .onAppear { determineImageColors() }
                 }
             }
+            .overlay(.black.opacity(0.25))
             .ignoresSafeArea(edges: .all)
             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            .allowsHitTesting(false)
         }
         
         func determineImageColors() {
@@ -173,7 +173,7 @@ class NowPlayingViewState {
     private(set) var presented = false
     
     func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
-        withAnimation(.spring(duration: 0.6, bounce: 0.2)) {
+        withAnimation(.spring(duration: 0.6, bounce: 0.1)) {
             self.presented = presented
         } completion: {
             completion?()

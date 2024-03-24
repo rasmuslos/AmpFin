@@ -43,8 +43,10 @@ public class AudioPlayer {
     }
     
     init() {
-        setupObservers()
-        setupRemoteControls()
+        DispatchQueue.main.async {
+            self.setupObservers()
+            self.setupRemoteControls()
+        }
     }
 }
 
