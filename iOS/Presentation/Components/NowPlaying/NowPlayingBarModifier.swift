@@ -24,17 +24,25 @@ struct NowPlayingBarModifier: ViewModifier {
                 if let currentTrack = AudioPlayer.current.nowPlaying {
                     ZStack(alignment: .bottom) {
                         Rectangle()
-                            .frame(width: UIScreen.main.bounds.width + 100, height: 300)
-                            .padding(.bottom, -250)
-                            .blur(radius: 25)
-                            .foregroundStyle(.thinMaterial)
+                            .frame(height: 300)
+                            .mask {
+                                VStack(spacing: 0) {
+                                    LinearGradient(colors: [.black.opacity(0), .black], startPoint: .top, endPoint: .bottom)
+                                        .frame(height: 50)
+                                    
+                                    Rectangle()
+                                        .frame(height: 250)
+                                }
+                            }
+                            .foregroundStyle(.regularMaterial)
+                            .padding(.bottom, -225)
                         
                         if !nowPlayingViewState.presented {
                             Group {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .foregroundStyle(.ultraThinMaterial)
-                                    // .matchedGeometryEffect(id: "nowPlaying", in: nowPlayingViewState.namespace, properties: .position, anchor: .center, isSource: !nowPlayingViewState.presented)
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .foregroundStyle(.thinMaterial)
                                     .transition(.move(edge: .top))
+                                    .frame(width: UIScreen.main.bounds.width - 16, height: 56)
                                     .zIndex(2)
                                 
                                 HStack {
@@ -79,15 +87,15 @@ struct NowPlayingBarModifier: ViewModifier {
                                 }
                                 .padding(.horizontal, 6)
                                 .zIndex(3)
+                                .frame(width: UIScreen.main.bounds.width - 10, height: 56)
+                                .modifier(ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                             }
                             .toolbarBackground(.hidden, for: .tabBar)
                             .foregroundStyle(.primary)
-                            .frame(width: UIScreen.main.bounds.width - 30, height: 60)
                             .shadow(color: .black.opacity(0.25), radius: 20)
                             .draggable(currentTrack) {
                                 TrackListRow.TrackPreview(track: currentTrack)
                             }
-                            .modifier(ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                             .padding(.bottom, 10)
                             .onTapGesture {
                                 nowPlayingViewState.setNowPlayingViewPresented(true)

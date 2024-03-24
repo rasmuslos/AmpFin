@@ -93,6 +93,9 @@
 		3A98A0302AABA37B00EA84CF /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98A02F2AABA37B00EA84CF /* ErrorView.swift */; };
 		3A98A0322AABA3DF00EA84CF /* ArtistLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A98A0312AABA3DF00EA84CF /* ArtistLoadView.swift */; };
 		3AA54D512BADB3DD00BA157A /* Transition+Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA54D502BADB3DD00BA157A /* Transition+Opacity.swift */; };
+		3AA94F8E2BB02E130012E731 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3A2657EF2BA340EC000C62E3 /* PrivacyInfo.xcprivacy */; };
+		3AA94F902BB02E1E0012E731 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3A2657F12BA34126000C62E3 /* PrivacyInfo.xcprivacy */; };
+		3AA94F912BB02E230012E731 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3A2657F02BA34113000C62E3 /* PrivacyInfo.xcprivacy */; };
 		3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC768C2B02C68600E337C1 /* ItemImage.swift */; };
 		3AAF0DEC2B4960EF0032DEFF /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A442C092B485E56008FECE2 /* Intents.framework */; };
 		3AAF0DEF2B4960EF0032DEFF /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */; };
@@ -826,6 +829,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AA94F902BB02E1E0012E731 /* PrivacyInfo.xcprivacy in Resources */,
 				3A442BFC2B483EC9008FECE2 /* Localizable.xcstrings in Resources */,
 				3A442BF22B483C0D008FECE2 /* Assets.xcassets in Resources */,
 			);
@@ -835,6 +839,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AA94F912BB02E230012E731 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -843,6 +848,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A0A49292B6C1EDC00AAA647 /* InfoPlist.xcstrings in Resources */,
+				3AA94F8E2BB02E130012E731 /* PrivacyInfo.xcprivacy in Resources */,
 				3A844DF22B398C150021BC63 /* AmpFinKit in Resources */,
 				3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */,
 				3A24E5D92B4BF5850052DD20 /* Settings.bundle in Resources */,
