@@ -115,6 +115,27 @@ public extension OfflineManager {
     }
     
     @MainActor
+    func getRandomAlbums() throws -> [Album] {
+        let albumCount = try PersistenceManager.shared.modelContainer.mainContext.fetchCount(FetchDescriptor<OfflineAlbum>())
+        let amount = min(20, albumCount)
+        
+        var albums = [Album]()
+        while albums.count < amount {
+            var descriptor = FetchDescriptor<OfflineAlbum>()
+            descriptor.fetchLimit = 1
+            descriptor.fetchOffset = Int.random(in: 0..<amount)
+            
+            if let album = try? PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first {
+                albums.append(Album.convertFromOffline(album))
+            } else {
+                break
+            }
+        }
+        
+        return albums
+    }
+    
+    @MainActor
     func getTracks(albumId: String) throws -> [Track] {
         let album = try getOfflineAlbum(albumId: albumId)
         let tracks = try getOfflineTracks(parent: album)

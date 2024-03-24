@@ -14,10 +14,10 @@ struct LibraryView: View {
     @Environment(\.libraryDataProvider) var dataProvider
     @Environment(\.libraryOnline) var online
     
-    @State var recentAlbums: [Album]?
+    @State var albums: [Album]?
+    @State var randomAlbums = UserDefaults.standard.bool(forKey: "libraryRandomAlbums")
     
     var body: some View {
-        
         ScrollView {
             List {
                 Links()
@@ -26,16 +26,16 @@ struct LibraryView: View {
             .navigationTitle("title.library")
             .frame(height: CGFloat(Links.count) * minRowHeight)
             
-            if let recentAlbums = recentAlbums, recentAlbums.count > 0 {
+            if let albums = albums, albums.count > 0 {
                 HStack {
-                    Text("home.recentlyAdded", comment: "Albums recently added to the Jellyfin server")
+                    Text(randomAlbums ? "home.randomAlbums" : "home.recentlyAdded")
                         .font(.headline)
                     Spacer()
                 }
                 .padding(.horizontal)
                 .padding(.top)
                 
-                AlbumsGrid(albums: recentAlbums)
+                AlbumsGrid(albums: albums)
                     .padding(.horizontal)
             } else if !online && dataProvider as? OnlineLibraryDataProvider != nil {
                 ContentUnavailableView("offline.title", systemImage: "network.slash", description: Text("offline.description"))
@@ -45,18 +45,28 @@ struct LibraryView: View {
             Spacer()
         }
         .modifier(NowPlayingBarSafeAreaModifier())
-        .onAppear(perform: loadRecentAlbums)
-        .refreshable(action: loadRecentAlbums)
+        .task { await loadAlbums() }
+        .refreshable { await loadAlbums() }
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            if randomAlbums != UserDefaults.standard.bool(forKey: "libraryRandomAlbums") {
+                randomAlbums.toggle()
+                
+                Task.detached {
+                    await loadAlbums()
+                }
+            }
+        }
     }
 }
 
 // MARK: Helper
 
 extension LibraryView {
-    @Sendable
-    func loadRecentAlbums() {
-        Task.detached {
-            recentAlbums = try? await dataProvider.getRecentAlbums()
+    func loadAlbums() async {
+        if randomAlbums {
+            albums = try? await dataProvider.getRandomAlbums()
+        } else {
+            albums = try? await dataProvider.getRecentAlbums()
         }
     }
 }

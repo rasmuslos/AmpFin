@@ -24,7 +24,7 @@ public struct OnlineLibraryDataProvider: LibraryDataProvider {
     public func getRecentAlbums() async throws -> [Album] {
         return try await JellyfinClient.shared.getAlbums(limit: 20, sortOrder: .added, ascending: false, favorite: false)
     }
-    public func getRecommendedAlbums() async throws -> [Album] {
+    public func getRandomAlbums() async throws -> [Album] {
         return try await JellyfinClient.shared.getAlbums(limit: 20)
     }
     

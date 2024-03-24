@@ -48,7 +48,7 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
             Album.fixture,
         ]
     }
-    public func getRecommendedAlbums() async throws -> [Album] {
+    public func getRandomAlbums() async throws -> [Album] {
         [
             Album.fixture,
             Album.fixture,

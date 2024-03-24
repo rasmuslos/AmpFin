@@ -482,6 +482,22 @@
         }
       }
     },
+    "home.randomAlbums" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zufällige Alben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Random albums"
+          }
+        }
+      }
+    },
     "home.recentlyAdded" : {
       "comment" : "Albums recently added to the Jellyfin server",
       "localizations" : {
