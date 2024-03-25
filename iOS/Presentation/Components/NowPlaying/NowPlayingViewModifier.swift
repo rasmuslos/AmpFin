@@ -19,6 +19,7 @@ struct NowPlayingViewModifier: ViewModifier {
     @State private var controlsVisible = true
     @State private var currentTab = Tab.cover
     
+    @State private var controlsDragging = false
     @State private var dragOffset: CGFloat = .zero
     
     func body(content: Content) -> some View {
@@ -64,7 +65,7 @@ struct NowPlayingViewModifier: ViewModifier {
                         }
                         
                         if controlsVisible {
-                            Controls(currentTab: $currentTab)
+                            Controls(currentTab: $currentTab, controlsDragging: $controlsDragging)
                         }
                     }
                     .foregroundStyle(.white)
@@ -84,6 +85,10 @@ struct NowPlayingViewModifier: ViewModifier {
                     .simultaneousGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
+                                if controlsDragging {
+                                    return
+                                }
+                                
                                 if $0.velocity.height > 3000 {
                                     viewState.setNowPlayingViewPresented(false) {
                                         dragOffset = 0

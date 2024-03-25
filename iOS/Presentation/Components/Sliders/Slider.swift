@@ -11,8 +11,6 @@ struct Slider: View {
     @Binding var percentage: Double
     @Binding var dragging: Bool
     
-    var onEnded: (() -> Void)? = nil
-    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -30,7 +28,6 @@ struct Slider: View {
                 }
                 .onEnded { _ in
                     dragging = false
-                    onEnded?()
                 }
             )
         }

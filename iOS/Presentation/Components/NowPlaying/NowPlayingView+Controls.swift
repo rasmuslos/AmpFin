@@ -18,10 +18,12 @@ extension NowPlayingViewModifier {
                 queueTabActive = currentTab == .queue
             }
         }
+        @Binding var controlsDragging: Bool
         
         @State private var quality: String?
         
-        @State private var dragging = false
+        @State private var seekDragging = false
+        @State private var volumeDragging = false
         @State private var draggedPercentage = 0.0
         
         @State private var queueTabActive = false
@@ -33,9 +35,15 @@ extension NowPlayingViewModifier {
         var body: some View {
             VStack {
                 VStack {
-                    Slider(percentage: .init(get: { dragging ? draggedPercentage : playedPercentage }, set: { draggedPercentage = $0 }), dragging: $dragging, onEnded: {
-                        AudioPlayer.current.currentTime = AudioPlayer.current.duration * (playedPercentage / 100)
-                    })
+                    Slider(
+                        percentage: .init(get: { seekDragging ? draggedPercentage : playedPercentage }, set: {
+                            draggedPercentage = $0
+                            AudioPlayer.current.currentTime = AudioPlayer.current.duration * ($0 / 100)
+                        }),
+                        dragging: .init(get: { seekDragging }, set: {
+                            seekDragging = $0
+                            controlsDragging = $0
+                        }))
                     .frame(height: 10)
                     .padding(.bottom, 10)
                     
@@ -103,7 +111,10 @@ extension NowPlayingViewModifier {
                 .padding(.bottom, 65)
                 
                 // The first view is the visible slider, the second one is there to hide the iOS indicator (10/10 hack)
-                VolumeSlider()
+                VolumeSlider(dragging: .init(get: { volumeDragging }, set: {
+                    volumeDragging = $0
+                    controlsDragging = $0
+                }))
                 VolumeView()
                     .frame(width: 0, height: 0)
                 

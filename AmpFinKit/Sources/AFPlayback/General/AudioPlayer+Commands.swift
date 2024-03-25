@@ -47,7 +47,6 @@ extension AudioPlayer {
             return .success
         }
         
-#if canImport(AFOffline)
         commandCenter.likeCommand.isEnabled = false
         commandCenter.likeCommand.addTarget { event in
             if let event = event as? MPFeedbackCommandEvent {
@@ -60,7 +59,6 @@ extension AudioPlayer {
             
             return .commandFailed
         }
-#endif
         
         commandCenter.changeShuffleModeCommand.isEnabled = true
         commandCenter.changeShuffleModeCommand.addTarget { event in

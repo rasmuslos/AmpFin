@@ -11,7 +11,7 @@ import AVKit
 
 struct VolumeSlider: View {
     @State var volume = Double(AudioPlayer.current.volume) * 100
-    @State var isDragging: Bool = false
+    @Binding var dragging: Bool
     
     var body: some View {
         HStack {
@@ -21,7 +21,7 @@ struct VolumeSlider: View {
                 Image(systemName: "speaker.fill")
             }
             
-            Slider(percentage: $volume, dragging: $isDragging)
+            Slider(percentage: $volume, dragging: $dragging)
             
             Button {
                 AudioPlayer.current.volume = 1
@@ -29,17 +29,17 @@ struct VolumeSlider: View {
                 Image(systemName: "speaker.wave.3.fill")
             }
         }
-        .dynamicTypeSize(isDragging ? .xLarge : .medium)
+        .dynamicTypeSize(dragging ? .xLarge : .medium)
         .frame(height: 0)
-        .animation(.easeInOut, value: isDragging)
+        .animation(.easeInOut, value: dragging)
         .onChange(of: volume) {
-            if isDragging {
+            if dragging {
                 AudioPlayer.current.volume = Float(volume / 100)
             }
         }
         // because apple makes stupid software i guess
         .onReceive(AVAudioSession.sharedInstance().publisher(for: \.outputVolume), perform: { value in
-            if !isDragging && AudioPlayer.current.source == .local {
+            if !dragging && AudioPlayer.current.source == .local {
                 withAnimation {
                     volume = Double(value) * 100
                 }
