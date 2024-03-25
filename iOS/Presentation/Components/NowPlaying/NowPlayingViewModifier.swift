@@ -81,7 +81,7 @@ struct NowPlayingViewModifier: ViewModifier {
                     }
                     .padding(.horizontal, 30)
                     .ignoresSafeArea(edges: .bottom)
-                    .highPriorityGesture(
+                    .simultaneousGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
                                 if $0.velocity.height > 3000 {

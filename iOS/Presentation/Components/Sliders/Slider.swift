@@ -23,7 +23,7 @@ struct Slider: View {
                     .frame(width: geometry.size.width * min(1, max(0, CGFloat(self.percentage / 100))))
             }
             .cornerRadius(7)
-            .gesture(DragGesture(minimumDistance: 0)
+            .highPriorityGesture(DragGesture(minimumDistance: 0)
                 .onChanged { value in
                     percentage = min(max(0, Double(value.location.x / geometry.size.width * 100)), 100)
                     dragging = true

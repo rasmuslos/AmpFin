@@ -15,17 +15,19 @@ struct VolumeSlider: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "speaker.fill")
-                .onTapGesture {
-                    AudioPlayer.current.volume = 0
-                }
+            Button {
+                AudioPlayer.current.volume = 0
+            } label: {
+                Image(systemName: "speaker.fill")
+            }
             
             Slider(percentage: $volume, dragging: $isDragging)
             
-            Image(systemName: "speaker.wave.3.fill")
-                .onTapGesture {
-                    AudioPlayer.current.volume = 1
-                }
+            Button {
+                AudioPlayer.current.volume = 1
+            } label: {
+                Image(systemName: "speaker.wave.3.fill")
+            }
         }
         .dynamicTypeSize(isDragging ? .xLarge : .medium)
         .frame(height: 0)

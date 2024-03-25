@@ -49,7 +49,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                     ItemImage(cover: currentTrack.cover)
                                         .frame(width: 40, height: 40)
                                         .padding(.leading, 5)
-                                        .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .topTrailing, isSource: !nowPlayingViewState.presented)
+                                        .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
                                     
                                     Text(currentTrack.name)
                                         .lineLimit(1)
