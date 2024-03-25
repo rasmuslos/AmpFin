@@ -45,7 +45,11 @@ struct LibraryView: View {
             Spacer()
         }
         .modifier(NowPlayingBarSafeAreaModifier())
-        .task { await loadAlbums() }
+        .task {
+            if !randomAlbums || albums == nil || albums?.isEmpty == true {
+                await loadAlbums()
+            }
+        }
         .refreshable { await loadAlbums() }
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             if randomAlbums != UserDefaults.standard.bool(forKey: "libraryRandomAlbums") {

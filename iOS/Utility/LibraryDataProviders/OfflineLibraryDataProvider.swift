@@ -42,7 +42,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         try await OfflineManager.shared.getRecentAlbums()
     }
     public func getRandomAlbums() async throws -> [Album] {
-        return try await getRecentAlbums()
+        try await OfflineManager.shared.getRandomAlbums()
     }
     
     public func getAlbumTracks(id: String) async throws -> [Track] {
