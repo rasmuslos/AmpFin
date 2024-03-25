@@ -126,6 +126,10 @@ public extension OfflineManager {
             descriptor.fetchOffset = Int.random(in: 0..<amount)
             
             if let album = try? PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first {
+                if albums.contains(where: { $0.id == album.id }) {
+                    continue
+                }
+                
                 albums.append(Album.convertFromOffline(album))
             } else {
                 break
