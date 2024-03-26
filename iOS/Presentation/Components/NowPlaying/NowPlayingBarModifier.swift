@@ -91,10 +91,12 @@ struct NowPlayingBarModifier: ViewModifier {
                                 .modifier(ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                             }
                             .toolbarBackground(.hidden, for: .tabBar)
+                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .foregroundStyle(.primary)
                             .shadow(color: .black.opacity(0.25), radius: 20)
                             .draggable(currentTrack) {
                                 TrackListRow.TrackPreview(track: currentTrack)
+                                    .padding()
                             }
                             .padding(.bottom, 10)
                             .onTapGesture {
