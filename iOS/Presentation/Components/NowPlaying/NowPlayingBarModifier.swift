@@ -39,68 +39,65 @@ struct NowPlayingBarModifier: ViewModifier {
                             .allowsHitTesting(false)
                         
                         if !nowPlayingViewState.presented {
-                            Group {
-                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            HStack {
+                                ItemImage(cover: currentTrack.cover)
+                                    .frame(width: 40, height: 40)
+                                    // .padding(.leading, 5)
+                                    .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
+                                
+                                Text(currentTrack.name)
+                                    .lineLimit(1)
+                                    .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
+                                
+                                Spacer()
+                                
+                                Group {
+                                    Button {
+                                        AudioPlayer.current.playing = !AudioPlayer.current.playing
+                                    } label: {
+                                        Image(systemName: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
+                                            .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+                                            .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
+                                            .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
+                                            .onChange(of: AudioPlayer.current.playing) {
+                                                withAnimation {
+                                                    animateImage = true
+                                                } completion: {
+                                                    animateImage = false
+                                                }
+                                            }
+                                    }
+                                    
+                                    Button {
+                                        animateForwards.toggle()
+                                        AudioPlayer.current.advanceToNextTrack()
+                                    } label: {
+                                        Image(systemName: "forward.fill")
+                                            .symbolEffect(.bounce.up, value: animateForwards)
+                                    }
+                                    .padding(.trailing, 4)
+                                }
+                                .imageScale(.large)
+                            }
+                            .frame(width: UIScreen.main.bounds.width - 32, height: 56)
+                            .padding(.horizontal, 8)
+                            .foregroundStyle(.primary)
+                            .background {
+                                Rectangle()
                                     .foregroundStyle(.thinMaterial)
                                     .transition(.move(edge: .top))
-                                    .frame(width: UIScreen.main.bounds.width - 16, height: 56)
-                                    .zIndex(2)
-                                    .allowsHitTesting(false)
-                                
-                                HStack {
-                                    ItemImage(cover: currentTrack.cover)
-                                        .frame(width: 40, height: 40)
-                                        .padding(.leading, 5)
-                                        .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
-                                    
-                                    Text(currentTrack.name)
-                                        .lineLimit(1)
-                                        .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
-                                    
-                                    Spacer()
-                                    
-                                    Group {
-                                        Button {
-                                            AudioPlayer.current.playing = !AudioPlayer.current.playing
-                                        } label: {
-                                            Image(systemName: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
-                                                .contentTransition(.symbolEffect(.replace.byLayer.downUp))
-                                                .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
-                                                .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
-                                                .onChange(of: AudioPlayer.current.playing) {
-                                                    withAnimation {
-                                                        animateImage = true
-                                                    } completion: {
-                                                        animateImage = false
-                                                    }
-                                                }
-                                        }
-                                        
-                                        Button {
-                                            animateForwards.toggle()
-                                            AudioPlayer.current.advanceToNextTrack()
-                                        } label: {
-                                            Image(systemName: "forward.fill")
-                                                .symbolEffect(.bounce.up, value: animateForwards)
-                                        }
-                                        .padding(.horizontal, 10)
-                                    }
-                                    .imageScale(.large)
-                                }
-                                .padding(.horizontal, 6)
-                                .zIndex(3)
-                                .frame(width: UIScreen.main.bounds.width - 10, height: 56)
-                                .modifier(ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                             }
-                            .toolbarBackground(.hidden, for: .tabBar)
-                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                            .foregroundStyle(.primary)
+                            .transition(.move(edge: .bottom))
                             .shadow(color: .black.opacity(0.25), radius: 20)
+                            .modifier(ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                             .draggable(currentTrack) {
                                 TrackListRow.TrackPreview(track: currentTrack)
                                     .padding()
                             }
+                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .padding(.bottom, 10)
+                            .toolbarBackground(.hidden, for: .tabBar)
+                            .zIndex(3)
                             .onTapGesture {
                                 nowPlayingViewState.setNowPlayingViewPresented(true)
                             }
