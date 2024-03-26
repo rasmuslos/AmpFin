@@ -36,6 +36,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             }
                             .foregroundStyle(.regularMaterial)
                             .padding(.bottom, -225)
+                            .allowsHitTesting(false)
                         
                         if !nowPlayingViewState.presented {
                             Group {
@@ -44,6 +45,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                     .transition(.move(edge: .top))
                                     .frame(width: UIScreen.main.bounds.width - 16, height: 56)
                                     .zIndex(2)
+                                    .allowsHitTesting(false)
                                 
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)
