@@ -75,7 +75,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                         Image(systemName: "forward.fill")
                                             .symbolEffect(.bounce.up, value: animateForwards)
                                     }
-                                    .padding(.trailing, 4)
+                                    .padding(.horizontal, 10)
                                 }
                                 .imageScale(.large)
                             }
