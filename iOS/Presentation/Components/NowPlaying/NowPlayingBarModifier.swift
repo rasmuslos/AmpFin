@@ -34,7 +34,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                         .frame(height: 250)
                                 }
                             }
-                            .foregroundStyle(.thinMaterial)
+                            .foregroundStyle(.regularMaterial)
                             .padding(.bottom, -225)
                             .allowsHitTesting(false)
                         
@@ -85,16 +85,15 @@ struct NowPlayingBarModifier: ViewModifier {
                             .background {
                                 Rectangle()
                                     .foregroundStyle(.ultraThinMaterial)
-                                    .transition(.move(edge: .top))
                             }
                             .transition(.move(edge: .bottom))
-                            .shadow(color: .black.opacity(0.25), radius: 20)
                             .modifier(ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                             .draggable(currentTrack) {
                                 TrackListRow.TrackPreview(track: currentTrack)
                                     .padding()
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                            .shadow(color: .black.opacity(0.25), radius: 20)
                             .padding(.bottom, 10)
                             .toolbarBackground(.hidden, for: .tabBar)
                             .zIndex(3)
