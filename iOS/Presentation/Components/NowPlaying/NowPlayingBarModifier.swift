@@ -34,7 +34,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                         .frame(height: 250)
                                 }
                             }
-                            .foregroundStyle(.regularMaterial)
+                            .foregroundStyle(.thinMaterial)
                             .padding(.bottom, -225)
                             .allowsHitTesting(false)
                         
@@ -84,7 +84,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             .foregroundStyle(.primary)
                             .background {
                                 Rectangle()
-                                    .foregroundStyle(.thinMaterial)
+                                    .foregroundStyle(.ultraThinMaterial)
                                     .transition(.move(edge: .top))
                             }
                             .transition(.move(edge: .bottom))
