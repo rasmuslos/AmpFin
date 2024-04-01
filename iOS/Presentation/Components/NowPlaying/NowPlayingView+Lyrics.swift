@@ -16,11 +16,12 @@ extension NowPlayingViewModifier {
     struct LyricsContainer: View {
         @Binding var controlsVisible: Bool
         
-        @State var lyrics: Track.Lyrics?
-        @State var activeLineIndex: Int = 0
+        @State private var failed = false
+        @State private var lyrics: Track.Lyrics?
+        @State private var activeLineIndex: Int = 0
         
-        @State var scrolling: Bool = false
-        @State var scrollTimeout: Task<(), Error>? = nil
+        @State private var scrolling: Bool = false
+        @State private var scrollTimeout: Task<(), Error>? = nil
         
         var body: some View {
             ScrollViewReader { proxy in
@@ -42,8 +43,18 @@ extension NowPlayingViewModifier {
                         .padding(.vertical, 25)
                         .safeAreaPadding(.bottom, 175)
                     } else {
-                        ProgressView()
-                            .padding(.vertical, 50)
+                        Group {
+                            if failed {
+                                Text("lyrics.failed")
+                                    .font(.caption.smallCaps())
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.center)
+                                    .padding()
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                        .padding(.vertical, 50)
                     }
                 }
                 .mask(
@@ -122,13 +133,19 @@ extension NowPlayingViewModifier {
         
         func fetchLyrics() {
             if let trackId = AudioPlayer.current.nowPlaying?.id {
+                failed = false
+                
                 Task.detached {
                     if let lyrics = await OfflineManager.shared.getLyrics(trackId: trackId) {
                         self.lyrics = lyrics
                     } else if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId) {
                         self.lyrics = lyrics
+                    } else {
+                        failed = true
                     }
                 }
+            } else {
+                failed = true
             }
         }
     }

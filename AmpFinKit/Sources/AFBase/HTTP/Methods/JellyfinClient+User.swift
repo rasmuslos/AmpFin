@@ -26,7 +26,7 @@ public extension JellyfinClient {
     
     /// Get information about the current user
     func getUserData() async throws -> (String, String, String, Bool) {
-        let response = try await request(ClientRequest<UserDataResponse>(path: "", method: "GET", userPrefix: true))
+        let response = try await request(ClientRequest<UserDataResponse>(path: "Users/\(userId!)", method: "GET"))
         
         return (
             response.Name,

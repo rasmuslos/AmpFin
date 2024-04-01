@@ -40,12 +40,12 @@ extension PlaylistView {
                             } label: {
                                 Group {
                                     switch offlineTracker.status {
-                                    case .none:
-                                        Image(systemName: "arrow.down.circle.fill")
-                                    case .working:
-                                        ProgressView()
-                                    case .downloaded:
-                                        Image(systemName: "xmark.circle.fill")
+                                        case .none:
+                                            Image(systemName: "arrow.down.circle.fill")
+                                        case .working:
+                                            ProgressView()
+                                        case .downloaded:
+                                            Image(systemName: "xmark.circle.fill")
                                     }
                                 }
                                 .symbolRenderingMode(.palette)
@@ -60,53 +60,63 @@ extension PlaylistView {
                     }
                     
                     ToolbarItem(placement: .topBarTrailing) {
-                        Menu {
+                        if editMode == .active {
                             Button {
-                                Task {
-                                    await playlist.setFavorite(favorite: !playlist.favorite)
-                                }
+                                editMode = .inactive
                             } label: {
-                                Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
+                                Image(systemName: "checkmark.circle.fill")
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(.white, .black.opacity(0.25))
                             }
-                            
-                            Divider()
-                            
-                            Button {
-                                AudioPlayer.current.queueTracks(tracks, index: 0)
-                            } label: {
-                                Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
-                            }
-                            Button {
-                                AudioPlayer.current.queueTracks(tracks, index: AudioPlayer.current.queue.count)
-                            } label: {
-                                Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
-                            }
-                            
-                            Divider()
-                            
-                            Button {
-                                withAnimation {
-                                    if editMode == .active {
-                                        editMode = .inactive
-                                    } else {
-                                        editMode = .active
+                        } else {
+                            Menu {
+                                Button {
+                                    Task {
+                                        await playlist.setFavorite(favorite: !playlist.favorite)
                                     }
+                                } label: {
+                                    Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
                                 }
+                                
+                                Divider()
+                                
+                                Button {
+                                    AudioPlayer.current.queueTracks(tracks, index: 0)
+                                } label: {
+                                    Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                                }
+                                Button {
+                                    AudioPlayer.current.queueTracks(tracks, index: AudioPlayer.current.queue.count)
+                                } label: {
+                                    Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                                }
+                                
+                                Divider()
+                                
+                                Button {
+                                    withAnimation {
+                                        if editMode == .active {
+                                            editMode = .inactive
+                                        } else {
+                                            editMode = .active
+                                        }
+                                    }
+                                } label: {
+                                    Label("playlist.edit", systemImage: "pencil")
+                                }
+                                .disabled(!libraryOnline)
+                                
+                                Button(role: .destructive) {
+                                    alertPresented.toggle()
+                                } label: {
+                                    Label("playlist.delete", systemImage: "trash")
+                                }
+                                .disabled(!libraryOnline)
                             } label: {
-                                Label("playlist.edit", systemImage: "pencil")
+                                Image(systemName: "ellipsis.circle.fill")
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(.white, .black.opacity(0.25))
                             }
-                            .disabled(!libraryOnline)
-                            
-                            Button(role: .destructive) {
-                                alertPresented.toggle()
-                            } label: {
-                                Label("playlist.delete", systemImage: "trash")
-                            }
-                            .disabled(!libraryOnline)
-                        } label: {
-                            Image(systemName: "ellipsis.circle.fill")
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, .black.opacity(0.25))
                         }
                     }
                 }

@@ -9,7 +9,7 @@ import Foundation
 
 public extension JellyfinClient {
     func getTrack(id: String) async throws -> Track {
-        let track = try await request(ClientRequest<JellyfinTrackItem>(path: "Items/\(id)", method: "GET", userPrefix: true))
+        let track = try await request(ClientRequest<JellyfinTrackItem>(path: "Items/\(id)", method: "GET"))
         return try Track.convertFromJellyfin(track)
     }
     
@@ -34,7 +34,7 @@ public extension JellyfinClient {
             query.append(URLQueryItem(name: "Filters", value: "IsFavorite"))
         }
         
-        let response = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
+        let response = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: query))
         return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
     
@@ -48,7 +48,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
-        ], userPrefix: true))
+        ]))
         
         return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
@@ -63,7 +63,8 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
-        ], userPrefix: true))
+        ]))
+        
         return tracks.Items.compactMap { try? Track.convertFromJellyfin($0, fallbackIndex: 0) }
     }
     
@@ -71,7 +72,7 @@ public extension JellyfinClient {
     func getTracks(instantMixBaseId: String) async throws -> [Track] {
         let response = try await request(ClientRequest<TracksItemResponse>(path: "Items/\(instantMixBaseId)/InstantMix", method: "GET", query: [
             URLQueryItem(name: "limit", value: "200"),
-        ], userId: true))
+        ]))
         
         return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
@@ -86,7 +87,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
-        ], userPrefix: true)) {
+        ])) {
             return try? Track.convertFromJellyfin(album)
         }
         
@@ -95,7 +96,7 @@ public extension JellyfinClient {
     
     /// Get the lyrics of a track
     func getLyrics(trackId: String) async throws -> Track.Lyrics {
-        let response = try await request(ClientRequest<LyricsResponse>(path: "Items/\(trackId)/Lyrics", method: "GET", userPrefix: true))
+        let response = try await request(ClientRequest<LyricsResponse>(path: "Audio/\(trackId)/Lyrics", method: "GET"))
         var lyrics: Track.Lyrics = [0: nil]
         
         response.Lyrics.forEach { element in

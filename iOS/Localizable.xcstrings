@@ -780,6 +780,22 @@
         }
       }
     },
+    "lyrics.failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrics nicht verfügbar (benötigt Jellyfin 10.9+)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrics cannot be fetched (only available with Jellyfin 10.9+)"
+          }
+        }
+      }
+    },
     "minutes %lld" : {
       "localizations" : {
         "de" : {

@@ -9,22 +9,10 @@ import Foundation
 
 extension JellyfinClient {
     func request<T: Decodable>(_ clientRequest: ClientRequest<T>) async throws -> T {
-        var url: URL
+        var url = serverUrl.appending(path: clientRequest.path)
         
-        if clientRequest.userPrefix {
-            url = serverUrl.appending(path: "Users").appending(path: userId).appending(path: clientRequest.path)
-        } else {
-            url = serverUrl.appending(path: clientRequest.path)
-        }
-        
-        if var query = clientRequest.query {
-            if clientRequest.userId {
-                query.append(URLQueryItem(name: "userId", value: userId))
-            }
-            
+        if let query = clientRequest.query {
             url = url.appending(queryItems: query)
-        } else if clientRequest.userId {
-            url = url.appending(queryItems: [URLQueryItem(name: "userId", value: userId)])
         }
         
         var request = URLRequest(url: url)

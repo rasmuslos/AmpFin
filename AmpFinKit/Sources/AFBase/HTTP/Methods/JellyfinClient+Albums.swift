@@ -29,7 +29,7 @@ public extension JellyfinClient {
             query.append(URLQueryItem(name: "Filters", value: "IsFavorite"))
         }
         
-        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
+        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query))
         return response.Items.map(Album.convertFromJellyfin)
     }
     
@@ -44,7 +44,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
             URLQueryItem(name: "AlbumArtistIds", value: artistId),
-        ], userPrefix: true))
+        ]))
         
         return response.Items.map(Album.convertFromJellyfin)
     }
@@ -59,7 +59,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate,AlbumArtists,People"),
-        ], userPrefix: true))
+        ]))
         
         return response.Items.map(Album.convertFromJellyfin)
     }
@@ -74,7 +74,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
-        ], userPrefix: true))
+        ]))
         
         return response.Items.map(Album.convertFromJellyfin)
     }
@@ -83,7 +83,7 @@ public extension JellyfinClient {
     func getAlbums(similarToAlbumId: String) async throws -> [Album] {
         let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items/\(similarToAlbumId)/Similar", method: "GET", query: [
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
-        ], userId: true))
+        ]))
         
         return response.Items.map(Album.convertFromJellyfin)
     }
@@ -98,7 +98,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
-        ], userPrefix: true)) {
+        ])) {
             return Album.convertFromJellyfin(album)
         }
         

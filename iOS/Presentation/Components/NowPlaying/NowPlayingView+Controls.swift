@@ -122,8 +122,6 @@ extension NowPlayingViewModifier {
                     Spacer()
                     
                     if AudioPlayer.current.source == .local {
-                        // disabled until lyrics are fully supported by the stable server
-                        #if DEBUG
                         Button {
                             setActiveTab(.lyrics)
                         } label: {
@@ -132,7 +130,6 @@ extension NowPlayingViewModifier {
                         .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
                         
                         Spacer()
-                        #endif
                         
                         AirPlayView()
                             .frame(width: 45)

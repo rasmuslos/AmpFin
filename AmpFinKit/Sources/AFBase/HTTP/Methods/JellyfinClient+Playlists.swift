@@ -13,7 +13,7 @@ public extension JellyfinClient {
             "Name": playlistName,
             "Ids": trackIds,
             "MediaType": "Audio",
-        ], userId: true))
+        ]))
     }
     
     func getPlaylists(limit: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> [Playlist] {
@@ -23,7 +23,6 @@ public extension JellyfinClient {
             URLQueryItem(name: "StartIndex", value: "0"),
             URLQueryItem(name: "IncludeItemTypes", value: "Playlist"),
             URLQueryItem(name: "Recursive", value: "true"),
-            URLQueryItem(name: "ParentId", value: "3996159c9706fc5500823e0316d260c1"),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
         ]
@@ -35,7 +34,7 @@ public extension JellyfinClient {
             query.append(URLQueryItem(name: "Filters", value: "IsFavorite"))
         }
         
-        let response = try await request(ClientRequest<PlaylistItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
+        let response = try await request(ClientRequest<PlaylistItemsResponse>(path: "Items", method: "GET", query: query))
         return response.Items.filter { $0.MediaType == "Audio" }.map(Playlist.convertFromJellyfin)
     }
     
@@ -45,10 +44,9 @@ public extension JellyfinClient {
             URLQueryItem(name: "Limit", value: "20"),
             URLQueryItem(name: "IncludeItemTypes", value: "Playlist"),
             URLQueryItem(name: "Recursive", value: "true"),
-            URLQueryItem(name: "ParentId", value: "3996159c9706fc5500823e0316d260c1"),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
-        ], userPrefix: true))
+        ]))
         
         return response.Items.filter { $0.MediaType == "Audio" }.map(Playlist.convertFromJellyfin)
     }
@@ -62,7 +60,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "Recursive", value: "true"),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
-        ], userPrefix: true))
+        ]))
         
         return response.Items.map(Playlist.convertFromJellyfin)
     }
@@ -70,7 +68,7 @@ public extension JellyfinClient {
     func add(trackIds: [String], playlistId: String) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items", method: "POST", query: [
             URLQueryItem(name: "Ids", value: trackIds.joined(separator: ","))
-        ], userId: true))
+        ]))
     }
     
     func remove(trackId: String, playlistId: String) async throws {
@@ -79,7 +77,7 @@ public extension JellyfinClient {
         if let trackId = mappings.first(where: { $0.key == trackId })?.value {
             let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items", method: "DELETE", query: [
                 URLQueryItem(name: "EntryIds", value: trackId),
-            ], userId: true))
+            ]))
         } else {
             throw JellyfinClientError.invalidHttpBody
         }
@@ -89,7 +87,7 @@ public extension JellyfinClient {
         let mappings = try await getTrackPlaylistIdsMapping(playlistId: playlistId)
         
         if let trackId = mappings.first(where: { $0.key == trackId })?.value {
-            let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items/\(trackId)/Move/\(index)", method: "POST", userId: true))
+            let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists/\(playlistId)/Items/\(trackId)/Move/\(index)", method: "POST"))
         } else {
             throw JellyfinClientError.invalidHttpBody
         }
@@ -101,7 +99,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
-        ], userId: true))
+        ]))
         
         return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
     }
@@ -112,7 +110,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
-        ], userId: true))
+        ]))
         
         var mapping = [String: String]()
         response.Items.forEach {
