@@ -21,7 +21,6 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 Short term: https://nextcloud.rfk.io/s/iaaAKsad8SxQLfa
 
 - CarPlay
-- Rework audio player to use `@Observable`
 - Restructure
 
 While i do have plans to support other platforms i will not continue to work on them until at least iOS 18 because i hope that until then SwiftUI is actually usable on the platforms.

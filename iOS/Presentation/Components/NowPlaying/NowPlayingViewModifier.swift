@@ -22,6 +22,14 @@ struct NowPlayingViewModifier: ViewModifier {
     @State private var controlsDragging = false
     @State private var dragOffset: CGFloat = .zero
     
+    private var presentedTrack: Track? {
+        if viewState.presented, let track = AudioPlayer.current.nowPlaying {
+            return track
+        }
+        
+        return nil
+    }
+    
     func body(content: Content) -> some View {
         ZStack {
             content
@@ -34,13 +42,20 @@ struct NowPlayingViewModifier: ViewModifier {
                     viewState.setNowPlayingViewPresented(false)
                 }
             
-            if viewState.presented, let track = AudioPlayer.current.nowPlaying {
-                Group {
+            Group {
+                if let track = presentedTrack {
                     Background(cover: track.cover)
+                        .ignoresSafeArea(edges: .all)
                         .zIndex(4)
-                        .transition(.move(edge: .bottom).combined(with: .opacity(min: 0.2)))
-                    
-                    VStack {
+                        .transition(
+                            .modifier(active: BackgroundMoveTransitionModifier(active: true), identity: BackgroundMoveTransitionModifier(active: false))
+                            .combined(with: .asymmetric(
+                                insertion: .opacity.animation(.linear(duration: 0.4)),
+                                removal: .opacity.animation(.easeInOut(duration: 0.6)))))
+                }
+                
+                VStack {
+                    if let track = presentedTrack {
                         if currentTab == .cover {
                             Cover(track: track, currentTab: currentTab, namespace: namespace)
                         } else {
@@ -66,10 +81,13 @@ struct NowPlayingViewModifier: ViewModifier {
                         
                         if controlsVisible {
                             Controls(currentTab: $currentTab, controlsDragging: $controlsDragging)
+                                .transition(.move(edge: .bottom).animation(.linear(duration: 0.3)))
                         }
                     }
-                    .foregroundStyle(.white)
-                    .overlay(alignment: .top) {
+                }
+                .foregroundStyle(.white)
+                .overlay(alignment: .top) {
+                    if presentedTrack != nil {
                         Button {
                             viewState.setNowPlayingViewPresented(false)
                         } label: {
@@ -78,52 +96,69 @@ struct NowPlayingViewModifier: ViewModifier {
                                 .frame(width: 50, height: 7)
                                 .clipShape(RoundedRectangle(cornerRadius: 10000))
                         }
-                        .transition(.opacity.animation(.linear(duration: 0.1)))
+                        .transition(.asymmetric(
+                            insertion: .opacity.animation(.linear(duration: 0.1).delay(0.3)),
+                            removal: .opacity.animation(.linear(duration: 0.1))))
                     }
-                    .padding(.horizontal, 30)
-                    .ignoresSafeArea(edges: .bottom)
-                    .simultaneousGesture(
-                        DragGesture(minimumDistance: 25, coordinateSpace: .global)
-                            .onChanged {
-                                if controlsDragging {
-                                    return
-                                }
-                                
-                                if $0.velocity.height > 3000 {
-                                    viewState.setNowPlayingViewPresented(false) {
-                                        dragOffset = 0
-                                    }
-                                } else if $0.velocity.height < -3000 {
-                                    dragOffset = 0
-                                } else {
-                                    dragOffset = max(0, $0.translation.height)
-                                }
-                            }
-                            .onEnded {
-                                if $0.translation.height > 200 && dragOffset != 0 {
-                                    viewState.setNowPlayingViewPresented(false) {
-                                        dragOffset = 0
-                                    }
-                                } else {
-                                    dragOffset = 0
-                                }
-                            }
-                    )
-                    .onChange(of: currentTab) {
-                        if currentTab == .cover {
-                            controlsVisible = true
-                        }
-                    }
-                    .zIndex(5)
                 }
-                // SwiftUI z-index is my new favorite worst piece of shit
-                // This is very reasonable and sane
-                .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
-                .frame(height: UIScreen.main.bounds.height)
-                .offset(y: dragOffset)
-                .animation(.spring, value: dragOffset)
+                .padding(.horizontal, 30)
+                .ignoresSafeArea(edges: .bottom)
+                .simultaneousGesture(
+                    DragGesture(minimumDistance: 25, coordinateSpace: .global)
+                        .onChanged {
+                            if controlsDragging {
+                                return
+                            }
+                            
+                            if $0.velocity.height > 3000 {
+                                viewState.setNowPlayingViewPresented(false) {
+                                    dragOffset = 0
+                                }
+                            } else if $0.velocity.height < -3000 {
+                                dragOffset = 0
+                            } else {
+                                dragOffset = max(0, $0.translation.height)
+                            }
+                        }
+                        .onEnded {
+                            if $0.translation.height > 200 && dragOffset != 0 {
+                                viewState.setNowPlayingViewPresented(false) {
+                                    dragOffset = 0
+                                }
+                            } else {
+                                dragOffset = 0
+                            }
+                        }
+                )
+                .onChange(of: currentTab) {
+                    if currentTab == .cover {
+                        controlsVisible = true
+                    }
+                }
+                .zIndex(5)
             }
+            .allowsHitTesting(presentedTrack != nil)
+            // SwiftUI z-index is my new favorite worst piece of shit
+            // This is very reasonable and sane
+            .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
+            .frame(height: UIScreen.main.bounds.height)
+            .offset(y: dragOffset)
+            .animation(.spring, value: dragOffset)
         }
+    }
+}
+
+struct BackgroundMoveTransitionModifier: ViewModifier {
+    let active: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .mask(alignment: .bottom) {
+                // you may be wondering: why + 20? I HAVE NO IDEA WHY FUCK SWIFTUI
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .frame(width: UIScreen.main.bounds.width - (active ? 16 : 0), height: active ? 56 : UIScreen.main.bounds.height + 20)
+            }
+            .offset(y: active ? -93 : 0)
     }
 }
 

@@ -42,7 +42,6 @@ struct NowPlayingBarModifier: ViewModifier {
                             HStack {
                                 ItemImage(cover: currentTrack.cover)
                                     .frame(width: 40, height: 40)
-                                    // .padding(.leading, 5)
                                     .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
                                 
                                 Text(currentTrack.name)
