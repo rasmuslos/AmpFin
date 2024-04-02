@@ -37,6 +37,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             .foregroundStyle(.regularMaterial)
                             .padding(.bottom, -225)
                             .allowsHitTesting(false)
+                            .toolbarBackground(.hidden, for: .tabBar)
                         
                         if !nowPlayingViewState.presented {
                             HStack {
@@ -101,7 +102,6 @@ struct NowPlayingBarModifier: ViewModifier {
                             .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .shadow(color: .black.opacity(0.25), radius: 20)
                             .padding(.bottom, 10)
-                            .toolbarBackground(.hidden, for: .tabBar)
                             .zIndex(3)
                             .onTapGesture {
                                 nowPlayingViewState.setNowPlayingViewPresented(true)
