@@ -23,7 +23,6 @@ public extension JellyfinClient {
             URLQueryItem(name: "StartIndex", value: "0"),
             URLQueryItem(name: "IncludeItemTypes", value: "Playlist"),
             URLQueryItem(name: "Recursive", value: "true"),
-            URLQueryItem(name: "ParentId", value: "3996159c9706fc5500823e0316d260c1"),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
         ]
@@ -45,7 +44,6 @@ public extension JellyfinClient {
             URLQueryItem(name: "Limit", value: "20"),
             URLQueryItem(name: "IncludeItemTypes", value: "Playlist"),
             URLQueryItem(name: "Recursive", value: "true"),
-            URLQueryItem(name: "ParentId", value: "3996159c9706fc5500823e0316d260c1"),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
         ], userPrefix: true))
