@@ -45,12 +45,12 @@ struct NowPlayingViewModifier: ViewModifier {
             Group {
                 if let track = presentedTrack {
                     Background(cover: track.cover)
-                        .zIndex(4)
+                        .zIndex(1)
                         .transition(
                             .modifier(active: BackgroundMoveTransitionModifier(active: true), identity: BackgroundMoveTransitionModifier(active: false))
                             .combined(with: .asymmetric(
                                 insertion: .opacity.animation(.linear(duration: 0.4)),
-                                removal: .opacity.animation(.easeInOut(duration: 0.6)))))
+                                removal: .opacity.animation(.easeInOut(duration: 0.4)))))
                 }
                 
                 if viewState.containerPresented {
@@ -134,7 +134,7 @@ struct NowPlayingViewModifier: ViewModifier {
                             controlsVisible = true
                         }
                     }
-                    .zIndex(5)
+                    .zIndex(2)
                 }
             }
             .allowsHitTesting(presentedTrack != nil)
@@ -224,7 +224,7 @@ class NowPlayingViewState {
         withAnimation(.spring(duration: 0.6, bounce: 0.1)) {
             self.presented = presented
         } completion: {
-            if !presented {
+            if !self.presented {
                 self.containerPresented = false
             }
             

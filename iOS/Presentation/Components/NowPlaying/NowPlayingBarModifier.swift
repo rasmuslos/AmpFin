@@ -102,7 +102,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .shadow(color: .black.opacity(0.25), radius: 20)
                             .padding(.bottom, 10)
-                            .zIndex(3)
+                            .zIndex(1)
                             .onTapGesture {
                                 nowPlayingViewState.setNowPlayingViewPresented(true)
                             }
