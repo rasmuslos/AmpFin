@@ -45,12 +45,9 @@ struct NowPlayingViewModifier: ViewModifier {
             Group {
                 if let track = presentedTrack {
                     Background(cover: track.cover)
+                        // SwiftUI z-index is my new favorite worst piece of shit
                         .zIndex(1)
-                        .transition(
-                            .modifier(active: BackgroundMoveTransitionModifier(active: true), identity: BackgroundMoveTransitionModifier(active: false))
-                            .combined(with: .asymmetric(
-                                insertion: .opacity.animation(.linear(duration: 0.4)),
-                                removal: .opacity.animation(.easeInOut(duration: 0.4)))))
+                        .transition(.modifier(active: BackgroundMoveTransitionModifier(active: true), identity: BackgroundMoveTransitionModifier(active: false)))
                 }
                 
                 if viewState.containerPresented {
@@ -85,6 +82,7 @@ struct NowPlayingViewModifier: ViewModifier {
                             }
                         }
                     }
+                    .zIndex(2)
                     .foregroundStyle(.white)
                     .overlay(alignment: .top) {
                         if presentedTrack != nil {
@@ -134,18 +132,16 @@ struct NowPlayingViewModifier: ViewModifier {
                             controlsVisible = true
                         }
                     }
-                    .zIndex(2)
                 }
             }
             .allowsHitTesting(presentedTrack != nil)
-            // SwiftUI z-index is my new favorite worst piece of shit
             // This is very reasonable and sane
             .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
             .frame(height: UIScreen.main.bounds.height)
             .offset(y: dragOffset)
             .animation(.spring, value: dragOffset)
         }
-        // why does this work? only god known...
+        // why does this work? only god knows...
         .ignoresSafeArea(edges: .all)
     }
 }
@@ -156,11 +152,10 @@ struct BackgroundMoveTransitionModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .mask(alignment: .bottom) {
-                // you may be wondering: why + 20? I HAVE NO IDEA WHY FUCK SWIFTUI
-                RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    .frame(width: UIScreen.main.bounds.width - (active ? 16 : 0), height: active ? 56 : UIScreen.main.bounds.height)
+                Rectangle()
+                    .frame(width: UIScreen.main.bounds.width - (active ? 24 : 0), height: active ? 0 : UIScreen.main.bounds.height)
             }
-            .offset(y: active ? -93 : 0)
+            .offset(y: active ? -146 : 0)
     }
 }
 
