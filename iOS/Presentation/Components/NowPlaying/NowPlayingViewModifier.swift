@@ -37,7 +37,6 @@ struct NowPlayingViewModifier: ViewModifier {
                 .onAppear {
                     viewState.namespace = namespace
                 }
-                .environment(viewState)
                 .onReceive(NotificationCenter.default.publisher(for: NavigationRoot.navigateNotification)) { _ in
                     viewState.setNowPlayingViewPresented(false)
                 }
@@ -47,7 +46,9 @@ struct NowPlayingViewModifier: ViewModifier {
                     Background(cover: track.cover)
                         // SwiftUI z-index is my new favorite worst piece of shit
                         .zIndex(1)
-                        .transition(.modifier(active: BackgroundMoveTransitionModifier(active: true), identity: BackgroundMoveTransitionModifier(active: false)))
+                        .transition(.asymmetric(
+                            insertion: .modifier(active: BackgroundMoveTransitionModifier(active: true), identity: BackgroundMoveTransitionModifier(active: false)),
+                            removal: .move(edge: .bottom)))
                 }
                 
                 if viewState.containerPresented {
@@ -143,10 +144,13 @@ struct NowPlayingViewModifier: ViewModifier {
         }
         // why does this work? only god knows...
         .ignoresSafeArea(edges: .all)
+        .environment(viewState)
     }
 }
 
 struct BackgroundMoveTransitionModifier: ViewModifier {
+    @Environment(NowPlayingViewState.self) private var viewState
+    
     let active: Bool
     
     func body(content: Content) -> some View {
@@ -154,6 +158,9 @@ struct BackgroundMoveTransitionModifier: ViewModifier {
             .mask(alignment: .bottom) {
                 Rectangle()
                     .frame(width: UIScreen.main.bounds.width - (active ? 24 : 0), height: active ? 0 : UIScreen.main.bounds.height)
+                    .animation(viewState.presented ? .spring(duration: 0.6, bounce: 0.1) : .easeOut(duration: 0.5) , value: active)
+                    
+                    
             }
             .offset(y: active ? -146 : 0)
     }
@@ -211,7 +218,14 @@ class NowPlayingViewState {
     private(set) var presented = false
     private(set) var containerPresented = false
     
+    private(set) var active = false
+    
     func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
+        if active {
+            return
+        }
+        active = true
+        
         if presented {
             containerPresented = true
         }
@@ -219,6 +233,8 @@ class NowPlayingViewState {
         withAnimation(.spring(duration: 0.6, bounce: 0.1)) {
             self.presented = presented
         } completion: {
+            self.active = false
+            
             if !self.presented {
                 self.containerPresented = false
             }
