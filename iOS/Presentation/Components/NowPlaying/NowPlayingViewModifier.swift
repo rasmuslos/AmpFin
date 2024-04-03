@@ -47,8 +47,9 @@ struct NowPlayingViewModifier: ViewModifier {
                         // SwiftUI z-index is my new favorite worst piece of shit
                         .zIndex(1)
                         .transition(.asymmetric(
-                            insertion: .modifier(active: BackgroundMoveTransitionModifier(active: true), identity: BackgroundMoveTransitionModifier(active: false)),
-                            removal: .move(edge: .bottom)))
+                            insertion: .modifier(active: BackgroundInsertTransitionModifier(active: true), identity: BackgroundInsertTransitionModifier(active: false)),
+                            removal: .modifier(active: BackgroundRemoveTransitionModifier(active: true), identity: BackgroundRemoveTransitionModifier(active: false)))
+                        )
                 }
                 
                 if viewState.containerPresented {
@@ -148,7 +149,7 @@ struct NowPlayingViewModifier: ViewModifier {
     }
 }
 
-struct BackgroundMoveTransitionModifier: ViewModifier {
+struct BackgroundInsertTransitionModifier: ViewModifier {
     @Environment(NowPlayingViewState.self) private var viewState
     
     let active: Bool
@@ -158,11 +159,23 @@ struct BackgroundMoveTransitionModifier: ViewModifier {
             .mask(alignment: .bottom) {
                 Rectangle()
                     .frame(width: UIScreen.main.bounds.width - (active ? 24 : 0), height: active ? 0 : UIScreen.main.bounds.height)
-                    .animation(viewState.presented ? .spring(duration: 0.6, bounce: 0.1) : .easeOut(duration: 0.5) , value: active)
-                    
-                    
             }
             .offset(y: active ? -146 : 0)
+    }
+}
+
+// This is more a "collapse" than a move thing
+struct BackgroundRemoveTransitionModifier: ViewModifier {
+    @Environment(NowPlayingViewState.self) private var viewState
+    
+    let active: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .mask(alignment: .bottom) {
+                Rectangle()
+                    .frame(height: active ? 0 : UIScreen.main.bounds.height)
+            }
     }
 }
 
@@ -193,7 +206,6 @@ extension NowPlayingViewModifier {
                 }
             }
             .overlay(.black.opacity(0.25))
-            .ignoresSafeArea(edges: .all)
             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             .allowsHitTesting(false)
         }
@@ -219,12 +231,15 @@ class NowPlayingViewState {
     private(set) var containerPresented = false
     
     private(set) var active = false
+    private(set) var lastActive = Date()
     
     func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
-        if active {
+        if active && lastActive.timeIntervalSince(Date()) > -1 {
             return
         }
+        
         active = true
+        lastActive = Date()
         
         if presented {
             containerPresented = true
