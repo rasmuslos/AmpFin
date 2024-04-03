@@ -35,7 +35,7 @@ extension ArtistView {
                             
                             if offset > 0 {
                                 parallax = 0
-                                overscroll = offset
+                                overscroll = -offset
                             } else {
                                 parallax = -offset
                                 overscroll = 0
@@ -49,7 +49,7 @@ extension ArtistView {
                 .background {
                     ItemImage(cover: artist.cover, cornerRadius: 0)
                         .scaledToFill()
-                        .frame(width: width, height: width + overscroll)
+                        .frame(width: width, height: width - overscroll)
                         .offset(y: (overscroll + parallax) / 2)
                 }
                 
