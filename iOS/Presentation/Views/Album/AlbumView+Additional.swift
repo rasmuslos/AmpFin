@@ -20,12 +20,14 @@ extension AlbumView {
         @State var completedOperations = 0
         
         var body: some View {
-            if completedOperations < 2 {
+            if completedOperations < 1 {
                 ProgressView()
                     .frame(height: 0)
                     .listRowSeparator(.hidden)
                     .padding(.horizontal)
-                    .task(fetchAlbums)
+                    .task {
+                        fetchAlbums()
+                    }
             }
             
             if let alsoFromArtist = alsoFromArtist, alsoFromArtist.count > 1, let first = album.artists.first {
@@ -42,7 +44,6 @@ extension AlbumView {
 // MARK: Helper
 
 extension AlbumView.AdditionalAlbums {
-    @Sendable
     func fetchAlbums() {
         if dataProvider as? OfflineLibraryDataProvider != nil {
             completedOperations = 2
@@ -51,7 +52,7 @@ extension AlbumView.AdditionalAlbums {
         
         Task.detached {
             if let artist = album.artists.first {
-                alsoFromArtist = try? await JellyfinClient.shared.getAlbums(artistId: artist.id, sortOrder: .released, ascending: false).filter { $0.id != album.id }
+                alsoFromArtist = try? await JellyfinClient.shared.getAlbums(limit: 10, startIndex: 0, artistId: artist.id, sortOrder: .released, ascending: false).filter { $0.id != album.id }
             }
             
             completedOperations += 1

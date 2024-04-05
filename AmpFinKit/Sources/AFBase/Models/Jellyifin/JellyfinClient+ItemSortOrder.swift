@@ -16,7 +16,7 @@ public extension JellyfinClient {
         case added = "DateCreated,SortName"
         case plays = "PlayCount,SortName"
         case lastPlayed = "DatePlayed,SortName"
-        case released = "PremiereDate,AlbumArtist,Album,SortName"
+        case released = "ProductionYear,PremiereDate,SortName"
         case runtime = "Runtime,AlbumArtist,Album,SortName"
     }
 }

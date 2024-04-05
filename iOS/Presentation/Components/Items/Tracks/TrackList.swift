@@ -16,6 +16,7 @@ struct TrackList: View {
     var hideButtons = false
     var deleteCallback: DeleteCallback = nil
     var moveCallback: MoveCallback = nil
+    var loadMore: (() -> ())? = nil
     
     @State var search: String = ""
     
@@ -34,14 +35,14 @@ struct TrackList: View {
         if album != nil, disks.count > 1 {
             ForEach(disks.sorted(), id: \.hashValue) { disk in
                 Section {
-                    TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback)
+                    TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, loadMore: loadMore)
                 } header: {
                     Text("tracks.disk \(disk)")
                         .padding(.top, -20)
                 }
             }
         } else {
-            TrackSection(tracks: filter(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback)
+            TrackSection(tracks: filter(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, loadMore: loadMore)
         }
     }
 }
@@ -59,6 +60,7 @@ extension TrackList {
         let startPlayback: (Track) -> ()
         let deleteCallback: DeleteCallback
         let moveCallback: MoveCallback
+        let loadMore: (() -> ())?
         
         var body: some View {
             if let moveCallback = moveCallback {
@@ -86,6 +88,13 @@ extension TrackList {
                     .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
                     .padding(.horizontal)
                     .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
+                    .onAppear {
+                        if track == tracks.last {
+                            if let loadMore = loadMore {
+                                loadMore()
+                            }
+                        }
+                    }
                 }
             }
         }

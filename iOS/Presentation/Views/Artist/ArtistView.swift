@@ -61,7 +61,7 @@ struct ArtistView: View {
                         .padding(.top, artist.cover == nil ? 0 : 17)
                         .padding(.horizontal)
                         
-                        AlbumsGrid(albums: albums)
+                        AlbumsGridLazyLoad(albums: albums, loadMore: loadAlbums)
                             .padding()
                     } else {
                         Text("artist.empty")
@@ -92,12 +92,15 @@ struct ArtistView: View {
         .navigationTitle(artist.name)
         .onChange(of: sortState) {
             Task {
-                await loadAlbums()
+                albums = nil
+                loadAlbums()
             }
         }
         .modifier(NowPlayingBarSafeAreaModifier())
         .modifier(IgnoreSafeAreaModifier(ignoreSafeArea: artist.cover != nil))
-        .task(loadAlbums)
+        .task {
+            loadAlbums()
+        }
         .userActivity("io.rfk.ampfin.artist") {
             $0.title = artist.name
             $0.isEligibleForHandoff = true
@@ -112,9 +115,17 @@ struct ArtistView: View {
 // MARK: Helper
 
 extension ArtistView {
-    @Sendable
-    func loadAlbums() async {
-        albums = try? await dataProvider.getArtistAlbums(id: artist.id, sortOrder: sortOrder, ascending: ascending)
+    func loadAlbums() {
+        Task {
+            if albums != nil {
+                let newAlbums = try? await dataProvider.getArtistAlbums(limit: 100, startIndex: albums!.count, id: artist.id, sortOrder: sortOrder, ascending: ascending)
+                if let newAlbums = newAlbums {
+                    albums!.append(contentsOf: newAlbums)
+                }
+            } else {
+                albums = try? await dataProvider.getArtistAlbums(limit: 100, startIndex: 0, id: artist.id, sortOrder: sortOrder, ascending: ascending)
+            }
+        }
     }
     
     // truly stupid

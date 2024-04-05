@@ -26,7 +26,7 @@ struct TracksView: View {
         VStack {
             if let tracks = tracks {
                 List {
-                    TrackList(tracks: tracks)
+                    TrackList(tracks: tracks, loadMore: loadTracks)
                 }
                 .listStyle(.plain)
             } else if errored {
@@ -40,11 +40,12 @@ struct TracksView: View {
         .toolbar {
             SortSelector(ascending: $ascending, sortOrder: $sortOrder)
         }
-        .task(loadTracks)
+        .task {
+            loadTracks()
+        }
         .onChange(of: sortState) {
-            Task {
-                await loadTracks()
-            }
+            tracks = nil
+            loadTracks()
         }
     }
 }
@@ -52,14 +53,18 @@ struct TracksView: View {
 // MARK: Helper
 
 extension TracksView {
-    @Sendable
-    func loadTracks() async {
+    func loadTracks() {
         errored = false
-        
-        do {
-            tracks = try await dataProvider.getAllTracks(sortOrder: sortOrder, ascending: ascending)
-        } catch {
-            errored = true
+        Task {
+            do {
+                if tracks != nil {
+                    let newTracks = try await dataProvider.getPagedTracks(limit: 100, startIndex: tracks!.count, sortOrder: sortOrder, ascending: ascending)
+                    tracks!.append(contentsOf: newTracks)
+                } else {
+                    tracks = try await dataProvider.getPagedTracks(limit: 100, startIndex: 0, sortOrder: sortOrder, ascending: ascending)}
+            } catch {
+                errored = true
+            }
         }
     }
 }
