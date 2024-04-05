@@ -13,7 +13,7 @@ struct AlbumsGrid: View {
     @Environment(\.displayScale) var displayScale
     
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 400 / displayScale, maximum: 400))],
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 400 / displayScale, maximum: 400), spacing: 16)],
                   spacing: 10) {
             ForEach(Array(albums.enumerated()), id: \.offset) { index, album in
                 NavigationLink {
@@ -33,7 +33,7 @@ struct AlbumsGridLazyLoad: View {
     @Environment(\.displayScale) var displayScale
     
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 400 / displayScale, maximum: 400))],
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 400 / displayScale, maximum: 400), spacing: 16)],
                   spacing: 10) {
             ForEach(Array(albums.enumerated()), id: \.offset) { index, album in
                 NavigationLink {
