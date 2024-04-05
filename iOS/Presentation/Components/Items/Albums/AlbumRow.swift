@@ -48,6 +48,7 @@ struct AlbumRow: View {
                                 .frame(width: size)
                                 .padding(.leading, 10)
                         }
+                        .buttonStyle(.plain)
                     }
                 }
                 .scrollTargetLayout()
