@@ -47,9 +47,19 @@ internal extension LocalAudioEndpoint {
             URLQueryItem(name: "audioSampleRate", value: "44100"),
         ]))
         #else
-        return AVPlayerItem(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "stream").appending(queryItems: [
-            URLQueryItem(name: "static", value: "true")
-        ]))
+        let url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
+            URLQueryItem(name: "api_key", value: JellyfinClient.shared.token),
+            URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
+            URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
+            URLQueryItem(name: "container", value: "mp3,aac,m4a,m4b,flac,alac,wav,aiff"),
+            URLQueryItem(name: "startTimeTicks", value: "0"),
+            URLQueryItem(name: "audioCodec", value: "aac"),
+            URLQueryItem(name: "transcodingContainer", value: "aac"),
+            // URLQueryItem(name: "transcodingProtocol", value: "hls"),
+            URLQueryItem(name: "transcodingProtocol", value: "http"),
+        ])
+        
+        return AVPlayerItem(url: url)
         #endif
     }
     
