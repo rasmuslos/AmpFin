@@ -13,36 +13,36 @@ struct ArtistsView: View {
     
     let albumOnly: Bool
     
-    @State var artists: [Artist]?
-    @State var errored = false
+    @State private var failed = false
+    @State private var artists = [Artist]()
     
     var body: some View {
         VStack {
-            if let artists = artists {
-                ArtistList(artists: artists)
-            } else if errored {
+            if failed {
                 ErrorView()
+            } else if !artists.isEmpty {
+                ArtistList(artists: artists)
             } else {
                 LoadingView()
             }
         }
         .navigationTitle(albumOnly ? "title.albumArtists" : "title.artists")
         .modifier(NowPlayingBarSafeAreaModifier())
-        .task(loadArtists)
+        .task { await fetchArtists() }
+        .refreshable { await fetchArtists() }
     }
 }
 
 // MARK: Helper
 
 extension ArtistsView {
-    @Sendable
-    func loadArtists() async {
-        errored = false
+    func fetchArtists() async {
+        failed = false
         
         do {
             artists = try await dataProvider.getArtists(albumOnly: albumOnly)
         } catch {
-            errored = true
+            failed = true
         }
     }
 }
