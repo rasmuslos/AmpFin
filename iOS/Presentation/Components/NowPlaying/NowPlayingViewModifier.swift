@@ -91,7 +91,7 @@ struct NowPlayingViewModifier: ViewModifier {
                                 }
                             }
                         }
-                        .frame(width: min(UIScreen.main.bounds.width - 30, 500))
+                        .frame(width: useHorizontalLayout ? 500 : nil)
                         if useHorizontalLayout, viewState.presented {
                             VStack{
                                 Group {
