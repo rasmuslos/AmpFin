@@ -11,6 +11,7 @@ import AFBase
 struct AlbumRow: View {
     let title: String
     let albums: [Album]
+    @Environment(\.displayScale) var displayScale
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -38,7 +39,7 @@ struct AlbumRow: View {
                 .opacity(0)
             }
             
-            let size = (UIScreen.main.bounds.width - 50) / 2
+            let size = 400 / displayScale
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0) {
                     ForEach(albums) { album in
@@ -47,7 +48,6 @@ struct AlbumRow: View {
                                 .frame(width: size)
                                 .padding(.leading, 10)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
                 .scrollTargetLayout()

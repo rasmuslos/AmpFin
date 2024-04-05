@@ -19,6 +19,7 @@ struct NowPlayingBarModifier: ViewModifier {
     @State private var animateForwards = false
     
     func body(content: Content) -> some View {
+        let barWidth = min(UIScreen.main.bounds.width - 32, 800)
         content
             .safeAreaInset(edge: .bottom) {
                 if let currentTrack = AudioPlayer.current.nowPlaying {
@@ -86,7 +87,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                 }
                                 .imageScale(.large)
                             }
-                            .frame(width: UIScreen.main.bounds.width - 32, height: 56)
+                            .frame(width: barWidth, height: 56)
                             .padding(.horizontal, 8)
                             .foregroundStyle(.primary)
                             .background {

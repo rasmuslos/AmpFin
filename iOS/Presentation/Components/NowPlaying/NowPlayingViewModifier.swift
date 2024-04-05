@@ -30,6 +30,13 @@ struct NowPlayingViewModifier: ViewModifier {
         return nil
     }
     
+    private var useHorizontalLayout: Bool {
+        if (UIScreen.main.bounds.width >= 1024) {
+            return true
+        }
+        return false
+    }
+    
     func body(content: Content) -> some View {
         ZStack {
             content
@@ -53,19 +60,46 @@ struct NowPlayingViewModifier: ViewModifier {
                 }
                 
                 if viewState.containerPresented {
-                    VStack {
-                        if let track = presentedTrack {
-                            if currentTab == .cover {
-                                Cover(track: track, currentTab: currentTab, namespace: namespace)
-                            } else {
-                                SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
+                    HStack {
+                        VStack{
+                            if let track = presentedTrack {
+                                if useHorizontalLayout || currentTab == .cover {
+                                    Cover(track: track, currentTab: currentTab, namespace: namespace)
+                                } else {
+                                    SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
+                                    Group {
+                                        if currentTab == .lyrics {
+                                            LyricsContainer(controlsVisible: $controlsVisible)
+                                        } else if currentTab == .queue {
+                                            Queue()
+                                                .padding(.horizontal, -30)
+                                        }
+                                    }
+                                    .transition(.asymmetric(
+                                        insertion:
+                                                .push(from: .bottom).animation(.spring.delay(0.2))
+                                                .combined(with: .opacity),
+                                        removal:
+                                                .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))
+                                                .combined(with: .opacity)
+                                    ))
+                                }
                                 
+                                if controlsVisible {
+                                    Controls(currentTab: $currentTab, controlsDragging: $controlsDragging)
+                                        .transition(.move(edge: .bottom).animation(.linear(duration: 0.3)))
+                                }
+                            }
+                        }
+                        .frame(width: min(UIScreen.main.bounds.width - 30, 500))
+                        if useHorizontalLayout, viewState.presented {
+                            VStack{
                                 Group {
                                     if currentTab == .lyrics {
                                         LyricsContainer(controlsVisible: $controlsVisible)
                                     } else if currentTab == .queue {
                                         Queue()
-                                            .padding(.horizontal, -30)
+                                            .padding(.vertical, 10)
                                     }
                                 }
                                 .transition(.asymmetric(
@@ -76,11 +110,6 @@ struct NowPlayingViewModifier: ViewModifier {
                                             .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))
                                             .combined(with: .opacity)
                                 ))
-                            }
-                            
-                            if controlsVisible {
-                                Controls(currentTab: $currentTab, controlsDragging: $controlsDragging)
-                                    .transition(.move(edge: .bottom).animation(.linear(duration: 0.3)))
                             }
                         }
                     }
