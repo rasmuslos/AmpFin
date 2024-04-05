@@ -1454,6 +1454,22 @@
         }
       }
     },
+    "section.artists" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Künstler"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Artists"
+          }
+        }
+      }
+    },
     "section.playlists" : {
       "localizations" : {
         "de" : {

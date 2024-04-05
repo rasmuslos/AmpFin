@@ -31,6 +31,7 @@ public protocol LibraryDataProvider {
     
     func searchTracks(query: String) async throws -> [Track]
     func searchAlbums(query: String) async throws -> [Album]
+    func searchArtists(query: String) async throws -> [Artist]
     func searchPlaylists(query: String) async throws -> [Playlist]
     
     func getPlaylists() async throws -> [Playlist]

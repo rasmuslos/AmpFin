@@ -15,6 +15,7 @@ struct SearchView: View {
     
     @State var tracks = [Track]()
     @State var albums = [Album]()
+    @State var artists = [Artist]()
     @State var playlists = [Playlist]()
     
     @State var library: Tab = UserDefaults.standard.bool(forKey: "searchOnline") ? .online : .offline
@@ -25,7 +26,7 @@ struct SearchView: View {
             List {
                 ProviderPicker(selection: $library)
                 
-                if tracks.count > 0 {
+                if !tracks.isEmpty {
                     Section("section.tracks") {
                         ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
                             TrackListRow(track: track) {
@@ -37,7 +38,7 @@ struct SearchView: View {
                     }
                 }
                 
-                if albums.count > 0 {
+                if !albums.isEmpty {
                     Section("section.albums") {
                         ForEach(albums) { album in
                             NavigationLink(destination: AlbumView(album: album)) {
@@ -49,7 +50,17 @@ struct SearchView: View {
                     }
                 }
                 
-                if playlists.count > 0 {
+                if !artists.isEmpty {
+                    Section("section.artists") {
+                        ForEach(artists) { artist in
+                            ArtistListRow(artist: artist)
+                            .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
+                            .padding(.horizontal)
+                        }
+                    }
+                }
+                
+                if !playlists.isEmpty {
                     Section("section.playlists") {
                         ForEach(playlists) { playlist in
                             NavigationLink(destination: PlaylistView(playlist: playlist)) {
@@ -102,11 +113,12 @@ extension SearchView {
         task?.cancel()
         task = Task.detached {
             // I guess this runs in parallel?
-            (tracks, albums, playlists) = (try? await (
+            (tracks, albums, artists, playlists) = (try? await (
                 dataProvider.searchTracks(query: query.lowercased()),
                 dataProvider.searchAlbums(query: query.lowercased()),
+                dataProvider.searchArtists(query: query.lowercased()),
                 dataProvider.searchPlaylists(query: query.lowercased())
-            )) ?? ([], [], [])
+            )) ?? ([], [], [], [])
         }
     }
 }
