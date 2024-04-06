@@ -31,7 +31,7 @@ struct NowPlayingViewModifier: ViewModifier {
     }
     
     private var useHorizontalLayout: Bool {
-        if (UIScreen.main.bounds.width >= 1024) {
+        if (NowPlayingViewModifier.getWindowSize().width >= 1024) {
             return true
         }
         return false
@@ -168,7 +168,7 @@ struct NowPlayingViewModifier: ViewModifier {
             .allowsHitTesting(presentedTrack != nil)
             // This is very reasonable and sane
             .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
-            .frame(height: UIScreen.main.bounds.height)
+            .frame(height: NowPlayingViewModifier.getWindowSize().height)
             .offset(y: dragOffset)
             .animation(.spring, value: dragOffset)
         }
@@ -187,7 +187,7 @@ struct BackgroundInsertTransitionModifier: ViewModifier {
         content
             .mask(alignment: .bottom) {
                 Rectangle()
-                    .frame(width: UIScreen.main.bounds.width - (active ? 24 : 0), height: active ? 0 : UIScreen.main.bounds.height)
+                    .frame(width: BackgroundInsertTransitionModifier.getWindowSize().width - (active ? 24 : 0), height: active ? 0 : BackgroundInsertTransitionModifier.getWindowSize().height)
             }
             .offset(y: active ? -146 : 0)
     }
@@ -203,7 +203,7 @@ struct BackgroundRemoveTransitionModifier: ViewModifier {
         content
             .mask(alignment: .bottom) {
                 Rectangle()
-                    .frame(height: active ? 0 : UIScreen.main.bounds.height)
+                    .frame(height: active ? 0 : BackgroundRemoveTransitionModifier.getWindowSize().height)
             }
     }
 }
@@ -227,7 +227,7 @@ extension NowPlayingViewModifier {
                 
                 if let imageColors = imageColors {
                     FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
-                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+                        .frame(idealWidth: getWindowSize().width, maxWidth: getWindowSize().width, maxHeight: .infinity)
                         .onChange(of: cover?.url) { determineImageColors() }
                 } else {
                     Color.clear
@@ -235,7 +235,7 @@ extension NowPlayingViewModifier {
                 }
             }
             .overlay(.black.opacity(0.25))
-            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            .frame(width: getWindowSize().width, height: getWindowSize().height + 100)
             .allowsHitTesting(false)
         }
         

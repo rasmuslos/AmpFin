@@ -19,7 +19,7 @@ struct NowPlayingBarModifier: ViewModifier {
     @State private var animateForwards = false
     
     func body(content: Content) -> some View {
-        let barWidth = min(UIScreen.main.bounds.width - 32, 800)
+        let barWidth = min(NowPlayingBarModifier.getWindowSize().width - 32, 800)
         content
             .safeAreaInset(edge: .bottom) {
                 if let currentTrack = AudioPlayer.current.nowPlaying {
