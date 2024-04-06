@@ -38,6 +38,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             .padding(.bottom, -225)
                             .allowsHitTesting(false)
                             .toolbarBackground(.hidden, for: .tabBar)
+                            .ignoresSafeArea(edges: .all)
                         
                         if !nowPlayingViewState.presented {
                             HStack {
