@@ -21,6 +21,7 @@ struct NowPlayingViewModifier: ViewModifier {
     
     @State private var controlsDragging = false
     @State private var dragOffset: CGFloat = .zero
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     private var presentedTrack: Track? {
         if viewState.presented, let track = AudioPlayer.current.nowPlaying {
@@ -31,7 +32,7 @@ struct NowPlayingViewModifier: ViewModifier {
     }
     
     private var useHorizontalLayout: Bool {
-        if (NowPlayingViewModifier.getWindowSize().width >= 1024) {
+        if horizontalSizeClass == .regular {
             return true
         }
         return false
@@ -91,7 +92,7 @@ struct NowPlayingViewModifier: ViewModifier {
                                 }
                             }
                         }
-                        .frame(width: useHorizontalLayout ? 500 : nil)
+                        .frame(maxWidth: 500)
                         if useHorizontalLayout, viewState.presented {
                             VStack{
                                 Group {
@@ -168,7 +169,6 @@ struct NowPlayingViewModifier: ViewModifier {
             .allowsHitTesting(presentedTrack != nil)
             // This is very reasonable and sane
             .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
-            .frame(height: NowPlayingViewModifier.getWindowSize().height)
             .offset(y: dragOffset)
             .animation(.spring, value: dragOffset)
         }
@@ -187,7 +187,6 @@ struct BackgroundInsertTransitionModifier: ViewModifier {
         content
             .mask(alignment: .bottom) {
                 Rectangle()
-                    .frame(width: BackgroundInsertTransitionModifier.getWindowSize().width - (active ? 24 : 0), height: active ? 0 : BackgroundInsertTransitionModifier.getWindowSize().height)
             }
             .offset(y: active ? -146 : 0)
     }
@@ -203,7 +202,6 @@ struct BackgroundRemoveTransitionModifier: ViewModifier {
         content
             .mask(alignment: .bottom) {
                 Rectangle()
-                    .frame(height: active ? 0 : BackgroundRemoveTransitionModifier.getWindowSize().height)
             }
     }
 }
@@ -223,11 +221,9 @@ extension NowPlayingViewModifier {
                 ItemImage(cover: cover)
                     .id(cover?.url)
                     .blur(radius: 100)
-                    .frame(width: 1000, height: 1000)
                 
                 if let imageColors = imageColors {
                     FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
-                        .frame(idealWidth: getWindowSize().width, maxWidth: getWindowSize().width, maxHeight: .infinity)
                         .onChange(of: cover?.url) { determineImageColors() }
                 } else {
                     Color.clear
@@ -235,7 +231,7 @@ extension NowPlayingViewModifier {
                 }
             }
             .overlay(.black.opacity(0.25))
-            .frame(width: getWindowSize().width, height: getWindowSize().height + 100)
+            .ignoresSafeArea(edges: .all)
             .allowsHitTesting(false)
         }
         
