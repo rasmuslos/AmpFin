@@ -19,7 +19,6 @@ struct NowPlayingBarModifier: ViewModifier {
     @State private var animateForwards = false
     
     func body(content: Content) -> some View {
-        let barWidth = min(NowPlayingBarModifier.getWindowSize().width - 32, 800)
         content
             .safeAreaInset(edge: .bottom) {
                 if let currentTrack = AudioPlayer.current.nowPlaying {
@@ -87,7 +86,7 @@ struct NowPlayingBarModifier: ViewModifier {
                                 }
                                 .imageScale(.large)
                             }
-                            .frame(width: barWidth, height: 56)
+                            .frame(maxWidth: 800, maxHeight: 56)
                             .padding(.horizontal, 8)
                             .foregroundStyle(.primary)
                             .background {
@@ -103,6 +102,7 @@ struct NowPlayingBarModifier: ViewModifier {
                             .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .shadow(color: .black.opacity(0.25), radius: 20)
                             .padding(.bottom, 10)
+                            .padding(.horizontal, 32)
                             .zIndex(1)
                             .onTapGesture {
                                 nowPlayingViewState.setNowPlayingViewPresented(true)
