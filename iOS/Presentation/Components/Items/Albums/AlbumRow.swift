@@ -11,7 +11,7 @@ import AFBase
 struct AlbumRow: View {
     let title: String
     let albums: [Album]
-    @Environment(\.displayScale) var displayScale
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -39,7 +39,7 @@ struct AlbumRow: View {
                 .opacity(0)
             }
             
-            let size = 400 / displayScale
+            let size = horizontalSizeClass == .compact ? 160.0 : 240.0
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0) {
                     ForEach(albums) { album in

@@ -10,10 +10,11 @@ import AFBase
 
 struct AlbumsGrid: View {
     let albums: [Album]
-    @Environment(\.displayScale) var displayScale
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 400 / displayScale, maximum: 400), spacing: 16)],
+        let minWidth = horizontalSizeClass == .compact ? 160.0 : 240.0
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: minWidth, maximum: 400), spacing: 16)],
                   spacing: 10) {
             ForEach(Array(albums.enumerated()), id: \.offset) { index, album in
                 NavigationLink {
@@ -30,10 +31,11 @@ struct AlbumsGrid: View {
 struct AlbumsGridLazyLoad: View {
     let albums: [Album]
     let loadMore: () -> Void
-    @Environment(\.displayScale) var displayScale
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 400 / displayScale, maximum: 400), spacing: 16)],
+        let minWidth = horizontalSizeClass == .compact ? 160.0 : 240.0
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: minWidth, maximum: 400), spacing: 16)],
                   spacing: 10) {
             ForEach(Array(albums.enumerated()), id: \.offset) { index, album in
                 NavigationLink {
