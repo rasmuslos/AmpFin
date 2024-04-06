@@ -98,6 +98,7 @@ extension AlbumView {
                                 .bold()
                                 .cornerRadius(7)
                             }
+                            .padding()
                         }
                     }
                     // VStack for iPhone
