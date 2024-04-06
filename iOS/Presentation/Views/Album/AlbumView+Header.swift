@@ -82,16 +82,19 @@ extension AlbumView {
                             
                             HStack {
                                 Group {
-                                    Button("queue.play", systemImage: "play.fill") {
-                                        startPlayback(false)
-                                    }
-                                    .contentShape(Rectangle())
-                                    Button("queue.shuffle", systemImage: "shuffle") {
-                                        startPlayback(true)
-                                    }
-                                    .contentShape(Rectangle())
+                                    Label("queue.play", systemImage: "play.fill")
+                                        .frame(maxWidth: .infinity)
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            startPlayback(false)
+                                        }
+                                    Label("queue.shuffle", systemImage: "shuffle")
+                                        .frame(maxWidth: .infinity)
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            startPlayback(true)
+                                        }
                                 }
-                                .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .foregroundColor(imageColors.secondary)
                                 .background(imageColors.primary.opacity(0.25))
@@ -137,19 +140,22 @@ extension AlbumView {
                         
                         HStack {
                             Group {
-                                // why not buttons? because swiftui is a piece of shit
+                                // why not buttons? because swiftui does not like having mulitpe buttons in the same row in a VStack
+                                // Doing so will trigger the button randomly and not the one you clicking.
+                                // Have to use Label as a workaround
                                 Label("queue.play", systemImage: "play.fill")
+                                    .frame(maxWidth: .infinity)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         startPlayback(false)
                                     }
                                 Label("queue.shuffle", systemImage: "shuffle")
+                                    .frame(maxWidth: .infinity)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         startPlayback(true)
                                     }
                             }
-                            .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
                             .foregroundColor(imageColors.secondary)
                             .background(imageColors.primary.opacity(0.25))
