@@ -17,6 +17,9 @@ struct ArtistView: View {
     @State var albums: [Album]?
     @State var ascending = SortSelector.getAscending()
     @State var sortOrder = SortSelector.getSortOrder()
+#if targetEnvironment(macCatalyst)
+    @Environment(NowPlayingViewState.self) private var viewState
+#endif
     
     var sortState: [String] {[
         ascending.description,
@@ -90,6 +93,10 @@ struct ArtistView: View {
             }
         }
         .navigationTitle(artist.name)
+#if targetEnvironment(macCatalyst)
+        .toolbar(viewState.presented && artist.cover == nil ? .hidden : .automatic,
+                for: .navigationBar)
+#endif
         .onChange(of: sortState) {
             Task {
                 albums = nil

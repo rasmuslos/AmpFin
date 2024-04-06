@@ -20,6 +20,9 @@ struct SearchView: View {
     
     @State var library: Tab = UserDefaults.standard.bool(forKey: "searchOnline") ? .online : .offline
     @State var dataProvider: LibraryDataProvider = UserDefaults.standard.bool(forKey: "searchOnline") ? OnlineLibraryDataProvider() : OfflineLibraryDataProvider()
+#if targetEnvironment(macCatalyst)
+    @Environment(NowPlayingViewState.self) private var viewState
+#endif
     
     var body: some View {
         NavigationStack {
@@ -74,6 +77,10 @@ struct SearchView: View {
             }
             .listStyle(.plain)
             .navigationTitle("title.search")
+#if targetEnvironment(macCatalyst)
+        .toolbar(viewState.presented ? .hidden : .automatic,
+                for: .navigationBar)
+#endif
             .modifier(NowPlayingBarSafeAreaModifier())
             .modifier(AccountToolbarButtonModifier())
             // Query

@@ -13,6 +13,9 @@ struct LibraryView: View {
     @Environment(\.defaultMinListRowHeight) var minRowHeight
     @Environment(\.libraryDataProvider) var dataProvider
     @Environment(\.libraryOnline) var online
+#if targetEnvironment(macCatalyst)
+    @Environment(NowPlayingViewState.self) private var viewState
+#endif
     
     @State var albums: [Album]?
     @State var randomAlbums = UserDefaults.standard.bool(forKey: "libraryRandomAlbums")
@@ -24,6 +27,10 @@ struct LibraryView: View {
             }
             .listStyle(.plain)
             .navigationTitle("title.library")
+#if targetEnvironment(macCatalyst)
+            .toolbar(viewState.presented ? .hidden : .automatic, 
+                     for: .navigationBar)
+#endif
             .frame(height: CGFloat(Links.count) * minRowHeight)
             
             if let albums = albums, albums.count > 0 {

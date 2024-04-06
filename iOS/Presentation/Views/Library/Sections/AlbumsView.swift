@@ -17,6 +17,9 @@ struct AlbumsView: View {
     @State var ascending = SortSelector.getAscending()
     @State var sortOrder = SortSelector.getSortOrder()
     @State var search: String = ""
+#if targetEnvironment(macCatalyst)
+    @Environment(NowPlayingViewState.self) private var viewState
+#endif
     
     var sortState: [String] {[
         ascending.description,
@@ -37,6 +40,10 @@ struct AlbumsView: View {
             }
         }
         .navigationTitle("title.albums")
+#if targetEnvironment(macCatalyst)
+        .toolbar(viewState.presented ? .hidden : .automatic,
+                for: .navigationBar)
+#endif
         .searchable(text: $search, prompt: "search.albums")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {

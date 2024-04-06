@@ -10,6 +10,9 @@ import AFBase
 
 struct ArtistsView: View {
     @Environment(\.libraryDataProvider) var dataProvider
+#if targetEnvironment(macCatalyst)
+    @Environment(NowPlayingViewState.self) private var viewState
+#endif
     
     let albumOnly: Bool
     
@@ -27,6 +30,10 @@ struct ArtistsView: View {
             }
         }
         .navigationTitle(albumOnly ? "title.albumArtists" : "title.artists")
+#if targetEnvironment(macCatalyst)
+        .toolbar(viewState.presented ? .hidden : .automatic,
+                for: .navigationBar)
+#endif
         .modifier(NowPlayingBarSafeAreaModifier())
         .task { await fetchArtists() }
         .refreshable { await fetchArtists() }
