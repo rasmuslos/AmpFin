@@ -15,6 +15,7 @@ public protocol LibraryDataProvider {
     var albumNotFoundFallbackToLibrary: Bool { get }
     
     func getAllTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
+    func getPagedTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
     func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
     
     func getRecentAlbums() async throws -> [Album]
@@ -23,10 +24,11 @@ public protocol LibraryDataProvider {
     func getAlbumTracks(id: String) async throws -> [Track]
     func getAlbumById(_ albumId: String) async throws -> Album
     func getAlbums(limit: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
+    func getAlbums(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
     
     func getArtists(albumOnly: Bool) async throws -> [Artist]
     func getArtistById(_ artistId: String) async throws -> Artist
-    func getArtistAlbums(id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
+    func getArtistAlbums(limit: Int, startIndex: Int, id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album]
     func getArtistTracks(id: String) async throws -> [Track]
     
     func searchTracks(query: String) async throws -> [Track]

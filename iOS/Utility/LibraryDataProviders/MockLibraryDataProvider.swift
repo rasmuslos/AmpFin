@@ -25,6 +25,18 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
         ]
     }
     
+    public func getPagedTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        [
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+            Track.fixture,
+        ]
+    }
+    
     public func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
         [
             Track.fixture,
@@ -88,6 +100,18 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
         ]
     }
     
+    public func getAlbums(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
+        [
+            Album.fixture,
+            Album.fixture,
+            Album.fixture,
+            Album.fixture,
+            Album.fixture,
+            Album.fixture,
+            Album.fixture,
+        ]
+    }
+    
     public func getArtists(albumOnly: Bool) async throws -> [Artist] {
         [
             Artist.fixture,
@@ -104,7 +128,7 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
         Artist.fixture
     }
     
-    public func getArtistAlbums(id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
+    public func getArtistAlbums(limit: Int, startIndex: Int, id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
         [
             Album.fixture,
             Album.fixture,

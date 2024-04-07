@@ -17,6 +17,9 @@ extension NowPlayingBarModifier {
         @Binding var animateForwards: Bool
         
         @State private var addToPlaylistSheetPresented = false
+#if targetEnvironment(macCatalyst)
+        @State private var alwaysOn = true
+#endif
         
         func body(content: Content) -> some View {
             content
@@ -73,7 +76,11 @@ extension NowPlayingBarModifier {
                         AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
                     } label: {
                         if AudioPlayer.current.shuffled {
+#if targetEnvironment(macCatalyst)
+                            Toggle("shuffle", isOn: $alwaysOn)
+#else
                             Label("shuffle", systemImage: "checkmark")
+#endif
                         } else {
                             Label("shuffle", systemImage: "shuffle")
                         }

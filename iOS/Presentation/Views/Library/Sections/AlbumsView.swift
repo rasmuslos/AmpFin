@@ -17,6 +17,9 @@ struct AlbumsView: View {
     @State var ascending = SortSelector.getAscending()
     @State var sortOrder = SortSelector.getSortOrder()
     @State var search: String = ""
+#if targetEnvironment(macCatalyst)
+    @Environment(NowPlayingViewState.self) private var viewState
+#endif
     
     var sortState: [String] {[
         ascending.description,
@@ -27,7 +30,7 @@ struct AlbumsView: View {
         VStack {
             if albums != nil {
                 ScrollView {
-                    AlbumsGrid(albums: filter())
+                    AlbumsGridLazyLoad(albums: filter(), loadMore: loadAlbums)
                         .padding()
                 }
             } else if errored {
@@ -37,14 +40,24 @@ struct AlbumsView: View {
             }
         }
         .navigationTitle("title.albums")
+#if targetEnvironment(macCatalyst)
+        .toolbar(viewState.presented ? .hidden : .automatic,
+                for: .navigationBar)
+#endif
         .searchable(text: $search, prompt: "search.albums")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(ascending: $ascending, sortOrder: $sortOrder)
         }
-        .refreshable(action: loadAlbums)
-        .task(loadAlbums)
+        .refreshable {
+            albums = nil
+            loadAlbums()
+        }
+        .task {
+            loadAlbums()
+        }
         .onChange(of: sortState) {
+            albums = nil
             loadAlbums()
         }
     }
@@ -53,13 +66,18 @@ struct AlbumsView: View {
 // MARK: Helper
 
 extension AlbumsView {
-    @Sendable
     func loadAlbums() {
         errored = false
         
         Task.detached {
             do {
-                albums = try await dataProvider.getAlbums(limit: -1, sortOrder: sortOrder, ascending: ascending)
+                if albums != nil {
+                    let newAlbums = try await dataProvider.getAlbums(limit: 100, startIndex: albums!.count, sortOrder: sortOrder, ascending: ascending)
+                    albums!.append(contentsOf: newAlbums)
+                } else {
+                    albums = try await dataProvider.getAlbums(limit: 100, sortOrder: sortOrder, ascending: ascending)
+                }
+                
             } catch {
                 errored = true
             }

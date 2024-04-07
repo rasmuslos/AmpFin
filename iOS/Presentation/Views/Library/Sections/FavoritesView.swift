@@ -16,6 +16,9 @@ struct FavoritesView: View {
     
     @State var ascending = SortSelector.getAscending()
     @State var sortOrder = SortSelector.getSortOrder()
+#if targetEnvironment(macCatalyst)
+    @Environment(NowPlayingViewState.self) private var viewState
+#endif
     
     var sortState: [String] {[
         ascending.description,
@@ -36,6 +39,10 @@ struct FavoritesView: View {
             }
         }
         .navigationTitle("title.favorites")
+#if targetEnvironment(macCatalyst)
+        .toolbar(viewState.presented ? .hidden : .automatic,
+                for: .navigationBar)
+#endif
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(ascending: $ascending, sortOrder: $sortOrder)

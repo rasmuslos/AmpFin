@@ -16,7 +16,7 @@ public extension JellyfinClient {
     // MARK: Get Tracks
     
     /// Get all tracks from all libraries and albums
-    func getTracks(limit: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> [Track] {
+    func getTracks(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> [Track] {
         var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
@@ -29,6 +29,9 @@ public extension JellyfinClient {
         
         if limit > 0 {
             query.append(URLQueryItem(name: "limit", value: String(limit)))
+        }
+        if startIndex > 0 {
+            query.append(URLQueryItem(name: "startIndex", value: String(startIndex)))
         }
         if favorite {
             query.append(URLQueryItem(name: "Filters", value: "IsFavorite"))

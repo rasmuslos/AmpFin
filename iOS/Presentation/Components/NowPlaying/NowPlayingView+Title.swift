@@ -16,6 +16,7 @@ extension NowPlayingViewModifier {
         let track: Track
         let currentTab: Tab
         let namespace: Namespace.ID
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
         var body: some View {
             Spacer()
@@ -24,7 +25,19 @@ extension NowPlayingViewModifier {
                 .id(track.id)
                 .scaleEffect(AudioPlayer.current.playing ? 1 : 0.8)
                 .animation(.spring(duration: 0.3, bounce: 0.6), value: AudioPlayer.current.playing)
-                .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab == .cover)
+                .if(horizontalSizeClass == .compact) { view in
+                    view.matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab == .cover)
+                }
+                .if(horizontalSizeClass == .regular) { view in
+                    view.transition(.asymmetric(
+                        insertion:
+                                .push(from: .bottom).animation(.spring.delay(0.2))
+                                .combined(with: .opacity),
+                        removal:
+                                .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))
+                                .combined(with: .opacity)
+                    ))
+                }
             
             Spacer()
             
@@ -34,8 +47,13 @@ extension NowPlayingViewModifier {
                         .bold()
                         .lineLimit(1)
                         .foregroundStyle(.primary)
-                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .top)
-                    
+                        .if(horizontalSizeClass == .compact) { view in
+                            view.matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .top)
+                        }
+                        .if(horizontalSizeClass == .regular) { view in
+                            view.transition(.move(edge: .bottom).animation(.linear(duration: 0.2)))
+                        }
+                    // artist and menu are not used in horizontal layout
                     ArtistsMenu(track: track)
                         .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .top)
                 }

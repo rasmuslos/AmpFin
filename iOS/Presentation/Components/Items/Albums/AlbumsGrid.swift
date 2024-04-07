@@ -10,16 +10,43 @@ import AFBase
 
 struct AlbumsGrid: View {
     let albums: [Album]
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+        let minWidth = horizontalSizeClass == .compact ? 160.0 : 240.0
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: minWidth, maximum: 400), spacing: 16)],
+                  spacing: 10) {
             ForEach(Array(albums.enumerated()), id: \.offset) { index, album in
                 NavigationLink {
                     AlbumView(album: album)
                 } label: {
                     AlbumCover(album: album)
-                        .padding(.trailing, index % 2 == 0 ? 5 : 0)
-                        .padding(.leading, index % 2 == 1 ? 5 : 0)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+}
+
+struct AlbumsGridLazyLoad: View {
+    let albums: [Album]
+    let loadMore: () -> Void
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    var body: some View {
+        let minWidth = horizontalSizeClass == .compact ? 160.0 : 240.0
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: minWidth, maximum: 400), spacing: 16)],
+                  spacing: 10) {
+            ForEach(Array(albums.enumerated()), id: \.offset) { index, album in
+                NavigationLink {
+                    AlbumView(album: album)
+                } label: {
+                    AlbumCover(album: album)
+                        .onAppear {
+                            if album == albums.last {
+                                loadMore()
+                            }
+                        }
                 }
                 .buttonStyle(.plain)
             }

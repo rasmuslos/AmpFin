@@ -40,55 +40,58 @@ struct TrackListRow: View {
             Button {
                 startPlayback()
             } label: {
-                Group {
-                    if album != nil {
-                        if isPlaying {
-                            playbackIndicator
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                HStack {
+                    Group {
+                        if album != nil {
+                            if isPlaying {
+                                playbackIndicator
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            } else {
+                                Text(String(track.index.index))
+                                    .fontDesign(.rounded)
+                                    .bold(track.favorite)
+                                    .foregroundStyle(.secondary)
+                            }
                         } else {
-                            Text(String(track.index.index))
-                                .fontDesign(.rounded)
-                                .bold(track.favorite)
-                                .foregroundStyle(.secondary)
-                        }
-                    } else {
-                        ItemImage(cover: track.cover)
-                            .overlay {
-                                if isPlaying {
-                                    ZStack {
-                                        Color.black.opacity(0.2)
-                                            .clipShape(RoundedRectangle(cornerRadius: 7))
-                                        
-                                        playbackIndicator
-                                            .font(.body)
-                                            .foregroundStyle(.white)
+                            ItemImage(cover: track.cover)
+                                .overlay {
+                                    if isPlaying {
+                                        ZStack {
+                                            Color.black.opacity(0.2)
+                                                .clipShape(RoundedRectangle(cornerRadius: 7))
+                                            
+                                            playbackIndicator
+                                                .font(.body)
+                                                .foregroundStyle(.white)
+                                        }
                                     }
                                 }
-                            }
+                        }
                     }
-                }
-                .frame(width: size, height: size)
-                .transition(.blurReplace)
-                .id(track.id)
-                
-                VStack(alignment: .leading) {
-                    Text(track.name)
-                        .lineLimit(1)
-                        .font(.body)
-                        .bold(track.favorite && album == nil)
-                        .padding(.vertical, showArtist ? 0 : 6)
+                    .frame(width: size, height: size)
+                    .transition(.blurReplace)
+                    .id(track.id)
                     
-                    if showArtist, let artistName = track.artistName {
-                        Text(artistName)
+                    VStack(alignment: .leading) {
+                        Text(track.name)
                             .lineLimit(1)
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
+                            .font(.body)
+                            .bold(track.favorite && album == nil)
+                            .padding(.vertical, showArtist ? 0 : 6)
+                        
+                        if showArtist, let artistName = track.artistName {
+                            Text(artistName)
+                                .lineLimit(1)
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                        }
                     }
+                    .padding(.horizontal, 5)
+                    
+                    Spacer()
                 }
-                .padding(.horizontal, 5)
-                
-                Spacer()
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             

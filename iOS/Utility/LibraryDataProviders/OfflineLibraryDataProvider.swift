@@ -34,6 +34,10 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         
         return ascending ? tracks : tracks.reversed()
     }
+    public func getPagedTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        
+        return try await getAllTracks(sortOrder: sortOrder, ascending: ascending)
+    }
     public func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
         try await OfflineManager.shared.getTracks(favorite: true)
     }
@@ -68,11 +72,28 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         return ascending ? albums : albums.reversed()
     }
     
+    public func getAlbums(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
+        let albums = try await OfflineManager.shared.getAlbums().sorted {
+            switch sortOrder {
+            case .name, .album:
+                return $0.name < $1.name
+            case .albumArtist, .artist:
+                return $0.artists.first?.name ?? "?" < $1.artists.first?.name ?? "?"
+            case .added, .released:
+                return $0.releaseDate ?? Date(timeIntervalSince1970: 0) < $1.releaseDate ?? Date(timeIntervalSince1970: 0)
+            case .plays, .runtime, .lastPlayed:
+                return false
+            }
+        }
+
+        return ascending ? albums : albums.reversed()
+    }
+    
     public func getArtists(albumOnly: Bool) async throws -> [Artist] {
         []
     }
     
-    public func getArtistAlbums(id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
+    public func getArtistAlbums(limit: Int, startIndex: Int, id: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Album] {
         []
     }
     public func getArtistTracks(id: String) async throws -> [Track] {

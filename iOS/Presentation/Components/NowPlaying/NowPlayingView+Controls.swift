@@ -28,8 +28,14 @@ extension NowPlayingViewModifier {
         
         @State private var queueTabActive = false
         
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        
         private var playedPercentage: Double {
             (AudioPlayer.current.currentTime / AudioPlayer.current.duration) * 100
+        }
+        
+        private var useHorizontalLayout: Bool {
+            return horizontalSizeClass == .regular
         }
         
         var body: some View {
@@ -45,7 +51,7 @@ extension NowPlayingViewModifier {
                             controlsDragging = $0
                         }))
                     .frame(height: 10)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, useHorizontalLayout ? 3 : 10)
                     
                     HStack {
                         Group {
@@ -64,10 +70,10 @@ extension NowPlayingViewModifier {
                             Text(quality)
                                 .font(.caption2)
                                 .foregroundStyle(.primary)
-                                .padding(.vertical, 4)
-                                .padding(.horizontal, 8)
+                                .padding(.vertical, useHorizontalLayout ? 1 : 4)
+                                .padding(.horizontal, useHorizontalLayout ? 10 : 8)
                                 .background(.tertiary)
-                                .clipShape(RoundedRectangle(cornerRadius: 3))
+                                .clipShape(RoundedRectangle(cornerRadius: useHorizontalLayout ? 6 : 3))
                         }
                         Spacer()
                         
@@ -86,13 +92,14 @@ extension NowPlayingViewModifier {
                             }
                         } label: {
                             Image(systemName: "backward.fill")
+                                .font(.system(size: 30))
                         }
                         Button {
                             AudioPlayer.current.playing = !AudioPlayer.current.playing
                         } label: {
                             Image(systemName: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
-                                .frame(height: 50)
                                 .font(.system(size: 47))
+                                .frame(width: 50, height:50)
                                 .padding(.horizontal, 50)
                                 .contentTransition(.symbolEffect(.replace))
                         }
@@ -102,13 +109,14 @@ extension NowPlayingViewModifier {
                             }
                         } label: {
                             Image(systemName: "forward.fill")
+                                .font(.system(size: 30))
                         }
                     }
                     .font(.system(size: 34))
                     .foregroundStyle(.primary)
                 }
-                .padding(.top, 35)
-                .padding(.bottom, 65)
+                .padding(.top, useHorizontalLayout ? 20 : 35)
+                .padding(.bottom, useHorizontalLayout ? 40 : 65)
                 
                 // The first view is the visible slider, the second one is there to hide the iOS indicator (10/10 hack)
                 VolumeSlider(dragging: .init(get: { volumeDragging }, set: {
@@ -194,8 +202,8 @@ extension NowPlayingViewModifier {
                 .bold()
                 .font(.system(size: 20))
                 .frame(height: 45)
-                .padding(.top, 35)
-                .padding(.bottom, 40)
+                .padding(.top, useHorizontalLayout ? 0 : 35)
+                .padding(.bottom, useHorizontalLayout ? 0 : 40)
             }
             .onChange(of: AudioPlayer.current.nowPlaying) { fetchQuality() }
             .onAppear(perform: fetchQuality)

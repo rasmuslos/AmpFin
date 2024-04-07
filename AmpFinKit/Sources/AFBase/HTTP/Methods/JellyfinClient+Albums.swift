@@ -33,9 +33,9 @@ public extension JellyfinClient {
         return response.Items.map(Album.convertFromJellyfin)
     }
     
-    /// Get all albums by the specified artist
-    func getAlbums(artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Album] {
-        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: [
+    /// Get selected albums from all libraries
+    func getAlbums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> [Album] {
+        var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
             URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
@@ -43,9 +43,41 @@ public extension JellyfinClient {
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
             URLQueryItem(name: "EnableImageTypes", value: "Primary"),
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
-            URLQueryItem(name: "AlbumArtistIds", value: artistId),
-        ], userPrefix: true))
+        ]
         
+        if limit > 0 {
+            query.append(URLQueryItem(name: "limit", value: String(limit)))
+        }
+        if startIndex > 0 {
+            query.append(URLQueryItem(name: "startIndex", value: String(startIndex)))
+        }
+        if favorite {
+            query.append(URLQueryItem(name: "Filters", value: "IsFavorite"))
+        }
+        
+        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
+        return response.Items.map(Album.convertFromJellyfin)
+    }
+    
+    /// Get all albums by the specified artist
+    func getAlbums(limit: Int, startIndex: Int, artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Album] {
+        var query = [
+            URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
+            URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
+            URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+            URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
+            URLQueryItem(name: "AlbumArtistIds", value: artistId)
+        ]
+        if limit > 0 {
+            query.append(URLQueryItem(name: "limit", value: String(limit)))
+        }
+        if startIndex > 0 {
+            query.append(URLQueryItem(name: "startIndex", value: String(startIndex)))
+        }
+        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
         return response.Items.map(Album.convertFromJellyfin)
     }
     
@@ -83,6 +115,7 @@ public extension JellyfinClient {
     func getAlbums(similarToAlbumId: String) async throws -> [Album] {
         let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items/\(similarToAlbumId)/Similar", method: "GET", query: [
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
+            URLQueryItem(name: "limit", value: String(10)),
         ], userId: true))
         
         return response.Items.map(Album.convertFromJellyfin)

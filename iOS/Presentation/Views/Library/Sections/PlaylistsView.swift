@@ -13,6 +13,9 @@ struct PlaylistsView: View {
     
     @State var playlists: [Playlist]?
     @State var failed = false
+#if targetEnvironment(macCatalyst)
+    @Environment(NowPlayingViewState.self) private var viewState
+#endif
     
     var body: some View {
         Group {
@@ -27,6 +30,10 @@ struct PlaylistsView: View {
             }
         }
         .navigationTitle("title.playlists")
+#if targetEnvironment(macCatalyst)
+        .toolbar(viewState.presented ? .hidden : .automatic,
+                for: .navigationBar)
+#endif
         .task(loadPlaylists)
         .refreshable(action: loadPlaylists)
         .modifier(NowPlayingBarSafeAreaModifier())

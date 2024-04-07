@@ -10,6 +10,9 @@ import AFBase
 
 struct SortSelector: View {
     @Environment(\.libraryDataProvider) var dataProvider
+#if targetEnvironment(macCatalyst)
+    @State var alwaysOn = true
+#endif
     
     @Binding var ascending: Bool {
         didSet {
@@ -33,7 +36,11 @@ struct SortSelector: View {
                     let label = getOptionLabel(option: option)
                     
                     if sortOrder == option {
+#if targetEnvironment(macCatalyst)
+                        Toggle(label, isOn: $alwaysOn)
+#else
                         Label(label, systemImage: "checkmark")
+#endif
                     } else {
                         Text(label)
                     }
@@ -48,7 +55,11 @@ struct SortSelector: View {
                 }
             } label: {
                 if ascending {
+#if targetEnvironment(macCatalyst)
+                    Toggle("ascending", isOn: $ascending)
+#else
                     Label("ascending", systemImage: "checkmark")
+#endif
                 } else {
                     Text("ascending")
                 }

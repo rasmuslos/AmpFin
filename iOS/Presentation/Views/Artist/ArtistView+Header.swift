@@ -12,6 +12,7 @@ import AFPlayback
 extension ArtistView {
     struct Header: View {
         @Environment(\.libraryDataProvider) var dataProvider
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
         let artist: Artist
         
@@ -42,10 +43,10 @@ extension ArtistView {
                             }
                             
                             width = proxy.size.width
-                            showNavigationBar = offset < -300
+                            showNavigationBar = offset < (horizontalSizeClass == .compact ? -300 : -200)
                         }
                 }
-                .frame(height: width)
+                .frame(height: horizontalSizeClass == .compact ? width : 200)
                 .background {
                     ItemImage(cover: artist.cover, cornerRadius: 0)
                         .scaledToFill()
