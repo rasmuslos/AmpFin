@@ -174,8 +174,10 @@ struct BackgroundRemoveTransitionModifier: ViewModifier {
         content
             .mask(alignment: .bottom) {
                 Rectangle()
-                    .frame(height: active ? 0 : UIScreen.main.bounds.height)
+                    .frame(width: UIScreen.main.bounds.width - (active ? 24 : 0), height: active ? 0 : UIScreen.main.bounds.height)
+                    .animation(.easeOut(duration: 0.4), value: active)
             }
+            .offset(y: active ? -92 : 0)
     }
 }
 
