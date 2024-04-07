@@ -217,6 +217,7 @@ extension NowPlayingViewModifier {
         let cover: Item.Cover?
         
         @State var imageColors: ImageColors?
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
         var body: some View {
             ZStack {
@@ -231,7 +232,14 @@ extension NowPlayingViewModifier {
                         .onChange(of: cover?.url) { determineImageColors() }
                 } else {
                     Color.clear
-                        .onAppear { determineImageColors() }
+                        .onAppear {
+                            Task {
+                                if horizontalSizeClass == .regular {
+                                    try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+                                }
+                                determineImageColors()
+                            }
+                        }
                 }
             }
             .overlay(.black.opacity(0.25))
