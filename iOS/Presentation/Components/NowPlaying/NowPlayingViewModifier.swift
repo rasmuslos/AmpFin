@@ -95,7 +95,7 @@ struct NowPlayingViewModifier: ViewModifier {
                                 }
                             }
                         }
-                        .frame(maxWidth: 500)
+                        .frame(maxWidth: 415)
                         if useHorizontalLayout, viewState.presented {
                             VStack{
                                 Group {
@@ -136,6 +136,7 @@ struct NowPlayingViewModifier: ViewModifier {
                         }
                     }
                     .padding(.horizontal, 30)
+                    .padding(.vertical)
                     .simultaneousGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
