@@ -41,51 +41,136 @@ struct NowPlayingBarModifier: ViewModifier {
                             .ignoresSafeArea(edges: .all)
                         
                         if !nowPlayingViewState.presented {
-                            HStack {
-                                ItemImage(cover: currentTrack.cover)
-                                    .frame(width: 40, height: 40)
-                                    .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
-                                
-                                Text(currentTrack.name)
-                                    .lineLimit(1)
-                                    .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
-                                
-                                Spacer()
-                                
-                                Group {
+                            ViewThatFits(in: .horizontal) {
+                                // Full control when space permits
+                                HStack {
+                                    ItemImage(cover: currentTrack.cover)
+                                        .frame(width: 40, height: 40)
+                                        .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
+                                    
+                                    Text(currentTrack.name)
+                                        .lineLimit(1)
+                                        .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
+                                    
+                                    Spacer()
+                                    
                                     Group {
-                                        if AudioPlayer.current.buffering {
-                                            ProgressView()
-                                        } else {
-                                            Button {
-                                                AudioPlayer.current.playing = !AudioPlayer.current.playing
-                                            } label: {
-                                                Image(systemName: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
-                                                    .contentTransition(.symbolEffect(.replace.byLayer.downUp))
-                                                    .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
-                                                    .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
-                                                    .onChange(of: AudioPlayer.current.playing) {
-                                                        withAnimation {
-                                                            animateImage = true
-                                                        } completion: {
-                                                            animateImage = false
+                                        Button {
+                                            AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
+                                        } label: {
+                                            Image(systemName: "shuffle")
+                                                .font(Font.footnote.weight(.heavy))
+                                        }
+                                        .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled, heavy: true))
+                                        .padding(.horizontal, 10)
+                                        Button {
+                                            AudioPlayer.current.backToPreviousItem()
+                                        } label: {
+                                            Image(systemName: "backward.fill")
+                                        }
+                                        .padding(.horizontal, 10)
+                                        Group {
+                                            // A paused track will very likely to have an empty buffer
+                                            // For example, forwarding or backwarding during pausing
+                                            if AudioPlayer.current.playing, AudioPlayer.current.buffering {
+                                                ProgressView()
+                                            } else {
+                                                Button {
+                                                    AudioPlayer.current.playing = !AudioPlayer.current.playing
+                                                } label: {
+                                                    Image(systemName: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
+                                                        .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+                                                        .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
+                                                        .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
+                                                        .onChange(of: AudioPlayer.current.playing) {
+                                                            withAnimation {
+                                                                animateImage = true
+                                                            } completion: {
+                                                                animateImage = false
+                                                            }
                                                         }
-                                                    }
+                                                }
                                             }
                                         }
+                                        .transition(.blurReplace)
+                                        
+                                        Button {
+                                            animateForwards.toggle()
+                                            AudioPlayer.current.advanceToNextTrack()
+                                        } label: {
+                                            Image(systemName: "forward.fill")
+                                                .symbolEffect(.bounce.up, value: animateForwards)
+                                        }
+                                        .padding(.horizontal, 10)
+                                        Button {
+                                            if AudioPlayer.current.repeatMode == .none {
+                                                AudioPlayer.current.repeatMode = .queue
+                                            } else if AudioPlayer.current.repeatMode == .queue {
+                                                AudioPlayer.current.repeatMode = .track
+                                            } else if AudioPlayer.current.repeatMode == .track {
+                                                AudioPlayer.current.repeatMode = .none
+                                            }
+                                        } label: {
+                                            if AudioPlayer.current.repeatMode == .track {
+                                                Image(systemName: "repeat.1")
+                                                    .font(Font.footnote.weight(.heavy))
+                                            } else if AudioPlayer.current.repeatMode == .none || AudioPlayer.current.repeatMode == .queue {
+                                                Image(systemName: "repeat")
+                                                    .font(Font.footnote.weight(.heavy))
+                                            }
+                                        }
+                                        .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none, heavy: true))
+                                        .padding(.horizontal, 10)
                                     }
-                                    .transition(.blurReplace)
-                                    
-                                    Button {
-                                        animateForwards.toggle()
-                                        AudioPlayer.current.advanceToNextTrack()
-                                    } label: {
-                                        Image(systemName: "forward.fill")
-                                            .symbolEffect(.bounce.up, value: animateForwards)
-                                    }
-                                    .padding(.horizontal, 10)
+                                    .imageScale(.large)
                                 }
-                                .imageScale(.large)
+                                // Simplified control when space is limited
+                                HStack {
+                                    ItemImage(cover: currentTrack.cover)
+                                        .frame(width: 40, height: 40)
+                                        .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
+                                    
+                                    Text(currentTrack.name)
+                                        .lineLimit(1)
+                                        .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
+                                    
+                                    Spacer()
+                                    
+                                    Group {
+                                        Group {
+                                            if AudioPlayer.current.playing, AudioPlayer.current.buffering {
+                                                ProgressView()
+                                            } else {
+                                                Button {
+                                                    AudioPlayer.current.playing = !AudioPlayer.current.playing
+                                                } label: {
+                                                    Image(systemName: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
+                                                        .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+                                                        .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
+                                                        .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
+                                                        .onChange(of: AudioPlayer.current.playing) {
+                                                            withAnimation {
+                                                                animateImage = true
+                                                            } completion: {
+                                                                animateImage = false
+                                                            }
+                                                        }
+                                                }
+                                            }
+                                        }
+                                        .transition(.blurReplace)
+                                        
+                                        Button {
+                                            animateForwards.toggle()
+                                            AudioPlayer.current.advanceToNextTrack()
+                                        } label: {
+                                            Image(systemName: "forward.fill")
+                                                .symbolEffect(.bounce.up, value: animateForwards)
+                                        }
+                                        .padding(.horizontal, 10)
+                                    }
+                                    .imageScale(.large)
+                                }
                             }
                             .frame(maxWidth: 800, maxHeight: 56)
                             .padding(.horizontal, 8)

@@ -9,12 +9,14 @@ import SwiftUI
 
 struct SymbolButtonStyle: ButtonStyle {
     var active: Bool
+    var heavy = false
     
     func makeBody(configuration: Configuration) -> some View {
+        let color = heavy ? Color.black.opacity(0.2) : .white.opacity(0.25)
         configuration.label
             .aspectRatio(1, contentMode: .fit)
             .padding(7)
-            .background(active ? .white.opacity(0.25) : .clear)
+            .background(active ? color : .clear)
             .foregroundStyle(active ? .primary : .secondary)
             .clipShape(RoundedRectangle(cornerRadius: 7))
             .animation(.easeInOut, value: active)
