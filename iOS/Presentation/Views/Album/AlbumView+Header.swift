@@ -96,6 +96,7 @@ extension AlbumView {
                                         }
                                 }
                                 .padding(.vertical, 12)
+                                .padding(.horizontal)
                                 .foregroundColor(imageColors.secondary)
                                 .background(imageColors.primary.opacity(0.25))
                                 .bold()
