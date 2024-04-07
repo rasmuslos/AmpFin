@@ -58,6 +58,9 @@ struct NowPlayingViewModifier: ViewModifier {
                             insertion: .modifier(active: BackgroundInsertTransitionModifier(active: true), identity: BackgroundInsertTransitionModifier(active: false)),
                             removal: .modifier(active: BackgroundRemoveTransitionModifier(active: true), identity: BackgroundRemoveTransitionModifier(active: false)))
                         )
+                        .onAppear {
+                            dragOffset = 0
+                        }
                 }
                 
                 if viewState.containerPresented {
