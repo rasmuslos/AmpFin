@@ -14,6 +14,7 @@ import AFPlayback
 struct NowPlayingBarModifier: ViewModifier {
     @Environment(NowPlayingViewState.self) private var nowPlayingViewState
     @Environment(\.libraryDataProvider) private var dataProvider
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @State private var animateImage = false
     @State private var animateForwards = false
@@ -46,11 +47,15 @@ struct NowPlayingBarModifier: ViewModifier {
                                 HStack {
                                     ItemImage(cover: currentTrack.cover)
                                         .frame(width: 40, height: 40)
-                                        .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
+                                        .if(horizontalSizeClass == .compact) { view in
+                                            view.matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
+                                        }
                                     
                                     Text(currentTrack.name)
                                         .lineLimit(1)
-                                        .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
+                                        .if(horizontalSizeClass == .compact) { view in
+                                            view.matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
+                                        }
                                     
                                     Spacer()
                                     

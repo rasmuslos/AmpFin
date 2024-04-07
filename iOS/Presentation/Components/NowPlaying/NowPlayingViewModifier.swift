@@ -115,6 +115,7 @@ struct NowPlayingViewModifier: ViewModifier {
                                             .combined(with: .opacity)
                                 ))
                             }
+                            .transition(.move(edge: .bottom).animation(.linear(duration: 0.2)))
                         }
                     }
                     .zIndex(2)
