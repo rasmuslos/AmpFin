@@ -19,7 +19,20 @@ internal extension LocalAudioEndpoint {
             updatePlaybackReporter(scheduled: true)
             
             _playing = audioPlayer.rate > 0
-            buffering = !(audioPlayer.currentItem?.isPlaybackLikelyToKeepUp ?? false)
+            
+            // Only check isPlaybackLikelyToKeepUp will not be enough because this value will return false
+            // when the buffer is full and the playback time is not able to statisically predict if the playback can keepup
+            if let playItem = audioPlayer.currentItem {
+                // We have to check buffer empty first becaue Apple thinks it is valid to have
+                // isPlaybackBufferEmpty == true and isPlaybackBufferFull == true at the same time
+                if playItem.isPlaybackBufferEmpty {
+                    buffering = true
+                } else if playItem.isPlaybackLikelyToKeepUp || playItem.isPlaybackBufferFull {
+                    buffering = false
+                }
+            } else {
+                buffering = false
+            }
             
             let duration = audioPlayer.currentItem?.duration.seconds ?? 0
             self.duration = duration.isFinite ? duration : 0
