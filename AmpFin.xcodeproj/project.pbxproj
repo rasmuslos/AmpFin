@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37503B532BC3A937004DC533 /* View+Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37503B522BC3A937004DC533 /* View+Condition.swift */; };
 		3A0345112B49629D007D6171 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A21CF122B48C3140068ACB7 /* Intents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		3A07CD932B4401BE00F9AB19 /* PlaylistAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */; };
 		3A0A49292B6C1EDC00AAA647 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A0A49282B6C1EDC00AAA647 /* InfoPlist.xcstrings */; };
@@ -156,6 +157,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		37503B522BC3A937004DC533 /* View+Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Condition.swift"; sourceTree = "<group>"; };
 		3A03450A2B49613C007D6171 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A0345122B49634F007D6171 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistAddSheet.swift; sourceTree = "<group>"; };
@@ -607,6 +609,7 @@
 		3ADE8E952AA92B03009826A3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				37503B522BC3A937004DC533 /* View+Condition.swift */,
 				3A44B06C2BA194410013E4EF /* Double+Duration.swift */,
 				3AA54D502BADB3DD00BA157A /* Transition+Opacity.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
@@ -968,6 +971,7 @@
 				3A2B28FE2B437EFD00DF9731 /* ImageColors.swift in Sources */,
 				3A1CBC192B0D284200855A70 /* NavigationRoot+Notifications.swift in Sources */,
 				3A88505C2AA909CE00456DDD /* AlbumCover.swift in Sources */,
+				37503B532BC3A937004DC533 /* View+Condition.swift in Sources */,
 				3A8B993C2AA9FCC6004AAA7B /* NowPlayingViewModifier.swift in Sources */,
 				3A6F50AD2AACAFDF00FC8A29 /* AlbumLoadView.swift in Sources */,
 				3A8850622AA90D1200456DDD /* AlbumsView.swift in Sources */,
