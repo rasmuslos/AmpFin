@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Defaults
 
 public extension JellyfinClient {
-    enum ItemSortOrder: String, CaseIterable {
+    enum ItemSortOrder: String, CaseIterable, Codable, _DefaultsSerializable {
         case name = "Name"
         case album = "Album,SortName"
         case albumArtist = "AlbumArtist,Album,SortName"

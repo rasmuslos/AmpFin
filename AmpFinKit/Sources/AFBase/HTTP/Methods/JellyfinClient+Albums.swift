@@ -34,7 +34,7 @@ public extension JellyfinClient {
     }
     
     /// Get selected albums from all libraries
-    func getAlbums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> [Album] {
+    func getAlbums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> ([Album], Int) {
         var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
@@ -56,11 +56,14 @@ public extension JellyfinClient {
         }
         
         let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
-        return response.Items.map(Album.convertFromJellyfin)
+        return (
+            response.Items.map(Album.convertFromJellyfin),
+            response.TotalRecordCount
+        )
     }
     
     /// Get all albums by the specified artist
-    func getAlbums(limit: Int, startIndex: Int, artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Album] {
+    func getAlbums(limit: Int, startIndex: Int, artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> ([Album], Int) {
         var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
@@ -77,8 +80,13 @@ public extension JellyfinClient {
         if startIndex > 0 {
             query.append(URLQueryItem(name: "startIndex", value: String(startIndex)))
         }
+        
         let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
-        return response.Items.map(Album.convertFromJellyfin)
+        
+        return (
+            response.Items.map(Album.convertFromJellyfin),
+            response.TotalRecordCount
+        )
     }
     
     /// Get albums (limited to 20) matching the query

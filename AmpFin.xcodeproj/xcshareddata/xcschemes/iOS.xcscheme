@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
                BuildableName = "AmpFin.app"
-               BlueprintName = "iOS"
+               BlueprintName = "Multiplatform"
                ReferencedContainer = "container:AmpFin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,7 +45,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
             BuildableName = "AmpFin.app"
-            BlueprintName = "iOS"
+            BlueprintName = "Multiplatform"
             ReferencedContainer = "container:AmpFin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,7 +62,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ABAFCA92AA7D6C40011BFD6"
             BuildableName = "AmpFin.app"
-            BlueprintName = "iOS"
+            BlueprintName = "Multiplatform"
             ReferencedContainer = "container:AmpFin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

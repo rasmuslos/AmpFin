@@ -15,10 +15,14 @@ let package = Package(
         .library(name: "AFPlayback", targets: ["AFPlayback"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/daltoniam/Starscream.git", from: "4.0.0")
+        .package(url: "https://github.com/daltoniam/Starscream.git", from: "4.0.0"),
+        .package(url: "https://github.com/sindresorhus/Defaults.git", from: "4.0.0"),
     ],
     targets: [
-        .target(name: "AFBase", dependencies: [.byName(name: "Starscream")]),
+        .target(name: "AFBase", dependencies: [
+            .byName(name: "Defaults"),
+            .byName(name: "Starscream"),
+        ]),
         .target(name: "AFExtension", dependencies: [.byName(name: "AFBase"), .byName(name: "AFOffline", condition: .when(platforms: [.iOS]))]),
         .target(name: "AFOffline", dependencies: [.byName(name: "AFBase")]),
         .target(

@@ -34,7 +34,7 @@ extension OfflineManager {
                 }
                 
                 // MARK: tracks
-                let trackFavorites = try await JellyfinClient.shared.getTracks(limit: 0, startIndex: 0, sortOrder: .added, ascending: true, favorite: true)
+                let trackFavorites = try await JellyfinClient.shared.getTracks(limit: 0, startIndex: 0, sortOrder: .added, ascending: true, favorite: true).0
                 
                 Task { @MainActor in
                     if !trackFavorites.isEmpty {
