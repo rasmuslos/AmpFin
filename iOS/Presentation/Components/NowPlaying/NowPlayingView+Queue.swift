@@ -97,6 +97,7 @@ extension NowPlayingViewModifier {
                     TipView(HistoryTip())
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
+                        .foregroundStyle(.black)
                         .padding(.top, 20)
                     
                     ForEach(Array(AudioPlayer.current.queue.enumerated()), id: \.offset) { index, track in
