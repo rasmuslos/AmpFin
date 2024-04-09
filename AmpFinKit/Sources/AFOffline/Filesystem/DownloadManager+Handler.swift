@@ -11,6 +11,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         // Make sure the system does not delete the file
         let tmpLocation = documentsURL.appending(path: String(downloadTask.taskIdentifier))
+        let mimeType = downloadTask.response?.mimeType
         
         do {
             try? FileManager.default.removeItem(at: tmpLocation)
@@ -22,12 +23,13 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         
         Task.detached { @MainActor [self] in
             if let track = try? OfflineManager.shared.getOfflineTrack(taskId: downloadTask.taskIdentifier) {
-                let destination = getUrl(trackId: track.id)
+                let destination = getUrlWithType(trackId: track.id, fileType: mimeType)
                 
                 do {
                     try? FileManager.default.removeItem(at: destination)
                     try FileManager.default.moveItem(at: tmpLocation, to: destination)
                     track.downloadId = nil
+                    track.fileType = mimeType
                     
                     NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
                     

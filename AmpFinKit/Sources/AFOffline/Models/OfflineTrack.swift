@@ -23,8 +23,9 @@ class OfflineTrack {
     var runtime: Double
     
     var downloadId: Int?
+    var fileType: String? = nil
     
-    init(id: String, name: String, releaseDate: Date?, album: Track.ReducedAlbum, artists: [Item.ReducedArtist], favorite: Bool, runtime: Double, downloadId: Int? = nil) {
+    init(id: String, name: String, releaseDate: Date?, album: Track.ReducedAlbum, artists: [Item.ReducedArtist], favorite: Bool, runtime: Double, downloadId: Int? = nil, fileType: String? = nil) {
         self.id = id
         self.name = name
         self.album = album
@@ -32,6 +33,7 @@ class OfflineTrack {
         self.artists = artists
         self.favorite = favorite
         self.downloadId = downloadId
+        self.fileType = fileType
         self.runtime = runtime
     }
 }
