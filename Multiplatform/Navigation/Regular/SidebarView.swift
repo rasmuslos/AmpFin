@@ -21,7 +21,7 @@ struct SidebarView: View {
                 
                 PlaylistSection()
             }
-            .modifier(AccountToolbarButtonModifier(requiredSize: .regular))
+            .modifier(AccountToolbarButtonModifier(requiredSize: nil))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {

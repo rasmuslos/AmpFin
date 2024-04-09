@@ -188,10 +188,10 @@ struct AccountToolbarButtonModifier: ViewModifier {
     
     @State private var accountSheetPresented = false
     
-    let requiredSize: UserInterfaceSizeClass
+    let requiredSize: UserInterfaceSizeClass?
     
     func body(content: Content) -> some View {
-        if horizontalSizeClass == requiredSize {
+        if requiredSize == nil || horizontalSizeClass == requiredSize {
             content
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {

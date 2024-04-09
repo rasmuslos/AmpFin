@@ -5,26 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sindresorhus/Defaults",
       "state" : {
-        "branch" : "main",
-        "revision" : "38925e3cfacf3fb89a81a35b1cd44fd5a5b7e0fa"
-      }
-    },
-    {
-      "identity" : "fluidgradient",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Cindori/FluidGradient.git",
-      "state" : {
-        "revision" : "9ddda4cf23671ef0228e88681ec6210cb3e0d7f7",
-        "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "nuke",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kean/Nuke.git",
-      "state" : {
-        "revision" : "4625c73ea00a9fb4b4f3e28d95d0021a44af7e59",
-        "version" : "12.5.0"
+        "revision" : "229dea452fee8d2205f56a12e5c21dfec00948f2",
+        "version" : "4.2.2"
       }
     },
     {
@@ -34,15 +16,6 @@
       "state" : {
         "revision" : "c6bfd1af48efcc9a9ad203665db12375ba6b145a",
         "version" : "4.0.8"
-      }
-    },
-    {
-      "identity" : "uiimagecolors",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/FelixHerrmann/UIImageColors.git",
-      "state" : {
-        "revision" : "e49e6c32ea556e9fa0109dc79686bea4a10d41a2",
-        "version" : "2.2.0"
       }
     }
   ],
