@@ -23,13 +23,13 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         
         Task.detached { @MainActor [self] in
             if let track = try? OfflineManager.shared.getOfflineTrack(taskId: downloadTask.taskIdentifier) {
-                let destination = getUrlWithType(trackId: track.id, fileType: mimeType)
+                let typeCode = encodeFileType(fileType: mimeType)
+                let destination = getUrlWithType(trackId: track.id, typeCode: typeCode)
                 
                 do {
                     try? FileManager.default.removeItem(at: destination)
                     try FileManager.default.moveItem(at: tmpLocation, to: destination)
-                    track.downloadId = nil
-                    track.fileType = mimeType
+                    track.downloadId = typeCode
                     
                     NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
                     

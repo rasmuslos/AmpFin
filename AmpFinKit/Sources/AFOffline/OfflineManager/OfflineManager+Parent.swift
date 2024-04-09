@@ -38,7 +38,7 @@ extension OfflineManager {
     @MainActor
     func isDownloadInProgress(parent: OfflineParent) throws -> Bool {
         let tracks = try getOfflineTracks(parent: parent)
-        return tracks.reduce(false) { $1.downloadId == nil ? $0 : true }
+        return tracks.reduce(false) { $1.downloadId ?? -1 < 0 ? $0 : true }
     }
     
     func reduceToChildrenIds(parents: [OfflineParent]) -> Set<String> {

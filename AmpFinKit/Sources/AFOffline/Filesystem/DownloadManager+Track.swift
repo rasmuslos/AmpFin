@@ -23,12 +23,12 @@ extension DownloadManager {
         ])))
     }
     
-    func getTrackFileType(trackId: String) -> String? {
+    func getTrackFileType(trackId: String) -> Int? {
         var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
         descriptor.fetchLimit = 1
         let ctx = ModelContext(PersistenceManager.shared.modelContainer)
         if let track = try? ctx.fetch(descriptor).first {
-            return track.fileType
+            return track.downloadId
         }
         return nil
     }
@@ -38,28 +38,53 @@ extension DownloadManager {
     }
     
     public func getUrl(trackId: String) -> URL {
-        getUrlWithType(trackId: trackId, fileType: getTrackFileType(trackId: trackId))
+        getUrlWithType(trackId: trackId, typeCode: getTrackFileType(trackId: trackId))
     }
     
-    public func getUrlWithType(trackId: String, fileType: String?) -> URL {
-        var suffix: String
+    public func encodeFileType(fileType: String?) -> Int {
+        var code = -1;
         switch fileType {
+        case "audio/flac":
+            code = -1
         case "audio/aac":
-            suffix = ".aac"
+            code = -2
         // Both alac and aac can be in this container
         case "audio/mp4":
-            suffix = ".m4a"
-        case "audio/flac":
-            suffix = ".flac"
+            code = -3
         case "audio/x-flac":
-            suffix = ".flac"
+            code = -1
         case "audio/mpeg":
-            suffix = ".mp3"
+            code = -4
         case "audio/wav":
-            suffix = ".wav"
+            code = -5
         case "audio/x-aiff":
-            suffix = ".aiff"
+            code = -6
         case "audio/webm":
+            code = -7
+        // Use flac if unsure
+        default:
+            code = -1
+        }
+        return code
+    }
+    
+    public func getUrlWithType(trackId: String, typeCode: Int?) -> URL {
+        var suffix: String
+        switch typeCode {
+        case -1:
+            suffix = ".flac"
+        case -2:
+            suffix = ".aac"
+        // Both alac and aac can be in this container
+        case -3:
+            suffix = ".m4a"
+        case -4:
+            suffix = ".mp3"
+        case -5:
+            suffix = ".wav"
+        case -6:
+            suffix = ".aiff"
+        case -7:
             suffix = ".webma"
         // Use flac if unsure
         default:

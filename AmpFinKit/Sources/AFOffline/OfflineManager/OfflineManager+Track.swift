@@ -83,7 +83,7 @@ extension OfflineManager {
     
     @MainActor
     func getUnfinishedDownloads() throws -> [OfflineTrack] {
-        let track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId != nil })
+        let track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId ?? -1 > 0 })
         return try PersistenceManager.shared.modelContainer.mainContext.fetch(track)
     }
 }
@@ -131,7 +131,7 @@ public extension OfflineManager {
     @MainActor
     func getOfflineStatus(trackId: String) -> ItemOfflineTracker.OfflineStatus {
         if let track = try? getOfflineTrack(trackId: trackId) {
-            return track.downloadId == nil ? .downloaded : .working
+            return track.downloadId ?? -1 < 0 ? .downloaded : .working
         }
         
         return .none
