@@ -17,7 +17,7 @@ extension Track {
             favorite: offline.favorite,
             album: ReducedAlbum(
                 id: offline.album.id,
-                name: offline.album.name,
+                name: offline.album.albumName,
                 artists: offline.album.artists),
             artists: offline.artists,
             lufs: nil,
@@ -35,7 +35,7 @@ extension Track {
             favorite: offline.favorite,
             album: ReducedAlbum(
                 id: offline.album.id,
-                name: offline.album.name,
+                name: offline.album.albumName,
                 artists: offline.album.artists),
             artists: offline.artists,
             lufs: nil,

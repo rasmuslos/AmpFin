@@ -204,7 +204,7 @@ extension TrackListRow {
                 NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
                     Label("album.view", systemImage: "square.stack")
                     
-                    if let name = track.album.name {
+                    if let name = track.album.albumName {
                         Text(verbatim: name)
                     }
                 }

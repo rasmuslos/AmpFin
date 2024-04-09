@@ -102,12 +102,12 @@ extension Track {
     
     public struct ReducedAlbum: Codable {
         public let id: String
-        public let name: String?
+        public let albumName: String?
         public let artists: [ReducedArtist]
         
         public init(id: String, name: String?, artists: [ReducedArtist]) {
             self.id = id
-            self.name = name
+            self.albumName = name
             self.artists = artists
         }
     }

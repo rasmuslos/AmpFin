@@ -41,7 +41,7 @@ extension MediaResolver {
         tracks.filter {
             var matches = true
             
-            if let albumName = albumName, let name = $0.album.name {
+            if let albumName = albumName, let name = $0.album.albumName {
                 if !name.localizedStandardContains(albumName) {
                     matches = false
                 }

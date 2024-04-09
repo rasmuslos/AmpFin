@@ -10,7 +10,7 @@ import SwiftData
 import AFBase
 
 @Model
-class OfflineTrack {
+final class OfflineTrack {
     @Attribute(.unique) let id: String
     let name: String
     
@@ -23,7 +23,7 @@ class OfflineTrack {
     var runtime: Double
     
     var downloadId: Int?
-    var fileType: String? = nil
+    var fileType: String?
     
     init(id: String, name: String, releaseDate: Date?, album: Track.ReducedAlbum, artists: [Item.ReducedArtist], favorite: Bool, runtime: Double, downloadId: Int? = nil, fileType: String? = nil) {
         self.id = id

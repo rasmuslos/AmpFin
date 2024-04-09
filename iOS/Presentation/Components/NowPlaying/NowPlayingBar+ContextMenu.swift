@@ -53,7 +53,7 @@ extension NowPlayingBarModifier {
                     }) {
                         Label("album.view", systemImage: "square.stack")
                         
-                        if let albumName = track.album.name {
+                        if let albumName = track.album.albumName {
                             Text(albumName)
                         }
                     }

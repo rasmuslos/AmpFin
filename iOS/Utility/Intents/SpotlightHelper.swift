@@ -35,9 +35,9 @@ struct SpotlightHelper {
                     let attributes = CSSearchableItemAttributeSet(contentType: .audio)
                     
                     attributes.title = track.name
-                    attributes.album = track.album.name
+                    attributes.album = track.album.albumName
                     attributes.artist = track.artists.map { $0.name }.joined(separator: ", ")
-                    attributes.album = track.album.name
+                    attributes.album = track.album.albumName
                     
                     attributes.duration = NSNumber(value: track.runtime)
                     attributes.playCount = track.playCount as NSNumber

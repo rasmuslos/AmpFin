@@ -16,7 +16,7 @@ internal extension LocalAudioEndpoint {
                 
                 nowPlayingInfo[MPMediaItemPropertyTitle] = nowPlaying.name
                 nowPlayingInfo[MPMediaItemPropertyArtist] = nowPlaying.artistName
-                nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = nowPlaying.album.name
+                nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = nowPlaying.album.albumName
                 nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = nowPlaying.album.artistName
                 
                 // nowPlayingInfo[MPMediaItemPropertyPersistentID] = nowPlaying.id
