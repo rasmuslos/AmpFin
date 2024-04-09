@@ -10,13 +10,13 @@ import AFBase
 import AFPlayback
 
 struct PlaylistView: View {
-    @Environment(\.libraryDataProvider) var dataProvider
-    @Environment(\.libraryOnline) var libraryOnline
+    @Environment(\.libraryDataProvider) private var dataProvider
+    @Environment(\.libraryOnline) private var libraryOnline
     
     let playlist: Playlist
     
-    @State var tracks = [Track]()
-    @State var editMode: EditMode = .inactive
+    @State private var tracks = [Track]()
+    @State private var editMode: EditMode = .inactive
     
     var body: some View {
         List {
@@ -43,15 +43,16 @@ struct PlaylistView: View {
                 "playlistId": playlist.id
             ]
         }
-        .task(fetchTracks)
-        .refreshable(action: fetchTracks)
+        .task { await fetchTracks() }
+        .refreshable { await fetchTracks() }
     }
 }
 
 extension PlaylistView {
-    @Sendable
     func fetchTracks() async {
-        tracks = (try? await dataProvider.getTracks(playlistId: playlist.id)) ?? []
+        if let tracks = try? await dataProvider.getTracks(playlistId: playlist.id) {
+            self.tracks = tracks
+        }
     }
     
     func removeTrack(track: Track) {

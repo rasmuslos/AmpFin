@@ -10,19 +10,16 @@ import AFBase
 import AFPlayback
 
 struct SearchView: View {
-    @State var query = ""
-    @State var task: Task<(), Never>? = nil
+    @State private var query = ""
+    @State private var task: Task<(), Never>? = nil
     
-    @State var tracks = [Track]()
-    @State var albums = [Album]()
-    @State var artists = [Artist]()
-    @State var playlists = [Playlist]()
+    @State private var tracks = [Track]()
+    @State private var albums = [Album]()
+    @State private var artists = [Artist]()
+    @State private var playlists = [Playlist]()
     
-    @State var library: Tab = UserDefaults.standard.bool(forKey: "searchOnline") ? .online : .offline
-    @State var dataProvider: LibraryDataProvider = UserDefaults.standard.bool(forKey: "searchOnline") ? OnlineLibraryDataProvider() : OfflineLibraryDataProvider()
-#if targetEnvironment(macCatalyst)
-    @Environment(NowPlayingViewState.self) private var viewState
-#endif
+    @State private var library: Tab = UserDefaults.standard.bool(forKey: "searchOnline") ? .online : .offline
+    @State private var dataProvider: LibraryDataProvider = UserDefaults.standard.bool(forKey: "searchOnline") ? OnlineLibraryDataProvider() : OfflineLibraryDataProvider()
     
     var body: some View {
         NavigationStack {
@@ -77,12 +74,7 @@ struct SearchView: View {
             }
             .listStyle(.plain)
             .navigationTitle("title.search")
-#if targetEnvironment(macCatalyst)
-        .toolbar(viewState.presented ? .hidden : .automatic,
-                for: .navigationBar)
-#endif
             .modifier(NowPlayingBarSafeAreaModifier())
-            .modifier(AccountToolbarButtonModifier())
             // Query
             .searchable(text: $query, placement: .navigationBarDrawer, prompt: "search.placeholder")
             .autocorrectionDisabled()

@@ -76,6 +76,9 @@ public struct OnlineLibraryDataProvider: LibraryDataProvider {
     
     // MARK: Playlist
     
+    public func getPlaylist(playlistId: String) async throws -> Playlist {
+        try await JellyfinClient.shared.getPlaylist(playlistId: playlistId)
+    }
     public func getPlaylists() async throws -> [Playlist] {
         try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .added, ascending: false, favorite: false)
     }

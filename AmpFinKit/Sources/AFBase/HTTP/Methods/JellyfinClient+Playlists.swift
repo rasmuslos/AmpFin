@@ -16,6 +16,19 @@ public extension JellyfinClient {
         ], userId: true))
     }
     
+    func getPlaylist(playlistId: String) async throws -> Playlist {
+        if let playlist = try await request(ClientRequest<JellyfinPlaylist?>(path: "Items/\(playlistId)", method: "GET", query: [
+            URLQueryItem(name: "IncludeItemTypes", value: "Playlist"),
+            URLQueryItem(name: "Recursive", value: "true"),
+            URLQueryItem(name: "ImageTypeLimit", value: "1"),
+            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
+        ], userPrefix: true)) {
+            return Playlist.convertFromJellyfin(playlist)
+        }
+        
+        throw JellyfinClientError.invalidResponse
+    }
+    
     func getPlaylists(limit: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> [Playlist] {
         var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),

@@ -46,6 +46,7 @@ public protocol LibraryDataProvider {
     
     // MARK: Playlist
     
+    func getPlaylist(playlistId: String) async throws -> Playlist
     func getPlaylists() async throws -> [Playlist]
     func getTracks(playlistId: String) async throws -> [Track]
 }

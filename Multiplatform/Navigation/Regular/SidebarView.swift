@@ -14,110 +14,46 @@ struct SidebarView: View {
     
     var body: some View {
         NavigationSplitView {
-            List() {
+            List(selection: $selection) {
                 ForEach(DataProvider.allCases, id: \.hashValue) {
-                    ProviderSection(provider: $0, selection: $selection)
+                    ProviderSection(provider: $0)
                 }
+                
+                PlaylistSection()
+                
+                // :(
+                Color.clear
+                    .modifier(AccountToolbarButtonModifier())
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            NavigationLink(value: Selection(provider: .online, section: .search)) {
+                                Image(systemName: "magnifyingglass")
+                            }
+                        }
+                    }
             }
         } detail: {
-            selection.section.content
-                .environment(\.libraryDataProvider, selection.provider.libraryProvider)
-        }
-    }
-}
-
-extension SidebarView {
-    struct Selection: Codable, _DefaultsSerializable {
-        var provider: DataProvider
-        var section: LibrarySection
-    }
-    
-    enum DataProvider: Codable, CaseIterable {
-        case online
-        case offline
-    }
-    
-    enum LibrarySection: Codable, CaseIterable {
-        case tracks
-        case albums
-        case playlists
-        case favorites
-        case albumArtists
-        case artists
-    }
-}
-
-extension SidebarView.DataProvider {
-    var libraryProvider: LibraryDataProvider {
-        switch self {
-            case .online:
-                return OnlineLibraryDataProvider()
-            case .offline:
-                return OfflineLibraryDataProvider()
-        }
-    }
-    var title: LocalizedStringKey {
-        switch self {
-            case .online:
-                "title.library"
-            case .offline:
-                "title.downloads"
-        }
-    }
-    var sections: [SidebarView.LibrarySection] {
-        switch self {
-            case .online:
-                return SidebarView.LibrarySection.allCases
-            case .offline:
-                return [
-                    .tracks,
-                    .albums,
-                    .playlists,
-                    .favorites,
-                ]
-        }
-    }
-}
-extension SidebarView.LibrarySection {
-    var title: LocalizedStringKey {
-        switch self {
-            case .tracks:
-                return "section.tracks"
-            case .albums:
-                return "section.albums"
-            case .playlists:
-                return "section.playlists"
-            case .favorites:
-                return "title.favorites"
-            case .albumArtists:
-                return "title.albumArtists"
-            case .artists:
-                return "section.artists"
-        }
-    }
-    
-    var content: some View {
-        NavigationStack {
-            switch self {
-                case .tracks:
-                    TracksView()
-                case .albums:
-                    AlbumsView()
-                case .playlists:
-                    PlaylistsView()
-                case .favorites:
-                    FavoritesView()
-                case .albumArtists:
-                    ArtistsView(albumOnly: true)
-                case .artists:
-                    ArtistsView(albumOnly: false)
+            if let selection = selection {
+                NavigationStack {
+                    selection.section.content
+                        .id(selection.section)
+                        .id(selection.provider)
+                }
+            } else {
+                ProgressView()
+                    .onAppear {
+                        selection = .init(provider: .online, section: .tracks)
+                    }
             }
         }
+        .navigationSplitViewColumnWidth(320)
+        .modifier(RegularNowPlayingBarModifier())
+        .environment(\.libraryDataProvider, selection?.provider.libraryProvider ?? MockLibraryDataProvider())
     }
 }
 
 private extension Defaults.Keys {
-    static let lastSidebarSelection = Key<SidebarView.Selection>("lastSidebarSelection", default: .init(provider: .online, section: .tracks))
+    static let lastSidebarSelection = Key<SidebarView.Selection?>("lastSidebarSelection")
 }
 
 #Preview {

@@ -20,7 +20,7 @@ extension TabBarView {
                     }
             }
             .environment(\.libraryDataProvider, OfflineLibraryDataProvider())
-            .modifier(NowPlayingBarModifier())
+            .modifier(CompactNowPlayingBarModifier())
             .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateNotification)) { notification in
                 if let albumId = notification.userInfo?["offlineAlbumId"] as? String {
                     navigationPath.append(Navigation.AlbumLoadDestination(albumId: albumId))

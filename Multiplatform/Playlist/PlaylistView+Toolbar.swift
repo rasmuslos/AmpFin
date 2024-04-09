@@ -13,49 +13,50 @@ import AFPlayback
 
 extension PlaylistView {
     struct ToolbarModifier: ViewModifier {
-        @Environment(\.libraryOnline) var libraryOnline
-        @Environment(\.dismiss) var dismiss
+        @Environment(\.libraryOnline) private var libraryOnline
+        @Environment(\.dismiss) private var dismiss
         
         let playlist: Playlist
+        let offlineTracker: ItemOfflineTracker
         
         @Binding var tracks: [Track]
         @Binding var editMode: EditMode
         
-        @State var alertPresented = false
-        @State var offlineTracker: ItemOfflineTracker?
+        init(playlist: Playlist, tracks: Binding<[Track]>, editMode: Binding<EditMode>) {
+            self.playlist = playlist
+            offlineTracker = playlist.offlineTracker
+            
+            _tracks = tracks
+            _editMode = editMode
+        }
+        
+        @State private var alertPresented = false
         
         func body(content: Content) -> some View {
             content
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        if let offlineTracker = offlineTracker {
-                            Button {
-                                if offlineTracker.status == .none {
-                                    Task {
-                                        try! await OfflineManager.shared.download(playlist: playlist)
-                                    }
-                                } else if offlineTracker.status == .downloaded {
-                                    try! OfflineManager.shared.delete(playlistId: playlist.id)
+                        Button {
+                            if offlineTracker.status == .none {
+                                Task {
+                                    try! await OfflineManager.shared.download(playlist: playlist)
                                 }
-                            } label: {
-                                Group {
-                                    switch offlineTracker.status {
+                            } else if offlineTracker.status == .downloaded {
+                                try! OfflineManager.shared.delete(playlistId: playlist.id)
+                            }
+                        } label: {
+                            Group {
+                                switch offlineTracker.status {
                                     case .none:
                                         Image(systemName: "arrow.down.circle.fill")
                                     case .working:
                                         ProgressView()
                                     case .downloaded:
                                         Image(systemName: "xmark.circle.fill")
-                                    }
                                 }
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, .black.opacity(0.25))
                             }
-                        } else {
-                            ProgressView()
-                                .onAppear {
-                                    offlineTracker = playlist.offlineTracker
-                                }
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.white, .black.opacity(0.25))
                         }
                     }
                     

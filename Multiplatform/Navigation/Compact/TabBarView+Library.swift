@@ -23,7 +23,7 @@ extension TabBarView {
                     }
             }
             .environment(\.libraryDataProvider, OnlineLibraryDataProvider())
-            .modifier(NowPlayingBarModifier())
+            .modifier(CompactNowPlayingBarModifier())
             .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateNotification)) { notification in
                 if let albumId = notification.userInfo?["albumId"] as? String {
                     navigationPath.append(Navigation.AlbumLoadDestination(albumId: albumId))

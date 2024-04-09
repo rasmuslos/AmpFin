@@ -28,7 +28,7 @@ extension SearchView {
 
 extension SearchView {
     enum Tab {
-    case online
-    case offline
+        case online
+        case offline
     }
 }

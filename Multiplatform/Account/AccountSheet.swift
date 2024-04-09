@@ -12,9 +12,9 @@ import AFOffline
 import AFPlayback
 
 struct AccountSheet: View {
-    @State var username: String?
-    @State var sessions: [Session]? = nil
-    @State var downloads: [Track]? = nil
+    @State private var username: String?
+    @State private var sessions: [Session]? = nil
+    @State private var downloads: [Track]? = nil
     
     var body: some View {
         List {
@@ -182,6 +182,27 @@ struct AccountSheet: View {
         }
     }
 }
+
+struct AccountToolbarButtonModifier: ViewModifier {
+    @State var accountSheetPresented = false
+    
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        accountSheetPresented.toggle()
+                    } label: {
+                        Image(systemName: "person.crop.circle")
+                    }
+                }
+            }
+            .sheet(isPresented: $accountSheetPresented) {
+                AccountSheet()
+            }
+    }
+}
+
 
 #Preview {
     Text(verbatim: ":)")

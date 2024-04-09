@@ -11,12 +11,12 @@ import AFBase
 struct PlaylistsView: View {
     @Environment(\.libraryDataProvider) var dataProvider
     
-    @State var playlists: [Playlist]?
+    @State var playlists = [Playlist]()
     @State var failed = false
     
     var body: some View {
         Group {
-            if let playlists = playlists {
+            if !playlists.isEmpty {
                 List {
                     PlaylistsList(playlists: playlists)
                 }

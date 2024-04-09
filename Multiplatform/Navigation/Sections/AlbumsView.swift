@@ -32,6 +32,7 @@ struct AlbumsView: View {
                     AlbumGrid(albums: filter(), count: count, loadMore: fetchAlbums)
                         .padding()
                 }
+                .searchable(text: $search, placement: .navigationBarDrawer, prompt: "search.albums")
             } else if failed {
                 ErrorView()
             } else {
@@ -39,7 +40,6 @@ struct AlbumsView: View {
             }
         }
         .navigationTitle("title.albums")
-        .searchable(text: $search, placement: .navigationBarDrawer, prompt: "search.albums")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(ascending: $sortAscending, sortOrder: $sortOrder)

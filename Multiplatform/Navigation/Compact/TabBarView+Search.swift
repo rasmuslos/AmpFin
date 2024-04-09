@@ -11,7 +11,8 @@ extension TabBarView {
     struct SearchTab: View {
         var body: some View {
             SearchView()
-                .modifier(NowPlayingBarModifier())
+                .modifier(CompactNowPlayingBarModifier())
+                .modifier(AccountToolbarButtonModifier())
                 .tabItem {
                     Label("tab.search", systemImage: "magnifyingglass")
                 }

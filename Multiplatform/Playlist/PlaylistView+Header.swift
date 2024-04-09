@@ -13,8 +13,8 @@ extension PlaylistView {
         let playlist: Playlist
         let startPlayback: (_ shuffle: Bool) -> ()
         
-        @State var height: CGFloat = .zero
-        @State var offset: CGFloat = .zero
+        @State private var height: CGFloat = .zero
+        @State private var offset: CGFloat = .zero
         
         var body: some View {
             ZStack {

@@ -57,6 +57,7 @@ struct ArtistView: View {
                 .background(.background)
             }
         }
+        .modifier(Toolbar(artist: artist))
         .modifier(NowPlayingBarSafeAreaModifier())
         .task {
             await fetchAlbums()

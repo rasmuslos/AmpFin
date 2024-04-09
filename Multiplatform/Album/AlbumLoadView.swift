@@ -9,15 +9,15 @@ import SwiftUI
 import AFBase
 
 struct AlbumLoadView: View {
-    @Environment(\.libraryDataProvider) var dataProvider
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.libraryDataProvider) private var dataProvider
+    @Environment(\.dismiss) private var dismiss
     
     let albumId: String
     
-    @State var album: Album?
-    @State var failed = false
+    @State private var album: Album?
+    @State private var failed = false
     
-    @State var didPost = false
+    @State private var didPost = false
     
     var body: some View {
         if failed {

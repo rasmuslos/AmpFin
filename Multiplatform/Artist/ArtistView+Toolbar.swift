@@ -51,7 +51,6 @@ extension ArtistView.Toolbar {
         func body(content: Content) -> some View {
             if artist.cover == nil {
                 content
-                    .ignoresSafeArea(edges: .top)
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button {
@@ -72,6 +71,7 @@ extension ArtistView.Toolbar {
                     }
             } else {
                 content
+                    .ignoresSafeArea(edges: .top)
             }
         }
     }

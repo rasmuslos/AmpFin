@@ -11,8 +11,11 @@ struct SymbolButtonStyle: ButtonStyle {
     var active: Bool
     var heavy = false
     
+    private var color: Color {
+        heavy ? .black.opacity(0.2) : .white.opacity(0.25)
+    }
+    
     func makeBody(configuration: Configuration) -> some View {
-        let color = heavy ? Color.black.opacity(0.2) : .white.opacity(0.25)
         configuration.label
             .aspectRatio(1, contentMode: .fit)
             .padding(7)

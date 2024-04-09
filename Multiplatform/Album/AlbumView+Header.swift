@@ -148,7 +148,7 @@ extension AlbumView.Header {
                 
                 AlbumTitle(album: album, largeFont: false, imageColors: imageColors)
                 PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
-                    .padding(.bottom)
+                    .padding(.top)
             }
         }
     }

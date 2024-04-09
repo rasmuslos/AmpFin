@@ -11,15 +11,15 @@ import AFBase
 struct LoginView: View {
     var callback : () -> ()
     
-    @State var loginSheetPresented = false
-    @State var loginFlowState: LoginFlowState = .server
+    @State private var loginSheetPresented = false
+    @State private var loginFlowState: LoginFlowState = .server
     
-    @State var server = JellyfinClient.shared.serverUrl?.absoluteString ?? ""
-    @State var username = ""
-    @State var password = ""
+    @State private var server = JellyfinClient.shared.serverUrl?.absoluteString ?? ""
+    @State private var username = ""
+    @State private var password = ""
     
-    @State var serverVersion: String?
-    @State var loginError: LoginError?
+    @State private var serverVersion: String?
+    @State private var loginError: LoginError?
     
     var body: some View {
         VStack {

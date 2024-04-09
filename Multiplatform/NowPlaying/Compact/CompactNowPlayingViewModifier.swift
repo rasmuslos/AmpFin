@@ -7,21 +7,19 @@
 
 import SwiftUI
 import UIImageColors
-import FluidGradient
 import AFBase
 import AFPlayback
 
-struct NowPlayingViewModifier: ViewModifier {
+struct CompactNowPlayingViewModifier: ViewModifier {
     @Namespace var namespace
     
     @State private var viewState = NowPlayingViewState.init()
     
     @State private var controlsVisible = true
-    @State private var currentTab = Tab.cover
+    @State private var currentTab = NowPlayingTab.cover
     
     @State private var controlsDragging = false
     @State private var dragOffset: CGFloat = .zero
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     private var presentedTrack: Track? {
         if viewState.presented, let track = AudioPlayer.current.nowPlaying {
@@ -29,13 +27,6 @@ struct NowPlayingViewModifier: ViewModifier {
         }
         
         return nil
-    }
-    
-    private var useHorizontalLayout: Bool {
-        if horizontalSizeClass == .regular {
-            return true
-        }
-        return false
     }
     
     func body(content: Content) -> some View {
@@ -51,59 +42,29 @@ struct NowPlayingViewModifier: ViewModifier {
             
             Group {
                 if let track = presentedTrack {
-                    Background(cover: track.cover)
-                        // SwiftUI z-index is my new favorite worst piece of shit
+                    NowPlayingBackground(cover: track.cover)
+                    // SwiftUI z-index is my new favorite worst piece of shit
                         .zIndex(1)
                         .transition(.asymmetric(
                             insertion: .modifier(active: BackgroundInsertTransitionModifier(active: true), identity: BackgroundInsertTransitionModifier(active: false)),
                             removal: .modifier(active: BackgroundRemoveTransitionModifier(active: true), identity: BackgroundRemoveTransitionModifier(active: false)))
                         )
-                        .onAppear {
-                            dragOffset = 0
-                        }
                 }
                 
                 if viewState.containerPresented {
-                    HStack {
-                        VStack{
-                            if let track = presentedTrack {
-                                if useHorizontalLayout || currentTab == .cover {
-                                    Cover(track: track, currentTab: currentTab, namespace: namespace)
-                                } else {
-                                    SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
-                                    Group {
-                                        if currentTab == .lyrics {
-                                            LyricsContainer(controlsVisible: $controlsVisible)
-                                        } else if currentTab == .queue {
-                                            Queue()
-                                                .padding(.horizontal, -30)
-                                        }
-                                    }
-                                    .transition(.asymmetric(
-                                        insertion:
-                                                .push(from: .bottom).animation(.spring.delay(0.2))
-                                                .combined(with: .opacity),
-                                        removal:
-                                                .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))
-                                                .combined(with: .opacity)
-                                    ))
-                                }
+                    VStack {
+                        if let track = presentedTrack {
+                            if currentTab == .cover {
+                                NowPlayingCover(track: track, currentTab: currentTab, namespace: namespace)
+                            } else {
+                                NowPlayingSmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                                 
-                                if controlsVisible {
-                                    Controls(currentTab: $currentTab, controlsDragging: $controlsDragging)
-                                        .transition(.move(edge: .bottom).animation(.linear(duration: 0.3)))
-                                }
-                            }
-                        }
-                        .frame(maxWidth: 415)
-                        if useHorizontalLayout, viewState.presented {
-                            VStack{
                                 Group {
                                     if currentTab == .lyrics {
-                                        LyricsContainer(controlsVisible: $controlsVisible)
+                                        NowPlayingLyricsContainer(controlsVisible: $controlsVisible)
                                     } else if currentTab == .queue {
-                                        Queue()
-                                            .padding(.vertical, 10)
+                                        NowPlayingQueue()
+                                            .padding(.horizontal, -30)
                                     }
                                 }
                                 .transition(.asymmetric(
@@ -115,7 +76,11 @@ struct NowPlayingViewModifier: ViewModifier {
                                             .combined(with: .opacity)
                                 ))
                             }
-                            .transition(.move(edge: .bottom).animation(.linear(duration: 0.2)))
+                            
+                            if controlsVisible {
+                                NowPlayingControls(currentTab: $currentTab, controlsDragging: $controlsDragging)
+                                    .transition(.move(edge: .bottom).animation(.linear(duration: 0.3)))
+                            }
                         }
                     }
                     .zIndex(2)
@@ -136,7 +101,6 @@ struct NowPlayingViewModifier: ViewModifier {
                         }
                     }
                     .padding(.horizontal, 30)
-                    .padding(.vertical)
                     .simultaneousGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
@@ -174,6 +138,7 @@ struct NowPlayingViewModifier: ViewModifier {
             .allowsHitTesting(presentedTrack != nil)
             // This is very reasonable and sane
             .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
+            .frame(height: UIScreen.main.bounds.height)
             .offset(y: dragOffset)
             .animation(.spring, value: dragOffset)
         }
@@ -192,6 +157,7 @@ struct BackgroundInsertTransitionModifier: ViewModifier {
         content
             .mask(alignment: .bottom) {
                 Rectangle()
+                    .frame(width: UIScreen.main.bounds.width - (active ? 24 : 0), height: active ? 0 : UIScreen.main.bounds.height)
             }
             .offset(y: active ? -146 : 0)
     }
@@ -215,54 +181,6 @@ struct BackgroundRemoveTransitionModifier: ViewModifier {
 }
 
 // MARK: Background
-
-extension NowPlayingViewModifier {
-    struct Background: View {
-        let cover: Item.Cover?
-        
-        @State var imageColors: ImageColors?
-        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-        
-        var body: some View {
-            ZStack {
-                Color.black
-                
-                ItemImage(cover: cover)
-                    .id(cover?.url)
-                    .blur(radius: 100)
-                
-                if let imageColors = imageColors {
-                    FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
-                        .onChange(of: cover?.url) { determineImageColors() }
-                } else {
-                    Color.clear
-                        .onAppear {
-                            Task {
-                                if horizontalSizeClass == .regular {
-                                    try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
-                                }
-                                determineImageColors()
-                            }
-                        }
-                }
-            }
-            .overlay(.black.opacity(0.25))
-            .ignoresSafeArea(edges: .all)
-            .allowsHitTesting(false)
-        }
-        
-        func determineImageColors() {
-            Task.detached {
-                let imageColors = await ImageColors.getImageColors(cover: cover)
-                imageColors?.updateHue(saturation: 0.6, luminance: 0.6)
-                
-                withAnimation(.easeInOut(duration: 1)) {
-                    self.imageColors = imageColors
-                }
-            }
-        }
-    }
-}
 
 @Observable
 class NowPlayingViewState {
@@ -297,15 +215,5 @@ class NowPlayingViewState {
             
             completion?()
         }
-    }
-}
-
-// MARK: Tabs
-
-extension NowPlayingViewModifier {
-    enum Tab {
-        case cover
-        case lyrics
-        case queue
     }
 }

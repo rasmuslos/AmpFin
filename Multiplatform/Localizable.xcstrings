@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "account.deleteDownloads" : {
       "localizations" : {
         "de" : {
@@ -481,6 +484,9 @@
           }
         }
       }
+    },
+    "Hello, World!" : {
+
     },
     "home.randomAlbums" : {
       "localizations" : {

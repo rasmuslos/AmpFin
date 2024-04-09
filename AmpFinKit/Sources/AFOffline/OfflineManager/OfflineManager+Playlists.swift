@@ -112,6 +112,11 @@ public extension OfflineManager {
     }
     
     @MainActor
+    func isPlaylistDownloaded(playlistId: String) -> Bool {
+        (try? getPlaylist(playlistId: playlistId)) != nil
+    }
+    
+    @MainActor
     func getPlaylists() throws -> [Playlist] {
         try getOfflinePlaylists().map(Playlist.convertFromOffline)
     }

@@ -15,4 +15,6 @@ extension Defaults.Keys {
     
     static let artistInstantMix = Key("artistInstantMix", default: false)
     static let libraryRandomAlbums = Key("libraryRandomAlbums", default: false)
+    
+    static let playlistSectionExpanded = Key("playlistSectionExpanded", default: true)
 }

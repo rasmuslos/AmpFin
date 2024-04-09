@@ -114,6 +114,9 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     
     // MARK: Playlist
     
+    public func getPlaylist(playlistId: String) async throws -> Playlist {
+        try await OfflineManager.shared.getPlaylist(playlistId: playlistId)
+    }
     public func getPlaylists() async throws -> [Playlist] {
         try await OfflineManager.shared.getPlaylists()
     }

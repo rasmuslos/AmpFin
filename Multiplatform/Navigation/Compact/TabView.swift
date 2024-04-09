@@ -22,7 +22,7 @@ struct TabBarView: View {
             SearchTab()
                 .tag(Tab.search)
         }
-        .modifier(NowPlayingViewModifier())
+        .modifier(CompactNowPlayingViewModifier())
         .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { notification in
             if let id = notification.object as? String {
                 withAnimation {

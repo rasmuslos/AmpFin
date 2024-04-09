@@ -180,6 +180,9 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
     
     // MARK: Playlist
     
+    public func getPlaylist(playlistId: String) async throws -> Playlist {
+        Playlist.fixture
+    }
     public func getPlaylists() async throws -> [Playlist] {
         [
             Playlist.fixture,
