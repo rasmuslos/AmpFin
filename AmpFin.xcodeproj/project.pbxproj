@@ -106,7 +106,7 @@
 		3AAE1B4C2BC5858200FD0200 /* NowPlayingBarSafeAreaModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE1B4B2BC5858200FD0200 /* NowPlayingBarSafeAreaModifier.swift */; };
 		3AAE1B4F2BC585CC00FD0200 /* RegularNowPlayingBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE1B4E2BC585CC00FD0200 /* RegularNowPlayingBarModifier.swift */; };
 		3AAE1B512BC591E500FD0200 /* NowPlayingBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE1B502BC591E500FD0200 /* NowPlayingBackground.swift */; };
-		3AAE1B532BC593EB00FD0200 /* RegularNowPlayingCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE1B522BC593EB00FD0200 /* RegularNowPlayingCover.swift */; };
+		3AAE1B532BC593EB00FD0200 /* RegularNowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE1B522BC593EB00FD0200 /* RegularNowPlayingView.swift */; };
 		3AAF0DEC2B4960EF0032DEFF /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A442C092B485E56008FECE2 /* Intents.framework */; };
 		3AAF0DEF2B4960EF0032DEFF /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */; };
 		3AAF0DF32B4960EF0032DEFF /* Siri Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -132,6 +132,7 @@
 		3AEB32402AA7FFF100853210 /* TabBarView+Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB323F2AA7FFF100853210 /* TabBarView+Library.swift */; };
 		3AEB32422AA800C800853210 /* TabBarView+Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32412AA800C800853210 /* TabBarView+Downloads.swift */; };
 		3AF815DD2AAA1A80004BA444 /* NowPlayingLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF815DC2AAA1A80004BA444 /* NowPlayingLyrics.swift */; };
+		3AFCD1212BC5CB6A00589301 /* NowPlayingButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFCD1202BC5CB6A00589301 /* NowPlayingButtons.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,7 +262,7 @@
 		3AAE1B4B2BC5858200FD0200 /* NowPlayingBarSafeAreaModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingBarSafeAreaModifier.swift; sourceTree = "<group>"; };
 		3AAE1B4E2BC585CC00FD0200 /* RegularNowPlayingBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularNowPlayingBarModifier.swift; sourceTree = "<group>"; };
 		3AAE1B502BC591E500FD0200 /* NowPlayingBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingBackground.swift; sourceTree = "<group>"; };
-		3AAE1B522BC593EB00FD0200 /* RegularNowPlayingCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularNowPlayingCover.swift; sourceTree = "<group>"; };
+		3AAE1B522BC593EB00FD0200 /* RegularNowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularNowPlayingView.swift; sourceTree = "<group>"; };
 		3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Siri Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		3AAF0DF02B4960EF0032DEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -291,6 +292,7 @@
 		3AEB323F2AA7FFF100853210 /* TabBarView+Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarView+Library.swift"; sourceTree = "<group>"; };
 		3AEB32412AA800C800853210 /* TabBarView+Downloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarView+Downloads.swift"; sourceTree = "<group>"; };
 		3AF815DC2AAA1A80004BA444 /* NowPlayingLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingLyrics.swift; sourceTree = "<group>"; };
+		3AFCD1202BC5CB6A00589301 /* NowPlayingButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingButtons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -598,7 +600,7 @@
 			isa = PBXGroup;
 			children = (
 				3AAE1B4E2BC585CC00FD0200 /* RegularNowPlayingBarModifier.swift */,
-				3AAE1B522BC593EB00FD0200 /* RegularNowPlayingCover.swift */,
+				3AAE1B522BC593EB00FD0200 /* RegularNowPlayingView.swift */,
 			);
 			path = Regular;
 			sourceTree = "<group>";
@@ -699,6 +701,7 @@
 				3A8B993D2AA9FE02004AAA7B /* NowPlayingTitle.swift */,
 				3AF815DC2AAA1A80004BA444 /* NowPlayingLyrics.swift */,
 				3A6565D62AAAADC400C1FBE9 /* NowPlayingQueue.swift */,
+				3AFCD1202BC5CB6A00589301 /* NowPlayingButtons.swift */,
 				3A8B993F2AAA0085004AAA7B /* NowPlayingControls.swift */,
 				3AAE1B502BC591E500FD0200 /* NowPlayingBackground.swift */,
 				3AAE1B4D2BC5858E00FD0200 /* Modifier */,
@@ -1045,7 +1048,7 @@
 				3AE1B0DC2ABCDA0A0052C8AA /* AppDelegate.swift in Sources */,
 				3A2B29002B43819400DF9731 /* PlaylistView+Toolbar.swift in Sources */,
 				3A1750CD2B48B57000A39BD9 /* PlayMediaHandler.swift in Sources */,
-				3AAE1B532BC593EB00FD0200 /* RegularNowPlayingCover.swift in Sources */,
+				3AAE1B532BC593EB00FD0200 /* RegularNowPlayingView.swift in Sources */,
 				3A2B28EF2B43798600DF9731 /* PlaylistView+Header.swift in Sources */,
 				3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */,
 				3AF815DD2AAA1A80004BA444 /* NowPlayingLyrics.swift in Sources */,
@@ -1077,6 +1080,7 @@
 				3AAE1B4C2BC5858200FD0200 /* NowPlayingBarSafeAreaModifier.swift in Sources */,
 				3A2B28ED2B43739100DF9731 /* PlaylistView.swift in Sources */,
 				3A7938FF2B387851001B3B3D /* LibraryDataProvider.swift in Sources */,
+				3AFCD1212BC5CB6A00589301 /* NowPlayingButtons.swift in Sources */,
 				3AEB322B2AA7EC3C00853210 /* iOSApp.swift in Sources */,
 				3A3EA5A72ACC206500600BC5 /* DownloadIndicator.swift in Sources */,
 				3A7939002B387851001B3B3D /* OfflineLibraryDataProvider.swift in Sources */,

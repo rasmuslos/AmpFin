@@ -61,7 +61,6 @@ struct NowPlayingQueue: View {
         }
         .padding(.top, 10)
         .padding(.bottom, -10)
-        .padding(.horizontal, 30)
         
         List {
             if showHistory {
@@ -122,6 +121,7 @@ struct NowPlayingQueue: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+        .padding(.horizontal, -30)
         // this is required because SwiftUI sucks ass
         .mask(
             VStack(spacing: 0) {

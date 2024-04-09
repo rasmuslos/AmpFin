@@ -184,22 +184,30 @@ struct AccountSheet: View {
 }
 
 struct AccountToolbarButtonModifier: ViewModifier {
-    @State var accountSheetPresented = false
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    @State private var accountSheetPresented = false
+    
+    let requiredSize: UserInterfaceSizeClass
     
     func body(content: Content) -> some View {
-        content
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        accountSheetPresented.toggle()
-                    } label: {
-                        Image(systemName: "person.crop.circle")
+        if horizontalSizeClass == requiredSize {
+            content
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            accountSheetPresented.toggle()
+                        } label: {
+                            Image(systemName: "person.crop.circle")
+                        }
                     }
                 }
-            }
-            .sheet(isPresented: $accountSheetPresented) {
-                AccountSheet()
-            }
+                .sheet(isPresented: $accountSheetPresented) {
+                    AccountSheet()
+                }
+        } else {
+            content
+        }
     }
 }
 

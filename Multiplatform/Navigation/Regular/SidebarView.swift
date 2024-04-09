@@ -20,17 +20,16 @@ struct SidebarView: View {
                 }
                 
                 PlaylistSection()
-                
-                // :(
-                Color.clear
-                    .modifier(AccountToolbarButtonModifier())
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            NavigationLink(value: Selection(provider: .online, section: .search)) {
-                                Image(systemName: "magnifyingglass")
-                            }
-                        }
+            }
+            .modifier(AccountToolbarButtonModifier(requiredSize: .regular))
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        selection = .init(provider: .online, section: .search)
+                    } label: {
+                        Image(systemName: "magnifyingglass")
                     }
+                }
             }
         } detail: {
             if let selection = selection {

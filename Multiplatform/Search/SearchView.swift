@@ -10,6 +10,8 @@ import AFBase
 import AFPlayback
 
 struct SearchView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     @State private var query = ""
     @State private var task: Task<(), Never>? = nil
     
@@ -75,6 +77,7 @@ struct SearchView: View {
             .listStyle(.plain)
             .navigationTitle("title.search")
             .modifier(NowPlayingBarSafeAreaModifier())
+            .modifier(AccountToolbarButtonModifier(requiredSize: .compact))
             // Query
             .searchable(text: $query, placement: .navigationBarDrawer, prompt: "search.placeholder")
             .autocorrectionDisabled()

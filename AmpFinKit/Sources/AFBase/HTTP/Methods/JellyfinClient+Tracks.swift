@@ -102,7 +102,7 @@ public extension JellyfinClient {
     
     /// Get the lyrics of a track
     func getLyrics(trackId: String) async throws -> Track.Lyrics {
-        let response = try await request(ClientRequest<LyricsResponse>(path: "Items/\(trackId)/Lyrics", method: "GET", userPrefix: true))
+        let response = try await request(ClientRequest<LyricsResponse>(path: "Audio/\(trackId)/Lyrics", method: "GET"))
         var lyrics: Track.Lyrics = [0: nil]
         
         response.Lyrics.forEach { element in

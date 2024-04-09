@@ -485,9 +485,6 @@
         }
       }
     },
-    "Hello, World!" : {
-
-    },
     "home.randomAlbums" : {
       "localizations" : {
         "de" : {

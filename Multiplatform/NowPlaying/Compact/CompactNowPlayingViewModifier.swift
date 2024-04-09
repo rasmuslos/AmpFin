@@ -43,7 +43,6 @@ struct CompactNowPlayingViewModifier: ViewModifier {
             Group {
                 if let track = presentedTrack {
                     NowPlayingBackground(cover: track.cover)
-                    // SwiftUI z-index is my new favorite worst piece of shit
                         .zIndex(1)
                         .transition(.asymmetric(
                             insertion: .modifier(active: BackgroundInsertTransitionModifier(active: true), identity: BackgroundInsertTransitionModifier(active: false)),
@@ -64,7 +63,6 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                                         NowPlayingLyricsContainer(controlsVisible: $controlsVisible)
                                     } else if currentTab == .queue {
                                         NowPlayingQueue()
-                                            .padding(.horizontal, -30)
                                     }
                                 }
                                 .transition(.asymmetric(
@@ -78,8 +76,12 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                             }
                             
                             if controlsVisible {
-                                NowPlayingControls(currentTab: $currentTab, controlsDragging: $controlsDragging)
-                                    .transition(.move(edge: .bottom).animation(.linear(duration: 0.3)))
+                                Group {
+                                    NowPlayingControls(controlsDragging: $controlsDragging)
+                                    NowPlayingButtons(currentTab: $currentTab)
+                                        .padding(.bottom, 40)
+                                }
+                                .transition(.move(edge: .bottom).animation(.linear(duration: 0.3)))
                             }
                         }
                     }

@@ -54,7 +54,7 @@ internal extension LocalAudioEndpoint {
             URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aiff|aif"),
             URLQueryItem(name: "startTimeTicks", value: "0"),
             URLQueryItem(name: "audioCodec", value: "aac"),
-            URLQueryItem(name: "transcodingContainer", value: "mp3"),
+            URLQueryItem(name: "transcodingContainer", value: "mp4"),
             URLQueryItem(name: "transcodingProtocol", value: "hls"),
         ])
         

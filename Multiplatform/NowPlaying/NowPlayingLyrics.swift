@@ -134,6 +134,8 @@ struct NowPlayingLyricsContainer: View {
 
 extension NowPlayingLyricsContainer {
     struct LyricLine: View {
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        
         let index: Int
         let text: String?
         let activeLineIndex: Int
@@ -150,7 +152,7 @@ extension NowPlayingLyricsContainer {
             HStack {
                 if let text = text {
                     Text(text)
-                        .font(.system(size: 33))
+                        .font(.system(size: horizontalSizeClass == .compact ? 33 : 50))
                     
                     Spacer()
                 } else {
@@ -181,7 +183,7 @@ extension NowPlayingLyricsContainer {
                     pulse *= 1.2
                 }
             }
-            .padding(.vertical, 10)
+            .padding(.vertical, horizontalSizeClass == .compact ? 10 : 25)
             .offset(y: 25 + determineAdditionalOffset())
         }
         

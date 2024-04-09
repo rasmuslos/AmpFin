@@ -12,7 +12,6 @@ extension TabBarView {
         var body: some View {
             SearchView()
                 .modifier(CompactNowPlayingBarModifier())
-                .modifier(AccountToolbarButtonModifier())
                 .tabItem {
                     Label("tab.search", systemImage: "magnifyingglass")
                 }
