@@ -15,6 +15,7 @@ struct AccountSheet: View {
     @State private var username: String?
     @State private var sessions: [Session]? = nil
     @State private var downloads: [Track]? = nil
+    @Binding var accountSheetPresented: Bool
     
     var body: some View {
         List {
@@ -180,6 +181,16 @@ struct AccountSheet: View {
                 (username, _, _, _) = try await JellyfinClient.shared.getUserData()
             } catch {}
         }
+#if targetEnvironment(macCatalyst)
+        Button(action: { accountSheetPresented = false }) {
+            Text("Close")
+                .padding(.vertical)
+                .frame(maxWidth: .infinity)
+                .foregroundColor(Color.white)
+                .background(Color.accentColor)
+        }
+        .padding(.top, -10)
+#endif
     }
 }
 
@@ -203,7 +214,7 @@ struct AccountToolbarButtonModifier: ViewModifier {
                     }
                 }
                 .sheet(isPresented: $accountSheetPresented) {
-                    AccountSheet()
+                    AccountSheet(accountSheetPresented: $accountSheetPresented)
                 }
         } else {
             content
@@ -215,6 +226,6 @@ struct AccountToolbarButtonModifier: ViewModifier {
 #Preview {
     Text(verbatim: ":)")
         .sheet(isPresented: .constant(true)) {
-            AccountSheet()
+            AccountSheet(accountSheetPresented: .constant(true))
         }
 }
