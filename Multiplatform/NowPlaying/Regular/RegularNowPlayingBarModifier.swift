@@ -146,12 +146,12 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                     }
                 }
             }
-            .onReceive(NotificationCenter.default.publisher(for: .init("a"))) { notification in
+            .onReceive(NotificationCenter.default.publisher(for: SidebarView.widthChangeNotification)) { notification in
                 if let width = notification.object as? CGFloat {
                     self.width = min(width, 1100)
                 }
             }
-            .onReceive(NotificationCenter.default.publisher(for: .init("b"))) { notification in
+            .onReceive(NotificationCenter.default.publisher(for: SidebarView.offsetChangeNotification)) { notification in
                 if let offset = notification.object as? CGFloat {
                     adjust = offset
                 }

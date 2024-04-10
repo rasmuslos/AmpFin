@@ -11,6 +11,8 @@ import AFBase
 import AFPlayback
 
 struct NowPlayingControls: View {
+    var compact: Bool = false
+    
     @Binding var controlsDragging: Bool
     
     @State private var quality: String?
@@ -23,10 +25,6 @@ struct NowPlayingControls: View {
     
     private var playedPercentage: Double {
         (AudioPlayer.current.currentTime / AudioPlayer.current.duration) * 100
-    }
-    
-    private var useHorizontalLayout: Bool {
-        return horizontalSizeClass == .regular
     }
     
     var body: some View {
@@ -42,7 +40,7 @@ struct NowPlayingControls: View {
                         controlsDragging = $0
                     }))
                 .frame(height: 10)
-                .padding(.bottom, useHorizontalLayout ? 3 : 10)
+                .padding(.bottom, compact ? 3 : 10)
                 
                 HStack {
                     Group {
@@ -61,8 +59,8 @@ struct NowPlayingControls: View {
                         Text(quality)
                             .font(.caption2)
                             .foregroundStyle(.primary)
-                            .padding(.vertical, useHorizontalLayout ? 1 : 4)
-                            .padding(.horizontal, useHorizontalLayout ? 10 : 8)
+                            .padding(.vertical, compact ? 1 : 4)
+                            .padding(.horizontal, compact ? 10 : 8)
                             .background(.tertiary)
                             .clipShape(RoundedRectangle(cornerRadius: 3))
                     }
@@ -106,8 +104,8 @@ struct NowPlayingControls: View {
                 //.font(.system(size: 34))
                 .foregroundStyle(.primary)
             }
-            .padding(.top, useHorizontalLayout ? 20 : 35)
-            .padding(.bottom, useHorizontalLayout ? 40 : 65)
+            .padding(.top, compact ? 20 : 35)
+            .padding(.bottom, compact ? 40 : 65)
             
             // The first view is the visible slider, the second one is there to hide the iOS indicator (10/10 hack)
             VolumeSlider(dragging: .init(get: { volumeDragging }, set: {

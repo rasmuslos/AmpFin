@@ -18,11 +18,22 @@ struct RegularNowPlayingView: View {
     @State private var controlsDragging = false
     @State private var currentTab = NowPlayingTab.cover
     
+    private var singleColumnLayout: Bool {
+        availableWidth < 1300
+    }
+    
     var body: some View {
         ZStack {
             GeometryReader { proxy in
-                
+                Color.clear
+                    .onAppear {
+                        availableWidth = proxy.size.width
+                    }
+                    .onChange(of: proxy.size.width) {
+                        availableWidth = proxy.size.width
+                    }
             }
+            .frame(height: 0)
             
             if let track = AudioPlayer.current.nowPlaying {
                 NowPlayingBackground(cover: track.cover)
@@ -31,14 +42,36 @@ struct RegularNowPlayingView: View {
                 VStack {
                     HStack {
                         VStack {
-                            NowPlayingCover(track: track, currentTab: currentTab, namespace: namespace)
-                            NowPlayingControls(controlsDragging: $controlsDragging)
+                            // Single column layout
+                            if !singleColumnLayout || currentTab == .cover {
+                                NowPlayingCover(track: track, currentTab: currentTab, namespace: namespace)
+                            } else {
+                                NowPlayingSmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
+                                
+                                Group {
+                                    if currentTab == .lyrics {
+                                        NowPlayingLyricsContainer(controlsVisible: .constant(true))
+                                    } else if currentTab == .queue {
+                                        NowPlayingQueue()
+                                    }
+                                }
+                                .transition(.asymmetric(
+                                    insertion:
+                                            .push(from: .bottom).animation(.spring.delay(0.2))
+                                            .combined(with: .opacity),
+                                    removal:
+                                            .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))
+                                            .combined(with: .opacity)
+                                ))
+                            }
                             
-                            Spacer()
+                            NowPlayingControls(compact: !singleColumnLayout, controlsDragging: $controlsDragging)
+                                .padding(.bottom, 30)
                         }
-                        .frame(maxWidth: 475)
+                        .frame(maxWidth: singleColumnLayout ? .infinity : 475)
                         
-                        if currentTab != .cover {
+                        // Two column layout
+                        if !singleColumnLayout && currentTab != .cover {
                             VStack {
                                 Group {
                                     if currentTab == .queue {
@@ -57,7 +90,7 @@ struct RegularNowPlayingView: View {
                     NowPlayingButtons(currentTab: $currentTab)
                 }
                 .padding(.bottom)
-                .padding(.horizontal, 40)
+                .padding(.horizontal, singleColumnLayout ? 60 : 40)
                 .padding(.top, 60)
                 .ignoresSafeArea(edges: .all)
                 .foregroundStyle(.white)
