@@ -15,6 +15,7 @@ struct AccountSheet: View {
     @State private var username: String?
     @State private var sessions: [Session]? = nil
     @State private var downloads: [Track]? = nil
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         List {
@@ -180,6 +181,16 @@ struct AccountSheet: View {
                 (username, _, _, _) = try await JellyfinClient.shared.getUserData()
             } catch {}
         }
+#if targetEnvironment(macCatalyst)
+        Button(action: { dismiss() }) {
+            Text("Close")
+                .padding(.vertical)
+                .frame(maxWidth: .infinity)
+                .foregroundColor(Color.white)
+                .background(Color.accentColor)
+        }
+        .padding(.top, -10)
+#endif
     }
 }
 

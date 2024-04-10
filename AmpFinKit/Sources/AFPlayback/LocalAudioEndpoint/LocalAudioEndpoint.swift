@@ -67,12 +67,18 @@ internal class LocalAudioEndpoint: AudioEndpoint {
     
     public var volume: Float {
         get {
+#if targetEnvironment(macCatalyst)
+            audioPlayer.volume
+#else
             audioSession.outputVolume
+#endif
         }
         set {
-            #if os(iOS)
+#if targetEnvironment(macCatalyst)
+            audioPlayer.volume = newValue
+#else
             MPVolumeView.setVolume(newValue)
-            #endif
+#endif
         }
     }
     

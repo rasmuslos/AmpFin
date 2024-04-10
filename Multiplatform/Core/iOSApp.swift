@@ -29,9 +29,10 @@ struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+#if targetEnvironment(macCatalyst)
+                .onAppear { (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.titlebar?.titleVisibility = .hidden }
+#endif
         }
         .modelContainer(PersistenceManager.shared.modelContainer)
-        // why does this not work? because
-        // .windowStyle(HiddenTitleBarWindowStyle())
     }
 }

@@ -153,7 +153,7 @@ struct RegularNowPlayingBarModifier: ViewModifier {
             }
             .onReceive(NotificationCenter.default.publisher(for: .init("b"))) { notification in
                 if let offset = notification.object as? CGFloat {
-                    adjust = 320 + offset
+                    adjust = offset
                 }
             }
     }

@@ -11,7 +11,8 @@ import AFOffline
 
 extension AlbumView {
     struct ToolbarModifier: ViewModifier {
-        @Environment(\.presentationMode) private var presentationMode
+        @Environment(\.isPresented) private var isPresented
+        @Environment(\.dismiss) private var dismiss
         @Environment(\.libraryDataProvider) private var dataProvider
         @Environment(\.libraryOnline) private var libraryOnline
         
@@ -59,9 +60,9 @@ extension AlbumView {
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigation) {
-                        if !toolbarBackgroundVisible && presentationMode.wrappedValue.isPresented {
+                        if !toolbarBackgroundVisible && isPresented {
                             Button {
-                                presentationMode.wrappedValue.dismiss()
+                                dismiss()
                             } label: {
                                 Image(systemName: "chevron.left")
                                     .modifier(FullscreenToolbarModifier(imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible))

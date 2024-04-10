@@ -68,7 +68,7 @@ internal extension LocalAudioEndpoint {
             paused: !playing,
             repeatMode: repeatMode,
             shuffled: shuffled,
-            volume: audioSession.outputVolume,
+            volume: volume,
             scheduled: scheduled)
     }
     
