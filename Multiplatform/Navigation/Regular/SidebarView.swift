@@ -45,7 +45,6 @@ struct SidebarView: View {
                     }
             }
         }
-        .navigationSplitViewColumnWidth(320)
         .modifier(RegularNowPlayingBarModifier())
         .environment(\.libraryDataProvider, selection?.provider.libraryProvider ?? MockLibraryDataProvider())
     }

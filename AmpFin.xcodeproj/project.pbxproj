@@ -50,7 +50,7 @@
 		3A442BE72B483C0B008FECE2 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A442BE62B483C0B008FECE2 /* SwiftUI.framework */; };
 		3A442BEA2B483C0B008FECE2 /* WidgetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A442BE92B483C0B008FECE2 /* WidgetExtension.swift */; };
 		3A442BF22B483C0D008FECE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A442BF12B483C0D008FECE2 /* Assets.xcassets */; };
-		3A442BF62B483C0D008FECE2 /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A442BE32B483C0B008FECE2 /* Widget Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A442BF62B483C0D008FECE2 /* Widget Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A442BE32B483C0B008FECE2 /* Widget Extension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A442BFC2B483EC9008FECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A442BFB2B483EC9008FECE2 /* Localizable.xcstrings */; };
 		3A442BFE2B484026008FECE2 /* DebugTokenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */; };
 		3A44B06D2BA194410013E4EF /* Double+Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A44B06C2BA194410013E4EF /* Double+Duration.swift */; };
@@ -107,7 +107,7 @@
 		3AAE1B532BC593EB00FD0200 /* RegularNowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE1B522BC593EB00FD0200 /* RegularNowPlayingView.swift */; };
 		3AAF0DEC2B4960EF0032DEFF /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A442C092B485E56008FECE2 /* Intents.framework */; };
 		3AAF0DEF2B4960EF0032DEFF /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */; };
-		3AAF0DF32B4960EF0032DEFF /* Siri Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3AAF0DF32B4960EF0032DEFF /* Siri Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3ABBB7272B755D3C00530BFB /* UIViewController+DarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABBB7262B755D3C00530BFB /* UIViewController+DarkMode.swift */; };
 		3AD1B3CB2BC44C440051C5AE /* ArtistView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1B3CA2BC44C440051C5AE /* ArtistView+Toolbar.swift */; };
 		3AD351CC2BAF29FE005DF243 /* ArtistPlaybackTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD351CB2BAF29FE005DF243 /* ArtistPlaybackTip.swift */; };
@@ -474,18 +474,6 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
-		3A58F8382B5EB92E00421D08 /* Shareda */ = {
-			isa = PBXGroup;
-			children = (
-				3ADE8E952AA92B03009826A3 /* Extensions */,
-				3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */,
-				3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */,
-				3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */,
-				3ABBB7262B755D3C00530BFB /* UIViewController+DarkMode.swift */,
-			);
-			path = Shareda;
-			sourceTree = "<group>";
-		};
 		3A6FC1F52ACC0BE30070301B /* Intents */ = {
 			isa = PBXGroup;
 			children = (
@@ -577,7 +565,9 @@
 		3A98A0332AABA48D00EA84CF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */,
 				3A6FC1F52ACC0BE30070301B /* Intents */,
+				3ADE8E952AA92B03009826A3 /* Extensions */,
 				3AB6979F2B386B20009000DD /* LibraryDataProviders */,
 			);
 			path = Utility;
@@ -670,8 +660,11 @@
 		3ADE8E952AA92B03009826A3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */,
 				3A5515F62BC449A400B922D7 /* Defaults+Keys.swift */,
+				3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */,
 				3A44B06C2BA194410013E4EF /* Double+Duration.swift */,
+				3ABBB7262B755D3C00530BFB /* UIViewController+DarkMode.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
 			);
 			path = Extensions;
@@ -719,7 +712,6 @@
 				3ADE8EA52AA94637009826A3 /* NowPlaying */,
 				3A5515E72BC3D73200B922D7 /* ---a--- */,
 				3A7939032B38B0EB001B3B3D /* Presentation */,
-				3A58F8382B5EB92E00421D08 /* Shareda */,
 				3A24E5D82B4BF5850052DD20 /* Settings.bundle */,
 				3A0345122B49634F007D6171 /* Info.plist */,
 				3AEB321F2AA7EC3C00853210 /* Assets.xcassets */,
@@ -1103,11 +1095,13 @@
 /* Begin PBXTargetDependency section */
 		3A442BF52B483C0D008FECE2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 3A442BE22B483C0B008FECE2 /* Widget Extension */;
 			targetProxy = 3A442BF42B483C0D008FECE2 /* PBXContainerItemProxy */;
 		};
 		3AAF0DF22B4960EF0032DEFF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 3AAF0DEA2B4960EF0032DEFF /* Siri Extension */;
 			targetProxy = 3AAF0DF12B4960EF0032DEFF /* PBXContainerItemProxy */;
 		};
@@ -1313,7 +1307,6 @@
 				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1381,7 +1374,6 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1423,8 +1415,7 @@
 				PRODUCT_NAME = AmpFin;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1463,8 +1454,7 @@
 				PRODUCT_NAME = AmpFin;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
