@@ -48,6 +48,12 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                             insertion: .modifier(active: BackgroundInsertTransitionModifier(active: true), identity: BackgroundInsertTransitionModifier(active: false)),
                             removal: .modifier(active: BackgroundRemoveTransitionModifier(active: true), identity: BackgroundRemoveTransitionModifier(active: false)))
                         )
+                        .onAppear {
+                            // In rare cases, this value is not set to 0 on closing.
+                            // Forcing a reset to 0 on appearance to prevent strange animations
+                            // where the container appears halfway on the screen.
+                            dragOffset = 0
+                        }
                 }
                 
                 if viewState.containerPresented {
@@ -140,7 +146,6 @@ struct CompactNowPlayingViewModifier: ViewModifier {
             .allowsHitTesting(presentedTrack != nil)
             // This is very reasonable and sane
             .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
-            .frame(height: UIScreen.main.bounds.height)
             .offset(y: dragOffset)
             .animation(.spring, value: dragOffset)
         }
@@ -159,7 +164,8 @@ struct BackgroundInsertTransitionModifier: ViewModifier {
         content
             .mask(alignment: .bottom) {
                 Rectangle()
-                    .frame(width: UIScreen.main.bounds.width - (active ? 24 : 0), height: active ? 0 : UIScreen.main.bounds.height)
+                    .frame(maxHeight: active ? 0 : .infinity)
+                    .padding(.horizontal, active ? 12 : 0)
             }
             .offset(y: active ? -146 : 0)
     }
@@ -175,7 +181,8 @@ struct BackgroundRemoveTransitionModifier: ViewModifier {
         content
             .mask(alignment: .bottom) {
                 Rectangle()
-                    .frame(width: UIScreen.main.bounds.width - (active ? 24 : 0), height: active ? 0 : UIScreen.main.bounds.height)
+                    .frame(maxHeight: active ? 0 : .infinity)
+                    .padding(.horizontal, active ? 12 : 0)
                     .animation(Animation.smooth, value: active)
             }
             .offset(y: active ? -92 : 0)

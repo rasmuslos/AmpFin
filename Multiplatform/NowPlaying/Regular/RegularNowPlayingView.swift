@@ -19,9 +19,7 @@ struct RegularNowPlayingView: View {
     var body: some View {
         ZStack {
             if let track = AudioPlayer.current.nowPlaying {
-                // i hate this so much? why is it of? just why
                 NowPlayingBackground(cover: track.cover)
-                    .frame(height: UIScreen.main.bounds.height + 5)
                     .clipped()
                 
                 VStack {
@@ -32,7 +30,8 @@ struct RegularNowPlayingView: View {
                             NowPlayingCover(track: track, currentTab: currentTab, namespace: namespace)
                             NowPlayingControls(controlsDragging: $controlsDragging)
                         }
-                        .frame(width: 500)
+                        .frame(maxWidth: 415)
+                        .padding(.horizontal)
                         
                         Spacer()
                         
@@ -47,7 +46,7 @@ struct RegularNowPlayingView: View {
                                 }
                                 .transition(.blurReplace)
                             }
-                            .frame(width: UIScreen.main.bounds.width / 2)
+                            .padding(.leading)
                             .padding(.trailing, 30)
                             .transition(.move(edge: .trailing))
                         }
@@ -60,6 +59,7 @@ struct RegularNowPlayingView: View {
                 }
                 .padding(.bottom)
                 .padding(.top, 75)
+                .ignoresSafeArea(edges: .all)
                 .foregroundStyle(.white)
                 .simultaneousGesture(
                     DragGesture(minimumDistance: 25, coordinateSpace: .global)

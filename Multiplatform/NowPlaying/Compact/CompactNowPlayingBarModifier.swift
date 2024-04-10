@@ -84,7 +84,7 @@ struct CompactNowPlayingBarModifier: ViewModifier {
                                 }
                                 .imageScale(.large)
                             }
-                            .frame(width: UIScreen.main.bounds.width - 32, height: 56)
+                            .frame(height: 56)
                             .padding(.horizontal, 8)
                             .foregroundStyle(.primary)
                             .background {
@@ -100,6 +100,7 @@ struct CompactNowPlayingBarModifier: ViewModifier {
                             .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .shadow(color: .black.opacity(0.25), radius: 20)
                             .padding(.bottom, 10)
+                            .padding(.horizontal, 12)
                             .zIndex(1)
                             .onTapGesture {
                                 nowPlayingViewState.setNowPlayingViewPresented(true)
