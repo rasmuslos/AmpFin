@@ -24,16 +24,13 @@ struct RegularNowPlayingView: View {
                 
                 VStack {
                     HStack {
-                        Spacer()
-                        
                         VStack {
                             NowPlayingCover(track: track, currentTab: currentTab, namespace: namespace)
                             NowPlayingControls(controlsDragging: $controlsDragging)
+                            
+                            Spacer()
                         }
-                        .frame(maxWidth: 415)
-                        .padding(.horizontal)
-                        
-                        Spacer()
+                        .frame(maxWidth: 475)
                         
                         if currentTab != .cover {
                             VStack {
@@ -46,19 +43,16 @@ struct RegularNowPlayingView: View {
                                 }
                                 .transition(.blurReplace)
                             }
-                            .padding(.leading)
-                            .padding(.trailing, 30)
+                            .padding(.leading, 80)
                             .transition(.move(edge: .trailing))
                         }
                     }
                     
-                    Spacer()
-                    
                     NowPlayingButtons(currentTab: $currentTab)
-                        .padding(.horizontal, 30)
                 }
                 .padding(.bottom)
-                .padding(.top, 75)
+                .padding(.horizontal, 40)
+                .padding(.top, 60)
                 .ignoresSafeArea(edges: .all)
                 .foregroundStyle(.white)
                 .simultaneousGesture(
@@ -78,8 +72,13 @@ struct RegularNowPlayingView: View {
                             .frame(width: 50, height: 7)
                             .clipShape(RoundedRectangle(cornerRadius: 10000))
                     }
-                    .padding(.top, 50)
+                    .padding(.top, 35)
                 }
+                #if targetEnvironment(macCatalyst)
+                .toolbar(.hidden, for: .tabBar)
+                .toolbar(.hidden, for: .bottomBar)
+                .toolbar(.hidden, for: .navigationBar)
+                #endif
             }
         }
     }

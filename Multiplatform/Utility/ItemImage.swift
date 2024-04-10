@@ -48,8 +48,9 @@ struct ItemImage: View {
 }
 
 #Preview {
-    ItemImage(cover: Track.fixture.cover)
-}
-#Preview {
     ItemImage(cover: nil)
+}
+
+#Preview {
+    ItemImage(cover: Track.fixture.cover)
 }

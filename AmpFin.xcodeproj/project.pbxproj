@@ -82,7 +82,7 @@
 		3A7939022B387851001B3B3D /* OnlineLibraryDataProivder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB697A02B386B20009000DD /* OnlineLibraryDataProivder.swift */; };
 		3A844DF22B398C150021BC63 /* AmpFinKit in Resources */ = {isa = PBXBuildFile; fileRef = 3A844DF12B398C150021BC63 /* AmpFinKit */; };
 		3A88505C2AA909CE00456DDD /* AlbumCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88505B2AA909CE00456DDD /* AlbumCover.swift */; };
-		3A8850602AA90CA200456DDD /* AlbumsGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88505F2AA90CA200456DDD /* AlbumsGrid.swift */; };
+		3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88505F2AA90CA200456DDD /* AlbumGrid.swift */; };
 		3A8850622AA90D1200456DDD /* AlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8850612AA90D1200456DDD /* AlbumsView.swift */; };
 		3A8850642AA90E4600456DDD /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8850632AA90E4600456DDD /* AlbumView.swift */; };
 		3A8850662AA9165300456DDD /* TrackListButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8850652AA9165300456DDD /* TrackListButtons.swift */; };
@@ -239,7 +239,7 @@
 		3A85A20A2B600B5800B7D7B4 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		3A85A20B2B600C4500B7D7B4 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		3A88505B2AA909CE00456DDD /* AlbumCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCover.swift; sourceTree = "<group>"; };
-		3A88505F2AA90CA200456DDD /* AlbumsGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsGrid.swift; sourceTree = "<group>"; };
+		3A88505F2AA90CA200456DDD /* AlbumGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumGrid.swift; sourceTree = "<group>"; };
 		3A8850612AA90D1200456DDD /* AlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsView.swift; sourceTree = "<group>"; };
 		3A8850632AA90E4600456DDD /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
 		3A8850652AA9165300456DDD /* TrackListButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListButtons.swift; sourceTree = "<group>"; };
@@ -333,35 +333,32 @@
 		3A150F5E2BC67C1F006E29E2 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
+				3A234E142AA8DBC900197AA7 /* SortSelector.swift */,
+				3A8850652AA9165300456DDD /* TrackListButtons.swift */,
 				3A2B932D2B00C79D00638AE9 /* Tips */,
 				3AEB32252AA7EC3C00853210 /* Styles */,
 			);
 			path = Reusable;
 			sourceTree = "<group>";
 		};
-		3A234E132AA8DBB900197AA7 /* Components */ = {
+		3A150F5F2BC688DA006E29E2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				3A234E142AA8DBC900197AA7 /* SortSelector.swift */,
-				3A8850652AA9165300456DDD /* TrackListButtons.swift */,
-				3A234E162AA8E0A300197AA7 /* Items */,
-				3A8B99432AAA089F004AAA7B /* Sliders */,
-				3A98A02C2AABA35700EA84CF /* Fallback */,
+				3A98A02F2AABA37B00EA84CF /* ErrorView.swift */,
+				3A98A02D2AABA36600EA84CF /* LoadingView.swift */,
 			);
-			path = Components;
+			path = Common;
 			sourceTree = "<group>";
 		};
-		3A234E162AA8E0A300197AA7 /* Items */ = {
+		3A150F602BC68FD2006E29E2 /* Collections */ = {
 			isa = PBXGroup;
 			children = (
-				3AAC768C2B02C68600E337C1 /* ItemImage.swift */,
-				3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */,
 				3A8850582AA9099600456DDD /* Tracks */,
+				3A3DA6622AAB2BB40091211A /* Artists */,
 				3A8850592AA9099F00456DDD /* Albums */,
 				3A2B28E62B43420D00DF9731 /* Playlists */,
-				3A3DA6622AAB2BB40091211A /* Artists */,
 			);
-			path = Items;
+			path = Collections;
 			sourceTree = "<group>";
 		};
 		3A260CA82AAC9A4C00616677 /* Search */ = {
@@ -441,13 +438,6 @@
 			path = "Widget Extension";
 			sourceTree = "<group>";
 		};
-		3A5515E72BC3D73200B922D7 /* ---a--- */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "---a---";
-			sourceTree = "<group>";
-		};
 		3A5515EA2BC3E0BA00B922D7 /* Compact */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,14 +490,6 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		3A7939032B38B0EB001B3B3D /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				3A234E132AA8DBB900197AA7 /* Components */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
 		3A85A2092B600B4400B7D7B4 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -531,7 +513,7 @@
 			isa = PBXGroup;
 			children = (
 				3A36A59D2ADEF8BA00D83BE7 /* AlbumRow.swift */,
-				3A88505F2AA90CA200456DDD /* AlbumsGrid.swift */,
+				3A88505F2AA90CA200456DDD /* AlbumGrid.swift */,
 				3A88505B2AA909CE00456DDD /* AlbumCover.swift */,
 				3A6F50AA2AACABEB00FC8A29 /* AlbumListRow.swift */,
 				3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */,
@@ -560,19 +542,12 @@
 			path = Sections;
 			sourceTree = "<group>";
 		};
-		3A98A02C2AABA35700EA84CF /* Fallback */ = {
-			isa = PBXGroup;
-			children = (
-				3A98A02D2AABA36600EA84CF /* LoadingView.swift */,
-				3A98A02F2AABA37B00EA84CF /* ErrorView.swift */,
-			);
-			path = Fallback;
-			sourceTree = "<group>";
-		};
 		3A98A0332AABA48D00EA84CF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				3AAC768C2B02C68600E337C1 /* ItemImage.swift */,
 				3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */,
+				3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */,
 				3A6FC1F52ACC0BE30070301B /* Intents */,
 				3ADE8E952AA92B03009826A3 /* Extensions */,
 				3AB6979F2B386B20009000DD /* LibraryDataProviders */,
@@ -698,6 +673,7 @@
 				3AFCD1202BC5CB6A00589301 /* NowPlayingButtons.swift */,
 				3A8B993F2AAA0085004AAA7B /* NowPlayingControls.swift */,
 				3AAE1B502BC591E500FD0200 /* NowPlayingBackground.swift */,
+				3A8B99432AAA089F004AAA7B /* Sliders */,
 				3AAE1B4D2BC5858E00FD0200 /* Modifier */,
 				3AAE1B4A2BC584D600FD0200 /* Regular */,
 				3AAE1B492BC584D100FD0200 /* Compact */,
@@ -710,6 +686,8 @@
 			children = (
 				3AEB32392AA7F63200853210 /* Core */,
 				3A98A0332AABA48D00EA84CF /* Utility */,
+				3A150F5F2BC688DA006E29E2 /* Common */,
+				3A150F602BC68FD2006E29E2 /* Collections */,
 				3A3DA6692AAB2DCD0091211A /* Artist */,
 				3ADE8E9E2AA93CC4009826A3 /* Album */,
 				3A260CA82AAC9A4C00616677 /* Search */,
@@ -718,8 +696,6 @@
 				3A150F5E2BC67C1F006E29E2 /* Reusable */,
 				3A5515F52BC4471600B922D7 /* Navigation */,
 				3ADE8EA52AA94637009826A3 /* NowPlaying */,
-				3A5515E72BC3D73200B922D7 /* ---a--- */,
-				3A7939032B38B0EB001B3B3D /* Presentation */,
 				3A24E5D82B4BF5850052DD20 /* Settings.bundle */,
 				3A0345122B49634F007D6171 /* Info.plist */,
 				3AEB321F2AA7EC3C00853210 /* Assets.xcassets */,
@@ -1022,7 +998,7 @@
 				3AEB32402AA7FFF100853210 /* TabBarView+Library.swift in Sources */,
 				3A2B28E52B433C8A00DF9731 /* PlaylistsView.swift in Sources */,
 				3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */,
-				3A8850602AA90CA200456DDD /* AlbumsGrid.swift in Sources */,
+				3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */,
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,
 				3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */,
 				3ADE8EA72AA9464D009826A3 /* CompactNowPlayingBarModifier.swift in Sources */,
@@ -1423,7 +1399,8 @@
 				PRODUCT_NAME = AmpFin;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1462,7 +1439,8 @@
 				PRODUCT_NAME = AmpFin;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

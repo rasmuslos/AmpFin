@@ -11,8 +11,8 @@ import AFOffline
 import AFPlayback
 
 struct AlbumContextMenuModifier: ViewModifier {
-    @Environment(\.libraryDataProvider) var dataProvider
-    @Environment(\.libraryOnline) var libraryOnline
+    @Environment(\.libraryDataProvider) private var dataProvider
+    @Environment(\.libraryOnline) private var libraryOnline
     
     let album: Album
     let offlineTracker: ItemOfflineTracker
@@ -23,7 +23,7 @@ struct AlbumContextMenuModifier: ViewModifier {
     }
     
     // this prevents the album from fetching its offline status prematurely
-    @State var showDownloadButton = false
+    @State private var showDownloadButton = false
     
     func body(content: Content) -> some View {
         content

@@ -10,8 +10,9 @@ import AFPlayback
 import AVKit
 
 struct VolumeSlider: View {
-    @State var volume = Double(AudioPlayer.current.volume) * 100
     @Binding var dragging: Bool
+    
+    @State private var volume = Double(AudioPlayer.current.volume) * 100
     
     var body: some View {
         HStack {

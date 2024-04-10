@@ -47,6 +47,7 @@ struct NowPlayingLyricsContainer: View {
                 } else {
                     ProgressView()
                         .padding(.vertical, 50)
+                        .frame(maxWidth: .infinity)
                 }
             }
             .mask(

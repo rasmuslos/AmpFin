@@ -31,5 +31,7 @@ struct iOSApp: App {
             ContentView()
         }
         .modelContainer(PersistenceManager.shared.modelContainer)
+        // why does this not work? because
+        // .windowStyle(HiddenTitleBarWindowStyle())
     }
 }

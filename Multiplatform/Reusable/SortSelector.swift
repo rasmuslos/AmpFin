@@ -9,7 +9,7 @@ import SwiftUI
 import AFBase
 
 struct SortSelector: View {
-    @Environment(\.libraryDataProvider) var dataProvider
+    @Environment(\.libraryDataProvider) private var dataProvider
     
     @Binding var ascending: Bool
     @Binding var sortOrder: JellyfinClient.ItemSortOrder
