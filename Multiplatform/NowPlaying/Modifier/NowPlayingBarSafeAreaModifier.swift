@@ -33,7 +33,7 @@ struct NowPlayingBarLeadingOffsetModifier: ViewModifier {
                             NotificationCenter.default.post(name: SidebarView.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
                         }
                         #else
-                        if reader.size.width < UIScreen.main.bounds.width {
+                        if reader.size.width < 400 {
                             NotificationCenter.default.post(name: SidebarView.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
                         }
                         #endif
