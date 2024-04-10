@@ -44,3 +44,23 @@ struct SymbolButtonStyle: ButtonStyle {
     }
     .buttonStyle(SymbolButtonStyle(active: true))
 }
+
+
+#Preview {
+    Button {
+        
+    } label: {
+        Image(systemName: "shuffle")
+    }
+    .buttonStyle(SymbolButtonStyle(active: false, heavy: true))
+}
+
+
+#Preview {
+    Button {
+        
+    } label: {
+        Image(systemName: "shuffle")
+    }
+    .buttonStyle(SymbolButtonStyle(active: true, heavy: false))
+}

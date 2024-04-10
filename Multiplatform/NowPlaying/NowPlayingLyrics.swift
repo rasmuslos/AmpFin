@@ -11,6 +11,8 @@ import AFOffline
 import AFPlayback
 
 struct NowPlayingLyricsContainer: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     @Binding var controlsVisible: Bool
     
     @State private var lyrics: Track.Lyrics?
@@ -18,6 +20,10 @@ struct NowPlayingLyricsContainer: View {
     
     @State private var scrolling: Bool = false
     @State private var scrollTimeout: Task<(), Error>? = nil
+    
+    private var anchor: UnitPoint {
+        horizontalSizeClass == .compact ? .top : .center
+    }
     
     var body: some View {
         ScrollViewReader { proxy in
@@ -60,7 +66,7 @@ struct NowPlayingLyricsContainer: View {
                 }
                 
                 withAnimation(.spring) {
-                    proxy.scrollTo(activeLineIndex, anchor: .top)
+                    proxy.scrollTo(activeLineIndex, anchor: anchor)
                 }
             }
             .onChange(of: scrolling) {
@@ -69,7 +75,7 @@ struct NowPlayingLyricsContainer: View {
                 }
                 
                 withAnimation(.spring) {
-                    proxy.scrollTo(activeLineIndex, anchor: .top)
+                    proxy.scrollTo(activeLineIndex, anchor: anchor)
                 }
             }
             .simultaneousGesture(

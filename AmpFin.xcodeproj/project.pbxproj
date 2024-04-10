@@ -330,12 +330,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A150F5E2BC67C1F006E29E2 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				3A2B932D2B00C79D00638AE9 /* Tips */,
+				3AEB32252AA7EC3C00853210 /* Styles */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
 		3A234E132AA8DBB900197AA7 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				3A234E142AA8DBC900197AA7 /* SortSelector.swift */,
 				3A8850652AA9165300456DDD /* TrackListButtons.swift */,
-				3A2B932D2B00C79D00638AE9 /* Tips */,
 				3A234E162AA8E0A300197AA7 /* Items */,
 				3A8B99432AAA089F004AAA7B /* Sliders */,
 				3A98A02C2AABA35700EA84CF /* Fallback */,
@@ -495,7 +503,6 @@
 		3A7939032B38B0EB001B3B3D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				3AEB32252AA7EC3C00853210 /* Styles */,
 				3A234E132AA8DBB900197AA7 /* Components */,
 			);
 			path = Presentation;
@@ -708,6 +715,7 @@
 				3A260CA82AAC9A4C00616677 /* Search */,
 				3A2B28EB2B43737200DF9731 /* Playlist */,
 				3AEB32282AA7EC3C00853210 /* Account */,
+				3A150F5E2BC67C1F006E29E2 /* Reusable */,
 				3A5515F52BC4471600B922D7 /* Navigation */,
 				3ADE8EA52AA94637009826A3 /* NowPlaying */,
 				3A5515E72BC3D73200B922D7 /* ---a--- */,

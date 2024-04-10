@@ -23,7 +23,7 @@ struct LargeButtonStyle: ButtonStyle {
     Button {
         
     } label: {
-        Label("Command :)", systemImage: "Command :)")
+        Label("Command :)", systemImage: "command")
     }
     .buttonStyle(LargeButtonStyle())
 }
