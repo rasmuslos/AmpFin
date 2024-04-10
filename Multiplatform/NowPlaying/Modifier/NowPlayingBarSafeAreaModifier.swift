@@ -23,7 +23,21 @@ struct NowPlayingBarLeadingOffsetModifier: ViewModifier {
             GeometryReader { reader in
                 Color.clear
                     .onChange(of: reader.frame(in: .global).origin) {
-                        NotificationCenter.default.post(name: .init("b"), object: reader.frame(in: .global).origin.x)
+#if targetEnvironment(macCatalyst)
+                        // Because of the wrapper nature of NavigationSplitView, AppKit has a different behavior.
+                        // Unlike UIKit where this will be emitted with the origin being a negative value equals to the width,
+                        // AppKit emits the origin change twice, one before the animation and one after.
+                        // The first one has the same value as UIKit and the second one can be either 0 or a positive value.
+                        // We will want to prevent the positive one being emitted as it will confuse our NowPlayingBar.
+                        if reader.frame(in: .global).origin.x <= 0 {
+                            NotificationCenter.default.post(name: .init("b"), 
+                                                            object: reader.frame(in: .global).origin.x + reader.size.width)
+                        }
+#else
+                        NotificationCenter.default.post(name: .init("b"),
+                                                        object: reader.frame(in: .global).origin.x + reader.size.width)
+#endif
+                        
                     }
             }
             .frame(height: 0)
