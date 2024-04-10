@@ -26,7 +26,7 @@ struct NowPlayingControls: View {
     }
     
     private var useHorizontalLayout: Bool {
-               return horizontalSizeClass == .regular
+        return horizontalSizeClass == .regular
     }
     
     var body: some View {

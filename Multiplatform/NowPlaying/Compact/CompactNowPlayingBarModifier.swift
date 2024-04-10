@@ -92,12 +92,12 @@ struct CompactNowPlayingBarModifier: ViewModifier {
                                     .foregroundStyle(.ultraThinMaterial)
                             }
                             .transition(.move(edge: .bottom))
+                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .modifier(NowPlayingBarContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                             .draggable(currentTrack) {
                                 TrackListRow.TrackPreview(track: currentTrack)
                                     .padding()
                             }
-                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                             .shadow(color: .black.opacity(0.25), radius: 20)
                             .padding(.bottom, 10)
                             .padding(.horizontal, 8)

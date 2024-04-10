@@ -11,7 +11,7 @@ import AFBase
 import AFPlayback
 
 struct CompactNowPlayingViewModifier: ViewModifier {
-    @Namespace var namespace
+    @Namespace private var namespace
     
     @State private var viewState = NowPlayingViewState.init()
     
@@ -87,7 +87,7 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                                     NowPlayingButtons(currentTab: $currentTab)
                                         .padding(.bottom, 40)
                                 }
-                                .transition(.move(edge: .bottom).animation(.linear(duration: 0.3)))
+                                .transition(.opacity.animation(.linear(duration: 0.3)))
                             }
                         }
                     }
@@ -188,8 +188,6 @@ struct BackgroundRemoveTransitionModifier: ViewModifier {
             .offset(y: active ? -92 : 0)
     }
 }
-
-// MARK: Background
 
 @Observable
 class NowPlayingViewState {

@@ -16,6 +16,7 @@ struct AlbumRow: View {
     
     @State private var width: CGFloat = .zero
     
+    // For some reason HGrid do not work in ScrollViews, so we have to calculate this ourselves
     private var size: CGFloat {
         let minimum = horizontalSizeClass == .compact ? 160.0 : 240.0
         
