@@ -10,7 +10,7 @@ import UIKit
 import OSLog
 
 /// API client for the Jellyfin server
-public class JellyfinClient {
+public final class JellyfinClient {
     public private(set) var serverUrl: URL!
     public private(set) var token: String!
     public private(set) var userId: String!

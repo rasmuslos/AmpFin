@@ -9,7 +9,7 @@ import Intents
 import AFBase
 import AFPlayback
 
-class IntentHandler: INExtension {
+final class IntentHandler: INExtension {
     override func handler(for intent: INIntent) -> Any {
         return self
     }

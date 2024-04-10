@@ -115,7 +115,7 @@ extension Item {
 
 extension Item {
     /// Image associated with an item
-    public class Cover: Codable {
+    public final class Cover: Codable {
         /// Source of the image
         public let type: CoverType
         /// URL of the image

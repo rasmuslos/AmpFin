@@ -23,7 +23,7 @@ extension SidebarView {
             Section(provider.title, isExpanded: $expanded) {
                 ForEach(provider.sections, id: \.hashValue) { section in
                     NavigationLink(value: Selection(provider: provider, section: section)) {
-                        Label(section.title, systemImage: section.icon)
+                        Label(section.title!, systemImage: section.icon!)
                     }
                 }
             }

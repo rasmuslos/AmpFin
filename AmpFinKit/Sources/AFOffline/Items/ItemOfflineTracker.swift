@@ -10,7 +10,7 @@ import AFBase
 import OSLog
 
 @Observable
-public class ItemOfflineTracker {
+public final class ItemOfflineTracker {
     let itemId: String
     let itemType: Item.ItemType
     

@@ -11,7 +11,7 @@ import SwiftUI
 import AFBase
 
 @Observable
-class RemoteAudioEndpoint {
+final class RemoteAudioEndpoint {
     let clientId: String
     let sessionId: String
     

@@ -8,7 +8,7 @@ import Foundation
 import SwiftData
 
 @Model
-class OfflineFavorite {
+final class OfflineFavorite {
     @Attribute(.unique)
     let itemId: String
     var favorite: Bool

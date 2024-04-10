@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public class Track: Item {
+public final class Track: Item {
     public let album: ReducedAlbum
     public let artists: [ReducedArtist]
     

@@ -12,7 +12,7 @@ import AFBase
 import MediaPlayer
 
 @Observable
-internal class LocalAudioEndpoint: AudioEndpoint {
+internal final class LocalAudioEndpoint: AudioEndpoint {
     let audioPlayer: AVQueuePlayer
     let audioSession: AVAudioSession
     

@@ -10,7 +10,7 @@ import SwiftData
 import AFBase
 
 @Model
-class OfflineTrack {
+final class OfflineTrack {
     @Attribute(.unique) let id: String
     let name: String
     

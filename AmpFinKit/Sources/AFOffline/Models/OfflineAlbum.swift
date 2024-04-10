@@ -10,7 +10,7 @@ import SwiftData
 import AFBase
 
 @Model
-class OfflineAlbum: OfflineParent {
+final class OfflineAlbum: OfflineParent {
     @Attribute(.unique) let id: String
     let name: String
     

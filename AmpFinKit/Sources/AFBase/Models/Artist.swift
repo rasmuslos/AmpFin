@@ -8,7 +8,7 @@
 import Foundation
 
 /// Artist that has made a track or album
-public class Artist: Item {
+public final class Artist: Item {
     /// Description of the artist
     public let overview: String?
     

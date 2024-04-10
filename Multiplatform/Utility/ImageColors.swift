@@ -10,7 +10,7 @@ import SwiftUI
 import AFBase
 import UIImageColors
 
-class ImageColors {
+final class ImageColors {
     var background: Color
     var primary: Color
     var secondary: Color

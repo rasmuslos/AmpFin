@@ -190,7 +190,7 @@ struct BackgroundRemoveTransitionModifier: ViewModifier {
 }
 
 @Observable
-class NowPlayingViewState {
+final class NowPlayingViewState {
     var namespace: Namespace.ID!
     
     private(set) var presented = false

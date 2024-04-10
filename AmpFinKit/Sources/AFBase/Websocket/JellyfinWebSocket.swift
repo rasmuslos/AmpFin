@@ -10,7 +10,7 @@ import Starscream
 import OSLog
 
 @Observable
-public class JellyfinWebSocket {
+public final class JellyfinWebSocket {
     var socket: WebSocket!
     public private(set) var isConnected = false
     

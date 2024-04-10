@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class OfflinePlaylist: OfflineParent {
+final class OfflinePlaylist: OfflineParent {
     public let id: String
     public let name: String
     

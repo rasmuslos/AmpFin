@@ -8,7 +8,7 @@
 import Foundation
 
 /// Album containing multiple tracks
-public class Album: Item {
+public final class Album: Item {
     /// Description of the album
     public let overview: String?
     /// Genres the albums is assigned to

@@ -79,7 +79,7 @@ extension SidebarView.DataProvider {
 // MARK: Sections
 
 extension SidebarView.LibrarySection {
-    var title: LocalizedStringKey {
+    var title: LocalizedStringKey? {
         switch self {
             case .tracks:
                 return "section.tracks"
@@ -94,10 +94,10 @@ extension SidebarView.LibrarySection {
             case .artists:
                 return "section.artists"
             default:
-                return ""
+                return nil
         }
     }
-    var icon: String {
+    var icon: String? {
         switch self {
             case .tracks:
                 return "music.note"
@@ -112,7 +112,7 @@ extension SidebarView.LibrarySection {
             case .artists:
                 return "mic.fill"
             default:
-                return ""
+                return nil
         }
     }
     

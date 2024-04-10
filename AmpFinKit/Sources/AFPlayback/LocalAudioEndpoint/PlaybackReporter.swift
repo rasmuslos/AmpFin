@@ -14,7 +14,7 @@ import AFBase
 import AFOffline
 #endif
 
-public class PlaybackReporter {
+public final class PlaybackReporter {
     let trackId: String
     
     var currentTime: Double = 0

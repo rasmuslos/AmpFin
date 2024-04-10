@@ -10,7 +10,7 @@ import SwiftData
 import AFBase
 
 @Model
-class OfflineLyrics {
+final class OfflineLyrics {
     let trackId: String
     let lyrics: Track.Lyrics
     

@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 /// HTTP & Filesystem manager for the offline system
-public class DownloadManager: NSObject {
+public final class DownloadManager: NSObject {
     var documentsURL: URL!
     var urlSession: URLSession!
     

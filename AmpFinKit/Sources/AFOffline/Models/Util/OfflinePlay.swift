@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class OfflinePlay {
+public final class OfflinePlay {
     let trackId: String
     let positionSeconds: Double
     let time: Date

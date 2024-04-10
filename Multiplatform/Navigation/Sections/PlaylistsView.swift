@@ -23,7 +23,9 @@ struct PlaylistsView: View {
             } else if failed {
                 ErrorView()
             } else {
-                LoadingView()
+                VStack {
+                    LoadingView()
+                }
             }
         }
         .navigationTitle("title.playlists")

@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class Session: Identifiable, Codable {
+public final class Session: Identifiable, Codable {
     public let id: String
     public let name: String
     

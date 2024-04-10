@@ -12,7 +12,7 @@ import AFBase
 import AFOffline
 import AFPlayback
 
-class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
+final class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "SiriPlayIntent")
     
     func handle(intent: INPlayMediaIntent) async -> INPlayMediaIntentResponse {

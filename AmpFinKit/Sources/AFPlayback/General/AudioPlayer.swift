@@ -16,7 +16,7 @@ import AFOffline
 #endif
 
 @Observable
-public class AudioPlayer {
+public final class AudioPlayer {
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
     
     internal var playbackInfo: PlaybackInfo?

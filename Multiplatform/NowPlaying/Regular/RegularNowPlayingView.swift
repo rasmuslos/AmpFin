@@ -13,11 +13,17 @@ struct RegularNowPlayingView: View {
     @Namespace private var namespace
     @Environment(\.dismiss) var dismiss
     
+    @State private var availableWidth: CGFloat = .zero
+    
     @State private var controlsDragging = false
     @State private var currentTab = NowPlayingTab.cover
     
     var body: some View {
         ZStack {
+            GeometryReader { proxy in
+                
+            }
+            
             if let track = AudioPlayer.current.nowPlaying {
                 NowPlayingBackground(cover: track.cover)
                     .clipped()

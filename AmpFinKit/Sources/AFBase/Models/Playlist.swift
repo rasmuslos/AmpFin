@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Playlist: Item {
+public final class Playlist: Item {
     public var duration: Double
     public var trackCount: Int
     
