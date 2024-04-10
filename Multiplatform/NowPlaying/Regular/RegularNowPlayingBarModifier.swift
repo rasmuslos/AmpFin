@@ -137,6 +137,9 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                         }
                     }
                     .padding(.horizontal, 25)
+                    .padding(.leading, adjust)
+                    .animation(.spring, value: width)
+                    .animation(.spring, value: adjust)
                     .fullScreenCover(isPresented: $sheetPresented) {
                         RegularNowPlayingView()
                             .ignoresSafeArea(edges: .all)
@@ -145,10 +148,12 @@ struct RegularNowPlayingBarModifier: ViewModifier {
             }
             .onReceive(NotificationCenter.default.publisher(for: .init("a"))) { notification in
                 if let width = notification.object as? CGFloat {
-                    withAnimation(.spring) {
-                        self.width = min(width, 1100)
-                        adjust = UIScreen.main.bounds.width - width
-                    }
+                    self.width = min(width, 1100)
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .init("b"))) { notification in
+                if let offset = notification.object as? CGFloat {
+                    adjust = 320 + offset
                 }
             }
     }
