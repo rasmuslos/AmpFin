@@ -24,7 +24,6 @@ struct NowPlayingBarLeadingOffsetModifier: ViewModifier {
                 Color.clear
                     .onChange(of: reader.frame(in: .global).origin) {
                         NotificationCenter.default.post(name: .init("b"), object: reader.frame(in: .global).origin.x)
-                        print(reader.frame(in: .global).origin)
                     }
             }
             .frame(height: 0)
