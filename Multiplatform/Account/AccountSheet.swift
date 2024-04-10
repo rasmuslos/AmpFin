@@ -15,7 +15,7 @@ struct AccountSheet: View {
     @State private var username: String?
     @State private var sessions: [Session]? = nil
     @State private var downloads: [Track]? = nil
-    @Binding var accountSheetPresented: Bool
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         List {
@@ -182,7 +182,7 @@ struct AccountSheet: View {
             } catch {}
         }
 #if targetEnvironment(macCatalyst)
-        Button(action: { accountSheetPresented = false }) {
+        Button(action: { dismiss() }) {
             Text("Close")
                 .padding(.vertical)
                 .frame(maxWidth: .infinity)
@@ -214,7 +214,7 @@ struct AccountToolbarButtonModifier: ViewModifier {
                     }
                 }
                 .sheet(isPresented: $accountSheetPresented) {
-                    AccountSheet(accountSheetPresented: $accountSheetPresented)
+                    AccountSheet()
                 }
         } else {
             content
@@ -226,6 +226,6 @@ struct AccountToolbarButtonModifier: ViewModifier {
 #Preview {
     Text(verbatim: ":)")
         .sheet(isPresented: .constant(true)) {
-            AccountSheet(accountSheetPresented: .constant(true))
+            AccountSheet()
         }
 }
