@@ -102,6 +102,12 @@ struct RegularNowPlayingView: View {
                             }
                         }
                 )
+                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { _ in
+                    dismiss()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateAlbumNotification)) { _ in
+                    dismiss()
+                }
                 .overlay(alignment: .top) {
                     Button {
                         dismiss()
