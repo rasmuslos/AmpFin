@@ -137,9 +137,9 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                         }
                     }
                     .padding(.horizontal, 25)
-                    .padding(.leading, adjust)
                     .fullScreenCover(isPresented: $sheetPresented) {
                         RegularNowPlayingView()
+                            .ignoresSafeArea(edges: .all)
                     }
                 }
             }

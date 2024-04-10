@@ -113,7 +113,7 @@ struct NowPlayingButtons: View {
         .bold()
         .font(.system(size: 20))
         .frame(height: 45)
-        .padding(.top, 35)
+        .padding(.top, horizontalSizeClass == .regular ? 0 : 35)
     }
     
     func setActiveTab(_ tab: NowPlayingTab) {

@@ -11,19 +11,9 @@ import FluidGradient
 import AFBase
 
 struct NowPlayingBackground: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
     let cover: Item.Cover?
     
     @State private var imageColors: ImageColors?
-    
-    private var size: CGFloat {
-        if horizontalSizeClass == .compact {
-            return 1000
-        } else {
-            return 2000
-        }
-    }
     
     var body: some View {
         ZStack {
@@ -32,11 +22,11 @@ struct NowPlayingBackground: View {
             ItemImage(cover: cover)
                 .id(cover?.url)
                 .blur(radius: 100)
-                .frame(width: size, height: size)
+                .frame(maxWidth: .infinity)
             
             if let imageColors = imageColors {
                 FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+                    .ignoresSafeArea(edges: .all)
                     .onChange(of: cover?.url) { determineImageColors() }
             } else {
                 Color.clear
@@ -44,7 +34,7 @@ struct NowPlayingBackground: View {
             }
         }
         .overlay(.black.opacity(0.25))
-        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        .ignoresSafeArea(edges: .all)
         .allowsHitTesting(false)
     }
     
