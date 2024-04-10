@@ -89,7 +89,7 @@ struct RegularNowPlayingView: View {
                     
                     NowPlayingButtons(currentTab: $currentTab)
                 }
-                .padding(.bottom)
+                .padding(.bottom, singleColumnLayout ? 30 : 20)
                 .padding(.horizontal, singleColumnLayout ? 60 : 40)
                 .padding(.top, 60)
                 .ignoresSafeArea(edges: .all)

@@ -54,7 +54,7 @@ struct NowPlayingButtons: View {
                     Spacer()
                 } else if horizontalSizeClass == .regular {
                     NowPlayingAirPlayView()
-                        .frame(width: 30)
+                        .frame(width: 25)
                     
                     Spacer()
                     
