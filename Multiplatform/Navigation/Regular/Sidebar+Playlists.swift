@@ -42,9 +42,9 @@ extension SidebarView {
 
 extension SidebarView.PlaylistSection {
     private func fetchPlaylists() async {
-        if let playlists = try? await JellyfinClient.shared.getPlaylists(limit: 20) {
+        if let playlists = try? await OnlineLibraryDataProvider().getPlaylists() {
             self.playlists = playlists
-        } else if let playlists = try? OfflineManager.shared.getPlaylists() {
+        } else if let playlists = try? await OfflineLibraryDataProvider().getPlaylists() {
             self.playlists = playlists
         }
     }

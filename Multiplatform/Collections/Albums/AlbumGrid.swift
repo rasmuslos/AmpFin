@@ -21,7 +21,7 @@ struct AlbumGrid: View {
     @State private var working = false
     
     private var minimumWidth: CGFloat {
-        horizontalSizeClass == .compact ? 160.0 : 240.0
+        horizontalSizeClass == .compact ? 160.0 : 200.0
     }
     
     var body: some View {
