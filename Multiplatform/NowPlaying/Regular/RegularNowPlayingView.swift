@@ -113,11 +113,6 @@ struct RegularNowPlayingView: View {
                     }
                     .padding(.top, 35)
                 }
-                #if targetEnvironment(macCatalyst)
-                .toolbar(.hidden, for: .tabBar)
-                .toolbar(.hidden, for: .bottomBar)
-                .toolbar(.hidden, for: .navigationBar)
-                #endif
             }
         }
     }

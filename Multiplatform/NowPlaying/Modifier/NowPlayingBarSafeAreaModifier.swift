@@ -22,18 +22,20 @@ struct NowPlayingBarLeadingOffsetModifier: ViewModifier {
         ZStack {
             GeometryReader { reader in
                 Color.clear
+                // Because of the wrapper nature of NavigationSplitView, AppKit has a different behavior.
+                // Unlike UIKit where this will be emitted with the origin being a negative value equals to the width,
+                // AppKit emits the origin change twice, one before the animation and one after.
+                // The first one has the same value as UIKit and the second one can be either 0 or a positive value.
+                // We will want to prevent the positive one being emitted as it will confuse our NowPlayingBar.
                     .onChange(of: reader.frame(in: .global).origin) {
                         #if targetEnvironment(macCatalyst)
-                        // Because of the wrapper nature of NavigationSplitView, AppKit has a different behavior.
-                        // Unlike UIKit where this will be emitted with the origin being a negative value equals to the width,
-                        // AppKit emits the origin change twice, one before the animation and one after.
-                        // The first one has the same value as UIKit and the second one can be either 0 or a positive value.
-                        // We will want to prevent the positive one being emitted as it will confuse our NowPlayingBar.
                         if reader.frame(in: .global).origin.x <= 0 {
                             NotificationCenter.default.post(name: SidebarView.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
                         }
                         #else
-                        NotificationCenter.default.post(name: SidebarView.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
+                        if reader.size.width < UIScreen.main.bounds.width {
+                            NotificationCenter.default.post(name: SidebarView.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
+                        }
                         #endif
                         
                     }
