@@ -15,7 +15,8 @@ struct TracksView: View {
     @Environment(\.libraryDataProvider) var dataProvider
     
     @State var count = 0
-    @State var failed = false
+    @State var success = false
+    @State var failure = false
     @State var tracks = [Track]()
     
     var sortState: [String] {[
@@ -25,13 +26,13 @@ struct TracksView: View {
     
     var body: some View {
         VStack {
-            if !tracks.isEmpty {
+            if failure {
+                ErrorView()
+            } else if success {
                 List {
                     TrackList(tracks: tracks, count: count, loadMore: loadTracks)
                 }
                 .listStyle(.plain)
-            } else if failed {
-                ErrorView()
             } else {
                 LoadingView()
             }
@@ -55,16 +56,22 @@ struct TracksView: View {
 // MARK: Helper
 
 extension TracksView {
-    func loadTracks() async {
-        failed = false
+    func loadTracks(search: String? = nil) async {
+        failure = false
+        
+        if search != nil {
+            tracks = []
+        }
         
         do {
-            let result = try await dataProvider.getTracks(limit: 100, startIndex: tracks.count, sortOrder: sortOrder, ascending: sortAscending)
+            let result = try await dataProvider.getTracks(limit: 100, startIndex: tracks.count, sortOrder: sortOrder, ascending: sortAscending, search: search)
             
             count = result.1
             tracks += result.0
+            
+            success = true
         } catch {
-            failed = true
+            failure = true
         }
     }
 }

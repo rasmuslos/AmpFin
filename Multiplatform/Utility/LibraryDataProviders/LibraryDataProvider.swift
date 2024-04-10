@@ -19,13 +19,13 @@ public protocol LibraryDataProvider {
     
     // MARK: Track
     
-    func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([Track], Int)
+    func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Track], Int)
     func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
     
     // MARK: Album
     
     func getAlbum(albumId: String) async throws -> Album
-    func getAlbums(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([Album], Int)
+    func getAlbums(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Album], Int)
     
     func getTracks(albumId: String) async throws -> [Track]
     

@@ -10,31 +10,8 @@ import Foundation
 public extension JellyfinClient {
     // MARK: getAlbums
     
-    /// Get all albums from all libraries
-    func getAlbums(limit: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> [Album] {
-        var query = [
-            URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
-            URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
-            URLQueryItem(name: "IncludeItemTypes", value: "MusicAlbum"),
-            URLQueryItem(name: "Recursive", value: "true"),
-            URLQueryItem(name: "ImageTypeLimit", value: "1"),
-            URLQueryItem(name: "EnableImageTypes", value: "Primary"),
-            URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
-        ]
-        
-        if limit > 0 {
-            query.append(URLQueryItem(name: "limit", value: String(limit)))
-        }
-        if favorite {
-            query.append(URLQueryItem(name: "Filters", value: "IsFavorite"))
-        }
-        
-        let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
-        return response.Items.map(Album.convertFromJellyfin)
-    }
-    
     /// Get selected albums from all libraries
-    func getAlbums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool) async throws -> ([Album], Int) {
+    func getAlbums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool, search: String?) async throws -> ([Album], Int) {
         var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
@@ -53,6 +30,9 @@ public extension JellyfinClient {
         }
         if favorite {
             query.append(URLQueryItem(name: "Filters", value: "IsFavorite"))
+        }
+        if let search = search {
+            query.append(URLQueryItem(name: "searchTerm", value: search))
         }
         
         let response = try await request(ClientRequest<AlbumItemsResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
@@ -74,6 +54,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "Fields", value: "Genres,Overview,PremiereDate"),
             URLQueryItem(name: "AlbumArtistIds", value: artistId)
         ]
+        
         if limit > 0 {
             query.append(URLQueryItem(name: "limit", value: String(limit)))
         }

@@ -29,7 +29,7 @@ struct SpotlightHelper {
         Task.detached {
             do {
                 let index = CSSearchableIndex(name: "items", protectionClass: .completeUntilFirstUserAuthentication)
-                let tracks = try await JellyfinClient.shared.getTracks(limit: 0, startIndex: 0, sortOrder: .name, ascending: true, favorite: false).0
+                let tracks = try await JellyfinClient.shared.getTracks(limit: 0, startIndex: 0, sortOrder: .name, ascending: true, favorite: false, search: nil).0
                 var items = [CSSearchableItem]()
                 
                 for track in tracks {

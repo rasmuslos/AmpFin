@@ -14,27 +14,30 @@ struct AlbumsView: View {
     @Default(.sortAscending) private var sortAscending
     @Environment(\.libraryDataProvider) var dataProvider
     
+    @State var success = false
+    @State var failure = false
+    
     @State private var count = 0
     @State private var albums = [Album]()
-    @State private var failed = false
     
     @State private var search: String = ""
     
     var sortState: [String] {[
+        search,
         sortOrder.rawValue,
         sortAscending.description,
     ]}
     
     var body: some View {
         VStack {
-            if !albums.isEmpty {
+            if failure {
+                ErrorView()
+            } else if success {
                 ScrollView {
-                    AlbumGrid(albums: filter(), count: count, loadMore: fetchAlbums)
+                    AlbumGrid(albums: albums, count: count, loadMore: fetchAlbums)
                         .padding()
                 }
                 .searchable(text: $search, placement: .navigationBarDrawer, prompt: "search.albums")
-            } else if failed {
-                ErrorView()
             } else {
                 LoadingView()
             }
@@ -48,12 +51,12 @@ struct AlbumsView: View {
             await fetchAlbums()
         }
         .refreshable {
-            albums = []
+            reset()
             await fetchAlbums()
         }
         .onChange(of: sortState) {
             Task {
-                albums = []
+                reset()
                 await fetchAlbums()
             }
         }
@@ -63,24 +66,29 @@ struct AlbumsView: View {
 // MARK: Helper
 
 private extension AlbumsView {
+    func reset() {
+        count = 0
+        albums = []
+    }
+    
     func fetchAlbums() async {
-        failed = false
+        failure = false
+        
+        var search: String? = search
+        
+        if self.search.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            search = nil
+        }
         
         do {
-            let result = try await dataProvider.getAlbums(limit: 100, startIndex: albums.count, sortOrder: sortOrder, ascending: sortAscending)
+            let result = try await dataProvider.getAlbums(limit: 100, startIndex: albums.count, sortOrder: sortOrder, ascending: sortAscending, search: search)
             
             count = result.1
             albums += result.0
+            
+            success = true
         } catch {
-            failed = true
-        }
-    }
-    
-    func filter() -> [Album] {
-        if search == "" {
-            return albums
-        } else {
-            return albums.filter { $0.name.lowercased().contains(search.lowercased()) }
+            failure = true
         }
     }
 }

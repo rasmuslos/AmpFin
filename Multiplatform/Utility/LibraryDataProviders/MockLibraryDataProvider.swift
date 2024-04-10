@@ -38,7 +38,7 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
     
     // MARK: Track
     
-    public func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([Track], Int) {
+    public func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Track], Int) {
         ([
             Track.fixture,
             Track.fixture,
@@ -67,7 +67,7 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
     public func getAlbum(albumId: String) async throws -> Album {
         Album.fixture
     }
-    public func getAlbums(limit: Int, startIndex: Int, sortOrder: AFBase.JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([AFBase.Album], Int) {
+    public func getAlbums(limit: Int, startIndex: Int, sortOrder: AFBase.JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([AFBase.Album], Int) {
         ([
             Album.fixture,
             Album.fixture,

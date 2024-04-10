@@ -117,7 +117,7 @@ extension TrackList {
 
 extension TrackList {
     typealias Expand = (() -> Void)
-    typealias LoadCallback = (() async -> Void)?
+    typealias LoadCallback = ((_ search: String?) async -> Void)?
     
     typealias DeleteCallback = ((_ track: Track) -> Void)?
     typealias MoveCallback = ((_ track: Track, _ to: Int) -> Void)?
@@ -151,8 +151,16 @@ extension TrackList {
         if !working && count > tracks.count, let loadMore = loadMore {
             working = true
             
+            let search: String?
+            
+            if self.search.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+                search = nil
+            } else {
+                search = self.search
+            }
+            
             Task.detached {
-                await loadMore()
+                await loadMore(search)
                 working = false
             }
         }
