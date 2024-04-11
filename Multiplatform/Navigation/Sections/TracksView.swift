@@ -12,14 +12,17 @@ import AFBase
 struct TracksView: View {
     @Default(.sortOrder) private var sortOrder
     @Default(.sortAscending) private var sortAscending
-    @Environment(\.libraryDataProvider) var dataProvider
+    @Environment(\.libraryDataProvider) private var dataProvider
     
-    @State var count = 0
-    @State var success = false
-    @State var failure = false
-    @State var tracks = [Track]()
+    @State private var count = 0
+    @State private var success = false
+    @State private var failure = false
+    @State private var tracks = [Track]()
+    
+    @State private var search: String = ""
     
     var sortState: [String] {[
+        search,
         sortOrder.rawValue,
         sortAscending.description,
     ]}
@@ -38,6 +41,7 @@ struct TracksView: View {
             }
         }
         .navigationTitle("title.tracks")
+        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.tracks")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
             SortSelector(ascending: $sortAscending, sortOrder: $sortOrder)
@@ -56,11 +60,15 @@ struct TracksView: View {
 // MARK: Helper
 
 extension TracksView {
-    func loadTracks(search: String? = nil) async {
+    func loadTracks() async {
         failure = false
         
-        if search != nil {
-            tracks = []
+        let search: String?
+        
+        if self.search.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            search = nil
+        } else {
+            search = self.search
         }
         
         do {

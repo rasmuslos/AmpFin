@@ -37,7 +37,7 @@ struct AlbumsView: View {
                     AlbumGrid(albums: albums, count: count, loadMore: fetchAlbums)
                         .padding()
                 }
-                .searchable(text: $search, placement: .navigationBarDrawer, prompt: "search.albums")
+                .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.albums")
             } else {
                 LoadingView()
             }

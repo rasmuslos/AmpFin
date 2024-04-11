@@ -21,7 +21,6 @@ struct TrackList: View {
     var loadMore: LoadCallback = nil
     
     @State private var working = false
-    @State private var search: String = ""
     
     private var disks: [Int] {
         tracks.reduce([Int]()) {
@@ -42,7 +41,6 @@ struct TrackList: View {
             TrackListButtons() {
                 startPlayback(index: 0, shuffle: $0)
             }
-            .searchable(text: $search, placement: .navigationBarDrawer, prompt: "search.tracks")
             .listRowSeparator(.hidden)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
         }
@@ -129,7 +127,7 @@ extension TrackList {
 
 extension TrackList {
     typealias Expand = (() -> Void)
-    typealias LoadCallback = ((_ search: String?) async -> Void)?
+    typealias LoadCallback = (() async -> Void)?
     
     typealias DeleteCallback = ((_ track: Track) -> Void)?
     typealias MoveCallback = ((_ track: Track, _ to: Int) -> Void)?
@@ -163,27 +161,19 @@ extension TrackList {
         if !working && count > tracks.count, let loadMore = loadMore {
             working = true
             
-            let search: String?
-            
-            if self.search.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-                search = nil
-            } else {
-                search = self.search
-            }
-            
             Task.detached {
-                await loadMore(search)
+                await loadMore()
                 working = false
             }
         }
     }
     
     private func startPlayback(index: Int, shuffle: Bool) {
-        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(type: .tracks, query: search, container: nil))
+        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(type: .tracks, query: nil, container: nil))
     }
     private func startPlayback(track: Track) {
         if let index = tracks.firstIndex(where: { $0.id == track.id }) {
-            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(type: .tracks, query: search, container: nil))
+            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(type: .tracks, query: nil, container: nil))
         }
     }
 }
