@@ -24,3 +24,14 @@ struct ArtistListRow: View {
         }
     }
 }
+
+extension ArtistListRow {
+    static let placeholder: some View = ArtistListRow (
+        artist: .init(
+            id: "placeholder",
+            name: "Placeholder",
+            cover: nil,
+            favorite: false,
+            overview: nil)
+    ).redacted(reason: .placeholder)
+}
