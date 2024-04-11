@@ -58,7 +58,6 @@ struct SidebarView: View {
         .environment(\.libraryDataProvider, selection?.provider.libraryProvider ?? MockLibraryDataProvider())
         .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { notification in
             if let id = notification.object as? String {
-                selection = .init(provider: .online, section: .artists)
                 navigationPath.append(Navigation.ArtistLoadDestination(artistId: id))
             }
         }
