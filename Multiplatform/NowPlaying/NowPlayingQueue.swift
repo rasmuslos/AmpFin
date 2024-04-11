@@ -97,7 +97,7 @@ struct NowPlayingQueue: View {
                     .listRowBackground(Color.clear)
                     .foregroundStyle(.black)
                     .padding(.top, 20)
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 15)
                 
                 ForEach(Array(AudioPlayer.current.queue.enumerated()), id: \.offset) { index, track in
                     QueueTrackRow(track: track, draggable: true)

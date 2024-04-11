@@ -13,7 +13,7 @@ import AFOffline
 import CoreSpotlight
 
 @main
-struct iOSApp: App {
+struct MultiplatformApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     init() {

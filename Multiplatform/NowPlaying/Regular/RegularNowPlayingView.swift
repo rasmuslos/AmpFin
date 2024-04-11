@@ -19,7 +19,7 @@ struct RegularNowPlayingView: View {
     @State private var currentTab = NowPlayingTab.cover
     
     private var singleColumnLayout: Bool {
-        availableWidth < 1100
+        availableWidth < 1050
     }
     
     var body: some View {

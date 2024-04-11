@@ -120,7 +120,7 @@
 		3ADE8EA72AA9464D009826A3 /* CompactNowPlayingBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA62AA9464D009826A3 /* CompactNowPlayingBarModifier.swift */; };
 		3AE1B0DC2ABCDA0A0052C8AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */; };
 		3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3AE1B0E22ABCDCE80052C8AA /* NukeUI */; };
-		3AEB322B2AA7EC3C00853210 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321A2AA7EC3C00853210 /* iOSApp.swift */; };
+		3AEB322B2AA7EC3C00853210 /* MultiplatformApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321A2AA7EC3C00853210 /* MultiplatformApp.swift */; };
 		3AEB322F2AA7EC3C00853210 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEB321F2AA7EC3C00853210 /* Assets.xcassets */; };
 		3AEB32312AA7EC3C00853210 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32232AA7EC3C00853210 /* ContentView.swift */; };
 		3AEB32322AA7EC3C00853210 /* LargeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32262AA7EC3C00853210 /* LargeButtonStyle.swift */; };
@@ -277,7 +277,7 @@
 		3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Gesture.swift"; sourceTree = "<group>"; };
 		3ADE8EA62AA9464D009826A3 /* CompactNowPlayingBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactNowPlayingBarModifier.swift; sourceTree = "<group>"; };
 		3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3AEB321A2AA7EC3C00853210 /* iOSApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		3AEB321A2AA7EC3C00853210 /* MultiplatformApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiplatformApp.swift; sourceTree = "<group>"; };
 		3AEB321F2AA7EC3C00853210 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AEB32222AA7EC3C00853210 /* Entitlements.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3AEB32232AA7EC3C00853210 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -730,7 +730,7 @@
 		3AEB32392AA7F63200853210 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				3AEB321A2AA7EC3C00853210 /* iOSApp.swift */,
+				3AEB321A2AA7EC3C00853210 /* MultiplatformApp.swift */,
 				3AEB32232AA7EC3C00853210 /* ContentView.swift */,
 				3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */,
 				3A1CBC182B0D284200855A70 /* Navigation.swift */,
@@ -1049,7 +1049,7 @@
 				3A2B28ED2B43739100DF9731 /* PlaylistView.swift in Sources */,
 				3A7938FF2B387851001B3B3D /* LibraryDataProvider.swift in Sources */,
 				3AFCD1212BC5CB6A00589301 /* NowPlayingButtons.swift in Sources */,
-				3AEB322B2AA7EC3C00853210 /* iOSApp.swift in Sources */,
+				3AEB322B2AA7EC3C00853210 /* MultiplatformApp.swift in Sources */,
 				3A3EA5A72ACC206500600BC5 /* DownloadIndicator.swift in Sources */,
 				3A7939002B387851001B3B3D /* OfflineLibraryDataProvider.swift in Sources */,
 				3AAE1B512BC591E500FD0200 /* NowPlayingBackground.swift in Sources */,
