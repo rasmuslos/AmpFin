@@ -1376,7 +1376,6 @@
       }
     },
     "search.artists" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
