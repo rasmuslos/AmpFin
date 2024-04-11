@@ -10,6 +10,7 @@ import Foundation
 extension JellyfinClient {
     struct ArtistItemsResponse: Codable {
         let Items: [JellyfinFullArtist]
+        let TotalRecordCount: Int
     }
     
     struct JellyfinFullArtist: Codable {

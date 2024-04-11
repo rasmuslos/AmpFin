@@ -1375,6 +1375,17 @@
         }
       }
     },
+    "search.artists" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search Artists"
+          }
+        }
+      }
+    },
     "search.downloaded" : {
       "comment" : "Search the downloaded content",
       "localizations" : {

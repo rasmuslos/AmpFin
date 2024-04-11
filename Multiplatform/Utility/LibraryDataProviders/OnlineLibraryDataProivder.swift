@@ -48,8 +48,8 @@ public struct OnlineLibraryDataProvider: LibraryDataProvider {
     public func getArtist(artistId: String) async throws -> Artist {
         try await JellyfinClient.shared.getArtist(artistId: artistId)
     }
-    public func getArtists(albumOnly: Bool) async throws -> [Artist] {
-        try await JellyfinClient.shared.getArtists(albumOnly: albumOnly)
+    public func getArtists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int) {
+        try await JellyfinClient.shared.getArtists(limit: limit, startIndex: startIndex, albumOnly: albumOnly, search: search)
     }
     
     public func getTracks(artistId: String) async throws -> [Track] {
