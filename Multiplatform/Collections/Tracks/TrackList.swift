@@ -33,6 +33,10 @@ struct TrackList: View {
         }
     }
     
+    private var useDiskSections: Bool {
+        album != nil && disks.count > 1
+    }
+    
     var body: some View {
         if !hideButtons {
             TrackListButtons() {
@@ -43,17 +47,17 @@ struct TrackList: View {
             .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
         }
         
-        if album != nil, disks.count > 1 {
+        if useDiskSections {
             ForEach(disks.sorted(), id: \.hashValue) { disk in
                 Section {
-                    TrackSection(tracks: filter(tracks: tracks.filter { $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, expand: expand)
+                    TrackSection(tracks: sort(tracks: tracks.filter{ $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, expand: expand)
                 } header: {
                     Text("tracks.disk \(disk)")
                         .padding(.top, -20)
                 }
             }
         } else {
-            TrackSection(tracks: filter(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, expand: expand)
+            TrackSection(tracks: sort(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, expand: expand)
         }
         
         ForEach(0..<(max(0, count - tracks.count)), id: \.hashValue) { _ in
@@ -89,6 +93,14 @@ extension TrackList {
                     ModifiedTrackListRow(track: track, album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, expand: track == tracks.last ? expand : nil)
                 }
             }
+        }
+    }
+    
+    func sort(tracks: [Track]) -> [Track] {
+        if album != nil {
+            return tracks.sorted { $0.index < $1.index }
+        } else {
+            return tracks
         }
     }
     
@@ -166,26 +178,10 @@ extension TrackList {
         }
     }
     
-    private func filter(tracks: [Track]) -> [Track] {
-        var tracks = tracks
-        
-        if search != "" {
-            tracks = tracks.filter { $0.name.lowercased().contains(search.lowercased()) || ($0.album.name?.lowercased() ?? "").contains(search.lowercased()) }
-        }
-        
-        if album != nil {
-            return tracks.sorted { $0.index < $1.index }
-        } else {
-            return tracks
-        }
-    }
-    
     private func startPlayback(index: Int, shuffle: Bool) {
-        AudioPlayer.current.startPlayback(tracks: filter(tracks: tracks), startIndex: index, shuffle: shuffle, playbackInfo: .init(type: .tracks, query: search, container: nil))
+        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(type: .tracks, query: search, container: nil))
     }
     private func startPlayback(track: Track) {
-        let tracks = filter(tracks: tracks)
-        
         if let index = tracks.firstIndex(where: { $0.id == track.id }) {
             AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(type: .tracks, query: search, container: nil))
         }
