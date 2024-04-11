@@ -16,14 +16,37 @@ Introducing AmpFin, a sleek and intuitive native music client for the Jellyfin m
 
 <a href="https://apps.apple.com/de/app/ampfin/id6473753735?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1710288000" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
 
+The macOS app is still in "alpha". It is more or less a slightly tweaked iPadOS app. A native macOS app is planned. Downloads will be available soon™️
+
 ## Roadmap
 
-Short term: https://nextcloud.rfk.io/s/iaaAKsad8SxQLfa
+Things to implement before i would consider AmpFin feature complete:
 
-- CarPlay
-- Restructure
+- Shortcuts
+- 10.9 & lyrics support
+- Update cover images of downloaded items
+- Improve downloads by storing their file extension (currently blocked by a migration bug in SwiftData)
 
-While i do have plans to support other platforms i will not continue to work on them until at least iOS 18 because i hope that until then SwiftUI is actually usable on the platforms.
+### iOS
+
+- CarPlay integration
+- Tweak now playing animation
+- Widgets (No idea what purpose they could serve but there may be some)
+
+### iPadOS
+
+- Improve search experience
+
+### Planned platforms
+
+- tvOS (not planned until tvOS 18)
+- macOS
+
+### Things that are not possible due to a lack of APIs provided by Apple:
+
+- Journal integration
+- Now playing widget suggestions
+- HomePod (possible but require a centralized server)
 
 ## Screenshots
 
@@ -57,8 +80,8 @@ Please not that the `DEBUG` configuration is used by default for all builds exce
 
 AmpFin is licensed under the Mozilla Public License Version 2. Additionally the "Common Clause" applies. This means that you can modify AmpFin, as well as contribute to it, but you are not allowed to distribute the application in binary form. Compiling for your own personal use is not covered by the commons clause and therefore fine. Additionally, prebuilt binaries are available on GitHub for side loading using popular tools like SideStore, etc.
 
-Contributions are welcome, just fork the repository, and open a pull request with your changes. If you want to contribute translations you have to edit `Localizable.xcstrings` in the `iOS` directory, as well as `Localizable.xcstrings` located at `ShelfPlayerKit/Sources/SPBase/Resources` using Xcode. If you want to add a new language add it in the project settings
+Contributions are welcome, just fork the repository, and open a pull request with your changes. If you want to contribute translations you have to edit `Localizable.xcstrings` in the `iOS` directory, as well as `Localizable.xcstrings` located at `Widget Extension` using Xcode. If you want to add a new language add it in the project settings
 
 ## Miscellaneous
 
-ShelfPlayer is not endorsed by nor associated with Jellyfin
+AmpFin is not endorsed by nor associated with Jellyfin
