@@ -17,7 +17,7 @@ public extension JellyfinClient {
         let Id: String
         let PlaylistItemId: String?
         
-        let Name: String
+        let Name: String?
         
         let PremiereDate: String?
         let IndexNumber: Int?
@@ -36,6 +36,6 @@ public extension JellyfinClient {
         let AlbumPrimaryImageTag: String?
         
         let LUFS: Float?
-        let RunTimeTicks: UInt64
+        let RunTimeTicks: UInt64?
     }
 }
