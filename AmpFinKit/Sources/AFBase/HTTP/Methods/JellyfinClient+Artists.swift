@@ -9,13 +9,23 @@ import Foundation
 
 public extension JellyfinClient {
     /// Get all artists from all libraries
-    func getArtists(albumOnly: Bool) async throws -> [Artist] {
-        let response = try await request(ClientRequest<ArtistItemsResponse>(path: albumOnly ? "Artists/AlbumArtists" : "Artists", method: "GET", query: [
+    func getArtists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int) {
+        var query = [
             URLQueryItem(name: "SortBy", value: ItemSortOrder.name.rawValue),
-            URLQueryItem(name: "SortOrder", value: "Ascending"),
-        ], userId: true))
+            URLQueryItem(name: "SortOrder", value: "Ascending")
+        ]
+        if limit > 0 {
+            query.append(URLQueryItem(name: "limit", value: String(limit)))
+        }
+        if startIndex > 0 {
+            query.append(URLQueryItem(name: "startIndex", value: String(startIndex)))
+        }
+        if let search = search {
+            query.append(URLQueryItem(name: "searchTerm", value: search))
+        }
+        let response = try await request(ClientRequest<ArtistItemsResponse>(path: albumOnly ? "Artists/AlbumArtists" : "Artists", method: "GET", query: query, userId: true))
         
-        return response.Items.map(Artist.convertFromJellyfin)
+        return (response.Items.map(Artist.convertFromJellyfin), response.TotalRecordCount)
     }
     
     func getArtists(query: String) async throws -> [Artist] {

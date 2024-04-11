@@ -32,7 +32,7 @@ public protocol LibraryDataProvider {
     // MARK: Artist
     
     func getArtist(artistId: String) async throws -> Artist
-    func getArtists(albumOnly: Bool) async throws -> [Artist]
+    func getArtists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int)
     
     func getTracks(artistId: String) async throws -> [Track]
     func getAlbums(artistId: String, limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([Album], Int)

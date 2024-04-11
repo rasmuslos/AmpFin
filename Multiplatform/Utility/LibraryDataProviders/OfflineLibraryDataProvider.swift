@@ -101,7 +101,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     public func getArtist(artistId: String) async throws -> Artist {
         throw JellyfinClientError.invalidResponse
     }
-    public func getArtists(albumOnly: Bool) async throws -> [Artist] {
+    public func getArtists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int) {
         throw JellyfinClientError.invalidResponse
     }
     

@@ -13,13 +13,16 @@ struct ArtistsView: View {
     
     let albumOnly: Bool
     
+    @State var count = 0
+    @State private var success = false
     @State private var failed = false
     @State private var artists = [Artist]()
+
     
     var body: some View {
         VStack {
-            if !artists.isEmpty {
-                ArtistList(artists: artists)
+            if success {
+                ArtistList(artists: artists, count: count, loadMore: fetchArtists)
             } else if failed {
                 ErrorView()
             } else {
@@ -36,11 +39,21 @@ struct ArtistsView: View {
 // MARK: Helper
 
 extension ArtistsView {
-    func fetchArtists() async {
+    func fetchArtists(search: String? = nil) async {
         failed = false
         
+        if search != nil {
+            count = 0
+            artists = []
+        }
+        
         do {
-            artists = try await dataProvider.getArtists(albumOnly: albumOnly)
+            let result = try await dataProvider.getArtists(limit: 100, startIndex: artists.count, albumOnly: albumOnly, search: search)
+            
+            count = result.1
+            artists += result.0
+            
+            success = true
         } catch {
             failed = true
         }

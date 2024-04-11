@@ -96,8 +96,8 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
     public func getArtist(artistId: String) async throws -> Artist {
         Artist.fixture
     }
-    public func getArtists(albumOnly: Bool) async throws -> [Artist] {
-        [
+    public func getArtists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int) {
+        ([
             Artist.fixture,
             Artist.fixture,
             Artist.fixture,
@@ -105,7 +105,7 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
             Artist.fixture,
             Artist.fixture,
             Artist.fixture,
-        ]
+        ], 7)
     }
     
     public func getTracks(artistId: String) async throws -> [Track] {
