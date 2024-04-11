@@ -11,6 +11,7 @@ import AFBase
 struct PlaylistAddSheet: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.libraryOnline) var libraryOnline
+    @Environment(\.colorScheme) var colorScheme
     
     let track: Track
     
@@ -104,9 +105,24 @@ struct PlaylistAddSheet: View {
                 }
             }
             .navigationTitle("playlist.add.title")
+            #if targetEnvironment(macCatalyst)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("account.done")
+                    }
+                }
+            }
+            #endif
             .toolbarTitleDisplayMode(.inline)
         }
+        .foregroundStyle(colorScheme == .dark ? .white : .black)
+        // This indicator does nothing on macOS and will only confuse our user
+        #if !targetEnvironment(macCatalyst)
         .presentationDragIndicator(.visible)
+        #endif
     }
 }
 

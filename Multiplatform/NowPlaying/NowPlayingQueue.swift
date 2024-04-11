@@ -14,6 +14,7 @@ import AFPlayback
 
 struct NowPlayingQueue: View {
     @State private var showHistory = false
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         HStack {
@@ -95,7 +96,7 @@ struct NowPlayingQueue: View {
                 TipView(HistoryTip())
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(colorScheme == .dark ? .white : .black)
                     .padding(.top, 20)
                     .padding(.horizontal, 15)
                 
