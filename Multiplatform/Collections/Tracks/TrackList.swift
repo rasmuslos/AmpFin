@@ -43,15 +43,6 @@ struct TrackList: View {
             }
             .listRowSeparator(.hidden)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
-            .onChange(of: search) {
-                Task {
-                    if !working {
-                        working = true
-                        await loadMore?(self.search)
-                        working = false
-                    }
-                }
-            }
         }
         
         if useDiskSections {
