@@ -10,9 +10,12 @@ import AFBase
 
 struct ArtistListRow: View {
     let artist: Artist
-    
+    var expand: Expand? = nil
+
     var body: some View {
-        NavigationLink(destination: ArtistView(artist: artist)) {
+        NavigationLink {
+            ArtistView(artist: artist)
+        } label: {
             HStack {
                 ItemImage(cover: artist.cover)
                     .clipShape(RoundedRectangle(cornerRadius: 1000))
@@ -21,17 +24,21 @@ struct ArtistListRow: View {
                 Text(artist.name)
                     .padding(.horizontal, 5)
             }
+            .onAppear { expand?() }
         }
     }
 }
 
 extension ArtistListRow {
-    static let placeholder: some View = ArtistListRow (
-        artist: .init(
-            id: "placeholder",
-            name: "Placeholder",
-            cover: nil,
-            favorite: false,
-            overview: nil)
-    ).redacted(reason: .placeholder)
+    typealias Expand = (() -> Void)
+    
+    // NavigationLink cannot be disabled by allowHitsTesting, make a non-link version for placeholder
+    static let placeholder: some View = HStack {
+        ItemImage(cover: nil)
+            .clipShape(RoundedRectangle(cornerRadius: 1000))
+            .frame(width: 45)
+        
+        Text("PlaceHolder")
+            .padding(.horizontal, 5)
+    }.redacted(reason: .placeholder)
 }
