@@ -20,6 +20,7 @@ struct TracksView: View {
     @State private var tracks = [Track]()
     
     @State private var search: String = ""
+    @State private var searchTask: Task<Void, Error>?
     
     var sortState: [String] {[
         search,
@@ -29,13 +30,13 @@ struct TracksView: View {
     
     var body: some View {
         VStack {
-            if failure {
-                ErrorView()
-            } else if success {
+            if success {
                 List {
                     TrackList(tracks: tracks, count: count, loadMore: loadTracks)
                 }
                 .listStyle(.plain)
+            } else if failure {
+                ErrorView()
             } else {
                 LoadingView()
             }
@@ -55,9 +56,12 @@ struct TracksView: View {
             await loadTracks()
         }
         .onChange(of: sortState) {
-            Task {
+            searchTask?.cancel()
+            searchTask = Task {
                 reset()
+                try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
                 await loadTracks()
+                searchTask = nil
             }
         }
     }
