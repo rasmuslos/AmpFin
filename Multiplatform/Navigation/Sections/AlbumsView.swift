@@ -48,6 +48,7 @@ struct AlbumsView: View {
             SortSelector(ascending: $sortAscending, sortOrder: $sortOrder)
         }
         .task {
+            reset()
             await fetchAlbums()
         }
         .refreshable {

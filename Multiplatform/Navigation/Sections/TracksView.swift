@@ -46,11 +46,17 @@ struct TracksView: View {
         .toolbar {
             SortSelector(ascending: $sortAscending, sortOrder: $sortOrder)
         }
-        .task { await loadTracks() }
-        .refreshable { await loadTracks() }
+        .task {
+            reset()
+            await loadTracks()
+        }
+        .refreshable {
+            reset()
+            await loadTracks()
+        }
         .onChange(of: sortState) {
             Task {
-                tracks = []
+                reset()
                 await loadTracks()
             }
         }
@@ -60,6 +66,11 @@ struct TracksView: View {
 // MARK: Helper
 
 extension TracksView {
+    func reset() {
+        count = 0
+        tracks = []
+    }
+    
     func loadTracks() async {
         failure = false
         
