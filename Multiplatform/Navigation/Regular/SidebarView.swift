@@ -39,7 +39,14 @@ struct SidebarView: View {
                 NavigationStack(path: $navigationPath) {
                     selection.section.content
                         .navigationDestination(for: Navigation.AlbumLoadDestination.self) { data in
-                            AlbumLoadView(albumId: data.albumId)
+                            switch data.provider {
+                                case .online:
+                                    AlbumLoadView(albumId: data.albumId, dataProviderOverride: OnlineLibraryDataProvider())
+                                case .offline:
+                                    AlbumLoadView(albumId: data.albumId, dataProviderOverride: OfflineLibraryDataProvider())
+                                default:
+                                    AlbumLoadView(albumId: data.albumId)
+                            }
                         }
                         .navigationDestination(for: Navigation.ArtistLoadDestination.self) { data in
                             ArtistLoadView(artistId: data.artistId)
@@ -63,7 +70,7 @@ struct SidebarView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateAlbumNotification)) { notification in
             if let id = notification.object as? String {
-                navigationPath.append(Navigation.AlbumLoadDestination(albumId: id))
+                navigationPath.append(Navigation.AlbumLoadDestination(albumId: id, provider: .offline))
             }
         }
     }

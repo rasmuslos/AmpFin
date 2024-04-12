@@ -13,6 +13,7 @@ struct AlbumLoadView: View {
     @Environment(\.dismiss) private var dismiss
     
     let albumId: String
+    var dataProviderOverride: LibraryDataProvider? = nil
     
     @State private var album: Album?
     @State private var failed = false
@@ -31,12 +32,13 @@ struct AlbumLoadView: View {
                     }
                 }
         } else if let album = album {
-            AlbumView(album: album)
+            AlbumView(album: album, dataProviderOverride: dataProviderOverride)
         } else {
             LoadingView()
                 .navigationBarBackButtonHidden()
                 .task {
-                    if let album = try? await dataProvider.getAlbum(albumId: albumId) {
+                    let provider = dataProviderOverride ?? dataProvider
+                    if let album = try? await provider.getAlbum(albumId: albumId) {
                         self.album = album
                     } else {
                         self.failed = true
