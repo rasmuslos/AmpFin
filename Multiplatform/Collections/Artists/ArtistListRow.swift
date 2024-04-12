@@ -38,7 +38,7 @@ extension ArtistListRow {
             .clipShape(RoundedRectangle(cornerRadius: 1000))
             .frame(width: 45)
         
-        Text("PlaceHolder")
+        Text("placeholder")
             .padding(.horizontal, 5)
     }.redacted(reason: .placeholder)
 }
