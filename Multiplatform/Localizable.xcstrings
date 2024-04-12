@@ -871,6 +871,16 @@
         }
       }
     },
+    "placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PlaceHolder"
+          }
+        }
+      }
+    },
     "play" : {
       "localizations" : {
         "de" : {
