@@ -48,8 +48,9 @@ struct TracksView: View {
             SortSelector(ascending: $sortAscending, sortOrder: $sortOrder)
         }
         .task {
-            reset()
-            await loadTracks()
+            if tracks.isEmpty {
+                await loadTracks()
+            }
         }
         .refreshable {
             reset()
