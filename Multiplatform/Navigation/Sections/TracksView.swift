@@ -32,7 +32,7 @@ struct TracksView: View {
         VStack {
             if success {
                 List {
-                    TrackList(tracks: tracks, count: count, loadMore: loadTracks)
+                    TrackList(tracks: tracks, count: count, loadMore: loadCallback)
                 }
                 .listStyle(.plain)
             } else if failure {
@@ -59,9 +59,8 @@ struct TracksView: View {
         .onChange(of: sortState) {
             searchTask?.cancel()
             searchTask = Task {
-                reset()
                 try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
-                await loadTracks()
+                await loadTracks(shouldReset: true)
                 searchTask = nil
             }
         }
@@ -76,7 +75,11 @@ extension TracksView {
         tracks = []
     }
     
-    func loadTracks() async {
+    func loadCallback() async {
+        await loadTracks()
+    }
+    
+    func loadTracks(shouldReset: Bool = false) async {
         failure = false
         
         let search: String?
@@ -85,6 +88,10 @@ extension TracksView {
             search = nil
         } else {
             search = self.search
+        }
+        
+        if shouldReset {
+            reset()
         }
         
         do {
