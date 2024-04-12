@@ -21,6 +21,8 @@ struct AlbumsView: View {
     @State private var albums = [Album]()
     
     @State private var search: String = ""
+    @State private var searchTask: Task<Void, Error>?
+
     
     var sortState: [String] {[
         search,
@@ -34,7 +36,7 @@ struct AlbumsView: View {
                 ErrorView()
             } else if success {
                 ScrollView {
-                    AlbumGrid(albums: albums, count: count, loadMore: fetchAlbums)
+                    AlbumGrid(albums: albums, count: count, loadMore: loadMore)
                         .padding()
                 }
                 .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.albums")
@@ -57,9 +59,11 @@ struct AlbumsView: View {
             await fetchAlbums()
         }
         .onChange(of: sortState) {
-            Task {
-                reset()
-                await fetchAlbums()
+            searchTask?.cancel()
+            searchTask = Task {
+                try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
+                await fetchAlbums(shouldReset: true)
+                searchTask = nil
             }
         }
     }
@@ -73,13 +77,21 @@ private extension AlbumsView {
         albums = []
     }
     
-    func fetchAlbums() async {
+    func loadMore() async {
+        await fetchAlbums()
+    }
+    
+    func fetchAlbums(shouldReset: Bool = false) async {
         failure = false
         
         var search: String? = search
         
         if self.search.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             search = nil
+        }
+        
+        if shouldReset {
+            reset()
         }
         
         do {
