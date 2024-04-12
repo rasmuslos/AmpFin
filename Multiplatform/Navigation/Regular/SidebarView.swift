@@ -70,7 +70,11 @@ struct SidebarView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateAlbumNotification)) { notification in
             if let id = notification.object as? String {
-                navigationPath.append(Navigation.AlbumLoadDestination(albumId: id, provider: .offline))
+                if OfflineManager.shared.isAlbumDownloaded(albumId: id) {
+                    navigationPath.append(Navigation.AlbumLoadDestination(albumId: id, provider: .offline))
+                } else {
+                    navigationPath.append(Navigation.AlbumLoadDestination(albumId: id, provider: .online))
+                }
             }
         }
     }
