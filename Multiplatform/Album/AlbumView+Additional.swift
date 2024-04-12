@@ -13,6 +13,7 @@ extension AlbumView {
         @Environment(\.libraryDataProvider) private var dataProvider
         
         let album: Album
+        var dataProviderOverride: LibraryDataProvider? = nil
         
         @State var alsoFromArtist: [Album]?
         @State var similar: [Album]?
@@ -45,7 +46,8 @@ extension AlbumView {
 
 extension AlbumView.AdditionalAlbums {
     func fetchAlbums() {
-        if dataProvider as? OfflineLibraryDataProvider != nil {
+        let provider = dataProviderOverride ?? dataProvider
+        if provider as? OfflineLibraryDataProvider != nil {
             completedOperations = 2
             return
         }
