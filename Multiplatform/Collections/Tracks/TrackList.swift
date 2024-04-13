@@ -58,7 +58,7 @@ struct TrackList: View {
             TrackSection(tracks: sort(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, expand: expand)
         }
         
-        ForEach(0..<(max(0, count - tracks.count)), id: \.hashValue) { _ in
+        ForEach(0..<(min(10000, max(0, count - tracks.count))), id: \.hashValue) { _ in
             TrackListRow.placeholder
                 .onAppear { expand() }
         }
