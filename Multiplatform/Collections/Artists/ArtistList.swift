@@ -17,7 +17,12 @@ struct ArtistList: View {
     var body: some View {
         List {
             ForEach(artists) { artist in
-                ArtistListRow(artist: artist, expand: artist == artists.last ? expand : nil)
+                ArtistListRow(artist: artist)
+                    .onAppear {
+                        if artist == artists.last {
+                            expand?()
+                        }
+                    }
             }
             ForEach(0..<(max(0, count - artists.count)), id: \.hashValue) { _ in
                 ArtistListRow.placeholder
