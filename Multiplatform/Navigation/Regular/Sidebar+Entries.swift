@@ -32,6 +32,8 @@ extension SidebarView {
         // Special:
         case search
         case playlist(id: String)
+        case album(id: String)
+        case artist(id: String)
     }
 }
 
@@ -135,6 +137,10 @@ extension SidebarView.LibrarySection {
                     SearchView()
                 case .playlist(let id):
                     PlaylistLoadView(playlistId: id)
+                case .album(let id):
+                    AlbumLoadView(albumId: id)
+                case .artist(let id):
+                    ArtistLoadView(artistId: id)
             }
         }
     }
