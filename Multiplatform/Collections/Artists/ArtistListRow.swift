@@ -10,7 +10,6 @@ import AFBase
 
 struct ArtistListRow: View {
     let artist: Artist
-    var expand: Expand? = nil
 
     var body: some View {
         NavigationLink {
@@ -24,7 +23,6 @@ struct ArtistListRow: View {
                 Text(artist.name)
                     .padding(.horizontal, 5)
             }
-            .onAppear { expand?() }
         }
     }
 }
