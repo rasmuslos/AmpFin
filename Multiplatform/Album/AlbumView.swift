@@ -13,7 +13,6 @@ struct AlbumView: View {
     @Environment(\.libraryDataProvider) var dataProvider
     
     let album: Album
-    var dataProviderOverride: LibraryDataProvider? = nil
     
     @State var tracks = [Track]()
     @State var imageColors = ImageColors()
@@ -43,7 +42,7 @@ struct AlbumView: View {
             .listRowSeparator(.hidden)
             .foregroundStyle(.secondary)
             
-            AdditionalAlbums(album: album, dataProviderOverride: dataProviderOverride)
+            AdditionalAlbums(album: album)
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         .listStyle(.plain)
@@ -67,8 +66,7 @@ struct AlbumView: View {
             ]
         }
         .task {
-            let provider = dataProviderOverride ?? dataProvider
-            if let tracks = try? await provider.getTracks(albumId: album.id) {
+            if let tracks = try? await dataProvider.getTracks(albumId: album.id) {
                 self.tracks = tracks
             }
         }
