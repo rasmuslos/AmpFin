@@ -29,13 +29,9 @@ struct ArtistsView: View {
                     .onChange(of: search) {
                         searchTask?.cancel()
                         searchTask = Task {
-                            if !working {
-                                try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
-                                working = true
-                                await fetchArtists(search: self.search)
-                                working = false
-                                searchTask = nil
-                            }
+                            try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
+                            await fetchArtists(search: self.search)
+                            searchTask = nil
                         }
                     }
             } else if failed {
