@@ -36,7 +36,7 @@ struct AlbumsView: View {
                 ErrorView()
             } else if success {
                 ScrollView {
-                    AlbumGrid(albums: albums, count: count, loadMore: loadMore)
+                    AlbumGrid(albums: albums, count: count, loadMore: { () async -> Void in await fetchAlbums(shouldReset: false) })
                         .padding()
                 }
                 .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.albums")
@@ -51,12 +51,11 @@ struct AlbumsView: View {
         }
         .task {
             if albums.isEmpty {
-                await fetchAlbums()
+                await fetchAlbums(shouldReset: false)
             }
         }
         .refreshable {
-            reset()
-            await fetchAlbums()
+            await fetchAlbums(shouldReset: true)
         }
         .onChange(of: sortState) {
             searchTask?.cancel()
@@ -72,16 +71,7 @@ struct AlbumsView: View {
 // MARK: Helper
 
 private extension AlbumsView {
-    func reset() {
-        count = 0
-        albums = []
-    }
-    
-    func loadMore() async {
-        await fetchAlbums()
-    }
-    
-    func fetchAlbums(shouldReset: Bool = false) async {
+    func fetchAlbums(shouldReset: Bool) async {
         failure = false
         
         var search: String? = search
@@ -91,7 +81,8 @@ private extension AlbumsView {
         }
         
         if shouldReset {
-            reset()
+            count = 0
+            albums = []
         }
         
         do {
