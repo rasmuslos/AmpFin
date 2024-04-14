@@ -122,13 +122,13 @@ extension SidebarView.LibrarySection {
         Group {
             switch self {
                 case .tracks:
-                    TracksView()
+                    TracksView(favoritesOnly: false)
                 case .albums:
                     AlbumsView()
                 case .playlists:
                     PlaylistsView()
                 case .favorites:
-                    FavoritesView()
+                    TracksView(favoritesOnly: true)
                 case .albumArtists:
                     ArtistsView(albumOnly: true)
                 case .artists:

@@ -15,7 +15,7 @@ extension LibraryView {
         
         var body: some View {
             Group {
-                NavigationLink(destination: TracksView()) {
+                NavigationLink(destination: TracksView(favoritesOnly: false)) {
                     Label("title.tracks", systemImage: "music.note")
                 }
                 NavigationLink(destination: AlbumsView()) {
@@ -26,7 +26,7 @@ extension LibraryView {
                     Label("title.playlists", systemImage: "music.note.list")
                 }
                 
-                NavigationLink(destination: FavoritesView()) {
+                NavigationLink(destination: TracksView(favoritesOnly: true)) {
                     Label("title.favorites", systemImage: "heart")
                 }
                 

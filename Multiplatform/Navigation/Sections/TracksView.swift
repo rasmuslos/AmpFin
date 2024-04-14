@@ -14,6 +14,8 @@ struct TracksView: View {
     @Default(.sortAscending) private var sortAscending
     @Environment(\.libraryDataProvider) private var dataProvider
     
+    let favoritesOnly: Bool
+    
     @State private var count = 0
     @State private var success = false
     @State private var failure = false
@@ -41,7 +43,7 @@ struct TracksView: View {
                 LoadingView()
             }
         }
-        .navigationTitle("title.tracks")
+        .navigationTitle(favoritesOnly ? "title.favorites" : "title.tracks")
         .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.tracks")
         .modifier(NowPlayingBarSafeAreaModifier())
         .toolbar {
@@ -86,7 +88,7 @@ extension TracksView {
         }
         
         do {
-            let result = try await dataProvider.getTracks(limit: 100, startIndex: tracks.count, sortOrder: sortOrder, ascending: sortAscending, favorite: false, search: search)
+            let result = try await dataProvider.getTracks(limit: 100, startIndex: tracks.count, sortOrder: sortOrder, ascending: sortAscending, favorite: favoritesOnly, search: search)
             
             count = result.1
             tracks += result.0
@@ -100,6 +102,12 @@ extension TracksView {
 
 #Preview {
     NavigationStack {
-        TracksView()
+        TracksView(favoritesOnly: false)
+    }
+}
+
+#Preview {
+    NavigationStack {
+        TracksView(favoritesOnly: true)
     }
 }
