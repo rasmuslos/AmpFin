@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Defaults
 import TipKit
 import AFBase
 import AFOffline
@@ -40,6 +41,12 @@ struct AccountSheet: View {
                             .font(.caption)
                     }
                     .padding(.trailing, 5)
+                }
+                
+                if Defaults[.spotlightDisabled] {
+                    Section("account.spotlight.disabled") {
+                        Text("account.spotlight.disabled.text")
+                    }
                 }
                 
                 Section("account.remote") {

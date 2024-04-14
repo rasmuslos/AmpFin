@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Defaults
 import CoreSpotlight
 import OSLog
 import Intents
@@ -18,16 +19,22 @@ struct SpotlightHelper {
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "Spotlight")
     
     static func donate(force: Bool = false) {
-        let lastDonation = UserDefaults.standard.double(forKey: "lastSpotlightDonation")
-        if lastDonation + waitTime > Date.timeIntervalSinceReferenceDate {
+        if Defaults[.lastSpotlightDonation] + waitTime > Date.timeIntervalSinceReferenceDate {
             logger.info("Skipped spotlight indexing")
             return
         }
         
-        UserDefaults.standard.set(Date.timeIntervalSinceReferenceDate, forKey: "lastSpotlightDonation")
+        Defaults[.lastSpotlightDonation] = Date.timeIntervalSinceReferenceDate
         
         Task.detached {
             do {
+                let count = try await JellyfinClient.shared.getTracks(limit: 1, startIndex: 0, sortOrder: .name, ascending: true, favorite: false, search: nil).1
+                Defaults[.spotlightDisabled] = count > 10_000
+                
+                if Defaults[.spotlightDisabled] {
+                    return
+                }
+                
                 let index = CSSearchableIndex(name: "items", protectionClass: .completeUntilFirstUserAuthentication)
                 let tracks = try await JellyfinClient.shared.getTracks(limit: 0, startIndex: 0, sortOrder: .name, ascending: true, favorite: false, search: nil).0
                 var items = [CSSearchableItem]()

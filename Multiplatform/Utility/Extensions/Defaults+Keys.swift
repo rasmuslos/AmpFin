@@ -17,4 +17,7 @@ extension Defaults.Keys {
     static let libraryRandomAlbums = Key("libraryRandomAlbums", default: false)
     
     static let playlistSectionExpanded = Key("playlistSectionExpanded", default: true)
+    
+    static let spotlightDisabled = Key("spotlightDisabled", default: false)
+    static let lastSpotlightDonation = Key<Double>("lastSpotlightDonation", default: 0)
 }
