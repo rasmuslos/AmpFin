@@ -53,6 +53,7 @@ Things to implement before i would consider AmpFin feature complete:
 | Library | Album | Player | Queue |
 | ------------- | ------------- | ------------- | ------------- |
 | <img src="/Screenshots/Library.png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Album.png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player.png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Queue.png?raw=true" alt="Queue" width="200"/> 
+| <img src="/Screenshots/Tracks%20(iPad).png?raw=true" alt="Tracks" width="200"/> | <img src="/Screenshots/Album%20(iPad).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player%20(iPad).png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Artists%20(iPad).png?raw=true" alt="Artists" width="200"/> 
 
 ## Sideload
 
