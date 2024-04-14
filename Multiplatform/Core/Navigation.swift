@@ -15,14 +15,8 @@ struct Navigation {
 }
 
 extension Navigation {
-    enum DataProvider: Hashable {
-        case online
-        case offline
-    }
-    
     struct AlbumLoadDestination: Hashable {
         let albumId: String
-        var provider: DataProvider? = nil
     }
     
     struct ArtistLoadDestination: Hashable {

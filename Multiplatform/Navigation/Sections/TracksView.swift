@@ -86,7 +86,7 @@ extension TracksView {
         }
         
         do {
-            let result = try await dataProvider.getTracks(limit: 100, startIndex: tracks.count, sortOrder: sortOrder, ascending: sortAscending, search: search)
+            let result = try await dataProvider.getTracks(limit: 100, startIndex: tracks.count, sortOrder: sortOrder, ascending: sortAscending, favorite: false, search: search)
             
             count = result.1
             tracks += result.0

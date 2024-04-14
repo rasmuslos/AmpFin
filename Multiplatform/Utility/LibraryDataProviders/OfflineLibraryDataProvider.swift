@@ -23,8 +23,8 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     
     // MARK: Track
     
-    public func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Track], Int) {
-        var tracks = try await OfflineManager.shared.getTracks().sorted {
+    public func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, favorite: Bool, search: String?) async throws -> ([Track], Int) {
+        var tracks = try await OfflineManager.shared.getTracks(favorite: favorite).sorted {
             switch sortOrder {
                 case .name:
                     return $0.name < $1.name
@@ -53,9 +53,6 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         }
         
         return (tracks, tracks.count)
-    }
-    public func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
-        try await OfflineManager.shared.getTracks(favorite: true)
     }
     
     // MARK: Album

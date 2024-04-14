@@ -23,11 +23,8 @@ public struct OnlineLibraryDataProvider: LibraryDataProvider {
     
     // MARK: Track
     
-    public func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Track], Int) {
-        try await JellyfinClient.shared.getTracks(limit: limit, startIndex: startIndex, sortOrder: sortOrder, ascending: ascending, favorite: false, search: search)
-    }
-    public func getFavoriteTracks(sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
-        try await JellyfinClient.shared.getTracks(limit: 0, startIndex: 0, sortOrder: sortOrder, ascending: ascending, favorite: true, search: nil).0
+    public func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, favorite: Bool, search: String?) async throws -> ([Track], Int) {
+        try await JellyfinClient.shared.getTracks(limit: limit, startIndex: startIndex, sortOrder: sortOrder, ascending: ascending, favorite: favorite, search: search)
     }
     
     // MARK: Album
