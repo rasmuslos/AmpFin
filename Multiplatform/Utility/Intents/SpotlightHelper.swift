@@ -19,7 +19,10 @@ struct SpotlightHelper {
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "Spotlight")
     
     static func donate(force: Bool = false) {
-        if Defaults[.lastSpotlightDonation] + waitTime > Date.timeIntervalSinceReferenceDate {
+        let isFirstDonation = Defaults[.lastSpotlightDonation] == 0 && Defaults[.lastSpotlightDonationCompletion] == 0
+        let lastDonationCompleted = isFirstDonation || Defaults[.lastSpotlightDonationCompletion] > Defaults[.lastSpotlightDonation]
+        let shouldSkipIndex = Defaults[.lastSpotlightDonation] + waitTime > Date.timeIntervalSinceReferenceDate && lastDonationCompleted
+        if shouldSkipIndex {
             logger.info("Skipped spotlight indexing")
             return
         }
@@ -28,48 +31,63 @@ struct SpotlightHelper {
         
         Task.detached {
             do {
-                let count = try await JellyfinClient.shared.getTracks(limit: 1, startIndex: 0, sortOrder: .name, ascending: true, favorite: false, search: nil).1
-                Defaults[.spotlightDisabled] = count > 10_000
-                
-                if Defaults[.spotlightDisabled] {
-                    return
-                }
-                
                 let index = CSSearchableIndex(name: "items", protectionClass: .completeUntilFirstUserAuthentication)
-                let tracks = try await JellyfinClient.shared.getTracks(limit: 0, startIndex: 0, sortOrder: .name, ascending: true, favorite: false, search: nil).0
-                var items = [CSSearchableItem]()
-                
-                for track in tracks {
-                    let attributes = CSSearchableItemAttributeSet(contentType: .audio)
+                var startIndex = 0
+                if !lastDonationCompleted, let lastData = try? await index.fetchLastClientState(), lastData.count == MemoryLayout<Int>.size {
+                    startIndex = lastData.withUnsafeBytes {
+                        $0.load(as: Int.self).littleEndian
+                    }
+                }
+                if lastDonationCompleted {
+                    try await index.deleteAllSearchableItems()
+                }
+                var shouldTryMore = true
+                while shouldTryMore {
+                    index.beginBatch()
+                    let (tracks, totalTracks) = try await JellyfinClient.shared.getTracks(limit: 250, startIndex: startIndex, sortOrder: .name, ascending: true, favorite: false, search: nil, useLowResCover: true)
+                    var items = [CSSearchableItem]()
                     
-                    attributes.title = track.name
-                    attributes.album = track.album.name
-                    attributes.artist = track.artists.map { $0.name }.joined(separator: ", ")
-                    attributes.album = track.album.name
+                    startIndex += tracks.count
+                    shouldTryMore = startIndex < totalTracks
                     
-                    attributes.duration = NSNumber(value: track.runtime)
-                    attributes.playCount = track.playCount as NSNumber
-                    attributes.audioTrackNumber = NSNumber(value: track.index.disk + track.index.index)
-                    
-                    if let cover = track.cover, let data = try? Data(contentsOf: cover.url) {
-                        attributes.thumbnailData = data
+                    for track in tracks {
+                        let attributes = CSSearchableItemAttributeSet(contentType: .audio)
+                        
+                        attributes.title = track.name
+                        attributes.album = track.album.name
+                        attributes.artist = track.artists.map { $0.name }.joined(separator: ", ")
+                        attributes.album = track.album.name
+                        
+                        attributes.duration = NSNumber(value: track.runtime)
+                        attributes.playCount = track.playCount as NSNumber
+                        attributes.audioTrackNumber = NSNumber(value: track.index.disk + track.index.index)
+                        
+                        if let cover = track.cover, let data = try? Data(contentsOf: cover.url) {
+                            attributes.thumbnailData = data
+                        }
+                        
+                        let item = CSSearchableItem(
+                            uniqueIdentifier: track.id,
+                            domainIdentifier: "io.rfk.ampfin.spotlight.track",
+                            attributeSet: attributes)
+                        items.append(item)
                     }
                     
-                    let item = CSSearchableItem(
-                        uniqueIdentifier: track.id,
-                        domainIdentifier: "io.rfk.ampfin.spotlight.track",
-                        attributeSet: attributes)
-                    items.append(item)
-                }
-                
-                if !items.isEmpty {
-                    try await index.deleteAllSearchableItems()
-                    try await index.indexSearchableItems(items)
+                    if !items.isEmpty {
+                        try await index.indexSearchableItems(items)
+                    }
+                    
+                    try await index.endBatch(withClientState: withUnsafeBytes(of: startIndex.littleEndian) { Data($0) })
+                    
+                    // We don't need to add additional wait here as the internal processing of each batch is long enough
                 }
                 
                 let playlists = try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .name, ascending: true, favorite: false)
-                INVocabulary.shared().setVocabularyStrings(NSOrderedSet(array: playlists.map { $0.name }), of: .mediaPlaylistTitle)
+                if AFKIT_ENABLE_ALL_FEATURES {
+                    INVocabulary.shared().setVocabularyStrings(NSOrderedSet(array: playlists.map { $0.name }), of: .mediaPlaylistTitle)
+                }
                 
+                Defaults[.lastSpotlightDonationCompletion] = Date.timeIntervalSinceReferenceDate
                 Self.logger.info("Updated spotlight index")
             } catch {
                 logger.fault("Failed to update spotlight index")

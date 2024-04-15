@@ -16,7 +16,7 @@ public extension JellyfinClient {
     // MARK: Get Tracks
     
     /// Get all tracks from all libraries and albums
-    func getTracks(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool, search: String?) async throws -> ([Track], Int) {
+    func getTracks(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favorite: Bool, search: String?, useLowResCover: Bool = false) async throws -> ([Track], Int) {
         var query = [
             URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
             URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
@@ -43,7 +43,7 @@ public extension JellyfinClient {
         let response = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: query, userPrefix: true))
         
         return (
-            response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) },
+            response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0, useLowResCover: useLowResCover) },
             response.TotalRecordCount
         )
     }
