@@ -22,6 +22,7 @@ struct SpotlightHelper {
         let isFirstDonation = Defaults[.lastSpotlightDonation] == 0 && Defaults[.lastSpotlightDonationCompletion] == 0
         let lastDonationCompleted = isFirstDonation || Defaults[.lastSpotlightDonationCompletion] > Defaults[.lastSpotlightDonation]
         let shouldSkipIndex = Defaults[.lastSpotlightDonation] + waitTime > Date.timeIntervalSinceReferenceDate && lastDonationCompleted
+        
         if shouldSkipIndex {
             logger.info("Skipped spotlight indexing")
             return
@@ -33,6 +34,7 @@ struct SpotlightHelper {
             do {
                 let index = CSSearchableIndex(name: "items", protectionClass: .completeUntilFirstUserAuthentication)
                 var startIndex = 0
+                
                 if !lastDonationCompleted, let lastData = try? await index.fetchLastClientState(), lastData.count == MemoryLayout<Int>.size {
                     startIndex = lastData.withUnsafeBytes {
                         $0.load(as: Int.self).littleEndian
@@ -41,10 +43,12 @@ struct SpotlightHelper {
                 if lastDonationCompleted {
                     try await index.deleteAllSearchableItems()
                 }
+                
                 var shouldTryMore = true
                 while shouldTryMore {
                     index.beginBatch()
-                    let (tracks, totalTracks) = try await JellyfinClient.shared.getTracks(limit: 250, startIndex: startIndex, sortOrder: .name, ascending: true, favorite: false, search: nil, useLowResCover: true)
+                    
+                    let (tracks, totalTracks) = try await JellyfinClient.shared.getTracks(limit: 250, startIndex: startIndex, sortOrder: .name, ascending: true, favorite: false, search: nil, coverSize: 125)
                     var items = [CSSearchableItem]()
                     
                     startIndex += tracks.count

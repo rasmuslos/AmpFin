@@ -9,9 +9,9 @@ import Foundation
 
 extension Item.Cover {
     /// Parse the image from a Jellyfin item
-    static func convertFromJellyfin(imageTags: JellyfinClient.ImageTags, id: String, useLowRes: Bool = false) -> Item.Cover? {
+    static func convertFromJellyfin(imageTags: JellyfinClient.ImageTags, id: String, size: Int = 800) -> Item.Cover? {
         if let primaryImageTag = imageTags.Primary {
-            return Item.Cover(type: .remote, url: constructItemCoverUrl(itemId: id, imageTag: primaryImageTag, size: useLowRes ? 125 : 800))
+            return Item.Cover(type: .remote, url: constructItemCoverUrl(itemId: id, imageTag: primaryImageTag, size: size))
         }
         
         return nil

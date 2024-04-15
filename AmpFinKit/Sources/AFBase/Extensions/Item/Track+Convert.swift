@@ -9,15 +9,15 @@ import Foundation
 
 extension Track {
     /// Convert an item received from the Jellyfin server into a track type
-    static func convertFromJellyfin(_ item: JellyfinClient.JellyfinTrackItem, fallbackIndex: Int = 0, useLowResCover: Bool = false) throws -> Track {
+    static func convertFromJellyfin(_ item: JellyfinClient.JellyfinTrackItem, fallbackIndex: Int = 0, coverSize: Int = 800) throws -> Track {
         guard let albumId = item.AlbumId else { throw JellyfinClientError.invalidResponse }
         
         var cover: Item.Cover?
         
         if item.ImageTags.Primary != nil {
-            cover = Cover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id, useLowRes: useLowResCover)
+            cover = Cover.convertFromJellyfin(imageTags: item.ImageTags, id: item.Id, size: coverSize)
         } else if let imageTag = item.AlbumPrimaryImageTag {
-            cover = Cover.convertFromJellyfin(imageTags: JellyfinClient.ImageTags.init(Primary: imageTag), id: albumId, useLowRes: useLowResCover)
+            cover = Cover.convertFromJellyfin(imageTags: JellyfinClient.ImageTags.init(Primary: imageTag), id: albumId, size: coverSize)
         }
         
         return Track(

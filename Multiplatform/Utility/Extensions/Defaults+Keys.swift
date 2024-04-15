@@ -18,7 +18,6 @@ extension Defaults.Keys {
     
     static let playlistSectionExpanded = Key("playlistSectionExpanded", default: true)
     
-    static let spotlightDisabled = Key("spotlightDisabled", default: false)
     static let lastSpotlightDonation = Key<Double>("lastSpotlightDonation", default: 0)
     static let lastSpotlightDonationCompletion = Key<Double>("lastSpotlightDonationCompletion", default: 0)
 }

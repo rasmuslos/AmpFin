@@ -196,38 +196,6 @@
         }
       }
     },
-    "account.spotlight.disabled" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spotlight deaktiviert"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spotlight disabled"
-          }
-        }
-      }
-    },
-    "account.spotlight.disabled.text" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aufgrund der Größe deiner Bibliothek wurde die Spotlight-Integartion temporär angehalten."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Due to the huge size of your library the spotlight integration has be temporarily disabled"
-          }
-        }
-      }
-    },
     "account.support" : {
       "localizations" : {
         "de" : {

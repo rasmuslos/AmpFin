@@ -101,7 +101,6 @@ struct NowPlayingControls: View {
                             .font(.system(size: 30))
                     }
                 }
-                //.font(.system(size: 34))
                 .foregroundStyle(.primary)
             }
             .padding(.top, compact ? 20 : 35)
