@@ -85,7 +85,8 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                                 Group {
                                     NowPlayingControls(controlsDragging: $controlsDragging)
                                     NowPlayingButtons(currentTab: $currentTab)
-                                        .padding(.bottom, 40)
+                                        .padding(.top, 20)
+                                        .padding(.bottom, 30)
                                 }
                                 .transition(.opacity.animation(.linear(duration: 0.3)))
                             }
