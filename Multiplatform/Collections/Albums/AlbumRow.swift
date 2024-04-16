@@ -23,8 +23,9 @@ struct AlbumRow: View {
         let padding: CGFloat = 20
         let gap: CGFloat = 10
         
-        let amount = CGFloat(Int(width / minimum))
-        let available = width - padding * 2 - gap * (amount - 1)
+        let usable = width - padding * 2
+        let amount = CGFloat(Int(usable / minimum))
+        let available = usable - gap * (amount - 1)
         
         return max(minimum, available / amount)
     }
