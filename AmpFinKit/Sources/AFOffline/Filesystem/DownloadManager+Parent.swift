@@ -13,7 +13,15 @@ extension DownloadManager {
         let request = URLRequest(url: cover.url)
         
         let (location, _) = try await URLSession.shared.download(for: request)
-        try FileManager.default.moveItem(at: location, to: getCoverUrl(parentId: parentId))
+        var destination = getCoverUrl(parentId: parentId)
+        try? destination.setResourceValues({
+            var values = URLResourceValues()
+            values.isExcludedFromBackup = true
+            
+            return values
+        }())
+        
+        try FileManager.default.moveItem(at: location, to: destination)
     }
     
     func isCoverDownloaded(parentId: String) -> Bool {

@@ -22,7 +22,13 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         
         Task.detached { @MainActor [self] in
             if let track = try? OfflineManager.shared.getOfflineTrack(taskId: downloadTask.taskIdentifier) {
-                let destination = getUrl(trackId: track.id)
+                var destination = getUrl(trackId: track.id)
+                try? destination.setResourceValues({
+                    var values = URLResourceValues()
+                    values.isExcludedFromBackup = true
+                    
+                    return values
+                }())
                 
                 do {
                     try? FileManager.default.removeItem(at: destination)
