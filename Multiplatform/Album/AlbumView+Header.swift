@@ -44,8 +44,8 @@ extension AlbumView {
                     CompactPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
                 }
                 .padding(.top, 100)
-                .padding(.bottom)
-                .padding(.horizontal)
+                .padding(.bottom, 20)
+                .padding(.horizontal, 20)
             }
             .background(imageColors.background)
             .listRowSeparator(.hidden)
@@ -65,36 +65,43 @@ extension AlbumView.Header {
         let imageColors: ImageColors
         
         var body: some View {
-            Text(album.name)
-                .padding(.top)
-                .lineLimit(1)
-                .font(largeFont ? .title : .headline)
-                .foregroundStyle(imageColors.isLight ? .black : .white)
-            
-            if album.artists.count > 0 {
-                HStack {
-                    Text(album.artistName)
-                        .lineLimit(1)
-                        .font(largeFont ? .title2 : .callout)
-                        .foregroundStyle(imageColors.detail)
-                }
-                .onTapGesture {
-                    if let artist = album.artists.first, dataProvider.supportsArtistLookup {
-                        NotificationCenter.default.post(name: Navigation.navigateArtistNotification, object: artist.id)
+            VStack(spacing: 5) {
+                Text(album.name)
+                    .lineLimit(1)
+                    .font(largeFont ? .title : .headline)
+                    .foregroundStyle(imageColors.isLight ? .black : .white)
+                
+                if album.artists.count > 0 {
+                    HStack {
+                        Text(album.artistName)
+                            .lineLimit(1)
+                            .font(largeFont ? .title2 : .callout)
+                            .foregroundStyle(imageColors.detail)
+                    }
+                    .onTapGesture {
+                        if let artist = album.artists.first, dataProvider.supportsArtistLookup {
+                            NotificationCenter.default.post(name: Navigation.navigateArtistNotification, object: artist.id)
+                        }
                     }
                 }
-            }
-            
-            HStack {
-                if let releaseDate = album.releaseDate {
-                    Text(releaseDate, format: Date.FormatStyle().year())
-                }
                 
-                Text(album.genres.joined(separator: String(localized: "genres.separator")))
-                    .lineLimit(1)
+                if album.releaseDate != nil || !album.genres.isEmpty {
+                    HStack(spacing: 0) {
+                        if let releaseDate = album.releaseDate {
+                            Text(releaseDate, format: Date.FormatStyle().year())
+                            
+                            if !album.genres.isEmpty {
+                                Text(verbatim: " • ")
+                            }
+                        }
+                        
+                        Text(album.genres.joined(separator: String(localized: "genres.separator")))
+                            .lineLimit(1)
+                    }
+                    .font(.caption)
+                    .foregroundStyle(imageColors.primary.opacity(0.75))
+                }
             }
-            .font(.caption)
-            .foregroundStyle(imageColors.primary.opacity(0.75))
         }
     }
 }
@@ -105,7 +112,7 @@ extension AlbumView.Header {
         let startPlayback: (_ shuffle: Bool) -> ()
         
         var body: some View {
-            HStack {
+            HStack(spacing: 20) {
                 Group {
                     Label("queue.play", systemImage: "play.fill")
                         .frame(maxWidth: .infinity)
@@ -113,6 +120,7 @@ extension AlbumView.Header {
                         .onTapGesture {
                             startPlayback(false)
                         }
+                    
                     Label("queue.shuffle", systemImage: "shuffle")
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
@@ -121,7 +129,7 @@ extension AlbumView.Header {
                         }
                 }
                 .padding(.vertical, 12)
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
                 .foregroundColor(imageColors.secondary)
                 .background(imageColors.primary.opacity(0.25))
                 .bold()
@@ -141,14 +149,14 @@ extension AlbumView.Header {
         let startPlayback: (_ shuffle: Bool) -> ()
         
         var body: some View {
-            VStack {
+            VStack(spacing: 20) {
                 ItemImage(cover: album.cover)
                     .shadow(color: .black.opacity(0.25), radius: 20)
                     .frame(width: 275)
                 
                 AlbumTitle(album: album, largeFont: false, imageColors: imageColors)
+                
                 PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
-                    .padding(.top)
             }
         }
     }
@@ -166,16 +174,16 @@ extension AlbumView.Header {
                 ItemImage(cover: album.cover)
                     .shadow(color: .black.opacity(0.25), radius: 20)
                     .frame(width: 275)
-                    .padding(.trailing)
+                    .padding(.trailing, 20)
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 20) {
                     Spacer()
                     AlbumTitle(album: album, largeFont: true, imageColors: imageColors)
                     Spacer()
                     PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
                 }
             }
-            .padding(.bottom)
+            .padding(.bottom, 20)
         }
     }
 }

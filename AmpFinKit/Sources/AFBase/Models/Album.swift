@@ -62,7 +62,11 @@ extension Album {
     /// Comma separated string of all artist names
     public var artistName: String {
         get {
-            artists.map { $0.name }.joined(separator: String(localized: ", "))
+            if artists.isEmpty {
+                return String(localized: "artist.unknown")
+            } else {
+                return artists.map { $0.name }.joined(separator: String(localized: ", "))
+            }
         }
     }
 }

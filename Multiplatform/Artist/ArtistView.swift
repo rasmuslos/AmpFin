@@ -43,10 +43,10 @@ struct ArtistView: View {
                             Spacer()
                         }
                         .padding(.top, artist.cover == nil ? 0 : 17)
-                        .padding(.horizontal)
+                        .padding(.horizontal, 20)
                         
                         AlbumGrid(albums: albums, count: count, loadMore: fetchAlbums)
-                            .padding()
+                            .padding(.horizontal, 20)
                     } else {
                         Text("artist.empty")
                             .font(.headline.smallCaps())

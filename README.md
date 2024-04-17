@@ -81,6 +81,12 @@ Please not that the `DEBUG` configuration is used by default for all builds exce
 
 AmpFin is licensed under the Mozilla Public License Version 2. Additionally the "Common Clause" applies. This means that you can modify AmpFin, as well as contribute to it, but you are not allowed to distribute the application in binary form. Compiling for your own personal use is not covered by the commons clause and therefore fine. Additionally, prebuilt binaries are available on GitHub for side loading using popular tools like SideStore, etc.
 
+Some notes:
+
+- Try to match the current code style
+- All spacing, especially to the sides, should be `20` units. Scrollable items should have a gap of `10` units, non scrollable ones `20`, too. Do not use `padding()` without any parameters, it has "smart" behavior, meaning that the padding is all over the place.
+To give a fun example: more or less everything had a padding of `19` units, so most things were _slightly_ of, relative to the toolbar at least.
+
 Distributing your binaries to your friends and family is allowed. The same goes for development builds.
 
 Contributions are welcome, just fork the repository, and open a pull request with your changes. If you want to contribute translations you have to edit `Localizable.xcstrings` in the `iOS` directory, as well as `Localizable.xcstrings` located at `Widget Extension` using Xcode. If you want to add a new language add it in the project settings

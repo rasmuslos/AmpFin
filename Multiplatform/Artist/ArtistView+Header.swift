@@ -112,7 +112,7 @@ extension ArtistView {
                             .padding(.leading)
                             .popoverTip(ArtistPlaybackTip())
                         }
-                        .padding()
+                        .padding(20)
                     }
                 }
             }

@@ -25,6 +25,7 @@ struct ArtistsView: View {
         VStack {
             if success {
                 ArtistList(artists: artists, count: count, expand: expand)
+                    .padding(.horizontal, 20)
                     .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.artists")
                     .onChange(of: search) {
                         searchTask?.cancel()

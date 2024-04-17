@@ -51,7 +51,8 @@ extension PlaylistView {
                     
                     TrackListButtons(startPlayback: startPlayback)
                 }
-                .padding(.bottom)
+                .padding(.bottom, 20)
+                .padding(.horizontal, 20)
                 .background {
                     Background(playlist: playlist)
                         .offset(y: -offset)
@@ -67,6 +68,8 @@ extension PlaylistView {
                     Spacer()
                 }
             }
+            .listRowSeparator(.hidden)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
     }
 }

@@ -35,6 +35,7 @@ struct TracksView: View {
             if success {
                 List {
                     TrackList(tracks: tracks, count: count, loadMore: { () async -> Void in await loadTracks(shouldReset: false) })
+                        .padding(.horizontal, 20)
                 }
                 .listStyle(.plain)
             } else if failure {

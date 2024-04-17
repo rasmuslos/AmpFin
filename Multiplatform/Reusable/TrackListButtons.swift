@@ -11,13 +11,14 @@ struct TrackListButtons: View {
     let startPlayback: (_ shuffle: Bool) -> ()
     
     var body: some View {
-        HStack {
+        HStack(spacing: 20) {
             Button {
                 startPlayback(false)
             } label: {
                 Label("queue.play", systemImage: "play.fill")
             }
             .buttonStyle(PlayButtonStyle())
+            
             Button {
                 startPlayback(true)
             } label: {
@@ -25,8 +26,5 @@ struct TrackListButtons: View {
             }
             .buttonStyle(PlayButtonStyle())
         }
-        .listRowInsets(.init(top: 0, leading: 0, bottom: 7, trailing: 0))
-        .listRowSeparator(.hidden)
-        .padding(.horizontal)
     }
 }

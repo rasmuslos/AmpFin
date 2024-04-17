@@ -37,7 +37,7 @@ struct AlbumsView: View {
             } else if success {
                 ScrollView {
                     AlbumGrid(albums: albums, count: count, loadMore: { () async -> Void in await fetchAlbums(shouldReset: false) })
-                        .padding()
+                        .padding(.horizontal, 20)
                 }
                 .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.albums")
             } else {

@@ -107,7 +107,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                     }
                 }
                 .frame(width: 250)
-                .padding()
+                .padding(20)
                 .background(.ultraThickMaterial)
                 .onAppear {
                     showDownloadButton = true

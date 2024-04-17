@@ -16,6 +16,7 @@ struct PlaylistsList: View {
             NavigationLink(destination: PlaylistView(playlist: playlist)) {
                 PlaylistListRow(playlist: playlist)
             }
+            .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
         }
     }
 }

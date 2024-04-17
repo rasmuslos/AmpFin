@@ -28,14 +28,11 @@ struct SearchView: View {
             List {
                 ProviderPicker(selection: $library)
                 
-                if !tracks.isEmpty {
-                    Section("section.tracks") {
-                        ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
-                            TrackListRow(track: track) {
-                                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(type: .tracks, query: query, container: nil))
-                            }
-                            .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-                            .padding(.horizontal)
+                if !artists.isEmpty {
+                    Section("section.artists") {
+                        ForEach(artists) { artist in
+                            ArtistListRow(artist: artist)
+                                .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                         }
                     }
                 }
@@ -46,18 +43,7 @@ struct SearchView: View {
                             NavigationLink(destination: AlbumView(album: album)) {
                                 AlbumListRow(album: album)
                             }
-                            .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-                            .padding(.horizontal)
-                        }
-                    }
-                }
-                
-                if !artists.isEmpty {
-                    Section("section.artists") {
-                        ForEach(artists) { artist in
-                            ArtistListRow(artist: artist)
-                            .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-                            .padding(.horizontal)
+                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                         }
                     }
                 }
@@ -68,8 +54,18 @@ struct SearchView: View {
                             NavigationLink(destination: PlaylistView(playlist: playlist)) {
                                 PlaylistListRow(playlist: playlist)
                             }
-                            .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
-                            .padding(.horizontal)
+                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+                        }
+                    }
+                }
+                
+                if !tracks.isEmpty {
+                    Section("section.tracks") {
+                        ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
+                            TrackListRow(track: track) {
+                                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(type: .tracks, query: query, container: nil))
+                            }
+                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                         }
                     }
                 }
@@ -93,6 +89,7 @@ struct SearchView: View {
                 
                 tracks = []
                 albums = []
+                artists = []
                 playlists = []
                 
                 switch library {

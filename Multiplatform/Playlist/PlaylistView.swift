@@ -23,11 +23,10 @@ struct PlaylistView: View {
             Header(playlist: playlist) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: playlist))
             }
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-            .listRowSeparator(.hidden)
-            .padding(.bottom, 5)
             
             TrackList(tracks: tracks, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil, moveCallback: libraryOnline ? moveTrack : nil)
+                .padding(.top, 4)
+                .padding(.horizontal, 20)
         }
         .environment(\.editMode, $editMode)
         .listStyle(.plain)

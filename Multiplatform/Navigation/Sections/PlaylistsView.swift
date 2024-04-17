@@ -19,6 +19,7 @@ struct PlaylistsView: View {
             if !playlists.isEmpty {
                 List {
                     PlaylistsList(playlists: playlists)
+                        .padding(.horizontal, 20)
                 }
             } else if failed {
                 ErrorView()

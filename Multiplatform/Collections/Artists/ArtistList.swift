@@ -18,6 +18,7 @@ struct ArtistList: View {
         List {
             ForEach(artists) { artist in
                 ArtistListRow(artist: artist)
+                    .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
                     .onAppear {
                         if artist == artists.last {
                             expand?()

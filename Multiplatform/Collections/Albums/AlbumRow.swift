@@ -16,12 +16,12 @@ struct AlbumRow: View {
     
     @State private var width: CGFloat = .zero
     
+    private let padding: CGFloat = 20
+    private let gap: CGFloat = 10
+    
     // For some reason HGrid do not work in ScrollViews, so we have to calculate this ourselves
     private var size: CGFloat {
         let minimum = horizontalSizeClass == .compact ? 160.0 : 200.0
-        
-        let padding: CGFloat = 20
-        let gap: CGFloat = 10
         
         let usable = width - padding * 2
         let amount = CGFloat(Int(usable / minimum))
@@ -47,7 +47,7 @@ struct AlbumRow: View {
                 HStack(alignment: .firstTextBaseline) {
                     Text(title)
                         .font(.headline)
-                        .padding(.leading)
+                        .padding(.leading, 20)
                         .padding(.bottom, 0)
                         .padding(.top, 10)
                     
@@ -74,14 +74,14 @@ struct AlbumRow: View {
                             NavigationLink(destination: AlbumView(album: album)) {
                                 AlbumCover(album: album)
                                     .frame(width: size)
-                                    .padding(.leading, 10)
+                                    .padding(.leading, gap)
                             }
                             .buttonStyle(.plain)
                         }
                     }
                     .scrollTargetLayout()
-                    .padding(.leading, 10)
-                    .padding(.trailing, 20)
+                    .padding(.leading, gap)
+                    .padding(.trailing, padding)
                 }
                 .scrollTargetBehavior(.viewAligned)
             }

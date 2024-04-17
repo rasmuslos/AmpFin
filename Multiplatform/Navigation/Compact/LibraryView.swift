@@ -34,11 +34,11 @@ struct LibraryView: View {
                         .font(.headline)
                     Spacer()
                 }
-                .padding(.horizontal)
-                .padding(.top)
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
                 
                 AlbumGrid(albums: albums)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 20)
             } else if !online && dataProvider as? OnlineLibraryDataProvider != nil {
                 ContentUnavailableView("offline.title", systemImage: "network.slash", description: Text("offline.description"))
                     .padding(.top, 100)

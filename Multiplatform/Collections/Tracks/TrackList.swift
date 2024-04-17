@@ -118,7 +118,6 @@ extension TrackList {
             }
             .id(track.id)
             .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-            .padding(.horizontal)
             .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
             .onAppear { expand?() }
         }
