@@ -23,9 +23,9 @@ struct AlbumView: View {
             Header(album: album, imageColors: imageColors, toolbarBackgroundVisible: $toolbarBackgroundVisible) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: album))
             }
+            .padding(.bottom, 10)
             
             TrackList(tracks: tracks, album: album, hideButtons: true)
-                .padding(.top, 4)
                 .padding(.horizontal, 20)
             
             if let overview = album.overview, overview.trimmingCharacters(in: .whitespacesAndNewlines) != "" {

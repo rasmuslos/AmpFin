@@ -35,7 +35,7 @@ struct LibraryView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 20)
+                .padding(.top, 10)
                 
                 AlbumGrid(albums: albums)
                     .padding(.horizontal, 20)

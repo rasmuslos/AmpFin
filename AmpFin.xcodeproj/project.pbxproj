@@ -19,7 +19,6 @@
 		3A234E052AA88D6000197AA7 /* TracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E042AA88D6000197AA7 /* TracksView.swift */; };
 		3A234E152AA8DBC900197AA7 /* SortSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E142AA8DBC900197AA7 /* SortSelector.swift */; };
 		3A234E182AA8E0AD00197AA7 /* TrackListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E172AA8E0AD00197AA7 /* TrackListRow.swift */; };
-		3A234E1E2AA8E6F600197AA7 /* PlayButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E1D2AA8E6F600197AA7 /* PlayButtonStyle.swift */; };
 		3A234E202AA8E8A000197AA7 /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E1F2AA8E8A000197AA7 /* TrackList.swift */; };
 		3A24E5D92B4BF5850052DD20 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A24E5D82B4BF5850052DD20 /* Settings.bundle */; };
 		3A24E5DC2B4BF7860052DD20 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A24E5DE2B4BF7860052DD20 /* AppIntentVocabulary.plist */; };
@@ -178,7 +177,6 @@
 		3A234E042AA88D6000197AA7 /* TracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksView.swift; sourceTree = "<group>"; };
 		3A234E142AA8DBC900197AA7 /* SortSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelector.swift; sourceTree = "<group>"; };
 		3A234E172AA8E0AD00197AA7 /* TrackListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListRow.swift; sourceTree = "<group>"; };
-		3A234E1D2AA8E6F600197AA7 /* PlayButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButtonStyle.swift; sourceTree = "<group>"; };
 		3A234E1F2AA8E8A000197AA7 /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
 		3A24E5D82B4BF5850052DD20 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		3A24E5DD2B4BF7860052DD20 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
@@ -464,8 +462,8 @@
 			isa = PBXGroup;
 			children = (
 				3A98A02B2AABA32D00EA84CF /* Sections */,
-				3A5515EA2BC3E0BA00B922D7 /* Compact */,
 				3A5515EB2BC3E0C100B922D7 /* Regular */,
+				3A5515EA2BC3E0BA00B922D7 /* Compact */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -709,7 +707,6 @@
 			isa = PBXGroup;
 			children = (
 				3AEB32262AA7EC3C00853210 /* LargeButtonStyle.swift */,
-				3A234E1D2AA8E6F600197AA7 /* PlayButtonStyle.swift */,
 				3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */,
 			);
 			path = Styles;
@@ -999,7 +996,6 @@
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,
 				3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */,
 				3ADE8EA72AA9464D009826A3 /* CompactNowPlayingBarModifier.swift in Sources */,
-				3A234E1E2AA8E6F600197AA7 /* PlayButtonStyle.swift in Sources */,
 				3A2B28FE2B437EFD00DF9731 /* ImageColors.swift in Sources */,
 				3A1CBC192B0D284200855A70 /* Navigation.swift in Sources */,
 				3A88505C2AA909CE00456DDD /* AlbumCover.swift in Sources */,

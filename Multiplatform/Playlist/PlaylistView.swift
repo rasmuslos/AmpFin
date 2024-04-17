@@ -23,9 +23,9 @@ struct PlaylistView: View {
             Header(playlist: playlist) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: playlist))
             }
+            .padding(.bottom, 10)
             
             TrackList(tracks: tracks, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil, moveCallback: libraryOnline ? moveTrack : nil)
-                .padding(.top, 4)
                 .padding(.horizontal, 20)
         }
         .environment(\.editMode, $editMode)

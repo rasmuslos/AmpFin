@@ -8,23 +8,37 @@
 import SwiftUI
 
 struct TrackListButtons: View {
+    var background: Material = .ultraThickMaterial
+    
     let startPlayback: (_ shuffle: Bool) -> ()
     
     var body: some View {
         HStack(spacing: 20) {
-            Button {
-                startPlayback(false)
-            } label: {
-                Label("queue.play", systemImage: "play.fill")
+            Group {
+                Button {
+                    startPlayback(false)
+                } label: {
+                    Label("queue.play", systemImage: "play.fill")
+                }
+                
+                Button {
+                    startPlayback(true)
+                } label: {
+                    Label("queue.shuffle", systemImage: "shuffle")
+                }
             }
-            .buttonStyle(PlayButtonStyle())
-            
-            Button {
-                startPlayback(true)
-            } label: {
-                Label("queue.shuffle", systemImage: "shuffle")
-            }
-            .buttonStyle(PlayButtonStyle())
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(background)
+            .foregroundColor(.accentColor)
+            .bold()
+            .cornerRadius(7)
         }
+    }
+}
+
+#Preview {
+    TrackListButtons {
+        print($0)
     }
 }

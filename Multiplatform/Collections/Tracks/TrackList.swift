@@ -38,7 +38,7 @@ struct TrackList: View {
     
     var body: some View {
         if !hideButtons {
-            TrackListButtons() {
+            TrackListButtons {
                 startPlayback(index: 0, shuffle: $0)
             }
             .listRowSeparator(.hidden)
