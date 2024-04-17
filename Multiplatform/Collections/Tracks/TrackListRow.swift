@@ -52,6 +52,7 @@ struct TrackListRow: View {
                                     .fontDesign(.rounded)
                                     .bold(track.favorite)
                                     .foregroundStyle(.secondary)
+                                    .padding(.vertical, 4)
                             }
                         } else {
                             ItemImage(cover: track.cover)
@@ -103,6 +104,8 @@ struct TrackListRow: View {
                 } label: {
                     Image(systemName: "ellipsis")
                         .renderingMode(.original)
+                        .font(.caption)
+                        .imageScale(.large)
                         .foregroundStyle(Color(UIColor.label))
                         .padding(.vertical, 10)
                         .padding(.leading, 0)

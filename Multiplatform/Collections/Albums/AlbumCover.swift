@@ -27,7 +27,6 @@ struct AlbumCover: View {
                     .padding(.bottom, 7)
             }
             .lineLimit(1)
-            .font(.system(size: 15))
         }
         .modifier(AlbumContextMenuModifier(album: album))
     }

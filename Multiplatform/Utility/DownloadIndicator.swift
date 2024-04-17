@@ -22,7 +22,7 @@ struct DownloadIndicator: View {
         Group {
             if offlineTracker.status == .downloaded {
                 Image(systemName: "arrow.down.circle.fill")
-                    .imageScale(.small)
+                    .font(.caption)
                     .foregroundStyle(.secondary)
             } else if offlineTracker.status == .working {
                 ProgressView()

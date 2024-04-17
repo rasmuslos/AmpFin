@@ -30,6 +30,7 @@ Things to implement before i would consider AmpFin feature complete:
 ### iOS
 
 - CarPlay integration
+- Listen-Now tab (maybe)
 - Tweak now playing animation
 - Widgets (No idea what purpose they could serve but there may be some)
 
@@ -46,7 +47,8 @@ Things to implement before i would consider AmpFin feature complete:
 
 - Journal integration
 - Now playing widget suggestions
-- HomePod (possible but require a centralized server)
+- Chapters in the Apple Watch now playing app
+- HomePod (possible but would require a centralized server)
 
 ## Screenshots
 

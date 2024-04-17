@@ -23,7 +23,7 @@ struct AlbumView: View {
             Header(album: album, imageColors: imageColors, toolbarBackgroundVisible: $toolbarBackgroundVisible) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: album))
             }
-            .padding(.bottom, 10)
+            .padding(.bottom, 5)
             
             TrackList(tracks: tracks, album: album, hideButtons: true)
                 .padding(.horizontal, 20)
