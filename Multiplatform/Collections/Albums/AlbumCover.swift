@@ -17,12 +17,12 @@ struct AlbumCover: View {
             
             Group {
                 Text(album.name)
-                    .font(.callout)
+                    .font(.subheadline)
                     .padding(.top, 7)
                     .padding(.bottom, 2)
                 
                 Text(album.artistName)
-                    .font(.footnote)
+                    .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 7)
             }
