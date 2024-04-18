@@ -43,8 +43,8 @@ extension AlbumView {
                     RegularPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
                     CompactPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
                 }
-                .padding(.top, 100)
-                .padding(.bottom, 20)
+                .padding(.top, 110)
+                .padding(.bottom, 10)
                 .padding(.horizontal, 20)
             }
             .background(imageColors.background)
@@ -128,7 +128,7 @@ extension AlbumView.Header {
                             startPlayback(true)
                         }
                 }
-                .padding(.vertical, 12)
+                .padding(.vertical, 10)
                 .padding(.horizontal, 20)
                 .foregroundColor(imageColors.secondary)
                 .background(imageColors.primary.opacity(0.25))

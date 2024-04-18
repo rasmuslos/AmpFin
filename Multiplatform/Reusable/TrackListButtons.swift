@@ -28,7 +28,7 @@ struct TrackListButtons: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
+            .padding(.vertical, 10)
             .background(background)
             .foregroundColor(.accentColor)
             .bold()

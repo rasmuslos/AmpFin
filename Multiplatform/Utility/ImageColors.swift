@@ -20,8 +20,8 @@ final class ImageColors {
     init() {
         background = .gray.opacity(0.1)
         primary = .gray.opacity(0.75)
-        secondary = .black.opacity(0.6)
-        detail = .black
+        secondary = .primary.opacity(0.6)
+        detail = .primary
         
         isLight = !UIViewController().isDarkMode
     }
