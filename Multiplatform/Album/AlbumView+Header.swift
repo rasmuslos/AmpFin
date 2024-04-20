@@ -113,13 +113,10 @@ extension AlbumView.Header {
         let startPlayback: (_ shuffle: Bool) -> ()
         
         var body: some View {
-            HStack(spacing: 0) {
+            LazyVGrid(columns: [.init(spacing: 15), .init()]) {
                 PlayButton(icon: "play.fill", label: "queue.play", imageColors: imageColors) {
                     startPlayback(false)
                 }
-                
-                Spacer()
-                    .frame(width: 10)
                 
                 PlayButton(icon: "shuffle", label: "queue.shuffle", imageColors: imageColors) {
                     startPlayback(true)
@@ -136,18 +133,24 @@ extension AlbumView.Header {
         let callback: () -> Void
         
         var body: some View {
-            Label(label, systemImage: icon)
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
-                .padding(.vertical, 10)
-                .padding(.horizontal, 20)
-                .bold()
-                .foregroundColor(imageColors.secondary)
-                .background(imageColors.primary.opacity(0.25))
-                .cornerRadius(7)
-                .onTapGesture {
-                    callback()
-                }
+            ZStack {
+                // This horrible abomination ensures that both buttons have the same height
+                Label(String("TEXT"), systemImage: "shuffle")
+                    .opacity(0)
+                
+                Label(label, systemImage: icon)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .padding(.vertical, 10)
+            .padding(.horizontal, 20)
+            .bold()
+            .foregroundColor(imageColors.secondary)
+            .background(imageColors.primary.opacity(0.25))
+            .cornerRadius(7)
+            .onTapGesture {
+                callback()
+            }
         }
     }
 }

@@ -13,13 +13,10 @@ struct TrackListButtons: View {
     let startPlayback: (_ shuffle: Bool) -> ()
     
     var body: some View {
-        HStack(spacing: 0) {
+        LazyVGrid(columns: [.init(spacing: 15), .init()]) {
             TrackListButton(icon: "play.fill", label: "queue.play", background: background) {
                 startPlayback(false)
             }
-            
-            Spacer()
-                .frame(width: 10)
             
             TrackListButton(icon: "shuffle", label: "queue.shuffle", background: background) {
                 startPlayback(true)
@@ -36,7 +33,13 @@ struct TrackListButtons: View {
         
         var body: some View {
             Button(action: callback) {
-                Label(label, systemImage: icon)
+                ZStack {
+                    // This horrible abomination ensures that both buttons have the same height
+                    Label(String("TEXT"), systemImage: "shuffle")
+                        .opacity(0)
+                    
+                    Label(label, systemImage: icon)
+                }
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)

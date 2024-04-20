@@ -86,7 +86,7 @@ AmpFin is licensed under the Mozilla Public License Version 2. Additionally the 
 Some notes:
 
 - Try to match the current code style
-- All spacing, especially to the sides, should be `20` units. Scrollable items should have a gap of `10` units, non scrollable ones `20`, too. Do not use `padding()` without any parameters, it has "smart" behavior, meaning that the padding is all over the place.
+- All spacing, especially to the sides, should be `20` units. Scrollable items should have a gap of `10` units, non scrollable ones `15`. Do not use `padding()` without any parameters, it has "smart" behavior, meaning that the padding is all over the place.
 To give a fun example: more or less everything had a padding of `19` units, so most things were _slightly_ of, relative to the toolbar at least.
 
 Distributing your binaries to your friends and family is allowed. The same goes for development builds.
