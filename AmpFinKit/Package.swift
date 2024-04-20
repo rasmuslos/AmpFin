@@ -15,8 +15,8 @@ let package = Package(
         .library(name: "AFPlayback", targets: ["AFPlayback"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/daltoniam/Starscream.git", from: "4.0.0"),
-        .package(url: "https://github.com/sindresorhus/Defaults.git", from: "4.0.0"),
+        .package(url: "https://github.com/daltoniam/Starscream.git", from: .init(4, 0, 0)),
+        .package(url: "https://github.com/sindresorhus/Defaults.git", from: .init(8, 2, 0)),
     ],
     targets: [
         .target(name: "AFBase", dependencies: [

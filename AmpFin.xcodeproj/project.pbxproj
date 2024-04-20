@@ -1484,8 +1484,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.2.0;
 			};
 		};
 		3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
