@@ -63,9 +63,10 @@ extension AlbumView.Header {
         let album: Album
         let largeFont: Bool
         let imageColors: ImageColors
+        let alignment: HorizontalAlignment
         
         var body: some View {
-            VStack(spacing: 5) {
+            VStack(alignment: alignment, spacing: 5) {
                 Text(album.name)
                     .lineLimit(1)
                     .font(largeFont ? .title : .headline)
@@ -112,29 +113,41 @@ extension AlbumView.Header {
         let startPlayback: (_ shuffle: Bool) -> ()
         
         var body: some View {
-            HStack(spacing: 20) {
-                Group {
-                    Label("queue.play", systemImage: "play.fill")
-                        .frame(maxWidth: .infinity)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            startPlayback(false)
-                        }
-                    
-                    Label("queue.shuffle", systemImage: "shuffle")
-                        .frame(maxWidth: .infinity)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            startPlayback(true)
-                        }
+            HStack(spacing: 0) {
+                PlayButton(icon: "play.fill", label: "queue.play", imageColors: imageColors) {
+                    startPlayback(false)
                 }
+                
+                Spacer()
+                    .frame(width: 10)
+                
+                PlayButton(icon: "shuffle", label: "queue.shuffle", imageColors: imageColors) {
+                    startPlayback(true)
+                }
+            }
+        }
+    }
+    
+    struct PlayButton: View {
+        let icon: String
+        let label: LocalizedStringKey
+        let imageColors: ImageColors
+        
+        let callback: () -> Void
+        
+        var body: some View {
+            Label(label, systemImage: icon)
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
                 .padding(.vertical, 10)
                 .padding(.horizontal, 20)
+                .bold()
                 .foregroundColor(imageColors.secondary)
                 .background(imageColors.primary.opacity(0.25))
-                .bold()
                 .cornerRadius(7)
-            }
+                .onTapGesture {
+                    callback()
+                }
         }
     }
 }
@@ -154,7 +167,7 @@ extension AlbumView.Header {
                     .shadow(color: .black.opacity(0.25), radius: 20)
                     .frame(width: 275)
                 
-                AlbumTitle(album: album, largeFont: false, imageColors: imageColors)
+                AlbumTitle(album: album, largeFont: false, imageColors: imageColors, alignment: .center)
                 
                 PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
             }
@@ -178,7 +191,7 @@ extension AlbumView.Header {
                 
                 VStack(alignment: .leading, spacing: 20) {
                     Spacer()
-                    AlbumTitle(album: album, largeFont: true, imageColors: imageColors)
+                    AlbumTitle(album: album, largeFont: true, imageColors: imageColors, alignment: .leading)
                     Spacer()
                     PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
                 }

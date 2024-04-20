@@ -62,7 +62,7 @@ private extension Defaults.Keys {
     static let lastActiveTab = Key("lastActiveTab", default: Tab.library)
 }
 
-private enum Tab: Int, _DefaultsSerializable {
+private enum Tab: Int, Defaults.Serializable {
     case library = 0
     case downloads = 1
     case search = 2

@@ -13,19 +13,30 @@ struct TrackListButtons: View {
     let startPlayback: (_ shuffle: Bool) -> ()
     
     var body: some View {
-        HStack(spacing: 20) {
-            Group {
-                Button {
-                    startPlayback(false)
-                } label: {
-                    Label("queue.play", systemImage: "play.fill")
-                }
-                
-                Button {
-                    startPlayback(true)
-                } label: {
-                    Label("queue.shuffle", systemImage: "shuffle")
-                }
+        HStack(spacing: 0) {
+            TrackListButton(icon: "play.fill", label: "queue.play", background: background) {
+                startPlayback(false)
+            }
+            
+            Spacer()
+                .frame(width: 10)
+            
+            TrackListButton(icon: "shuffle", label: "queue.shuffle", background: background) {
+                startPlayback(true)
+            }
+        }
+    }
+    
+    struct TrackListButton : View {
+        let icon: String
+        let label: LocalizedStringKey
+        
+        let background: Material
+        let callback: () -> Void
+        
+        var body: some View {
+            Button(action: callback) {
+                Label(label, systemImage: icon)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)

@@ -25,7 +25,7 @@ struct AlbumGrid: View {
     }
     
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: minimumWidth, maximum: 400), spacing: 20)], spacing: 10) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: minimumWidth, maximum: 400), spacing: 10)], spacing: 10) {
             ForEach(Array(albums.enumerated()), id: \.offset) { index, album in
                 NavigationLink {
                     AlbumView(album: album)

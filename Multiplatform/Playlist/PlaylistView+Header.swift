@@ -49,9 +49,9 @@ extension PlaylistView {
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 10)
                     
-                    TrackListButtons(background: .thinMaterial, startPlayback: startPlayback)
+                    TrackListButtons(background: .ultraThinMaterial, startPlayback: startPlayback)
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 10)
                 .padding(.horizontal, 20)
                 .background {
                     Background(playlist: playlist)

@@ -270,7 +270,7 @@ extension TrackListRow {
                     await track.setFavorite(favorite: !track.favorite)
                 }
             } label: {
-                Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
+                Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart.slash.fill")
             }
             .tint(.orange)
         }

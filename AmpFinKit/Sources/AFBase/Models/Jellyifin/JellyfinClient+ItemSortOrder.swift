@@ -9,7 +9,7 @@ import Foundation
 import Defaults
 
 public extension JellyfinClient {
-    enum ItemSortOrder: String, CaseIterable, Codable, _DefaultsSerializable {
+    enum ItemSortOrder: String, CaseIterable, Codable, Defaults.Serializable {
         case name = "Name"
         case album = "Album,SortName"
         case albumArtist = "AlbumArtist,Album,SortName"

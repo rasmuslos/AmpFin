@@ -11,7 +11,7 @@ import SwiftUI
 import AFBase
 
 extension SidebarView {
-    struct Selection: Hashable, Equatable, Codable, _DefaultsSerializable {
+    struct Selection: Hashable, Equatable, Codable, Defaults.Serializable {
         var provider: DataProvider
         var section: LibrarySection
     }
