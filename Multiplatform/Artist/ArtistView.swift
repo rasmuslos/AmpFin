@@ -62,10 +62,6 @@ struct ArtistView: View {
         .task {
             await fetchAlbums()
         }
-        .refreshable {
-            albums = []
-            await fetchAlbums()
-        }
         .onChange(of: sortState) {
             Task {
                 albums = []
@@ -88,6 +84,7 @@ struct ArtistView: View {
 extension ArtistView {
     func fetchAlbums() async {
         if let result = try? await dataProvider.getAlbums(artistId: artist.id, limit: 100, startIndex: albums.count, sortOrder: sortOrder, ascending: sortAscending) {
+            print(result)
             count = result.1
             albums += result.0
         }

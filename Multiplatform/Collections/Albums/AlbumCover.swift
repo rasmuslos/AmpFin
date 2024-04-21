@@ -14,6 +14,7 @@ struct AlbumCover: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ItemImage(cover: album.cover)
+                .modifier(AlbumContextMenuModifier(album: album))
             
             Group {
                 Text(album.name)
@@ -28,7 +29,6 @@ struct AlbumCover: View {
             }
             .lineLimit(1)
         }
-        .modifier(AlbumContextMenuModifier(album: album))
     }
 }
 
