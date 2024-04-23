@@ -38,14 +38,6 @@ struct RegularNowPlayingView: View {
             if let track = AudioPlayer.current.nowPlaying {
                 NowPlayingBackground(cover: track.cover)
                     .clipped()
-                    .simultaneousGesture(
-                        DragGesture(minimumDistance: 25, coordinateSpace: .global)
-                            .onEnded {
-                                if $0.translation.height > 200 {
-                                    dismiss()
-                                }
-                            }
-                    )
                 
                 VStack {
                     HStack {
@@ -97,6 +89,14 @@ struct RegularNowPlayingView: View {
                     
                     NowPlayingButtons(currentTab: $currentTab)
                 }
+                .simultaneousGesture(
+                    DragGesture(minimumDistance: 25, coordinateSpace: .global)
+                        .onEnded {
+                            if $0.translation.height > 200 {
+                                dismiss()
+                            }
+                        }
+                )
                 .padding(.bottom, singleColumnLayout ? 30 : 20)
                 .padding(.horizontal, singleColumnLayout ? 60 : 40)
                 .padding(.top, 60)
