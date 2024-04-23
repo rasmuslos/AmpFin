@@ -58,9 +58,9 @@ struct AlbumRow: View {
                     NavigationLink {
                         ScrollView {
                             AlbumGrid(albums: albums)
+                                .padding(.horizontal)
                         }
                         .navigationTitle(title)
-                        .padding(.horizontal)
                         .modifier(NowPlayingBarSafeAreaModifier())
                     } label: {
                         EmptyView()

@@ -37,7 +37,6 @@ struct NowPlayingBarLeadingOffsetModifier: ViewModifier {
                             NotificationCenter.default.post(name: SidebarView.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
                         }
                         #endif
-                        
                     }
             }
             .frame(height: 0)
