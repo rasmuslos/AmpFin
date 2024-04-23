@@ -16,8 +16,8 @@ struct AlbumRow: View {
     
     @State private var width: CGFloat = .zero
     
-    private let padding: CGFloat = 20
     private let gap: CGFloat = 10
+    private let padding: CGFloat = 20
     
     // For some reason HGrid do not work in ScrollViews, so we have to calculate this ourselves
     private var size: CGFloat {

@@ -12,18 +12,22 @@ import AFPlayback
 
 extension ArtistView {
     struct Header: View {
-        @Environment(\.libraryDataProvider) var dataProvider
-        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         @Default(.artistInstantMix) private var artistInstantMix
+        @Environment(\.libraryDataProvider) private var dataProvider
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
         let artist: Artist
         
-        @State var width: CGFloat = .zero
-        @State var parallax: CGFloat = .zero
-        @State var overscroll: CGFloat = .zero
+        @State private var width: CGFloat = .zero
+        @State private var parallax: CGFloat = .zero
+        @State private var overscroll: CGFloat = .zero
         
-        @State var showNavigationBar = false
-        @State var overviewSheetPresented = false
+        @State private var showNavigationBar = false
+        @State private var overviewSheetPresented = false
+        
+        private var imageHeight: CGFloat {
+            horizontalSizeClass == .compact ? width : 400
+        }
         
         var body: some View {
             ZStack(alignment: .top) {
@@ -47,12 +51,13 @@ extension ArtistView {
                             showNavigationBar = offset < (horizontalSizeClass == .compact ? -300 : -350)
                         }
                 }
-                .frame(height: horizontalSizeClass == .compact ? width : 400)
-                .background {
+                .frame(height: imageHeight)
+                .background(alignment: .top) {
                     ItemImage(cover: artist.cover, cornerRadius: 0)
                         .scaledToFill()
-                        .frame(width: width, height: width - overscroll)
-                        .offset(y: (overscroll + parallax) / 2)
+                        .frame(width: width, height: imageHeight - overscroll - parallax / 2)
+                        .clipped()
+                        .offset(y: overscroll + parallax / 2)
                 }
                 
                 VStack(spacing: 0) {

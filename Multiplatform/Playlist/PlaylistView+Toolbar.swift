@@ -48,15 +48,14 @@ extension PlaylistView {
                             Group {
                                 switch offlineTracker.status {
                                     case .none:
-                                        Image(systemName: "arrow.down.circle.fill")
+                                        Image(systemName: "arrow.down")
                                     case .working:
                                         ProgressView()
                                     case .downloaded:
-                                        Image(systemName: "xmark.circle.fill")
+                                        Image(systemName: "xmark")
                                 }
                             }
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.white, .black.opacity(0.25))
+                            .modifier(FullscreenToolbarModifier())
                         }
                     }
                     
@@ -105,9 +104,8 @@ extension PlaylistView {
                             }
                             .disabled(!libraryOnline)
                         } label: {
-                            Image(systemName: "ellipsis.circle.fill")
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, .black.opacity(0.25))
+                            Image(systemName: "ellipsis")
+                                .modifier(FullscreenToolbarModifier())
                         }
                     }
                 }
@@ -129,6 +127,24 @@ extension PlaylistView {
                         Text("playlist.delete.finalize")
                     }
                 }
+        }
+    }
+}
+
+extension PlaylistView.ToolbarModifier {
+    struct FullscreenToolbarModifier: ViewModifier {
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        
+        func body(content: Content) -> some View {
+            if horizontalSizeClass == .regular {
+                content
+                    .symbolVariant(.circle)
+            } else {
+                content
+                    .symbolVariant(.circle.fill)
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, .black.opacity(0.25))
+            }
         }
     }
 }

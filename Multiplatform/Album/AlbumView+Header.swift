@@ -11,6 +11,8 @@ import AFBase
 
 extension AlbumView {
     struct Header: View {
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        
         let album: Album
         let imageColors: ImageColors
         
@@ -33,7 +35,7 @@ extension AlbumView {
                     Color.clear
                         .onChange(of: offset) {
                             withAnimation {
-                                toolbarBackgroundVisible = offset < -350
+                                toolbarBackgroundVisible = offset < (horizontalSizeClass == .regular ? -120 : -350)
                             }
                         }
                 }

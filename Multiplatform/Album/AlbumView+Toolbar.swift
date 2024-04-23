@@ -11,10 +11,11 @@ import AFOffline
 
 extension AlbumView {
     struct ToolbarModifier: ViewModifier {
-        @Environment(\.isPresented) private var isPresented
         @Environment(\.dismiss) private var dismiss
-        @Environment(\.libraryDataProvider) private var dataProvider
+        @Environment(\.isPresented) private var isPresented
         @Environment(\.libraryOnline) private var libraryOnline
+        @Environment(\.libraryDataProvider) private var dataProvider
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
         let album: Album
         let offlineTracker: ItemOfflineTracker
@@ -34,12 +35,16 @@ extension AlbumView {
             self.queueTracks = queueTracks
         }
         
+        private var regularPresentation: Bool {
+            horizontalSizeClass == .regular
+        }
+        
         func body(content: Content) -> some View {
             content
                 .navigationTitle(album.name)
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarBackButtonHidden(!toolbarBackgroundVisible)
-                .toolbarBackground(toolbarBackgroundVisible ? .visible : .hidden, for: .navigationBar)
+                .navigationBarBackButtonHidden(!toolbarBackgroundVisible && !regularPresentation)
+                .toolbarBackground(regularPresentation ? .automatic : toolbarBackgroundVisible ? .visible : .hidden, for: .navigationBar)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
                         if toolbarBackgroundVisible {
@@ -60,7 +65,7 @@ extension AlbumView {
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigation) {
-                        if !toolbarBackgroundVisible && isPresented {
+                        if !toolbarBackgroundVisible && isPresented && !regularPresentation {
                             Button {
                                 dismiss()
                             } label: {
@@ -163,17 +168,24 @@ extension AlbumView {
 
 extension AlbumView {
     struct FullscreenToolbarModifier: ViewModifier {
-        var imageColors: ImageColors
-        var toolbarBackgroundVisible: Bool
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        
+        let imageColors: ImageColors
+        let toolbarBackgroundVisible: Bool
         
         func body(content: Content) -> some View {
-            content
-                .symbolVariant(.circle.fill)
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(
-                    toolbarBackgroundVisible ? Color.accentColor : imageColors.isLight ? .black : .white,
-                    toolbarBackgroundVisible ? .black.opacity(0.1) : .black.opacity(0.25))
-                .animation(.easeInOut, value: toolbarBackgroundVisible)
+            if horizontalSizeClass == .regular {
+                content
+                    .symbolVariant(.circle)
+            } else {
+                content
+                    .symbolVariant(.circle.fill)
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(
+                        toolbarBackgroundVisible ? Color.accentColor : imageColors.isLight ? .black : .white,
+                        toolbarBackgroundVisible ? .black.opacity(0.1) : .black.opacity(0.25))
+                    .animation(.easeInOut, value: toolbarBackgroundVisible)
+            }
         }
     }
 }
