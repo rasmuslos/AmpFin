@@ -41,9 +41,13 @@ extension AlbumView {
                 }
                 .frame(height: 0)
                 
-                ViewThatFits(in: .horizontal) {
-                    RegularPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
-                    CompactPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
+                Group {
+                    // View that fits is unreliable
+                    if horizontalSizeClass == .regular {
+                        RegularPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
+                    } else {
+                        CompactPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
+                    }
                 }
                 .padding(.top, 110)
                 .padding(.bottom, 10)
