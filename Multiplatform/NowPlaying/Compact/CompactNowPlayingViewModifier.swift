@@ -83,7 +83,7 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                             
                             if controlsVisible {
                                 Group {
-                                    NowPlayingControls(controlsDragging: $controlsDragging)
+                                    NowPlayingControls(compact: false, controlsDragging: $controlsDragging)
                                     NowPlayingButtons(currentTab: $currentTab)
                                         .padding(.top, 20)
                                         .padding(.bottom, 30)

@@ -11,7 +11,7 @@ import AFBase
 import AFPlayback
 
 struct NowPlayingControls: View {
-    var compact: Bool = false
+    let compact: Bool
     
     @Binding var controlsDragging: Bool
     

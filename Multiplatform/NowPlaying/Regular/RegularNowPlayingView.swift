@@ -38,6 +38,14 @@ struct RegularNowPlayingView: View {
             if let track = AudioPlayer.current.nowPlaying {
                 NowPlayingBackground(cover: track.cover)
                     .clipped()
+                    .simultaneousGesture(
+                        DragGesture(minimumDistance: 25, coordinateSpace: .global)
+                            .onEnded {
+                                if $0.translation.height > 200 {
+                                    dismiss()
+                                }
+                            }
+                    )
                 
                 VStack {
                     HStack {
@@ -94,20 +102,6 @@ struct RegularNowPlayingView: View {
                 .padding(.top, 60)
                 .ignoresSafeArea(edges: .all)
                 .foregroundStyle(.white)
-                .simultaneousGesture(
-                    DragGesture(minimumDistance: 25, coordinateSpace: .global)
-                        .onEnded {
-                            if $0.translation.height > 200 {
-                                dismiss()
-                            }
-                        }
-                )
-                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { _ in
-                    dismiss()
-                }
-                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateAlbumNotification)) { _ in
-                    dismiss()
-                }
                 .overlay(alignment: .top) {
                     Button {
                         dismiss()
@@ -118,6 +112,12 @@ struct RegularNowPlayingView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10000))
                     }
                     .padding(.top, 35)
+                }
+                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { _ in
+                    dismiss()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateAlbumNotification)) { _ in
+                    dismiss()
                 }
             }
         }
