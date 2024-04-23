@@ -1,6 +1,6 @@
 # AmpFin
 
-AmpFin is a sleek and modern Jellyfin client, specifically designed for music and iOS. Due to its design, snappy interface and deep integration it feels right at home on iOS and iPadOS.
+AmpFin is a sleek and modern Jellyfin client, specifically designed for music and iOS and iPadOS. Due to its design, snappy interface and deep integration it feels right at home on any supported device.
 
 Features:
 
