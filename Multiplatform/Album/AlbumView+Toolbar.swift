@@ -177,6 +177,10 @@ extension AlbumView {
             if horizontalSizeClass == .regular {
                 content
                     .symbolVariant(.circle)
+            } else if toolbarBackgroundVisible {
+                content
+                    .symbolVariant(.circle)
+                    .animation(.easeInOut, value: toolbarBackgroundVisible)
             } else {
                 content
                     .symbolVariant(.circle.fill)

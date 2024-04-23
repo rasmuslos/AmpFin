@@ -19,12 +19,16 @@ extension PlaylistView {
         let playlist: Playlist
         let offlineTracker: ItemOfflineTracker
         
+        var toolbarVisible = false
+        
         @Binding var tracks: [Track]
         @Binding var editMode: EditMode
         
-        init(playlist: Playlist, tracks: Binding<[Track]>, editMode: Binding<EditMode>) {
+        init(playlist: Playlist, toolbarVisible: Bool, tracks: Binding<[Track]>, editMode: Binding<EditMode>) {
             self.playlist = playlist
             offlineTracker = playlist.offlineTracker
+            
+            self.toolbarVisible = toolbarVisible
             
             _tracks = tracks
             _editMode = editMode
@@ -55,7 +59,7 @@ extension PlaylistView {
                                         Image(systemName: "xmark")
                                 }
                             }
-                            .modifier(FullscreenToolbarModifier())
+                            .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                         }
                     }
                     
@@ -105,7 +109,7 @@ extension PlaylistView {
                             .disabled(!libraryOnline)
                         } label: {
                             Image(systemName: "ellipsis")
-                                .modifier(FullscreenToolbarModifier())
+                                .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                         }
                     }
                 }
@@ -135,15 +139,22 @@ extension PlaylistView.ToolbarModifier {
     struct FullscreenToolbarModifier: ViewModifier {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
+        let toolbarVisible: Bool
+        
         func body(content: Content) -> some View {
             if horizontalSizeClass == .regular {
                 content
                     .symbolVariant(.circle)
+            } else if toolbarVisible {
+                content
+                    .symbolVariant(.circle)
+                    .animation(.easeInOut, value: toolbarVisible)
             } else {
                 content
                     .symbolVariant(.circle.fill)
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.white, .black.opacity(0.25))
+                    .animation(.easeInOut, value: toolbarVisible)
             }
         }
     }

@@ -15,12 +15,14 @@ struct PlaylistView: View {
     
     let playlist: Playlist
     
+    @State private var toolbarVisible = false
+    
     @State private var tracks = [Track]()
     @State private var editMode: EditMode = .inactive
     
     var body: some View {
         List {
-            Header(playlist: playlist) { shuffle in
+            Header(playlist: playlist, toolbarVisible: $toolbarVisible) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: playlist))
             }
             .padding(.bottom, 4)
@@ -32,7 +34,7 @@ struct PlaylistView: View {
         .listStyle(.plain)
         .ignoresSafeArea(edges: .top)
         .navigationTitle(playlist.name)
-        .modifier(ToolbarModifier(playlist: playlist, tracks: $tracks, editMode: $editMode))
+        .modifier(ToolbarModifier(playlist: playlist, toolbarVisible: toolbarVisible, tracks: $tracks, editMode: $editMode))
         .modifier(NowPlayingBarSafeAreaModifier())
         .userActivity("io.rfk.ampfin.playlist") {
             $0.title = playlist.name

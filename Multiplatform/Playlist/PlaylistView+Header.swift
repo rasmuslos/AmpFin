@@ -11,6 +11,9 @@ import AFBase
 extension PlaylistView {
     struct Header: View {
         let playlist: Playlist
+        
+        @Binding var toolbarVisible: Bool
+        
         let startPlayback: (_ shuffle: Bool) -> ()
         
         @State private var height: CGFloat = .zero
@@ -33,6 +36,9 @@ extension PlaylistView {
                             if offset < 0 {
                                 offset = 0
                             }
+                        }
+                        .onChange(of: proxy.frame(in: .global).minY) {
+                            toolbarVisible = proxy.frame(in: .global).minY < 0
                         }
                 }
                 
