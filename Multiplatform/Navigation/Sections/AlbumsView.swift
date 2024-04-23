@@ -54,9 +54,6 @@ struct AlbumsView: View {
                 await fetchAlbums(shouldReset: false)
             }
         }
-        .refreshable {
-            await fetchAlbums(shouldReset: true)
-        }
         .onChange(of: sortState) {
             searchTask?.cancel()
             searchTask = Task {
