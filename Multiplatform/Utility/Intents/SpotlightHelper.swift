@@ -99,6 +99,7 @@ struct SpotlightHelper {
             }
         }
     }
+    
     static func handleSpotlight(activity: NSUserActivity) {
         guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
             logger.error("Received spotlight activity without identifier")

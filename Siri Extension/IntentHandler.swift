@@ -6,15 +6,11 @@
 //
 
 import Intents
-import AFBase
-import AFPlayback
 
 final class IntentHandler: INExtension {
-    override func handler(for intent: INIntent) -> Any {
-        return self
-    }
 }
 
+/*
 extension IntentHandler: INAddMediaIntentHandling {
     func handle(intent: INAddMediaIntent) async -> INAddMediaIntentResponse {
         if intent.mediaSearch?.reference == .currentlyPlaying, let destination = intent.mediaDestination, let nowPlaying = AudioPlayer.current.nowPlaying {
@@ -40,3 +36,4 @@ extension IntentHandler: INAddMediaIntentHandling {
         return .init(code: .failure, userActivity: nil)
     }
 }
+*/

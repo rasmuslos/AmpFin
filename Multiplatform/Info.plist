@@ -2,14 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>INIntentsSupported</key>
+	<key>INAlternativeAppNames</key>
 	<array>
-		<string>INPlayMediaIntent</string>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Amp Fin</string>
+			<key>INAlternativeAppNamePronunciationHint</key>
+			<string>ampfin</string>
+		</dict>
 	</array>
-	<key>INSupportedMediaCategories</key>
-	<array>
-		<string>INMediaCategoryMusic</string>
-	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSAppTransportSecurity</key>
@@ -30,5 +36,7 @@
 	<array>
 		<string>audio</string>
 	</array>
+	<key>CoreSpotlightContinuation</key>
+	<true/>
 </dict>
 </plist>

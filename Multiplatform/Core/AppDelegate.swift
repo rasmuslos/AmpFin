@@ -25,13 +25,11 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         }
     }
     
-    // I would love to put this in an app extension, but it does not fucking work...
     func application(_ application: UIApplication, handlerFor intent: INIntent) -> Any? {
-        switch intent {
-        case is INPlayMediaIntent:
+        if intent as? INPlayMediaIntent != nil {
             return PlayMediaHandler()
-        default:
-            return nil
         }
+        
+        return nil
     }
 }

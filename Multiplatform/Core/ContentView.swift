@@ -35,6 +35,9 @@ struct ContentView: View {
             navigationController
                 .environment(\.libraryOnline, online)
                 .onContinueUserActivity(CSSearchableItemActionType, perform: SpotlightHelper.handleSpotlight)
+                .onContinueUserActivity(CSQueryContinuationActionType) {
+                    print($0)
+                }
                 .onAppear {
                     #if ENABLE_ALL_FEATURES
                     INPreferences.requestSiriAuthorization { _ in }

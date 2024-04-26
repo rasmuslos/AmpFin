@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Amp Fin" : {
+
+    },
+    "ampfin" : {
+
+    },
     "CFBundleDisplayName" : {
       "comment" : "Bundle display name",
       "extractionState" : "extracted_with_value",
@@ -33,6 +39,18 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "AmpFin"
+          }
+        }
+      }
+    },
+    "NSAppleMusicUsageDescription" : {
+      "comment" : "Privacy - Media Library Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hello, World!"
           }
         }
       }

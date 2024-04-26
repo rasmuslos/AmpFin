@@ -31,15 +31,16 @@ struct NowPlayingCover: View {
         HStack {
             VStack(alignment: .leading, spacing: 3) {
                 Text(track.name)
-                    .bold()
+                    .font(.headline)
                     .lineLimit(1)
                     .foregroundStyle(.primary)
                     .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .top)
                 
                 NowPlayingArtistsMenu(track: track)
+                    .font(.subheadline)
                     .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .top)
             }
-            .font(.system(size: 18))
+            // .font(.system(size: 18))
             
             Spacer()
             
