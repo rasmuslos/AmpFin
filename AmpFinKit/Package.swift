@@ -23,14 +23,14 @@ let package = Package(
             .byName(name: "Defaults"),
             .byName(name: "Starscream"),
         ]),
-        .target(name: "AFExtension", dependencies: [.byName(name: "AFBase"), .byName(name: "AFOffline", condition: .when(platforms: [.iOS]))]),
+        .target(name: "AFExtension", dependencies: [.byName(name: "AFBase"), .byName(name: "AFOffline", condition: .when(platforms: [.iOS, .macOS]))]),
         .target(name: "AFOffline", dependencies: [.byName(name: "AFBase")]),
         .target(
             name: "AFPlayback",
             dependencies: [
                 .byName(name: "AFBase"),
                 .byName(name: "AFExtension"),
-                .byName(name: "AFOffline", condition: .when(platforms: [.iOS]))],
+                .byName(name: "AFOffline", condition: .when(platforms: [.iOS, .macOS]))],
             resources: [.process("RemoteAudioEndpoint/silence.wav")]),
     ]
 )

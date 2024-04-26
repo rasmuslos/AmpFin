@@ -17,7 +17,7 @@ extension IntentHandler: INPlayMediaIntentHandling {
      - Queue location
      - Shuffled
      - Repeat
-     - Resume playback (not possible)
+     - Resume playback
      */
     
     func handle(intent: INPlayMediaIntent) async -> INPlayMediaIntentResponse {
@@ -29,6 +29,10 @@ extension IntentHandler: INPlayMediaIntentHandling {
             return [.unsupported(forReason: .loginRequired)]
         }
         
+        if let mediaItems = intent.mediaItems, !mediaItems.isEmpty {
+            return INPlayMediaMediaItemResolutionResult.successes(with: mediaItems)
+        }
+        
         guard let mediaSearch = intent.mediaSearch else {
             if intent.resumePlayback == true {
                 return []
@@ -36,56 +40,28 @@ extension IntentHandler: INPlayMediaIntentHandling {
             
             return [.unsupported(forReason: .unsupportedMediaType)]
         }
-        guard let primaryName = mediaSearch.mediaName ?? mediaSearch.albumName ?? mediaSearch.artistName else {
-            if intent.resumePlayback == true {
-                return []
+        
+        do {
+            let items = try await resolveMediaItems(mediaSearch: mediaSearch)
+            
+            var resolved = [INPlayMediaMediaItemResolutionResult]()
+            for item in items {
+                resolved.append(.init(mediaItemResolutionResult: .success(with: item)))
             }
             
-            return [.unsupported(forReason: .unsupportedMediaType)]
-        }
-        
-        var results = [Item]()
-        let unknownType = mediaSearch.mediaType == .music || mediaSearch.mediaType == .unknown
-        
-        if !unknownType && !(mediaSearch.mediaType == .album || mediaSearch.mediaType == .artist || mediaSearch.mediaType == .playlist || mediaSearch.mediaType == .song) {
-            return [.unsupported(forReason: .unsupportedMediaType)]
-        }
-        
-        if mediaSearch.mediaType == .album || unknownType {
-            if let albums = try? await MediaResolver.shared.search(albumName: primaryName, artistName: mediaSearch.artistName) {
-                results += albums
+            return resolved
+        } catch {
+            if let error = error as? SearchError {
+                switch error {
+                    case .unavailable:
+                        return [.unsupported(forReason: .serviceUnavailable)]
+                    case .unsupportedMediaType:
+                        return [.unsupported(forReason: .unsupportedMediaType)]
+                }
             }
-        }
-        if mediaSearch.mediaType == .artist || unknownType {
-            if let artists = try? await MediaResolver.shared.search(artistName: primaryName) {
-                results += artists
-            }
-        }
-        if mediaSearch.mediaType == .playlist || unknownType {
-            if let playlists = try? await MediaResolver.shared.search(playlistName: primaryName) {
-                results += playlists
-            }
-        }
-        if mediaSearch.mediaType == .song || unknownType {
-            if let tracks = try? await MediaResolver.shared.search(trackName: primaryName, albumName: mediaSearch.albumName, artistName: mediaSearch.artistName) {
-                results += tracks
-            }
-        }
-        
-        guard !results.isEmpty else {
+            
             return [.unsupported(forReason: .serviceUnavailable)]
         }
-        
-        results.sort { $0.name.levenshteinDistanceScore(to: primaryName) > $1.name.levenshteinDistanceScore(to: primaryName) }
-        
-        let items = MediaResolver.shared.convert(items: results)
-        var resolved = [INPlayMediaMediaItemResolutionResult]()
-        
-        for item in items {
-            resolved.append(.init(mediaItemResolutionResult: .success(with: item)))
-        }
-        
-        return resolved
     }
     
     func resolvePlaybackSpeed(for intent: INPlayMediaIntent) async -> INPlayMediaPlaybackSpeedResolutionResult {

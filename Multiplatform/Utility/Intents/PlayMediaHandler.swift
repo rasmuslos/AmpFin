@@ -40,9 +40,9 @@ final class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
             }
             
             if intent.playbackQueueLocation == .unknown || intent.playbackQueueLocation == .now {
-                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: intent.playShuffled ?? false, playbackInfo: .init(disable: true))
+                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: intent.playShuffled ?? false, playbackInfo: .init(container: nil, preventDonation: true))
             } else {
-                AudioPlayer.current.queueTracks(tracks, index: intent.playbackQueueLocation == .next ? 0 : AudioPlayer.current.queue.count)
+                AudioPlayer.current.queueTracks(tracks, index: intent.playbackQueueLocation == .next ? 0 : AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, preventDonation: true))
                 
                 if let shuffled = intent.playShuffled {
                     AudioPlayer.current.shuffled = shuffled

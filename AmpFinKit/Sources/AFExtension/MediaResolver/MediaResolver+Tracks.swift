@@ -7,7 +7,9 @@
 
 import Foundation
 import AFBase
+#if canImport(AFOffline)
 import AFOffline
+#endif
 
 public extension MediaResolver {
     func search(trackName: String?, albumName: String?, artistName: String?) async throws -> [Track] {

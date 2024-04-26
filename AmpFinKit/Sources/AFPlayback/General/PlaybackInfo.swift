@@ -7,106 +7,104 @@
 
 import Foundation
 import AFBase
+import AFExtension
 import Intents
 
 public struct PlaybackInfo {
-    let type: PlaybackType
+    public var tracks: [Track]!
+    public let container: Item?
     
-    let query: String?
-    let container: Item?
+    public let search: String?
     
-    var disable = false
+    var queueLocation: INPlaybackQueueLocation
+    var preventDonation: Bool
     
-    public init(type: PlaybackType, query: String?, container: Item?) {
-        self.type = type
-        self.query = query
+    public init(container: Item?, search: String? = "", queueLocation: INPlaybackQueueLocation = .now, preventDonation: Bool = false) {
         self.container = container
-    }
-    
-    public init(container: Item) {
-        switch container.type {
-        case .album:
-            type = .album
-        case .playlist:
-            type = .album
-        default:
-            type = .unknown
-        }
         
-        query = nil
-        self.container = container
-    }
-    
-    public init(disable: Bool) {
-        self.init(type: .unknown, query: nil, container: nil)
-        self.disable = true
+        self.search = search
         
-        if !disable {
-            print("fuck you")
-        }
-    }
-    
-    public init() {
-        self.init(type: .unknown, query: nil, container: nil)
-    }
-    
-    public enum PlaybackType {
-        case album
-        case playlist
-        case search
-        case tracks
-        case mix
-        case unknown
+        self.queueLocation = queueLocation
+        self.preventDonation = preventDonation
     }
 }
 
 extension PlaybackInfo {
-    func donate(nowPlaying: Track, shuffled: Bool, repeatMode: RepeatMode, resumePlayback: Bool) {
-        if disable { return }
+    internal func donate() {
+        if preventDonation { return }
         
-        var inContainer: INMediaItem?
+        guard let item = container ?? tracks.first else {
+            return
+        }
+        
+        let repeatMode: INPlaybackRepeatMode
+        
+        switch AudioPlayer.current.repeatMode {
+            case .none:
+                repeatMode = .none
+                break
+            case .track:
+                repeatMode = .one
+                break
+            case .queue:
+                repeatMode = .all
+                break
+        }
+        
+        // this is wrong... But apple begs to differ...
+        let intent = INPlayMediaIntent(
+            mediaItems: [MediaResolver.shared.convert(item: item)],
+            mediaContainer: nil,
+            playShuffled: AudioPlayer.current.shuffled,
+            playbackRepeatMode: repeatMode,
+            resumePlayback: false,
+            playbackQueueLocation: queueLocation,
+            playbackSpeed: 1,
+            mediaSearch: .init(mediaName: search))
+        
+        var activity: NSUserActivity?
         
         if let container = container {
-            var image: INImage?
-            var artist: String?
+            let activityType: String
+            let userInfo: [String: Any]
             
-            if let cover = container.cover, let data = try? Data(contentsOf: cover.url) {
-                image = INImage(imageData: data)
-            }
-            if let album = container as? Album {
-                artist = album.artistName
+            switch container.type {
+                case .album:
+                    activityType = "album"
+                    userInfo = [
+                        "albumId": container.id,
+                    ]
+                case .artist:
+                    activityType = "artist"
+                    userInfo = [
+                        "artistId": container.id,
+                    ]
+                case .playlist:
+                    activityType = "playlist"
+                    userInfo = [
+                        "playlistId": container.id,
+                    ]
+                case .track:
+                    activityType = "track"
+                    userInfo = [
+                        "trackId": container.id,
+                    ]
             }
             
-            inContainer = INMediaItem(
-                identifier: container.id,
-                title: container.name,
-                type: container.type == .album ? .album : container.type == .playlist ? .playlist : .unknown,
-                artwork: image,
-                artist: artist)
+            activity = NSUserActivity(activityType: "io.rfk.ampfin.\(activityType)")
+            
+            activity!.title = container.name
+            activity!.persistentIdentifier = container.id
+            activity!.targetContentIdentifier = "\(activityType):\(container.id)"
+            
+            // Are these journal suggestions?
+            activity?.shortcutAvailability = [.sleepJournaling, .sleepMusic]
+            
+            activity!.isEligibleForPrediction = true
+            activity!.userInfo = userInfo
         }
         
-        var image: INImage?
-        if let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url) {
-            image = INImage(imageData: data)
-        }
-        
-        let intent = INPlayMediaIntent(
-            mediaItems: [
-                INMediaItem(
-                    identifier: nowPlaying.id,
-                    title: nowPlaying.name,
-                    type: .song,
-                    artwork: image,
-                    artist: nowPlaying.artistName)
-            ],
-            mediaContainer: inContainer,
-            playShuffled: shuffled,
-            playbackRepeatMode: repeatMode == .queue ? .all : repeatMode == .track ? .one : .none,
-            resumePlayback: resumePlayback,
-            playbackQueueLocation: .unknown,
-            playbackSpeed: 1, mediaSearch: INMediaSearch(mediaName: query))
-        
-        let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: nil))
+        let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: activity))
         interaction.donate()
     }
 }

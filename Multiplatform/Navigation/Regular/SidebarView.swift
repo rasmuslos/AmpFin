@@ -63,6 +63,15 @@ struct SidebarView: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: Navigation.navigatePlaylistNotification)) { notification in
+            if let id = notification.object as? String {
+                if OfflineManager.shared.isPlaylistDownloaded(playlistId: id) {
+                    selection = .init(provider: .offline, section: .playlist(id: id))
+                } else {
+                    selection = .init(provider: .online, section: .playlist(id: id))
+                }
+            }
+        }
     }
 }
 

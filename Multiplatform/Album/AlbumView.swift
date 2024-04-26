@@ -54,7 +54,8 @@ struct AlbumView: View {
             ToolbarModifier(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible) { next in
                 AudioPlayer.current.queueTracks(
                     tracks.sorted { $0.index < $1.index },
-                    index: next ? 0 : AudioPlayer.current.queue.count)
+                    index: next ? 0 : AudioPlayer.current.queue.count,
+                    playbackInfo: .init(container: album, queueLocation: next ? .now : .later))
             }
         )
         .modifier(NowPlayingBarSafeAreaModifier())
@@ -62,9 +63,13 @@ struct AlbumView: View {
             $0.title = album.name
             $0.isEligibleForHandoff = true
             $0.persistentIdentifier = album.id
+            $0.targetContentIdentifier = "album:\(album.id)"
             $0.userInfo = [
                 "albumId": album.id
             ]
+            $0.webpageURL = JellyfinClient.shared.serverUrl.appending(path: "web").appending(path: "#").appending(path: "details").appending(queryItems: [
+                .init(name: "id", value: "7b5e377b7908561ff476f35f8a0fa3ac"),
+            ])
         }
         .task {
             if let tracks = try? await dataProvider.getTracks(albumId: album.id) {

@@ -40,9 +40,13 @@ struct PlaylistView: View {
             $0.title = playlist.name
             $0.isEligibleForHandoff = true
             $0.persistentIdentifier = playlist.id
+            $0.targetContentIdentifier = "playlist:\(playlist.id)"
             $0.userInfo = [
                 "playlistId": playlist.id
             ]
+            $0.webpageURL = JellyfinClient.shared.serverUrl.appending(path: "web").appending(path: "#").appending(path: "details").appending(queryItems: [
+                .init(name: "id", value: "7b5e377b7908561ff476f35f8a0fa3ac"),
+            ])
         }
         .task { await fetchTracks() }
         .refreshable { await fetchTracks() }

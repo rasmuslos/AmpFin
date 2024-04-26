@@ -25,6 +25,9 @@ extension TabBarView {
                 if let albumId = notification.userInfo?["offlineAlbumId"] as? String {
                     navigationPath.append(Navigation.AlbumLoadDestination(albumId: albumId))
                 }
+                if let albumId = notification.userInfo?["offlinePlaylistId"] as? String {
+                    navigationPath.append(Navigation.AlbumLoadDestination(albumId: albumId))
+                }
             }
             .tabItem {
                 Label("tab.downloads", systemImage: "arrow.down")

@@ -107,7 +107,7 @@ extension ArtistView {
                                 } else {
                                     Task {
                                         let tracks = try await dataProvider.getTracks(artistId: artist.id)
-                                        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init())
+                                        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: artist))
                                     }
                                 }
                             } label: {

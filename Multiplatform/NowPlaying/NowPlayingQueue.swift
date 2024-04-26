@@ -74,7 +74,7 @@ struct NowPlayingQueue: View {
                         }
                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
                             Button {
-                                AudioPlayer.current.queueTrack(track, index: 0)
+                                AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                                 AudioPlayer.current.removeHistoryTrack(index: index)
                             } label: {
                                 Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
@@ -83,7 +83,7 @@ struct NowPlayingQueue: View {
                         }
                         .swipeActions(edge: .leading) {
                             Button {
-                                AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count)
+                                AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
                                 AudioPlayer.current.removeHistoryTrack(index: index)
                             } label: {
                                 Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")

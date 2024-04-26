@@ -51,6 +51,8 @@
 		3A442BFC2B483EC9008FECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A442BFB2B483EC9008FECE2 /* Localizable.xcstrings */; };
 		3A442BFE2B484026008FECE2 /* DebugTokenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */; };
 		3A44B06D2BA194410013E4EF /* Double+Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A44B06C2BA194410013E4EF /* Double+Duration.swift */; };
+		3A4A3B852BDBEAD100A90835 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A3B842BDBEAD100A90835 /* Intents.intentdefinition */; };
+		3A4A3B872BDBEB0B00A90835 /* Handler+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A3B862BDBEB0B00A90835 /* Handler+Search.swift */; };
 		3A5515EE2BC3E1CA00B922D7 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5515ED2BC3E1CA00B922D7 /* SidebarView.swift */; };
 		3A5515F22BC435A200B922D7 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5515F12BC435A200B922D7 /* Defaults */; };
 		3A5515F42BC4391300B922D7 /* Sidebar+Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5515F32BC4391300B922D7 /* Sidebar+Section.swift */; };
@@ -214,6 +216,8 @@
 		3A442C012B4844A6008FECE2 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A442C092B485E56008FECE2 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		3A44B06C2BA194410013E4EF /* Double+Duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Duration.swift"; sourceTree = "<group>"; };
+		3A4A3B842BDBEAD100A90835 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
+		3A4A3B862BDBEB0B00A90835 /* Handler+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Handler+Search.swift"; sourceTree = "<group>"; };
 		3A5515ED2BC3E1CA00B922D7 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		3A5515F32BC4391300B922D7 /* Sidebar+Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar+Section.swift"; sourceTree = "<group>"; };
 		3A5515F62BC449A400B922D7 /* Defaults+Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Defaults+Keys.swift"; sourceTree = "<group>"; };
@@ -467,6 +471,7 @@
 		3A6FC1F52ACC0BE30070301B /* Intents */ = {
 			isa = PBXGroup;
 			children = (
+				3A4A3B842BDBEAD100A90835 /* Intents.intentdefinition */,
 				3A6FC1F12ACC0BDA0070301B /* SpotlightHelper.swift */,
 				3A3E25BD2BDBD02400006310 /* PlayMediaHandler.swift */,
 			);
@@ -569,6 +574,7 @@
 			children = (
 				3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */,
 				3A3E25BB2BDBC47000006310 /* Handler+Play.swift */,
+				3A4A3B862BDBEB0B00A90835 /* Handler+Search.swift */,
 				3AAF0DF02B4960EF0032DEFF /* Info.plist */,
 				3A2657F02BA34113000C62E3 /* PrivacyInfo.xcprivacy */,
 				3A03450A2B49613C007D6171 /* Entitlements.entitlements */,
@@ -950,6 +956,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A4A3B872BDBEB0B00A90835 /* Handler+Search.swift in Sources */,
 				3A3E25BC2BDBC47000006310 /* Handler+Play.swift in Sources */,
 				3AAF0DEF2B4960EF0032DEFF /* IntentHandler.swift in Sources */,
 			);
@@ -1041,6 +1048,7 @@
 				3A2B28F12B4379C500DF9731 /* PlaylistView+Background.swift in Sources */,
 				3A6F50AB2AACABEB00FC8A29 /* AlbumListRow.swift in Sources */,
 				3A8B993E2AA9FE02004AAA7B /* NowPlayingTitle.swift in Sources */,
+				3A4A3B852BDBEAD100A90835 /* Intents.intentdefinition in Sources */,
 				3A2B28E82B43422800DF9731 /* PlaylistsList.swift in Sources */,
 				3A2B93312B00C9DA00638AE9 /* DownloadTip.swift in Sources */,
 				3A3DA6642AAB2BC10091211A /* ArtistList.swift in Sources */,

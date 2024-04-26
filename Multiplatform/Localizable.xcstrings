@@ -1167,6 +1167,9 @@
         }
       }
     },
+    "playlist.view" : {
+
+    },
     "queue.history" : {
       "localizations" : {
         "de" : {

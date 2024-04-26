@@ -18,7 +18,7 @@ struct SpotlightHelper {
     static let waitTime: Double = 60 * 60 * 48
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "Spotlight")
     
-    static func donate(force: Bool = false) {
+    static func updateIndex(force: Bool = false) {
         let isFirstDonation = Defaults[.lastSpotlightDonation] == 0 && Defaults[.lastSpotlightDonationCompletion] == 0
         let lastDonationCompleted = isFirstDonation || Defaults[.lastSpotlightDonationCompletion] > Defaults[.lastSpotlightDonation]
         let shouldSkipIndex = Defaults[.lastSpotlightDonation] + waitTime > Date.timeIntervalSinceReferenceDate && lastDonationCompleted
@@ -43,6 +43,8 @@ struct SpotlightHelper {
                 if lastDonationCompleted {
                     try await index.deleteAllSearchableItems()
                 }
+                
+                // MARK: Tracks
                 
                 var shouldTryMore = true
                 while shouldTryMore {
@@ -74,6 +76,7 @@ struct SpotlightHelper {
                             uniqueIdentifier: track.id,
                             domainIdentifier: "io.rfk.ampfin.spotlight.track",
                             attributeSet: attributes)
+                        
                         items.append(item)
                     }
                     
@@ -86,10 +89,33 @@ struct SpotlightHelper {
                     // We don't need to add additional wait here as the internal processing of each batch is long enough
                 }
                 
+                // MARK: Playlists
+                
                 let playlists = try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .name, ascending: true, favorite: false)
                 if AFKIT_ENABLE_ALL_FEATURES {
                     INVocabulary.shared().setVocabularyStrings(NSOrderedSet(array: playlists.map { $0.name }), of: .mediaPlaylistTitle)
                 }
+                
+                var items = [CSSearchableItem]()
+                for playlist in playlists {
+                    let attributes = CSSearchableItemAttributeSet(contentType: .audio)
+                    
+                    attributes.title = playlist.name
+                    attributes.duration = NSNumber(value: playlist.duration)
+                    
+                    if let cover = playlist.cover, let data = try? Data(contentsOf: cover.url) {
+                        attributes.thumbnailData = data
+                    }
+                    
+                    let item = CSSearchableItem(
+                        uniqueIdentifier: playlist.id,
+                        domainIdentifier: "io.rfk.ampfin.spotlight.playlist",
+                        attributeSet: attributes)
+                    
+                    items.append(item)
+                }
+                
+                try await index.indexSearchableItems(items)
                 
                 Defaults[.lastSpotlightDonationCompletion] = Date.timeIntervalSinceReferenceDate
                 Self.logger.info("Updated spotlight index")
@@ -100,25 +126,24 @@ struct SpotlightHelper {
         }
     }
     
-    static func handleSpotlight(activity: NSUserActivity) {
-        guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
-            logger.error("Received spotlight activity without identifier")
-            return
-        }
-        
+    static func navigate(identifier: String) {
         Task { @MainActor in
-            let albumId: String
+            let albumId: String?
             
             if let track = try? OfflineManager.shared.getTrack(id: identifier) {
                 albumId = track.album.id
             } else if let track = try? await JellyfinClient.shared.getTrack(id: identifier) {
                 albumId = track.album.id
             } else {
-                logger.error("Unknown trackId \(identifier)")
+                albumId = nil
+            }
+            
+            if let albumId = albumId {
+                NotificationCenter.default.post(name: Navigation.navigateAlbumNotification, object: albumId)
                 return
             }
             
-            NotificationCenter.default.post(name: Navigation.navigateAlbumNotification, object: albumId)
+            NotificationCenter.default.post(name: Navigation.navigatePlaylistNotification, object: identifier)
         }
     }
     

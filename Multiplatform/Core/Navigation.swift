@@ -12,6 +12,7 @@ struct Navigation {
     
     static let navigateAlbumNotification = NSNotification.Name("io.rfk.ampfin.navigation.album")
     static let navigateArtistNotification = NSNotification.Name("io.rfk.ampfin.navigation.artist")
+    static let navigatePlaylistNotification = NSNotification.Name("io.rfk.ampfin.navigation.artist")
 }
 
 extension Navigation {
@@ -21,5 +22,9 @@ extension Navigation {
     
     struct ArtistLoadDestination: Hashable {
         let artistId: String
+    }
+    
+    struct PlaylistLoadDestination: Hashable {
+        let playlistId: String
     }
 }

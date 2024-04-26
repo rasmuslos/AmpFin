@@ -129,7 +129,7 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                     .animation(.spring, value: width)
                     .animation(.spring, value: adjust)
                     .dropDestination(for: Track.self) { tracks, _ in
-                        AudioPlayer.current.queueTracks(tracks, index: 0)
+                        AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                         return true
                     }
                     .onTapGesture {

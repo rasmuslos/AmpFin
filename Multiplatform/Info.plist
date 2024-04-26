@@ -30,7 +30,10 @@
 	</dict>
 	<key>NSUserActivityTypes</key>
 	<array>
-		<string>INPlayMediaIntent</string>
+		<string>io.rfk.ampfin.artist</string>
+		<string>io.rfk.ampfin.album</string>
+		<string>io.rfk.ampfin.playlist</string>
+		<string>io.rfk.ampfin.track</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

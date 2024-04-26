@@ -48,14 +48,14 @@ struct AlbumContextMenuModifier: ViewModifier {
                 
                 Button {
                     Task {
-                        AudioPlayer.current.queueTracks(try await dataProvider.getTracks(albumId: album.id), index: 0)
+                        AudioPlayer.current.queueTracks(try await dataProvider.getTracks(albumId: album.id), index: 0, playbackInfo: .init(container: album, queueLocation: .next))
                     }
                 } label: {
                     Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
                 }
                 Button {
                     Task {
-                        AudioPlayer.current.queueTracks(try await dataProvider.getTracks(albumId: album.id), index: AudioPlayer.current.queue.count)
+                        AudioPlayer.current.queueTracks(try await dataProvider.getTracks(albumId: album.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: album, queueLocation: .later))
                     }
                 } label: {
                     Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")

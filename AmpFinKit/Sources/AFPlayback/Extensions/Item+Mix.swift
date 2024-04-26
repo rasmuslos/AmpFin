@@ -11,6 +11,6 @@ import AFBase
 extension Item {
     public func startInstantMix() async throws {
         let tracks = try await JellyfinClient.shared.getTracks(instantMixBaseId: id)
-        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false)
+        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: self))
     }
 }

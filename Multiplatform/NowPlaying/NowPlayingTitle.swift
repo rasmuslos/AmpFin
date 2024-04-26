@@ -40,7 +40,6 @@ struct NowPlayingCover: View {
                     .font(.subheadline)
                     .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .top)
             }
-            // .font(.system(size: 18))
             
             Spacer()
             
@@ -138,6 +137,16 @@ struct NowPlayingArtistsMenu: View {
                 }) {
                     Label("artist.view", systemImage: "music.mic")
                     Text(artistName)
+                }
+            }
+            
+            let _ = print(AudioPlayer.current.playbackInfo)
+            if let playbackInfo = AudioPlayer.current.playbackInfo, let playlist = playbackInfo.container as? Playlist {
+                Button(action: {
+                    NotificationCenter.default.post(name: Navigation.navigatePlaylistNotification, object: playlist.id)
+                }) {
+                    Label("playlist.view", systemImage: "list.bullet")
+                    Text(playlist.name)
                 }
             }
             

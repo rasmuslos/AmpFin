@@ -169,11 +169,11 @@ extension TrackList {
     }
     
     private func startPlayback(index: Int, shuffle: Bool) {
-        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(type: .tracks, query: nil, container: nil))
+        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(container: nil))
     }
     private func startPlayback(track: Track) {
         if let index = tracks.firstIndex(where: { $0.id == track.id }) {
-            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(type: .tracks, query: nil, container: nil))
+            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil))
         }
     }
 }

@@ -19,7 +19,7 @@ import AFOffline
 public final class AudioPlayer {
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
     
-    internal var playbackInfo: PlaybackInfo?
+    public var playbackInfo: PlaybackInfo?
     
     public internal(set) var source: PlaybackSource = .none {
         didSet {
@@ -119,7 +119,7 @@ extension AudioPlayer {
 
 // MARK: General methods
 
-extension AudioPlayer: AudioEndpoint {
+extension AudioPlayer {
     public var playing: Bool {
         get {
             endpoint?.playing ?? false
@@ -188,15 +188,17 @@ extension AudioPlayer: AudioEndpoint {
     }
     
     public func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool, playbackInfo: PlaybackInfo) {
-        self.playbackInfo = playbackInfo
-        startPlayback(tracks: tracks, startIndex: startIndex, shuffle: shuffle)
-    }
-    public func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
+        var playbackInfo = playbackInfo
+        playbackInfo.tracks = Array(tracks[startIndex..<tracks.count])
+        
         if source == .none {
             setupLocalPlayback()
         }
         
         endpoint?.startPlayback(tracks: tracks, startIndex: startIndex, shuffle: shuffle)
+        
+        playbackInfo.donate()
+        self.playbackInfo = playbackInfo
     }
     
     public func stopPlayback() {
@@ -220,19 +222,27 @@ extension AudioPlayer: AudioEndpoint {
         endpoint?.removeTrack(index: index)
     }
     
-    public func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool = true) {
+    public func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool = true, playbackInfo: PlaybackInfo) {
+        var playbackInfo = playbackInfo
+        playbackInfo.tracks = [track]
+        
         if endpoint == nil || (endpoint?.nowPlaying == nil && endpoint?.queue.count == 0) {
-            startPlayback(tracks: [track], startIndex: 0, shuffle: false, playbackInfo: .init())
+            playbackInfo.queueLocation = .now
+            startPlayback(tracks: [track], startIndex: 0, shuffle: false, playbackInfo: playbackInfo)
         } else {
             endpoint?.queueTrack(track, index: index, updateUnalteredQueue: updateUnalteredQueue)
+            playbackInfo.donate()
         }
     }
-    
-    public func queueTracks(_ tracks: [Track], index: Int) {
+    public func queueTracks(_ tracks: [Track], index: Int, playbackInfo: PlaybackInfo) {
+        var playbackInfo = playbackInfo
+        playbackInfo.tracks = tracks
+        
         if endpoint == nil || (endpoint?.nowPlaying == nil && endpoint?.queue.count == 0) {
-            startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init())
+            startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: playbackInfo)
         } else {
             endpoint?.queueTracks(tracks, index: index)
+            playbackInfo.donate()
         }
     }
     

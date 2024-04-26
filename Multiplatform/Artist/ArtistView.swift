@@ -72,9 +72,13 @@ struct ArtistView: View {
             $0.title = artist.name
             $0.isEligibleForHandoff = true
             $0.persistentIdentifier = artist.id
+            $0.targetContentIdentifier = "artist:\(artist.id)"
             $0.userInfo = [
                 "artistId": artist.id
             ]
+            $0.webpageURL = JellyfinClient.shared.serverUrl.appending(path: "web").appending(path: "#").appending(path: "details").appending(queryItems: [
+                .init(name: "id", value: "7b5e377b7908561ff476f35f8a0fa3ac"),
+            ])
         }
     }
 }

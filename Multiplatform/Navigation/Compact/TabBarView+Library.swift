@@ -21,6 +21,9 @@ extension TabBarView {
                     .navigationDestination(for: Navigation.ArtistLoadDestination.self) { data in
                         ArtistLoadView(artistId: data.artistId)
                     }
+                    .navigationDestination(for: Navigation.PlaylistLoadDestination.self) { data in
+                        PlaylistLoadView(playlistId: data.playlistId)
+                    }
             }
             .environment(\.libraryDataProvider, OnlineLibraryDataProvider())
             .modifier(CompactNowPlayingBarModifier())
@@ -29,6 +32,8 @@ extension TabBarView {
                     navigationPath.append(Navigation.AlbumLoadDestination(albumId: albumId))
                 } else if let artistId = notification.userInfo?["artistId"] as? String {
                     navigationPath.append(Navigation.ArtistLoadDestination(artistId: artistId))
+                } else if let playlistId = notification.userInfo?["playlistId"] as? String {
+                    navigationPath.append(Navigation.PlaylistLoadDestination(playlistId: playlistId))
                 }
             }
             .tabItem {

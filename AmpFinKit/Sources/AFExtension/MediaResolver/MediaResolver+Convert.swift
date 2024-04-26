@@ -11,22 +11,23 @@ import AFBase
 
 extension MediaResolver {
     public func convert(items: [Item]) -> [INMediaItem] {
-        items.map {
-            var artist: String?
-            
-            if let track = $0 as? Track {
-                artist = track.artistName
-            } else if let album = $0 as? Album {
-                artist = album.artistName
-            }
-            
-            return INMediaItem(
-                identifier: $0.id,
-                title: $0.name,
-                type: convertType(type: $0.type),
-                artwork: convertImage(cover: $0.cover),
-                artist: artist)
+        items.map(convert)
+    }
+    public func convert(item: Item) -> INMediaItem {
+        var artist: String?
+        
+        if let track = item as? Track {
+            artist = track.artistName
+        } else if let album = item as? Album {
+            artist = album.artistName
         }
+        
+        return INMediaItem(
+            identifier: item.id,
+            title: item.name,
+            type: convertType(type: item.type),
+            artwork: convertImage(cover: item.cover),
+            artist: artist)
     }
     
     private func convertType(type: Item.ItemType) -> INMediaItemType {

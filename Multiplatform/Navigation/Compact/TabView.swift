@@ -55,6 +55,27 @@ struct TabBarView: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: Navigation.navigatePlaylistNotification)) { notification in
+            if let id = notification.object as? String {
+                if OfflineManager.shared.isPlaylistDownloaded(playlistId: id) {
+                    withAnimation {
+                        activeTab = .downloads
+                    }
+                    
+                    NotificationCenter.default.post(name: Navigation.navigateNotification, object: nil, userInfo: [
+                        "offlinePlaylistId": id,
+                    ])
+                } else {
+                    withAnimation {
+                        activeTab = .library
+                    }
+                    
+                    NotificationCenter.default.post(name: Navigation.navigateNotification, object: nil, userInfo: [
+                        "playlistId": id,
+                    ])
+                }
+            }
+        }
     }
 }
 

@@ -181,7 +181,7 @@ extension TrackListRow {
         
         var body: some View {
             Button {
-                AudioPlayer.current.startPlayback(tracks: [track], startIndex: 0, shuffle: false, playbackInfo: .init())
+                AudioPlayer.current.startPlayback(tracks: [track], startIndex: 0, shuffle: false, playbackInfo: .init(container: nil))
             } label: {
                 Label("play", systemImage: "play")
             }
@@ -241,7 +241,7 @@ extension TrackListRow {
         
         var body: some View {
             Button {
-                AudioPlayer.current.queueTrack(track, index: 0)
+                AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
             } label: {
                 Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
             }
@@ -253,7 +253,7 @@ extension TrackListRow {
         
         var body: some View {
             Button {
-                AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count)
+                AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
             } label: {
                 Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
             }

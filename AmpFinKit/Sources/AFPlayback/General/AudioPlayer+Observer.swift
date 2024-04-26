@@ -20,15 +20,6 @@ extension AudioPlayer {
             updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
         }
         
-        /*
-        NotificationCenter.default.addObserver(forName: Self.trackChange, object: nil, queue: nil) { [self] _ in
-            if let playbackInfo = playbackInfo, let nowPlaying = nowPlaying {
-                Self.logger.info("Donating \(nowPlaying.name) to system")
-                playbackInfo.donate(nowPlaying: nowPlaying, shuffled: shuffled, repeatMode: repeatMode, resumePlayback: true)
-            }
-        }
-         */
-        
         // For some reason queue & repeat mode don't work
         // TODO: GeneralCommand/SetVolume
         
@@ -63,11 +54,11 @@ extension AudioPlayer {
                 guard let tracks = try? await trackIds?.parallelMap(JellyfinClient.shared.getTrack).filter({ $0 != nil }) as? [Track], !tracks.isEmpty else { return }
                 
                 if command == "playnow" {
-                    startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init())
+                    startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil))
                 } else if command == "playnext" {
-                    queueTracks(tracks, index: 0)
+                    queueTracks(tracks, index: 0, playbackInfo: .init(container: nil))
                 } else if command == "playlast" {
-                    queueTracks(tracks, index: queue.count)
+                    queueTracks(tracks, index: queue.count, playbackInfo: .init(container: nil))
                 }
             }
         }

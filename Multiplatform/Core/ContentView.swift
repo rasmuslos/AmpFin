@@ -34,9 +34,43 @@ struct ContentView: View {
         if authorized {
             navigationController
                 .environment(\.libraryOnline, online)
-                .onContinueUserActivity(CSSearchableItemActionType, perform: SpotlightHelper.handleSpotlight)
                 .onContinueUserActivity(CSQueryContinuationActionType) {
                     print($0)
+                }
+                .onContinueUserActivity(CSSearchableItemActionType) { activity in
+                    guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+                        return
+                    }
+                    
+                    SpotlightHelper.navigate(identifier: identifier)
+                }
+                .onContinueUserActivity("io.rfk.ampfin.album") { activity in
+                    guard let identifier = activity.persistentIdentifier else {
+                        return
+                    }
+                    
+                    NotificationCenter.default.post(name: Navigation.navigateAlbumNotification, object: identifier)
+                }
+                .onContinueUserActivity("io.rfk.ampfin.artist") { activity in
+                    guard let identifier = activity.persistentIdentifier else {
+                        return
+                    }
+                    
+                    NotificationCenter.default.post(name: Navigation.navigateArtistNotification, object: identifier)
+                }
+                .onContinueUserActivity("io.rfk.ampfin.playlist") { activity in
+                    guard let identifier = activity.persistentIdentifier else {
+                        return
+                    }
+                    
+                    NotificationCenter.default.post(name: Navigation.navigatePlaylistNotification, object: identifier)
+                }
+                .onContinueUserActivity("io.rfk.ampfin.track") { activity in
+                    guard let identifier = activity.persistentIdentifier else {
+                        return
+                    }
+                    
+                    SpotlightHelper.navigate(identifier: identifier)
                 }
                 .onAppear {
                     #if ENABLE_ALL_FEATURES
@@ -45,7 +79,7 @@ struct ContentView: View {
                     
                     let path = NWPathMonitor().currentPath
                     if !path.isExpensive && !path.isConstrained {
-                        SpotlightHelper.donate()
+                        SpotlightHelper.updateIndex()
                         INMediaUserContext.donate()
                         
                         OfflineManager.shared.updateOfflineItems()
