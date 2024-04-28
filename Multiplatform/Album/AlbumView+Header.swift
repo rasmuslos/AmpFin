@@ -12,7 +12,6 @@ import AFBase
 extension AlbumView {
     struct Header: View {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-        
         let album: Album
         let imageColors: ImageColors
         
@@ -42,10 +41,8 @@ extension AlbumView {
                 .frame(height: 0)
                 
                 Group {
-                    // View that fits is unreliable
-                    if horizontalSizeClass == .regular {
+                    ViewThatFits {
                         RegularPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
-                    } else {
                         CompactPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
                     }
                 }
@@ -160,7 +157,7 @@ extension AlbumView.Header {
         }
     }
 }
-
+ 
 // MARK: Adaptive presentations
 
 extension AlbumView.Header {

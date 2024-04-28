@@ -42,6 +42,14 @@ struct AccountSheet: View {
                     .padding(.trailing, 5)
                 }
                 
+                #if DEBUG
+                Section {
+                    NavigationLink(destination: DebugView()) {
+                        Text(verbatim: "Debug")
+                    }
+                }
+                #endif
+                
                 Section("account.remote") {
                     if JellyfinWebSocket.shared.isConnected {
                         if AudioPlayer.current.source == .jellyfinRemote {

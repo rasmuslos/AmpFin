@@ -140,7 +140,6 @@ struct NowPlayingArtistsMenu: View {
                 }
             }
             
-            let _ = print(AudioPlayer.current.playbackInfo)
             if let playbackInfo = AudioPlayer.current.playbackInfo, let playlist = playbackInfo.container as? Playlist {
                 Button(action: {
                     NotificationCenter.default.post(name: Navigation.navigatePlaylistNotification, object: playlist.id)

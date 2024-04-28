@@ -12,7 +12,7 @@ struct Navigation {
     
     static let navigateAlbumNotification = NSNotification.Name("io.rfk.ampfin.navigation.album")
     static let navigateArtistNotification = NSNotification.Name("io.rfk.ampfin.navigation.artist")
-    static let navigatePlaylistNotification = NSNotification.Name("io.rfk.ampfin.navigation.artist")
+    static let navigatePlaylistNotification = NSNotification.Name("io.rfk.ampfin.navigation.playlist")
 }
 
 extension Navigation {
