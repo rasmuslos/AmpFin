@@ -96,7 +96,7 @@ extension AlbumView.Header {
                             .frame(height: 0)
                     }
                     .opacity(0)
-                    .overlay(alignment: .leading) {
+                    .overlay(alignment: alignment == .leading ? .leading : .center) {
                         HStack(spacing: 0) {
                             if let releaseDate = album.releaseDate {
                                 Text(releaseDate, format: Date.FormatStyle().year())
