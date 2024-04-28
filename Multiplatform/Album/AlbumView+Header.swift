@@ -90,20 +90,27 @@ extension AlbumView.Header {
                 }
                 
                 if album.releaseDate != nil || !album.genres.isEmpty {
-                    HStack(spacing: 0) {
-                        if let releaseDate = album.releaseDate {
-                            Text(releaseDate, format: Date.FormatStyle().year())
-                            
-                            if !album.genres.isEmpty {
-                                Text(verbatim: " • ")
-                            }
-                        }
-                        
-                        Text(album.genres.joined(separator: String(localized: "genres.separator")))
-                            .lineLimit(1)
+                    ZStack {
+                        Text(verbatim: "FFS")
+                        Rectangle()
+                            .frame(height: 0)
                     }
-                    .font(.caption)
-                    .foregroundStyle(imageColors.primary.opacity(0.75))
+                    .opacity(0)
+                    .overlay(alignment: .leading) {
+                        HStack(spacing: 0) {
+                            if let releaseDate = album.releaseDate {
+                                Text(releaseDate, format: Date.FormatStyle().year())
+                                
+                                if !album.genres.isEmpty {
+                                    Text(verbatim: " • ")
+                                }
+                            }
+                            Text(album.genres.joined(separator: String(localized: "genres.separator")))
+                                .lineLimit(1)
+                        }
+                        .font(.caption)
+                        .foregroundStyle(imageColors.primary.opacity(0.75))
+                    }
                 }
             }
         }
@@ -157,7 +164,7 @@ extension AlbumView.Header {
         }
     }
 }
- 
+
 // MARK: Adaptive presentations
 
 extension AlbumView.Header {
