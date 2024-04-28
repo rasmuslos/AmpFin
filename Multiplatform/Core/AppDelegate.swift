@@ -26,10 +26,13 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, handlerFor intent: INIntent) -> Any? {
-        if intent as? INPlayMediaIntent != nil {
-            return PlayMediaHandler()
+        switch intent {
+            case is INPlayMediaIntent:
+                return PlayMediaHandler()
+            case is INAddMediaIntent:
+                return AddMediaHandler()
+            default:
+                return nil
         }
-        
-        return nil
     }
 }
