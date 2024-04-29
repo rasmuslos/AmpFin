@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "account.deleteDownloads" : {
       "localizations" : {
@@ -799,6 +806,22 @@
         }
       }
     },
+    "lyrics.failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrics können nicht abgerufen werden (Benötigt Jellyfin 10.9+)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrics cannot be fetched (only available with Jellyfin 10.9+)"
+          }
+        }
+      }
+    },
     "minutes %lld" : {
       "localizations" : {
         "de" : {
@@ -1168,7 +1191,20 @@
       }
     },
     "playlist.view" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zur Playlist"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View playlist"
+          }
+        }
+      }
     },
     "queue.history" : {
       "localizations" : {
