@@ -50,7 +50,7 @@ struct RegularNowPlayingView: View {
                                 
                                 Group {
                                     if currentTab == .lyrics {
-                                        NowPlayingLyricsContainer(controlsVisible: .constant(true))
+                                        NowPlayingLyricsContainer(controlsVisible: .constant(false))
                                     } else if currentTab == .queue {
                                         NowPlayingQueue()
                                     }

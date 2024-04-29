@@ -63,6 +63,7 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                                 NowPlayingCover(track: track, currentTab: currentTab, namespace: namespace)
                             } else {
                                 NowPlayingSmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
+                                    .transition(.opacity.animation(.linear(duration: 0.1)))
                                 
                                 Group {
                                     if currentTab == .lyrics {
@@ -88,7 +89,7 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                                         .padding(.top, 20)
                                         .padding(.bottom, 30)
                                 }
-                                .transition(.opacity.animation(.linear(duration: 0.3)))
+                                .transition(.opacity.animation(.linear(duration: 0.2)))
                             }
                         }
                     }
@@ -106,14 +107,14 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                             }
                             .transition(.asymmetric(
                                 insertion: .opacity.animation(.linear(duration: 0.1).delay(0.3)),
-                                removal: .opacity.animation(.linear(duration: 0.1))))
+                                removal: .opacity.animation(.linear(duration: 0.05))))
                         }
                     }
                     .padding(.horizontal, 30)
                     .simultaneousGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
-                                if controlsDragging {
+                                if controlsDragging || currentTab == .lyrics {
                                     return
                                 }
                                 
@@ -138,6 +139,8 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                             }
                     )
                     .onChange(of: currentTab) {
+                        dragOffset = 0
+                        
                         if currentTab == .cover {
                             controlsVisible = true
                         }
@@ -153,6 +156,12 @@ struct CompactNowPlayingViewModifier: ViewModifier {
         // why does this work? only god knows...
         .ignoresSafeArea(edges: .all)
         .environment(viewState)
+        .onChange(of: viewState.presented) {
+            controlsVisible = true
+        }
+        .onChange(of: currentTab) {
+            controlsVisible = true
+        }
     }
 }
 

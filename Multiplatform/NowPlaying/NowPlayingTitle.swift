@@ -77,7 +77,7 @@ struct NowPlayingSmallTitle: View {
                     .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .bottom)
                 
                 NowPlayingArtistsMenu(track: track)
-                    .font(.subheadline)
+                    .font(.body)
                     .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .bottom)
             }
             

@@ -30,21 +30,17 @@ struct NowPlayingLyricsContainer: View {
         ScrollViewReader { proxy in
             ScrollView(showsIndicators: false) {
                 if let lyrics = lyrics {
-                    LazyVStack {
+                    VStack(spacing: 0) {
                         ForEach(Array(lyrics.keys.sorted(by: <).enumerated()), id: \.offset) { index, key in
-                            if index == activeLineIndex || lyrics[key]! != nil {
-                                LyricLine(index: index, text: lyrics[key]!, activeLineIndex: activeLineIndex, scrolling: $scrolling)
-                                    .onTapGesture {
-                                        Task.detached {
-                                            await AudioPlayer.current.seek(seconds: Array(lyrics.keys.sorted(by: <))[index])
-                                            activeLineIndex = index
-                                        }
+                            LyricLine(index: index, text: lyrics[key]!, scrolling: scrolling, activeLineIndex: activeLineIndex)
+                                .onTapGesture {
+                                    Task.detached {
+                                        await AudioPlayer.current.seek(seconds: Array(lyrics.keys.sorted(by: <))[index])
+                                        setActiveLineIndex(index)
                                     }
-                            }
+                                }
                         }
                     }
-                    .padding(.vertical, 25)
-                    .safeAreaPadding(.bottom, 175)
                 } else {
                     Group {
                         if failed {
@@ -61,35 +57,20 @@ struct NowPlayingLyricsContainer: View {
                     .frame(maxWidth: .infinity)
                 }
             }
+            .safeAreaPadding(.top, 25)
+            .safeAreaPadding(.bottom, 100)
             .mask(
                 VStack(spacing: 0) {
                     LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
                         .frame(height: 60)
                     
-                    Rectangle().fill(Color.black)
+                    Rectangle()
+                        .fill(Color.black)
                     
                     LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
                         .frame(height: 60)
                 }
             )
-            .onChange(of: activeLineIndex) {
-                if scrolling {
-                    return
-                }
-                
-                withAnimation(.spring) {
-                    proxy.scrollTo(activeLineIndex, anchor: anchor)
-                }
-            }
-            .onChange(of: scrolling) {
-                if scrolling {
-                    return
-                }
-                
-                withAnimation(.spring) {
-                    proxy.scrollTo(activeLineIndex, anchor: anchor)
-                }
-            }
             .simultaneousGesture(
                 DragGesture()
                     .onChanged({ gesture in
@@ -108,30 +89,48 @@ struct NowPlayingLyricsContainer: View {
                         }
                     })
             )
-        }
-        .onAppear(perform: fetchLyrics)
-        .onChange(of: AudioPlayer.current.nowPlaying) {
-            lyrics = nil
-            activeLineIndex = 0
-            fetchLyrics()
-        }
-        .onChange(of: AudioPlayer.current.currentTime) {
-            updateLyricsIndex()
+            .onAppear(perform: fetchLyrics)
+            .onChange(of: activeLineIndex) {
+                if scrolling {
+                    return
+                }
+                
+                withAnimation(.spring) {
+                    proxy.scrollTo(activeLineIndex, anchor: anchor)
+                }
+            }
+            .onChange(of: scrolling) {
+                if scrolling {
+                    return
+                }
+                
+                withAnimation(.spring) {
+                    proxy.scrollTo(activeLineIndex, anchor: anchor)
+                }
+            }
+            .onChange(of: AudioPlayer.current.nowPlaying) {
+                lyrics = nil
+                setActiveLineIndex(0)
+                fetchLyrics()
+            }
+            .onChange(of: AudioPlayer.current.currentTime) {
+                updateLyricsIndex()
+            }
         }
     }
-    
-    // MARK: Helper
-    
+}
+
+extension NowPlayingLyricsContainer {
     private func updateLyricsIndex() {
         if let lyrics = lyrics, !lyrics.isEmpty {
             let currentTime = AudioPlayer.current.currentTime
             if let index = Array(lyrics.keys).sorted(by: <).lastIndex(where: { $0 <= currentTime }) {
-                activeLineIndex = index
+                setActiveLineIndex(index)
             } else {
-                activeLineIndex = 0
+                setActiveLineIndex(0)
             }
         } else {
-            activeLineIndex = 0
+            setActiveLineIndex(0)
         }
     }
     
@@ -150,6 +149,12 @@ struct NowPlayingLyricsContainer: View {
             }
         }
     }
+    
+    private func setActiveLineIndex(_ index: Int) {
+        withAnimation(.spring) {
+            activeLineIndex = index
+        }
+    }
 }
 
 // MARK: Line
@@ -160,14 +165,16 @@ extension NowPlayingLyricsContainer {
         
         let index: Int
         let text: String?
+        var scrolling: Bool
         let activeLineIndex: Int
         
-        @Binding var scrolling: Bool
-        
-        @State private var pulse: CGFloat = 1
+        @State private var pulse: CGFloat = .zero
         
         private var active: Bool {
             index == activeLineIndex
+        }
+        private var padding: CGFloat {
+            horizontalSizeClass == .compact ? 15 : 30
         }
         
         var body: some View {
@@ -175,43 +182,32 @@ extension NowPlayingLyricsContainer {
                 if let text = text {
                     Text(text)
                         .font(.system(size: horizontalSizeClass == .compact ? 33 : 50))
-                    
-                    Spacer()
                 } else {
-                    HStack {
-                        Circle()
-                            .frame(width: 15)
-                            .scaleEffect(pulse)
-                        Circle()
-                            .frame(width: 15)
-                            .scaleEffect(pulse)
-                        Circle()
-                            .frame(width: 15)
-                            .scaleEffect(pulse)
+                    if index == activeLineIndex {
+                        HStack(spacing: 10) {
+                            ForEach(1...3, id: \.hashValue) { _ in
+                                Circle()
+                                    .frame(width: 15 * pulse)
+                            }
+                        }
+                        .frame(height: 20)
                     }
-                    .padding(.leading, pulse * 2)
-                    
-                    Spacer()
                 }
+                
+                Spacer()
             }
             .fontWeight(.heavy)
-            .foregroundStyle(.white.opacity(active ? 0.9 : 0.25))
+            .foregroundStyle(active ? Material.ultraThickMaterial : Material.ultraThinMaterial)
             .blur(radius: active || scrolling ? 0 : 2)
-            .tag(activeLineIndex)
-            .animation(.spring, value: active)
-            .animation(.easeInOut(duration: 0.3), value: activeLineIndex)
-            .onAppear {
+            .padding(.vertical, active || text != nil ? padding : 0)
+            // .animation(.spring, value: active)
+            .task {
+                pulse = 1
+                
                 withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
-                    pulse *= 1.2
+                    pulse = 1.2
                 }
             }
-            .padding(.vertical, horizontalSizeClass == .compact ? 10 : 25)
-            .offset(y: 25 + determineAdditionalOffset())
-        }
-        
-        private func determineAdditionalOffset() -> CGFloat {
-            let delta = index - activeLineIndex
-            return delta > 0 ? 15 : 0
         }
     }
 }

@@ -51,60 +51,62 @@ extension PlaybackInfo {
                 break
         }
         
-        // this is wrong... But apple begs to differ...
-        let intent = INPlayMediaIntent(
-            mediaItems: [MediaResolver.shared.convert(item: item)],
-            mediaContainer: nil,
-            playShuffled: AudioPlayer.current.shuffled,
-            playbackRepeatMode: repeatMode,
-            resumePlayback: false,
-            playbackQueueLocation: queueLocation,
-            playbackSpeed: 1,
-            mediaSearch: .init(mediaName: search))
-        
-        var activity: NSUserActivity?
-        
-        if let container = container {
-            let activityType: String
-            let userInfo: [String: Any]
+        Task.detached {
+            // this is wrong... But apple begs to differ...
+            let intent = INPlayMediaIntent(
+                mediaItems: [MediaResolver.shared.convert(item: item)],
+                mediaContainer: nil,
+                playShuffled: AudioPlayer.current.shuffled,
+                playbackRepeatMode: repeatMode,
+                resumePlayback: false,
+                playbackQueueLocation: queueLocation,
+                playbackSpeed: 1,
+                mediaSearch: .init(mediaName: search))
             
-            switch container.type {
-                case .album:
-                    activityType = "album"
-                    userInfo = [
-                        "albumId": container.id,
-                    ]
-                case .artist:
-                    activityType = "artist"
-                    userInfo = [
-                        "artistId": container.id,
-                    ]
-                case .playlist:
-                    activityType = "playlist"
-                    userInfo = [
-                        "playlistId": container.id,
-                    ]
-                case .track:
-                    activityType = "track"
-                    userInfo = [
-                        "trackId": container.id,
-                    ]
+            var activity: NSUserActivity?
+            
+            if let container = container {
+                let activityType: String
+                let userInfo: [String: Any]
+                
+                switch container.type {
+                    case .album:
+                        activityType = "album"
+                        userInfo = [
+                            "albumId": container.id,
+                        ]
+                    case .artist:
+                        activityType = "artist"
+                        userInfo = [
+                            "artistId": container.id,
+                        ]
+                    case .playlist:
+                        activityType = "playlist"
+                        userInfo = [
+                            "playlistId": container.id,
+                        ]
+                    case .track:
+                        activityType = "track"
+                        userInfo = [
+                            "trackId": container.id,
+                        ]
+                }
+                
+                activity = NSUserActivity(activityType: "io.rfk.ampfin.\(activityType)")
+                
+                activity!.title = container.name
+                activity!.persistentIdentifier = container.id
+                activity!.targetContentIdentifier = "\(activityType):\(container.id)"
+                
+                // Are these journal suggestions?
+                activity?.shortcutAvailability = [.sleepJournaling, .sleepMusic]
+                
+                activity!.isEligibleForPrediction = true
+                activity!.userInfo = userInfo
             }
             
-            activity = NSUserActivity(activityType: "io.rfk.ampfin.\(activityType)")
-            
-            activity!.title = container.name
-            activity!.persistentIdentifier = container.id
-            activity!.targetContentIdentifier = "\(activityType):\(container.id)"
-            
-            // Are these journal suggestions?
-            activity?.shortcutAvailability = [.sleepJournaling, .sleepMusic]
-            
-            activity!.isEligibleForPrediction = true
-            activity!.userInfo = userInfo
+            let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: activity))
+            try? await interaction.donate()
         }
-        
-        let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: activity))
-        interaction.donate()
     }
 }

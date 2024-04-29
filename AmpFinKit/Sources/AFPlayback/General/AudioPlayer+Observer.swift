@@ -51,7 +51,7 @@ extension AudioPlayer {
             let index = notification.userInfo?["index"] as? Int ?? 0
             
             Task.detached { [self] in
-                guard let tracks = try? await trackIds?.parallelMap(JellyfinClient.shared.getTrack).filter({ $0 != nil }) as? [Track], !tracks.isEmpty else { return }
+                guard let tracks = await trackIds?.parallelMap(JellyfinClient.shared.getTrack).filter({ $0 != nil }) as? [Track], !tracks.isEmpty else { return }
                 
                 if command == "playnow" {
                     startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil))
