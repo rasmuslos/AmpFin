@@ -32,14 +32,12 @@ struct TrackListButtons: View {
         let callback: () -> Void
         
         var body: some View {
-            Button(action: callback) {
-                ZStack {
-                    // This horrible abomination ensures that both buttons have the same height
-                    Label(String("TEXT"), systemImage: "shuffle")
-                        .opacity(0)
-                    
-                    Label(label, systemImage: icon)
-                }
+            ZStack {
+                // This horrible abomination ensures that both buttons have the same height
+                Label(String("TEXT"), systemImage: "shuffle")
+                    .opacity(0)
+                
+                Label(label, systemImage: icon)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
@@ -47,6 +45,9 @@ struct TrackListButtons: View {
             .foregroundColor(.accentColor)
             .bold()
             .cornerRadius(7)
+            .onTapGesture {
+                callback()
+            }
         }
     }
 }

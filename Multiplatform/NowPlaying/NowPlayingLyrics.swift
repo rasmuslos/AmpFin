@@ -197,10 +197,9 @@ extension NowPlayingLyricsContainer {
                 Spacer()
             }
             .fontWeight(.heavy)
-            .foregroundStyle(active ? Material.ultraThickMaterial : Material.ultraThinMaterial)
+            .foregroundStyle(active ? .white.opacity(0.9) : .gray.opacity(0.4))
             .blur(radius: active || scrolling ? 0 : 2)
             .padding(.vertical, active || text != nil ? padding : 0)
-            // .animation(.spring, value: active)
             .task {
                 pulse = 1
                 
