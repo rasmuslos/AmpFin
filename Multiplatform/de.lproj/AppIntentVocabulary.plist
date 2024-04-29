@@ -11,7 +11,8 @@
 			<string>INAddMediaIntent</string>
 			<key>IntentExamples</key>
 			<array>
-				<string>Füge das Lied zu meiner Playlist Lieblingssongs hinzu</string>
+				<string>Füge das Lied zu meiner Playlist &quot;Mein-Jam&quot; hinzu</string>
+				<string>Füge Explorers von Muse zur Playlist &quot;Mein-Jam&quot; hinzu</string>
 			</array>
 		</dict>
 		<dict>
@@ -20,6 +21,14 @@
 			<key>IntentExamples</key>
 			<array>
 				<string>Spiele Money, Money, Money von Abba</string>
+			</array>
+		</dict>
+		<dict>
+			<key>IntentName</key>
+			<string>INSearchForMediaIntent</string>
+			<key>IntentExamples</key>
+			<array>
+				<string>Zeige mir Lieder vom Daft Punk</string>
 			</array>
 		</dict>
 	</array>

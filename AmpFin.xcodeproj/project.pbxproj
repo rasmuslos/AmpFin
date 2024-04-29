@@ -51,7 +51,6 @@
 		3A442BFC2B483EC9008FECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A442BFB2B483EC9008FECE2 /* Localizable.xcstrings */; };
 		3A442BFE2B484026008FECE2 /* DebugTokenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A442BFD2B484026008FECE2 /* DebugTokenWidget.swift */; };
 		3A44B06D2BA194410013E4EF /* Double+Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A44B06C2BA194410013E4EF /* Double+Duration.swift */; };
-		3A4A3B852BDBEAD100A90835 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A3B842BDBEAD100A90835 /* Intents.intentdefinition */; };
 		3A4A3B872BDBEB0B00A90835 /* Handler+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A3B862BDBEB0B00A90835 /* Handler+Search.swift */; };
 		3A4A3B892BDCDF5300A90835 /* Handler+Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A3B882BDCDF5300A90835 /* Handler+Add.swift */; };
 		3A4A3B8B2BDCE27600A90835 /* AddMediaHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A3B8A2BDCE27600A90835 /* AddMediaHandler.swift */; };
@@ -96,6 +95,7 @@
 		3AA94F8E2BB02E130012E731 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3A2657EF2BA340EC000C62E3 /* PrivacyInfo.xcprivacy */; };
 		3AA94F902BB02E1E0012E731 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3A2657F12BA34126000C62E3 /* PrivacyInfo.xcprivacy */; };
 		3AA94F912BB02E230012E731 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3A2657F02BA34113000C62E3 /* PrivacyInfo.xcprivacy */; };
+		3AA98A662BDF9FC500C52D27 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3AA98A652BDF9FC500C52D27 /* Intents.intentdefinition */; };
 		3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC768C2B02C68600E337C1 /* ItemImage.swift */; };
 		3AAE1B442BC57AFB00FD0200 /* Sidebar+Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE1B432BC57AFB00FD0200 /* Sidebar+Entries.swift */; };
 		3AAE1B462BC57CC200FD0200 /* Sidebar+Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE1B452BC57CC200FD0200 /* Sidebar+Playlists.swift */; };
@@ -219,7 +219,6 @@
 		3A442C012B4844A6008FECE2 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A442C092B485E56008FECE2 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		3A44B06C2BA194410013E4EF /* Double+Duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Duration.swift"; sourceTree = "<group>"; };
-		3A4A3B842BDBEAD100A90835 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		3A4A3B862BDBEB0B00A90835 /* Handler+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Handler+Search.swift"; sourceTree = "<group>"; };
 		3A4A3B882BDCDF5300A90835 /* Handler+Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Handler+Add.swift"; sourceTree = "<group>"; };
 		3A4A3B8A2BDCE27600A90835 /* AddMediaHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMediaHandler.swift; sourceTree = "<group>"; };
@@ -252,6 +251,9 @@
 		3A98A02D2AABA36600EA84CF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		3A98A02F2AABA37B00EA84CF /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		3A98A0312AABA3DF00EA84CF /* ArtistLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistLoadView.swift; sourceTree = "<group>"; };
+		3AA98A642BDF9FC500C52D27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Intents.intentdefinition; sourceTree = "<group>"; };
+		3AA98A682BDF9FCA00C52D27 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Intents.strings; sourceTree = "<group>"; };
+		3AA98A6A2BDF9FCA00C52D27 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
 		3AAC768C2B02C68600E337C1 /* ItemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemImage.swift; sourceTree = "<group>"; };
 		3AAE1B432BC57AFB00FD0200 /* Sidebar+Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar+Entries.swift"; sourceTree = "<group>"; };
 		3AAE1B452BC57CC200FD0200 /* Sidebar+Playlists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar+Playlists.swift"; sourceTree = "<group>"; };
@@ -477,7 +479,7 @@
 		3A6FC1F52ACC0BE30070301B /* Intents */ = {
 			isa = PBXGroup;
 			children = (
-				3A4A3B842BDBEAD100A90835 /* Intents.intentdefinition */,
+				3AA98A652BDF9FC500C52D27 /* Intents.intentdefinition */,
 				3A6FC1F12ACC0BDA0070301B /* SpotlightHelper.swift */,
 				3A4A3B8A2BDCE27600A90835 /* AddMediaHandler.swift */,
 				3A3E25BD2BDBD02400006310 /* PlayMediaHandler.swift */,
@@ -1060,7 +1062,7 @@
 				3A2B28F12B4379C500DF9731 /* PlaylistView+Background.swift in Sources */,
 				3A6F50AB2AACABEB00FC8A29 /* AlbumListRow.swift in Sources */,
 				3A8B993E2AA9FE02004AAA7B /* NowPlayingTitle.swift in Sources */,
-				3A4A3B852BDBEAD100A90835 /* Intents.intentdefinition in Sources */,
+				3AA98A662BDF9FC500C52D27 /* Intents.intentdefinition in Sources */,
 				3A2B28E82B43422800DF9731 /* PlaylistsList.swift in Sources */,
 				3A2B93312B00C9DA00638AE9 /* DownloadTip.swift in Sources */,
 				3A3DA6642AAB2BC10091211A /* ArtistList.swift in Sources */,
@@ -1093,6 +1095,16 @@
 				3A24E5DF2B4BF7890052DD20 /* de */,
 			);
 			name = AppIntentVocabulary.plist;
+			sourceTree = "<group>";
+		};
+		3AA98A652BDF9FC500C52D27 /* Intents.intentdefinition */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3AA98A642BDF9FC500C52D27 /* Base */,
+				3AA98A682BDF9FCA00C52D27 /* en */,
+				3AA98A6A2BDF9FCA00C52D27 /* de */,
+			);
+			name = Intents.intentdefinition;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

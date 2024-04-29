@@ -9,7 +9,8 @@
 			<string>INAddMediaIntent</string>
 			<key>IntentExamples</key>
 			<array>
-				<string>Add this song to my playlist favorites</string>
+				<string>Add this song to the playlist &quot;my-jam&quot;</string>
+				<string>Add Explorers by Muse to the playlist &quot;my-jam&quot;</string>
 			</array>
 		</dict>
 		<dict>
@@ -18,6 +19,14 @@
 			<key>IntentExamples</key>
 			<array>
 				<string>Play Money, Money, Money by Abba</string>
+			</array>
+		</dict>
+		<dict>
+			<key>IntentName</key>
+			<string>INSearchForMediaIntent</string>
+			<key>IntentExamples</key>
+			<array>
+				<string>Show my songs by Daft Punk</string>
 			</array>
 		</dict>
 	</array>
