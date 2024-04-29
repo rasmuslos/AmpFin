@@ -64,52 +64,61 @@ extension PlaylistView {
                     }
                     
                     ToolbarItem(placement: .topBarTrailing) {
-                        Menu {
+                        if editMode == .active {
                             Button {
-                                Task {
-                                    await playlist.setFavorite(favorite: !playlist.favorite)
-                                }
+                                editMode = .inactive
                             } label: {
-                                Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
+                                Image(systemName: "checkmark")
+                                    .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                             }
-                            
-                            Divider()
-                            
-                            Button {
-                                AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
-                            } label: {
-                                Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
-                            }
-                            Button {
-                                AudioPlayer.current.queueTracks(tracks, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
-                            } label: {
-                                Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
-                            }
-                            
-                            Divider()
-                            
-                            Button {
-                                withAnimation {
-                                    if editMode == .active {
-                                        editMode = .inactive
-                                    } else {
-                                        editMode = .active
+                        } else {
+                            Menu {
+                                Button {
+                                    Task {
+                                        await playlist.setFavorite(favorite: !playlist.favorite)
                                     }
+                                } label: {
+                                    Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
                                 }
+                                
+                                Divider()
+                                
+                                Button {
+                                    AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
+                                } label: {
+                                    Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                                }
+                                Button {
+                                    AudioPlayer.current.queueTracks(tracks, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
+                                } label: {
+                                    Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                                }
+                                
+                                Divider()
+                                
+                                Button {
+                                    withAnimation {
+                                        if editMode == .active {
+                                            editMode = .inactive
+                                        } else {
+                                            editMode = .active
+                                        }
+                                    }
+                                } label: {
+                                    Label("playlist.edit", systemImage: "pencil")
+                                }
+                                .disabled(!libraryOnline)
+                                
+                                Button(role: .destructive) {
+                                    alertPresented.toggle()
+                                } label: {
+                                    Label("playlist.delete", systemImage: "trash")
+                                }
+                                .disabled(!libraryOnline)
                             } label: {
-                                Label("playlist.edit", systemImage: "pencil")
+                                Image(systemName: "ellipsis")
+                                    .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                             }
-                            .disabled(!libraryOnline)
-                            
-                            Button(role: .destructive) {
-                                alertPresented.toggle()
-                            } label: {
-                                Label("playlist.delete", systemImage: "trash")
-                            }
-                            .disabled(!libraryOnline)
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                         }
                     }
                 }

@@ -38,11 +38,9 @@ struct NowPlayingButtons: View {
                 if horizontalSizeClass == .compact {
                     Spacer()
                     
-                    #if DEBUG
                     lyricsButton
                     
                     Spacer()
-                    #endif
                     
                     NowPlayingAirPlayView()
                         .frame(width: 45)

@@ -15,6 +15,7 @@ struct NowPlayingLyricsContainer: View {
     
     @Binding var controlsVisible: Bool
     
+    @State private var failed = false
     @State private var lyrics: Track.Lyrics?
     @State private var activeLineIndex: Int = 0
     
@@ -45,9 +46,19 @@ struct NowPlayingLyricsContainer: View {
                     .padding(.vertical, 25)
                     .safeAreaPadding(.bottom, 175)
                 } else {
-                    ProgressView()
-                        .padding(.vertical, 50)
-                        .frame(maxWidth: .infinity)
+                    Group {
+                        if failed {
+                            Text("lyrics.failed")
+                                .font(.caption.smallCaps())
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .padding()
+                        } else {
+                            ProgressView()
+                        }
+                    }
+                    .padding(.vertical, 50)
+                    .frame(maxWidth: .infinity)
                 }
             }
             .mask(
@@ -126,11 +137,15 @@ struct NowPlayingLyricsContainer: View {
     
     private func fetchLyrics() {
         if let trackId = AudioPlayer.current.nowPlaying?.id {
+            failed = false
+            
             Task.detached {
                 if let lyrics = await OfflineManager.shared.getLyrics(trackId: trackId) {
                     self.lyrics = lyrics
                 } else if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId) {
                     self.lyrics = lyrics
+                } else {
+                    failed = true
                 }
             }
         }
