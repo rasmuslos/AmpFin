@@ -144,4 +144,19 @@ public extension OfflineManager {
         
         return try? PersistenceManager.shared.modelContainer.mainContext.fetch(lyrics).first?.lyrics
     }
+    
+    @MainActor
+    func updateLyrics(trackId: String) async -> Track.Lyrics? {
+        if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId) {
+            try? PersistenceManager.shared.modelContainer.mainContext.delete(model: OfflineLyrics.self, where: #Predicate {
+                $0.trackId == trackId
+            })
+            let offlineLyrics = OfflineLyrics(trackId: trackId, lyrics: lyrics)
+            PersistenceManager.shared.modelContainer.mainContext.insert(offlineLyrics)
+            
+            return lyrics
+        }
+        
+        return nil
+    }
 }
