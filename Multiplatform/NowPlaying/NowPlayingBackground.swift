@@ -17,24 +17,29 @@ struct NowPlayingBackground: View {
     
     var body: some View {
         ZStack {
-            Color.black
-            
-            ItemImage(cover: cover)
-                .id(cover?.url)
-                .blur(radius: 100)
-                .frame(maxWidth: .infinity)
-            
-            if let imageColors = imageColors {
-                FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
-                    .ignoresSafeArea(edges: .all)
-                    .onChange(of: cover?.url) { determineImageColors() }
+            if let cover = cover {
+                Color.black
+                
+                ItemImage(cover: cover)
+                    .id(cover.url)
+                    .blur(radius: 100)
+                    .frame(maxWidth: .infinity)
+                
+                if let imageColors = imageColors {
+                    FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
+                        .ignoresSafeArea(edges: .all)
+                        .onChange(of: cover.url) { determineImageColors() }
+                } else {
+                    Color.clear
+                        .onAppear { determineImageColors() }
+                }
             } else {
-                Color.clear
-                    .onAppear { determineImageColors() }
+                Color.black
+                Color.gray.opacity(0.8)
             }
         }
-        .overlay(.black.opacity(0.25))
         .ignoresSafeArea(edges: .all)
+        .overlay(.black.opacity(0.25))
         .allowsHitTesting(false)
     }
     

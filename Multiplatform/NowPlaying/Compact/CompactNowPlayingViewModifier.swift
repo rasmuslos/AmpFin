@@ -111,6 +111,7 @@ struct CompactNowPlayingViewModifier: ViewModifier {
                         }
                     }
                     .padding(.horizontal, 30)
+                    .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
                     .simultaneousGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onChanged {
@@ -149,11 +150,9 @@ struct CompactNowPlayingViewModifier: ViewModifier {
             }
             .allowsHitTesting(presentedTrack != nil)
             // This is very reasonable and sane
-            .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
             .offset(y: dragOffset)
             .animation(.spring, value: dragOffset)
         }
-        // why does this work? only god knows...
         .ignoresSafeArea(edges: .all)
         .environment(viewState)
         .onChange(of: viewState.presented) {

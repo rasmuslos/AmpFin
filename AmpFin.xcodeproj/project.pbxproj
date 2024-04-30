@@ -728,10 +728,10 @@
 		3AEB32392AA7F63200853210 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				3AEB32232AA7EC3C00853210 /* ContentView.swift */,
-				3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */,
-				3AEB321A2AA7EC3C00853210 /* MultiplatformApp.swift */,
 				3A1CBC182B0D284200855A70 /* Navigation.swift */,
+				3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */,
+				3AEB32232AA7EC3C00853210 /* ContentView.swift */,
+				3AEB321A2AA7EC3C00853210 /* MultiplatformApp.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";

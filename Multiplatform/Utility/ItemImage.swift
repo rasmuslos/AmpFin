@@ -14,16 +14,16 @@ struct ItemImage: View {
     var cornerRadius: CGFloat = 7
     
     var placeholder: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                Image(systemName: "music.note")
-                Spacer()
-            }
-            Spacer()
+        ZStack {
+            Image(systemName: "music.note")
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 40)
+                .foregroundStyle(.gray.opacity(0.5))
+                .padding(10)
         }
-        .background(.ultraThickMaterial)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.gray.opacity(0.1))
         .aspectRatio(1, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }

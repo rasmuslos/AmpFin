@@ -36,25 +36,6 @@ struct MultiplatformApp: App {
                         .forEach { $0.titlebar?.titleVisibility = .hidden }
                 }
                 #endif
-                #if false
-                .overlay {
-                    // add some layout guidelines to make sure that the padding is consistently 20 units.
-                    // i am convinced that the implicit behavior of `.padding()` is meant to troll people, there is no other explanation for why it would be so terrible
-                    HStack(spacing: 0) {
-                        Rectangle()
-                            .frame(width: 1)
-                            .padding(.leading, 20)
-                            .foregroundStyle(.red)
-                        
-                        Spacer()
-                        
-                        Rectangle()
-                            .frame(width: 1)
-                            .padding(.trailing, 20)
-                            .foregroundStyle(.red)
-                    }
-                }
-                #endif
         }
         .modelContainer(PersistenceManager.shared.modelContainer)
     }
