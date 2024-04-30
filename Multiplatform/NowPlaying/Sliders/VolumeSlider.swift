@@ -19,7 +19,8 @@ struct VolumeSlider: View {
             Button {
                 AudioPlayer.current.volume = 0
             } label: {
-                Image(systemName: "speaker.fill")
+                Label("mute", systemImage: "speaker.fill")
+                    .labelStyle(.iconOnly)
             }
             
             Slider(percentage: $volume, dragging: $dragging)
@@ -27,7 +28,8 @@ struct VolumeSlider: View {
             Button {
                 AudioPlayer.current.volume = 1
             } label: {
-                Image(systemName: "speaker.wave.3.fill")
+                Label("fullVolume", systemImage: "speaker.wave.3.fill")
+                    .labelStyle(.iconOnly)
             }
         }
         .dynamicTypeSize(dragging ? .xLarge : .medium)

@@ -36,7 +36,8 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                         Button {
                             AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
                         } label: {
-                            Image(systemName: "shuffle")
+                            Label("shuffle", systemImage: "shuffle")
+                                .labelStyle(.iconOnly)
                                 .font(.footnote)
                                 .fontWeight(.heavy)
                         }
@@ -46,7 +47,8 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                             animateBackwards.toggle()
                             AudioPlayer.current.backToPreviousItem()
                         } label: {
-                            Image(systemName: "backward.fill")
+                            Label("playback.back", systemImage: "backward.fill")
+                                .labelStyle(.iconOnly)
                                 .symbolEffect(.bounce.up, value: animateBackwards)
                         }
                         .font(.title3)
@@ -59,7 +61,8 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                                 Button {
                                     AudioPlayer.current.playing = !AudioPlayer.current.playing
                                 } label: {
-                                    Image(systemName: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
+                                    Label("playback.toggle", systemImage: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
+                                        .labelStyle(.iconOnly)
                                         .contentTransition(.symbolEffect(.replace.byLayer.downUp))
                                         .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
                                         .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
@@ -81,7 +84,8 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                             animateForwards.toggle()
                             AudioPlayer.current.advanceToNextTrack()
                         } label: {
-                            Image(systemName: "forward.fill")
+                            Label("playback.next", systemImage: "forward.fill")
+                                .labelStyle(.iconOnly)
                                 .symbolEffect(.bounce.up, value: animateForwards)
                         }
                         .font(.title3)
@@ -96,15 +100,10 @@ struct RegularNowPlayingBarModifier: ViewModifier {
                                 AudioPlayer.current.repeatMode = .none
                             }
                         } label: {
-                            Group {
-                                if AudioPlayer.current.repeatMode == .track {
-                                    Image(systemName: "repeat.1")
-                                } else if AudioPlayer.current.repeatMode == .none || AudioPlayer.current.repeatMode == .queue {
-                                    Image(systemName: "repeat")
-                                }
-                            }
-                            .font(.footnote)
-                            .fontWeight(.heavy)
+                            Label("repeat", systemImage: "repeat\(AudioPlayer.current.repeatMode == .track ? ".1" : "")")
+                                .labelStyle(.iconOnly)
+                                .font(.footnote)
+                                .fontWeight(.heavy)
                         }
                         .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none, heavy: true))
                     }

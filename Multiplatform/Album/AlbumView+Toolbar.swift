@@ -88,17 +88,18 @@ extension AlbumView {
                         } label: {
                             switch offlineTracker.status {
                                 case .none:
-                                    // and for some other reason this was blue when i used a label
-                                    Image(systemName: "arrow.down")
+                                    Label("download", systemImage: "arrow.down")
+                                        .labelStyle(.iconOnly)
                                 case .working:
                                     ProgressView()
                                 case .downloaded:
-                                    Image(systemName: "xmark")
+                                    Label("download.remove", systemImage: "xmark")
+                                        .labelStyle(.iconOnly)
                             }
                         }
+                        .modifier(FullscreenToolbarModifier(imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible))
                         // funny thing, this crashed the app
                         // .popoverTip(DownloadTip())
-                        .modifier(FullscreenToolbarModifier(imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible))
                     }
                     
                     ToolbarItem(placement: .topBarTrailing) {
@@ -154,6 +155,8 @@ extension AlbumView {
                                 }
                             }
                         } label: {
+                            // does not work because fuck you
+                            // Label("more", systemImage: "ellipsis")
                             Image(systemName: "ellipsis")
                                 .labelStyle(.iconOnly)
                                 .modifier(FullscreenToolbarModifier(imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible))

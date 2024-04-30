@@ -111,7 +111,7 @@ struct PlaylistAddSheet: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("account.done")
+                        Text("done")
                     }
                 }
             }

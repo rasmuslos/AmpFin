@@ -65,7 +65,8 @@ extension ArtistView.Toolbar {
                                     }
                                 }
                             } label: {
-                                Image(systemName: "play.circle.fill")
+                                Label("queue.mix", systemImage: "play.circle.fill")
+                                    .labelStyle(.iconOnly)
                             }
                         }
                     }

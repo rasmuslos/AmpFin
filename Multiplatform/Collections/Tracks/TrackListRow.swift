@@ -102,8 +102,8 @@ struct TrackListRow: View {
                 Menu {
                     TrackMenu(track: track, album: album, deleteCallback: deleteCallback, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
                 } label: {
-                    Image(systemName: "ellipsis")
-                        .renderingMode(.original)
+                    Label("more", systemImage: "ellipsis")
+                        .labelStyle(.iconOnly)
                         .font(.caption)
                         .imageScale(.large)
                         .foregroundStyle(Color(UIColor.label))

@@ -11,6 +11,22 @@
         }
       }
     },
+    "account" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        }
+      }
+    },
     "account.deleteDownloads" : {
       "localizations" : {
         "de" : {
@@ -39,22 +55,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete Spotlight index"
-          }
-        }
-      }
-    },
-    "account.done" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fertig"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Done"
           }
         }
       }
@@ -396,12 +396,28 @@
         }
       }
     },
-    "download.download" : {
+    "done" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heruntenladen"
+            "value" : "Fertig"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download"
           }
         },
         "en" : {
@@ -440,6 +456,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Force remove"
+          }
+        }
+      }
+    },
+    "downloaded" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heruntergeladen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloaded"
           }
         }
       }
@@ -492,6 +524,22 @@
         }
       }
     },
+    "fullVolume" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volle Lautstärke"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full volume"
+          }
+        }
+      }
+    },
     "genres.separator" : {
       "localizations" : {
         "de" : {
@@ -504,6 +552,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : ", "
+          }
+        }
+      }
+    },
+    "history" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlauf"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
           }
         }
       }
@@ -806,6 +870,22 @@
         }
       }
     },
+    "lyrics" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrics"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrics"
+          }
+        }
+      }
+    },
     "lyrics.failed" : {
       "localizations" : {
         "de" : {
@@ -858,6 +938,38 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "more" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehr"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More"
+          }
+        }
+      }
+    },
+    "mute" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stumm"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mute"
           }
         }
       }
@@ -926,6 +1038,22 @@
         }
       }
     },
+    "playback.album %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vom album %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From album %@"
+          }
+        }
+      }
+    },
     "playback.back" : {
       "localizations" : {
         "de" : {
@@ -958,6 +1086,22 @@
         }
       }
     },
+    "playback.playlist %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von playlist %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From playlist %@"
+          }
+        }
+      }
+    },
     "playback.stop" : {
       "localizations" : {
         "de" : {
@@ -970,6 +1114,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stop playback"
+          }
+        }
+      }
+    },
+    "playback.toggle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergabe umschalten "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toggle playback"
           }
         }
       }
@@ -1206,6 +1366,22 @@
         }
       }
     },
+    "queue" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warteschlange"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queue"
+          }
+        }
+      }
+    },
     "queue.history" : {
       "localizations" : {
         "de" : {
@@ -1302,6 +1478,22 @@
         }
       }
     },
+    "queue.reorder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umordnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reorder"
+          }
+        }
+      }
+    },
     "queue.shuffle" : {
       "localizations" : {
         "de" : {
@@ -1346,6 +1538,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disconnect client"
+          }
+        }
+      }
+    },
+    "remote.stop" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
           }
         }
       }
@@ -1410,6 +1618,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Track"
+          }
+        }
+      }
+    },
+    "search" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suche"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
           }
         }
       }
@@ -1604,6 +1828,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shuffle"
+          }
+        }
+      }
+    },
+    "sort" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort"
           }
         }
       }

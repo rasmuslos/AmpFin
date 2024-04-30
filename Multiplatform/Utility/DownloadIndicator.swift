@@ -21,7 +21,8 @@ struct DownloadIndicator: View {
     var body: some View {
         Group {
             if offlineTracker.status == .downloaded {
-                Image(systemName: "arrow.down.circle.fill")
+                Label("downloaded", systemImage: "arrow.down.circle.fill")
+                    .labelStyle(.iconOnly)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else if offlineTracker.status == .working {

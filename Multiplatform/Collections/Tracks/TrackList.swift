@@ -143,7 +143,7 @@ extension TrackList {
                         Button {
                             callback(track)
                         } label: {
-                            Image(systemName: "trash.fill")
+                            Label("download.remove", systemImage: "trash.fill")
                                 .tint(.red)
                         }
                     }

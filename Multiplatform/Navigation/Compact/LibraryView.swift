@@ -25,7 +25,6 @@ struct LibraryView: View {
                 Links()
             }
             .listStyle(.plain)
-            .navigationTitle("title.library")
             .frame(height: CGFloat(Links.count) * minRowHeight)
             
             if let albums = albums, albums.count > 0 {
@@ -46,6 +45,7 @@ struct LibraryView: View {
             
             Spacer()
         }
+        .navigationTitle("title.library")
         .modifier(NowPlayingBarSafeAreaModifier())
         .task {
             if !libraryRandomAlbums || albums == nil || albums?.isEmpty == true {

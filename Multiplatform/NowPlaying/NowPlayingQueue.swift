@@ -18,9 +18,24 @@ struct NowPlayingQueue: View {
     
     var body: some View {
         HStack {
-            Text(showHistory ? "queue.history" : "queue.queue")
-                .font(.headline)
-                .foregroundStyle(.primary)
+            VStack(alignment: .leading) {
+                Text(showHistory ? "queue.history" : "queue.queue")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                
+                if !showHistory, let playbackInfo = AudioPlayer.current.playbackInfo, let container = playbackInfo.container {
+                    Group {
+                        if container.type == .album {
+                            Text("playback.album \(container.name)")
+                        } else if container.type == .playlist {
+                            Text("playback.playlist \(container.name)")
+                        }
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                }
+            }
             
             Spacer()
             
@@ -33,11 +48,8 @@ struct NowPlayingQueue: View {
                     AudioPlayer.current.repeatMode = .none
                 }
             } label: {
-                if AudioPlayer.current.repeatMode == .track {
-                    Image(systemName: "repeat.1")
-                } else if AudioPlayer.current.repeatMode == .none || AudioPlayer.current.repeatMode == .queue {
-                    Image(systemName: "repeat")
-                }
+                Label("repeat", systemImage: "repeat\(AudioPlayer.current.repeatMode == .track ? ".1" : "")")
+                    .labelStyle(.iconOnly)
             }
             .id(AudioPlayer.current.repeatMode)
             .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
@@ -46,7 +58,8 @@ struct NowPlayingQueue: View {
             Button {
                 AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
             } label: {
-                Image(systemName: "shuffle")
+                Label("shuffle", systemImage: "shuffle")
+                    .labelStyle(.iconOnly)
             }
             .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
             .padding(.horizontal, 4)
@@ -56,7 +69,8 @@ struct NowPlayingQueue: View {
                     showHistory.toggle()
                 }
             } label: {
-                Image(systemName: "calendar.day.timeline.leading")
+                Label("history", systemImage: "calendar.day.timeline.leading")
+                    .labelStyle(.iconOnly)
             }
             .buttonStyle(SymbolButtonStyle(active: showHistory))
         }
@@ -147,7 +161,7 @@ extension NowPlayingQueue {
         let draggable: Bool
         
         var body: some View {
-            HStack {
+            HStack(spacing: 15) {
                 ItemImage(cover: track.cover)
                     .frame(width: 50)
                 
@@ -163,12 +177,12 @@ extension NowPlayingQueue {
                             .foregroundStyle(.secondary)
                     }
                 }
-                .padding(.horizontal, 10)
                 
                 Spacer()
                 
                 if draggable {
-                    Image(systemName: "line.3.horizontal")
+                    Label("queue.reorder", systemImage: "line.3.horizontal")
+                        .labelStyle(.iconOnly)
                         .imageScale(.large)
                         .foregroundStyle(.secondary)
                 }

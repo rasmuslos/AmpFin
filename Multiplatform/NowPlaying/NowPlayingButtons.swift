@@ -19,7 +19,8 @@ struct NowPlayingButtons: View {
         Button {
             setActiveTab(.lyrics)
         } label: {
-            Image(systemName: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
+            Label("lyrics", systemImage: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
+                .labelStyle(.iconOnly)
         }
         .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
     }
@@ -27,7 +28,8 @@ struct NowPlayingButtons: View {
         Button {
             setActiveTab(.queue)
         } label: {
-            Image(systemName: "list.dash")
+            Label("queue", systemImage: "list.dash")
+                .labelStyle(.iconOnly)
         }
         .buttonStyle(SymbolButtonStyle(active: currentTab == .queue))
     }
@@ -66,7 +68,8 @@ struct NowPlayingButtons: View {
                 Button {
                     AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
                 } label: {
-                    Image(systemName: "shuffle")
+                    Label("shuffle", systemImage: "shuffle")
+                        .labelStyle(.iconOnly)
                 }
                 .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
                 
@@ -81,11 +84,8 @@ struct NowPlayingButtons: View {
                         AudioPlayer.current.repeatMode = .none
                     }
                 } label: {
-                    if AudioPlayer.current.repeatMode == .track {
-                        Image(systemName: "repeat.1")
-                    } else if AudioPlayer.current.repeatMode == .none || AudioPlayer.current.repeatMode == .queue {
-                        Image(systemName: "repeat")
-                    }
+                    Label("repeat", systemImage: "repeat\(AudioPlayer.current.repeatMode == .track ? ".1" : "")")
+                        .labelStyle(.iconOnly)
                 }
                 .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
                 
@@ -94,18 +94,12 @@ struct NowPlayingButtons: View {
                 Button {
                     AudioPlayer.current.destroy()
                 } label: {
-                    Image(systemName: "xmark")
+                    Label("remote.stop", systemImage: "xmark")
+                        .labelStyle(.iconOnly)
                 }
                 .buttonStyle(SymbolButtonStyle(active: false))
                 
                 Spacer()
-            } else {
-                Button {
-                    setActiveTab(currentTab == .cover ? .queue : .cover)
-                } label: {
-                    Image(systemName: "command")
-                }
-                .buttonStyle(SymbolButtonStyle(active: currentTab == .queue))
             }
         }
         .bold()

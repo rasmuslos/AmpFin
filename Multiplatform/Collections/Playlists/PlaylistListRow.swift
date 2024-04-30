@@ -7,9 +7,16 @@
 
 import SwiftUI
 import AFBase
+import AFOffline
 
 struct PlaylistListRow: View {
     let playlist: Playlist
+    let offlineTracker: ItemOfflineTracker
+    
+    init(playlist: Playlist) {
+        self.playlist = playlist
+        offlineTracker = playlist.offlineTracker
+    }
     
     var body: some View {
         HStack {
@@ -35,10 +42,26 @@ struct PlaylistListRow: View {
         }
         .swipeActions(edge: .leading) {
             Button {
-                
+                if offlineTracker.status == .none {
+                    Task {
+                        try! await OfflineManager.shared.download(playlist: playlist)
+                    }
+                } else if offlineTracker.status == .downloaded {
+                    try! OfflineManager.shared.delete(playlistId: playlist.id)
+                }
             } label: {
-                Image(systemName: "arrow.down")
-                    .tint(.green)
+                switch offlineTracker.status {
+                    case .none:
+                        Label("download", systemImage: "arrow.down")
+                            .labelStyle(.iconOnly)
+                            .tint(.green)
+                    case .working:
+                        ProgressView()
+                    case .downloaded:
+                        Label("download.remove", systemImage: "xmark")
+                            .labelStyle(.iconOnly)
+                            .tint(.red)
+                }
             }
         }
         .swipeActions(edge: .trailing) {
@@ -47,7 +70,8 @@ struct PlaylistListRow: View {
                     await playlist.setFavorite(favorite: !playlist.favorite)
                 }
             } label: {
-                Image(systemName: playlist.favorite ? "heart.fill" : "heart")
+                Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
+                    .labelStyle(.iconOnly)
                     .tint(.orange)
             }
         }

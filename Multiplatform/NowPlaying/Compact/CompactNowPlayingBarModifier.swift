@@ -57,7 +57,8 @@ struct CompactNowPlayingBarModifier: ViewModifier {
                                             Button {
                                                 AudioPlayer.current.playing = !AudioPlayer.current.playing
                                             } label: {
-                                                Image(systemName: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
+                                                Label("playback.toggle", systemImage: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
+                                                    .labelStyle(.iconOnly)
                                                     .contentTransition(.symbolEffect(.replace.byLayer.downUp))
                                                     .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
                                                     .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
@@ -77,7 +78,8 @@ struct CompactNowPlayingBarModifier: ViewModifier {
                                         animateForwards.toggle()
                                         AudioPlayer.current.advanceToNextTrack()
                                     } label: {
-                                        Image(systemName: "forward.fill")
+                                        Label("playback.next", systemImage: "forward.fill")
+                                            .labelStyle(.iconOnly)
                                             .symbolEffect(.bounce.up, value: animateForwards)
                                     }
                                     .padding(.horizontal, 10)

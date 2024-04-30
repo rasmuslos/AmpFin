@@ -182,7 +182,7 @@ struct AccountSheet: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("account.done")
+                        Text("done")
                     }
                 }
             }
@@ -206,7 +206,7 @@ struct AccountToolbarButtonModifier: ViewModifier {
                         Button {
                             accountSheetPresented.toggle()
                         } label: {
-                            Image(systemName: "person.crop.circle")
+                            Label("account", systemImage: "person.crop.circle")
                         }
                     }
                 }

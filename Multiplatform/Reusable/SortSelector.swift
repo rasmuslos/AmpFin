@@ -52,7 +52,8 @@ struct SortSelector: View {
                 }
             }
         } label: {
-            Image(systemName: "arrow.up.arrow.down.circle.fill")
+            Label("sort", systemImage: "arrow.up.arrow.down")
+                .symbolVariant(ascending ? .circle.fill : .circle)
         }
     }
 }

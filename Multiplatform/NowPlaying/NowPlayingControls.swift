@@ -80,13 +80,14 @@ struct NowPlayingControls: View {
                             AudioPlayer.current.backToPreviousItem()
                         }
                     } label: {
-                        Image(systemName: "backward.fill")
+                        Label("playback.back", systemImage: "backward.fill")
+                            .labelStyle(.iconOnly)
                             .font(.system(size: 30))
                     }
                     Button {
                         AudioPlayer.current.playing = !AudioPlayer.current.playing
                     } label: {
-                        Image(systemName: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
+                        Label("playback.toggle", systemImage: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
                             .frame(width: 50, height:50)
                             .font(.system(size: 47))
                             .padding(.horizontal, 50)
@@ -97,7 +98,8 @@ struct NowPlayingControls: View {
                             AudioPlayer.current.advanceToNextTrack()
                         }
                     } label: {
-                        Image(systemName: "forward.fill")
+                        Label("playback.next", systemImage: "forward.fill")
+                            .labelStyle(.iconOnly)
                             .font(.system(size: 30))
                     }
                 }

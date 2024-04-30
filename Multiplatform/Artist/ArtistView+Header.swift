@@ -111,7 +111,8 @@ extension ArtistView {
                                     }
                                 }
                             } label: {
-                                Image(systemName: "play.circle.fill")
+                                Label("queue.mix", systemImage: "play.circle.fill")
+                                    .labelStyle(.iconOnly)
                             }
                             .font(.title)
                             .padding(.leading)

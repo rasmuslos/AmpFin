@@ -45,7 +45,7 @@ struct PlaylistView: View {
                 "playlistId": playlist.id
             ]
             $0.webpageURL = JellyfinClient.shared.serverUrl.appending(path: "web").appending(path: "#").appending(path: "details").appending(queryItems: [
-                .init(name: "id", value: "7b5e377b7908561ff476f35f8a0fa3ac"),
+                .init(name: "id", value: playlist.id),
             ])
         }
         .task { await fetchTracks() }

@@ -49,18 +49,18 @@ extension PlaylistView {
                                 try! OfflineManager.shared.delete(playlistId: playlist.id)
                             }
                         } label: {
-                            Group {
-                                switch offlineTracker.status {
-                                    case .none:
-                                        Image(systemName: "arrow.down")
-                                    case .working:
-                                        ProgressView()
-                                    case .downloaded:
-                                        Image(systemName: "xmark")
-                                }
+                            switch offlineTracker.status {
+                                case .none:
+                                    Label("download", systemImage: "arrow.down")
+                                        .labelStyle(.iconOnly)
+                                case .working:
+                                    ProgressView()
+                                case .downloaded:
+                                    Label("download.remove", systemImage: "xmark")
+                                        .labelStyle(.iconOnly)
                             }
-                            .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                         }
+                        .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                     }
                     
                     ToolbarItem(placement: .topBarTrailing) {
@@ -68,7 +68,7 @@ extension PlaylistView {
                             Button {
                                 editMode = .inactive
                             } label: {
-                                Image(systemName: "checkmark")
+                                Label("done", systemImage: "checkmark")
                                     .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                             }
                         } else {

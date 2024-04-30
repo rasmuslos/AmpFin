@@ -59,7 +59,7 @@ struct NowPlayingSmallTitle: View {
     @Binding var currentTab: NowPlayingTab
     
     var body: some View {
-        HStack {
+        HStack(spacing: 15) {
             ItemImage(cover: track.cover)
                 .frame(width: 70, height: 70)
                 .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab != .cover)
@@ -102,7 +102,8 @@ struct NowPlayingFavoriteButton: View {
                     await track.setFavorite(favorite: !track.favorite)
                 }
             } label: {
-                Image(systemName: track.favorite ? "heart.fill" : "heart")
+                Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
+                    .labelStyle(.iconOnly)
                     .font(.system(size: 24))
                     .symbolRenderingMode(.palette)
                     .contentTransition(.symbolEffect(.replace))
