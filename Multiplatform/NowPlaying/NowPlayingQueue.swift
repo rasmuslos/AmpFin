@@ -19,7 +19,7 @@ struct NowPlayingQueue: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(showHistory ? "queue.history" : "queue.queue")
+                Text(showHistory ? "queue.history" : "queue")
                     .font(.headline)
                     .foregroundStyle(.primary)
                 

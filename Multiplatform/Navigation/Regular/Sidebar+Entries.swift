@@ -84,17 +84,17 @@ extension SidebarView.LibrarySection {
     var title: LocalizedStringKey? {
         switch self {
             case .tracks:
-                return "section.tracks"
+                return "title.tracks"
             case .albums:
-                return "section.albums"
+                return "title.albums"
             case .playlists:
-                return "section.playlists"
+                return "title.playlists"
             case .favorites:
                 return "title.favorites"
             case .albumArtists:
                 return "title.albumArtists"
             case .artists:
-                return "section.artists"
+                return "title.artists"
             default:
                 return nil
         }

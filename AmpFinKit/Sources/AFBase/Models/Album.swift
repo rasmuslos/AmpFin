@@ -65,7 +65,7 @@ extension Album {
             if artists.isEmpty {
                 return String(localized: "artist.unknown")
             } else {
-                return artists.map { $0.name }.joined(separator: String(localized: ", "))
+                return artists.map { $0.name }.joined(separator: String(", "))
             }
         }
     }

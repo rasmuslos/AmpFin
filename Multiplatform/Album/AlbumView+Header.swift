@@ -105,7 +105,7 @@ extension AlbumView.Header {
                                     Text(verbatim: " • ")
                                 }
                             }
-                            Text(album.genres.joined(separator: String(localized: "genres.separator")))
+                            Text(album.genres.joined(separator: String(", ")))
                                 .lineLimit(1)
                         }
                         .font(.caption)

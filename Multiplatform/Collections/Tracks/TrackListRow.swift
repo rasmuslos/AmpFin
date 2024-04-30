@@ -110,6 +110,7 @@ struct TrackListRow: View {
                         .padding(.vertical, 10)
                         .padding(.leading, 0)
                 }
+                .buttonStyle(.plain)
                 .popoverTip(InstantMixTip())
             }
         }

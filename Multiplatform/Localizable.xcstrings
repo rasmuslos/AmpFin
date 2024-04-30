@@ -379,23 +379,6 @@
         }
       }
     },
-    "developedBy" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entwickelt von Rasmus Krämer"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Developed by Rasmus Krämer"
-          }
-        }
-      }
-    },
     "done" : {
       "localizations" : {
         "de" : {
@@ -536,22 +519,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Full volume"
-          }
-        }
-      }
-    },
-    "genres.separator" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ", "
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ", "
           }
         }
       }
@@ -979,7 +946,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es kann keine Verbindung zu deinem Jellyfin server hergestellt werden. Überprüfe deine Verbindung"
+            "value" : "Es kann keine Verbindung zu deinem Jellyfin-Server hergestellt werden. Überprüfe deine Verbindung"
           }
         },
         "en" : {
@@ -1043,7 +1010,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vom album %@"
+            "value" : "Vom Album %@"
           }
         },
         "en" : {
@@ -1091,7 +1058,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Von playlist %@"
+            "value" : "Von Playlist %@"
           }
         },
         "en" : {
@@ -1458,22 +1425,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Play"
-          }
-        }
-      }
-    },
-    "queue.queue" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Warteschlange"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Queue"
           }
         }
       }
@@ -2109,7 +2060,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um den aktuellen Hörverlauf zu sehen drück auf den Knopf neben dem Shuffle-Icon"
+            "value" : "Um den aktuellen Hörverlauf zu sehen, benutze die Schaltfläche neben dem Shuffle-Icon"
           }
         },
         "en" : {
@@ -2141,7 +2092,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generiere eine dynamische Playlist basierend auf dem Lied welches du auswählst"
+            "value" : "Generiere eine dynamische Warteschlange, basierend auf dem Lied welches du auswählst"
           }
         },
         "en" : {
@@ -2173,7 +2124,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es ist möglich eine andere unterstütze Anwendung (z.B. Jellyfin-Web) mit AmpFin zu steuern. Es können auch Befehle an diese App gesendet werden."
+            "value" : "Es ist möglich, eine andere unterstütze Anwendung - z.B. Jellyfin-Web - mit AmpFin zu steuern. Es können auch Befehle an diese App gesendet werden."
           }
         },
         "en" : {
