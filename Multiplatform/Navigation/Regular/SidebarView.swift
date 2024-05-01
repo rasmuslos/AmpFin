@@ -29,7 +29,7 @@ struct SidebarView: View {
                     Button {
                         selection = .init(provider: .online, section: .search)
                     } label: {
-                        Label("search", systemImage: "magnigyingglass")
+                        Label("search", systemImage: "magnifyingglass")
                             .labelStyle(.iconOnly)
                     }
                 }

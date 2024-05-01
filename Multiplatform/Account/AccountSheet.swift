@@ -209,6 +209,7 @@ struct AccountToolbarButtonModifier: ViewModifier {
                             accountSheetPresented.toggle()
                         } label: {
                             Label("account", systemImage: "person.crop.circle")
+                                .labelStyle(.iconOnly)
                         }
                     }
                 }

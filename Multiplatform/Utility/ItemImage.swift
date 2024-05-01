@@ -13,7 +13,7 @@ struct ItemImage: View {
     let cover: Item.Cover?
     var cornerRadius: CGFloat = 7
     
-    var placeholder: some View {
+    private var placeholder: some View {
         ZStack {
             Image(systemName: "music.note")
                 .resizable()

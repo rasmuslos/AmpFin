@@ -25,7 +25,7 @@ struct TrackGrid: View {
     private var size: CGFloat {
         let minimum = horizontalSizeClass == .compact ? 300 : 450.0
         
-        let usable = width - padding * 2
+        let usable = width - (padding + gap)
         let amount = CGFloat(Int(usable / minimum))
         let available = usable - gap * (amount - 1)
         
@@ -43,7 +43,7 @@ struct TrackGrid: View {
             .frame(height: 0)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHGrid(rows: [GridItem(.flexible())].repeated(count: amount), spacing: 0) {
+                LazyHGrid(rows: [GridItem(.flexible(), spacing: 15)].repeated(count: amount), spacing: 0) {
                     ForEach(tracks) { track in
                         TrackListRow(track: track, disableMenu: true) {
                             if let index = tracks.firstIndex(where: { $0.id == track.id }) {
