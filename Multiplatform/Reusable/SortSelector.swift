@@ -14,9 +14,17 @@ struct SortSelector: View {
     @Binding var ascending: Bool
     @Binding var sortOrder: JellyfinClient.ItemSortOrder
     
+    private var supported: [JellyfinClient.ItemSortOrder] {
+        if dataProvider.supportsAdvancedFilters {
+            return JellyfinClient.ItemSortOrder.allCases
+        } else {
+            return [.name, .album, .albumArtist, .artist, .added, .released]
+        }
+    }
+    
     var body: some View {
         Menu {
-            ForEach(filter(), id: \.hashValue) { option in
+            ForEach(supported, id: \.hashValue) { option in
                 Button {
                     withAnimation {
                         sortOrder = option
@@ -58,37 +66,29 @@ struct SortSelector: View {
     }
 }
 
-extension SortSelector {
-    func filter() -> [JellyfinClient.ItemSortOrder] {
-        if dataProvider.supportsAdvancedFilters {
-            return JellyfinClient.ItemSortOrder.allCases
-        } else {
-            return JellyfinClient.ItemSortOrder.allCases.filter { $0 != .added && $0 != .released && $0 != .plays && $0 != .runtime && $0 != .lastPlayed }
-        }
-    }
-}
-
 private extension JellyfinClient.ItemSortOrder {
     var title: LocalizedStringKey {
         switch self {
             case .added:
-                return "sort.added"
+                "sort.added"
             case .album:
-                return "sort.album"
+                "sort.album"
             case .albumArtist:
-                return "sort.albumArtist"
+                "sort.albumArtist"
             case .artist:
-                return "sort.artist"
+                "sort.artist"
             case .name:
-                return "sort.name"
+                "sort.name"
             case .plays:
-                return "sort.plays"
+                "sort.plays"
             case .lastPlayed:
-                return "sort.lastPlayed"
+                "sort.lastPlayed"
             case .released:
-                return "sort.released"
+                "sort.released"
             case .runtime:
-                return "sort.runtime"
+                "sort.runtime"
+            case .random:
+                "sort.random"
         }
     }
 }

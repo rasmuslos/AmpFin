@@ -19,5 +19,6 @@ public extension JellyfinClient {
         case lastPlayed = "DatePlayed,SortName"
         case released = "ProductionYear,PremiereDate,SortName"
         case runtime = "Runtime,AlbumArtist,Album,SortName"
+        case random = "Random"
     }
 }

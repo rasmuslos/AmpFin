@@ -17,6 +17,8 @@ struct ArtistView: View {
     
     let artist: Artist
     
+    @State private var tracks = [Track]()
+    
     @State private var count = 0
     @State private var albums = [Album]()
     
@@ -35,6 +37,19 @@ struct ArtistView: View {
                 }
                 
                 VStack {
+                    if !tracks.isEmpty {
+                        HStack {
+                            Text("artist.tracks")
+                                .font(.headline)
+                            
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+                        
+                        TrackGrid(tracks: tracks, container: artist)
+                            .padding(.bottom, 10)
+                    }
+                    
                     if !albums.isEmpty {
                         HStack {
                             Text("artist.albums")
@@ -42,11 +57,11 @@ struct ArtistView: View {
                             
                             Spacer()
                         }
-                        .padding(.top, artist.cover == nil ? 0 : 17)
                         .padding(.horizontal, 20)
                         
                         AlbumGrid(albums: albums, count: count, loadMore: fetchAlbums)
                             .padding(.horizontal, 20)
+                            .padding(.bottom, 10)
                     } else {
                         Text("artist.empty")
                             .font(.headline.smallCaps())
@@ -54,12 +69,14 @@ struct ArtistView: View {
                             .padding(.top, 100)
                     }
                 }
+                .padding(.top, artist.cover == nil ? 0 : 17)
                 .background(.background)
             }
         }
         .modifier(Toolbar(artist: artist))
         .modifier(NowPlayingBarSafeAreaModifier())
         .task {
+            await fetchTracks()
             await fetchAlbums()
         }
         .onChange(of: sortState) {
@@ -86,6 +103,12 @@ struct ArtistView: View {
 // MARK: Helper
 
 extension ArtistView {
+    func fetchTracks() async {
+        if let tracks = try? await dataProvider.getTracks(artistId: artist.id, sortOrder: .plays, ascending: false) {
+            self.tracks = tracks
+        }
+    }
+    
     func fetchAlbums() async {
         if let result = try? await dataProvider.getAlbums(artistId: artist.id, limit: 100, startIndex: albums.count, sortOrder: sortOrder, ascending: sortAscending) {
             count = result.1

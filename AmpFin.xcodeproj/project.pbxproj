@@ -108,6 +108,8 @@
 		3AAF0DEF2B4960EF0032DEFF /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */; };
 		3AAF0DF32B4960EF0032DEFF /* Siri Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3ABBB7272B755D3C00530BFB /* UIViewController+DarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABBB7262B755D3C00530BFB /* UIViewController+DarkMode.swift */; };
+		3AC65BD92BE222CD00448D5E /* TrackGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC65BD82BE222CD00448D5E /* TrackGrid.swift */; };
+		3AC65BDB2BE224D500448D5E /* Array+Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC65BDA2BE224D500448D5E /* Array+Repeat.swift */; };
 		3AD1B3CB2BC44C440051C5AE /* ArtistView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1B3CA2BC44C440051C5AE /* ArtistView+Toolbar.swift */; };
 		3AD351CC2BAF29FE005DF243 /* ArtistPlaybackTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD351CB2BAF29FE005DF243 /* ArtistPlaybackTip.swift */; };
 		3AD351CE2BAF2A70005DF243 /* RemoteTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD351CD2BAF2A70005DF243 /* RemoteTip.swift */; };
@@ -271,6 +273,8 @@
 		3AB697A32B386B20009000DD /* OfflineLibraryDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineLibraryDataProvider.swift; sourceTree = "<group>"; };
 		3ABAFCAA2AA7D6C40011BFD6 /* AmpFin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AmpFin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ABBB7262B755D3C00530BFB /* UIViewController+DarkMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+DarkMode.swift"; sourceTree = "<group>"; };
+		3AC65BD82BE222CD00448D5E /* TrackGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackGrid.swift; sourceTree = "<group>"; };
+		3AC65BDA2BE224D500448D5E /* Array+Repeat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Repeat.swift"; sourceTree = "<group>"; };
 		3AD1B3CA2BC44C440051C5AE /* ArtistView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArtistView+Toolbar.swift"; sourceTree = "<group>"; };
 		3AD351CB2BAF29FE005DF243 /* ArtistPlaybackTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistPlaybackTip.swift; sourceTree = "<group>"; };
 		3AD351CD2BAF2A70005DF243 /* RemoteTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTip.swift; sourceTree = "<group>"; };
@@ -502,6 +506,7 @@
 			children = (
 				3A234E1F2AA8E8A000197AA7 /* TrackList.swift */,
 				3A234E172AA8E0AD00197AA7 /* TrackListRow.swift */,
+				3AC65BD82BE222CD00448D5E /* TrackGrid.swift */,
 			);
 			path = Tracks;
 			sourceTree = "<group>";
@@ -641,6 +646,7 @@
 			isa = PBXGroup;
 			children = (
 				3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */,
+				3AC65BDA2BE224D500448D5E /* Array+Repeat.swift */,
 				3A5515F62BC449A400B922D7 /* Defaults+Keys.swift */,
 				3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */,
 				3A44B06C2BA194410013E4EF /* Double+Duration.swift */,
@@ -1007,6 +1013,7 @@
 				3A5515EE2BC3E1CA00B922D7 /* SidebarView.swift in Sources */,
 				3A8B993C2AA9FCC6004AAA7B /* CompactNowPlayingViewModifier.swift in Sources */,
 				3A6F50AD2AACAFDF00FC8A29 /* AlbumLoadView.swift in Sources */,
+				3AC65BD92BE222CD00448D5E /* TrackGrid.swift in Sources */,
 				3A8850622AA90D1200456DDD /* AlbumsView.swift in Sources */,
 				3AD351CC2BAF29FE005DF243 /* ArtistPlaybackTip.swift in Sources */,
 				3A7939012B387851001B3B3D /* MockLibraryDataProvider.swift in Sources */,
@@ -1035,6 +1042,7 @@
 				3A4A3B8B2BDCE27600A90835 /* AddMediaHandler.swift in Sources */,
 				3A2B28EA2B4342F000DF9731 /* PlaylistListRow.swift in Sources */,
 				3AAE1B442BC57AFB00FD0200 /* Sidebar+Entries.swift in Sources */,
+				3AC65BDB2BE224D500448D5E /* Array+Repeat.swift in Sources */,
 				3A5515F42BC4391300B922D7 /* Sidebar+Section.swift in Sources */,
 				3A773C5B2BA5F2F2005FD583 /* NowPlayingBarContextMenuModifier.swift in Sources */,
 				3A3DA66D2AAB2EAE0091211A /* ArtistView+Header.swift in Sources */,

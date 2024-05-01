@@ -299,6 +299,22 @@
         }
       }
     },
+    "artist.tracks" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top-Titel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top tracks"
+          }
+        }
+      }
+    },
     "artist.unknown" : {
       "localizations" : {
         "de" : {
@@ -1021,6 +1037,22 @@
         }
       }
     },
+    "playback.artist %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von Künstler %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From artist %@"
+          }
+        }
+      }
+    },
     "playback.back" : {
       "localizations" : {
         "de" : {
@@ -1065,6 +1097,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "From playlist %@"
+          }
+        }
+      }
+    },
+    "playback.search %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von Suche \"%@\""
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From search \"%@\""
           }
         }
       }
@@ -1907,6 +1955,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Play count"
+          }
+        }
+      }
+    },
+    "sort.random" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zufällig"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Random"
           }
         }
       }

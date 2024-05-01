@@ -96,7 +96,7 @@ public struct MockLibraryDataProvider: LibraryDataProvider {
         ], 7)
     }
     
-    public func getTracks(artistId: String) async throws -> [Track] {
+    public func getTracks(artistId: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
         [
             Track.fixture,
             Track.fixture,

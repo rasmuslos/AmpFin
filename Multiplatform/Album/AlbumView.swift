@@ -25,7 +25,7 @@ struct AlbumView: View {
             }
             .padding(.bottom, 5)
             
-            TrackList(tracks: tracks, album: album, hideButtons: true)
+            TrackList(tracks: tracks, container: album, hideButtons: true)
                 .padding(.horizontal, 20)
             
             if let overview = album.overview, overview.trimmingCharacters(in: .whitespacesAndNewlines) != "" {

@@ -11,7 +11,7 @@ import AFPlayback
 
 struct TrackList: View {
     let tracks: [Track]
-    var album: Album? = nil
+    let container: Item?
     
     var hideButtons = false
     var deleteCallback: DeleteCallback = nil
@@ -32,6 +32,9 @@ struct TrackList: View {
         }
     }
     
+    private var album: Album? {
+        container as? Album
+    }
     private var useDiskSections: Bool {
         album != nil && disks.count > 1
     }
@@ -169,11 +172,11 @@ extension TrackList {
     }
     
     private func startPlayback(index: Int, shuffle: Bool) {
-        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(container: nil))
+        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(container: container))
     }
     private func startPlayback(track: Track) {
         if let index = tracks.firstIndex(where: { $0.id == track.id }) {
-            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil))
+            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
         }
     }
 }
@@ -182,7 +185,7 @@ extension TrackList {
 #Preview {
     NavigationStack {
         List {
-            TrackList(tracks: [Track.fixture])
+            TrackList(tracks: [Track.fixture], container: nil)
         }
         .listStyle(.plain)
     }

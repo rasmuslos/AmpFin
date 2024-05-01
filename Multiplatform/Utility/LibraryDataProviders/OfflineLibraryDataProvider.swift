@@ -34,9 +34,9 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
                     return $0.album.artists.first?.name ?? "?" < $1.album.artists.first?.name ?? "?"
                 case .artist:
                     return $0.artists.first?.name ?? "?" < $1.artists.first?.name ?? "?"
-                case .added, .released:
+                case .released:
                     return $0.releaseDate ?? Date(timeIntervalSince1970: 0) < $1.releaseDate ?? Date(timeIntervalSince1970: 0)
-                case .plays, .runtime, .lastPlayed:
+                case .added, .plays, .runtime, .lastPlayed, .random:
                     return false
             }
         }
@@ -69,7 +69,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
                     return $0.artists.first?.name ?? "?" < $1.artists.first?.name ?? "?"
                 case .added, .released:
                     return $0.releaseDate ?? Date(timeIntervalSince1970: 0) < $1.releaseDate ?? Date(timeIntervalSince1970: 0)
-                case .plays, .runtime, .lastPlayed:
+                case .plays, .runtime, .lastPlayed, .random:
                     return false
             }
         }
@@ -102,7 +102,8 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         throw JellyfinClientError.invalidResponse
     }
     
-    public func getTracks(artistId: String) async throws -> [Track] {
+    public func getTracks(artistId: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        // The requested sort order is ignored
         try await OfflineManager.shared.getTracks(artistId: artistId).shuffled()
     }
     public func getAlbums(artistId: String, limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([Album], Int) {

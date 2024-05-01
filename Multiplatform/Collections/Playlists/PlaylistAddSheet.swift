@@ -29,7 +29,7 @@ struct PlaylistAddSheet: View {
                 if libraryOnline {
                     List {
                         Section {
-                            TrackListRow(track: track, startPlayback: {}, disableMenu: true)
+                            TrackListRow(track: track, disableMenu: true, startPlayback: {})
                             
                             if failed {
                                 Label("playlist.add.error", systemImage: "xmark.circle")

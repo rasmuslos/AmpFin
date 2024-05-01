@@ -13,10 +13,10 @@ struct TrackListRow: View {
     let track: Track
     var album: Album? = nil
     
+    var disableMenu: Bool = false
+    
     var deleteCallback: TrackList.DeleteCallback = nil
     let startPlayback: () -> ()
-    
-    var disableMenu: Bool = false
     
     @State private var addToPlaylistSheetPresented = false
     
@@ -310,9 +310,9 @@ extension TrackListRow {
             playCount: 0,
             releaseDate: nil),
         album: nil,
+        disableMenu: true,
         deleteCallback: nil,
-        startPlayback: {},
-        disableMenu: true)
+        startPlayback: {})
     .redacted(reason: .placeholder)
 }
 

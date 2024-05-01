@@ -27,7 +27,7 @@ struct PlaylistView: View {
             }
             .padding(.bottom, 4)
             
-            TrackList(tracks: tracks, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil, moveCallback: libraryOnline ? moveTrack : nil)
+            TrackList(tracks: tracks, container: playlist, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil, moveCallback: libraryOnline ? moveTrack : nil)
                 .padding(.horizontal, 20)
         }
         .environment(\.editMode, $editMode)

@@ -23,12 +23,18 @@ struct NowPlayingQueue: View {
                     .font(.headline)
                     .foregroundStyle(.primary)
                 
-                if !showHistory, let playbackInfo = AudioPlayer.current.playbackInfo, let container = playbackInfo.container {
+                if !showHistory, let playbackInfo = AudioPlayer.current.playbackInfo {
                     Group {
-                        if container.type == .album {
-                            Text("playback.album \(container.name)")
-                        } else if container.type == .playlist {
-                            Text("playback.playlist \(container.name)")
+                        if let container = playbackInfo.container {
+                            if container.type == .album {
+                                Text("playback.album \(container.name)")
+                            } else if container.type == .playlist {
+                                Text("playback.playlist \(container.name)")
+                            } else if container.type == .artist {
+                                Text("playback.artist \(container.name)")
+                            }
+                        } else if let search = playbackInfo.search {
+                            Text("playback.search \(search)")
                         }
                     }
                     .font(.caption)
@@ -161,9 +167,10 @@ extension NowPlayingQueue {
         let draggable: Bool
         
         var body: some View {
-            HStack(spacing: 15) {
+            HStack {
                 ItemImage(cover: track.cover)
                     .frame(width: 50)
+                    .padding(.trailing, 15)
                 
                 VStack(alignment: .leading) {
                     Text(track.name)
@@ -185,6 +192,7 @@ extension NowPlayingQueue {
                         .labelStyle(.iconOnly)
                         .imageScale(.large)
                         .foregroundStyle(.secondary)
+                        .padding(.leading, 15)
                 }
             }
             .listRowSeparator(.hidden)

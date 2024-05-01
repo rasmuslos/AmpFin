@@ -31,6 +31,6 @@ public extension MediaResolver {
         }
         #endif
         
-        return try await JellyfinClient.shared.getTracks(artistId: artistId).shuffled()
+        return try await JellyfinClient.shared.getTracks(artistId: artistId, sortOrder: .random, ascending: true)
     }
 }

@@ -34,7 +34,7 @@ struct TracksView: View {
         VStack {
             if success {
                 List {
-                    TrackList(tracks: tracks, count: count, loadMore: { () async -> Void in await loadTracks(shouldReset: false) })
+                    TrackList(tracks: tracks, container: nil, count: count, loadMore: { () async -> Void in await loadTracks(shouldReset: false) })
                         .padding(.horizontal, 20)
                 }
                 .listStyle(.plain)

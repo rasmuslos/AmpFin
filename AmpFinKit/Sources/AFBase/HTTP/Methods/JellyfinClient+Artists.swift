@@ -47,10 +47,10 @@ public extension JellyfinClient {
         throw JellyfinClientError.invalidResponse
     }
     
-    func getTracks(artistId: String) async throws -> [Track] {
+    func getTracks(artistId: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, limit: Int = 30) async throws -> [Track] {
         let response = try await request(ClientRequest<TracksItemResponse>(path: "Items", method: "GET", query: [
-            URLQueryItem(name: "SortBy", value: "ParentIndexNumber,IndexNumber,SortName"),
-            URLQueryItem(name: "SortOrder", value: "Ascending"),
+            URLQueryItem(name: "SortBy", value: sortOrder.rawValue),
+            URLQueryItem(name: "SortOrder", value: ascending ? "Ascending" : "Descending"),
             URLQueryItem(name: "IncludeItemTypes", value: "Audio"),
             URLQueryItem(name: "ArtistIds", value: artistId),
             URLQueryItem(name: "ImageTypeLimit", value: "1"),
@@ -58,7 +58,7 @@ public extension JellyfinClient {
             URLQueryItem(name: "Fields", value: "AudioInfo,ParentId"),
             URLQueryItem(name: "Filters", value: "IsNotFolder"),
             URLQueryItem(name: "Recursive", value: "true"),
-            URLQueryItem(name: "Limit", value: "100"),
+            URLQueryItem(name: "Limit", value: String(limit)),
         ], userPrefix: true))
         
         return response.Items.enumerated().compactMap { try? Track.convertFromJellyfin($1, fallbackIndex: $0) }
