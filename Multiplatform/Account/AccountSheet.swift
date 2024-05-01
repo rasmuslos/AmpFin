@@ -7,6 +7,7 @@
 
 import SwiftUI
 import TipKit
+import Nuke
 import AFBase
 import AFOffline
 import AFPlayback
@@ -142,6 +143,7 @@ struct AccountSheet: View {
                     }
                     Button(role: .destructive) {
                         SpotlightHelper.deleteSpotlightIndex()
+                        ImagePipeline.shared.cache.removeAll()
                     } label: {
                         Text("account.deleteSpotlightIndex")
                     }

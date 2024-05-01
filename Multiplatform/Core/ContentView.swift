@@ -73,9 +73,9 @@ struct ContentView: View {
                     SpotlightHelper.navigate(identifier: identifier)
                 }
                 .onAppear {
-                    #if ENABLE_ALL_FEATURES
-                    INPreferences.requestSiriAuthorization { _ in }
-                    #endif
+                    if AFKIT_ENABLE_ALL_FEATURES {
+                        INPreferences.requestSiriAuthorization { _ in }
+                    }
                     
                     let path = NWPathMonitor().currentPath
                     if !path.isExpensive && !path.isConstrained {

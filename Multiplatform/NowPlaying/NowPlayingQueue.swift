@@ -33,7 +33,7 @@ struct NowPlayingQueue: View {
                             } else if container.type == .artist {
                                 Text("playback.artist \(container.name)")
                             }
-                        } else if let search = playbackInfo.search {
+                        } else if let search = playbackInfo.search, !search.isEmpty {
                             Text("playback.search \(search)")
                         }
                     }

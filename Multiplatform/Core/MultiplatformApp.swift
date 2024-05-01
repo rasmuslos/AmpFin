@@ -6,11 +6,9 @@
 //
 
 import SwiftUI
-import SwiftData
 import TipKit
-import AFBase
+import Nuke
 import AFOffline
-import CoreSpotlight
 
 @main
 struct MultiplatformApp: App {
@@ -20,6 +18,8 @@ struct MultiplatformApp: App {
         #if !ENABLE_ALL_FEATURES
         AFKIT_ENABLE_ALL_FEATURES = false
         #endif
+        
+        ImagePipeline.shared = ImagePipeline(configuration: .withDataCache)
         
         try? Tips.configure([
             .displayFrequency(.daily)
