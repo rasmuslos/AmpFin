@@ -8,6 +8,7 @@
 import SwiftUI
 import TipKit
 import Nuke
+import AFBase
 import AFOffline
 
 @main

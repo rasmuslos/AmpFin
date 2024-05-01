@@ -4,7 +4,8 @@ AmpFin is a sleek and modern Jellyfin client, specifically designed for music an
 
 Features:
 
-- **Online & Offline Playback: The app is designed to provide the same great experience while offline
+- **Online & Offline Playback**: The app is designed to provide the same great experience while offline
+- **Lyrics**: View time synced lyrics for your favorite songs (requires Jellyfin 10.9+)
 - **Explore Artists**: Dive into your music collection and play an instant mix of your favorite artist's songs
 - **Discover Albums**: Navigate your albums in a beautiful interface
 - **Enjoy your Playlists**: Playlists are fully supported - online & offline
