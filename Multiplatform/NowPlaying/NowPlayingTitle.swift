@@ -13,8 +13,6 @@ import AFPlayback
 
 
 struct NowPlayingCover: View {
-    @Environment(NowPlayingViewState.self) private var nowPlayingViewState
-    
     let track: Track
     let currentTab: NowPlayingTab
     let namespace: Namespace.ID
@@ -26,7 +24,7 @@ struct NowPlayingCover: View {
             .id(track.id)
             .scaleEffect(AudioPlayer.current.playing ? 1 : 0.8)
             .animation(.spring(duration: 0.3, bounce: 0.6), value: AudioPlayer.current.playing)
-            .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: nowPlayingViewState.presented && currentTab == .cover)
+            .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab == .cover)
         
         Spacer()
         
@@ -55,8 +53,6 @@ struct NowPlayingCover: View {
 // MARK: Small Title
 
 struct NowPlayingSmallTitle: View {
-    @Environment(NowPlayingViewState.self) private var nowPlayingViewState
-    
     let track: Track
     let namespace: Namespace.ID
     
@@ -66,7 +62,7 @@ struct NowPlayingSmallTitle: View {
         HStack(spacing: 15) {
             ItemImage(cover: track.cover)
                 .frame(width: 70, height: 70)
-                .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: nowPlayingViewState.presented && currentTab != .cover)
+                .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab != .cover)
                 .onTapGesture {
                     withAnimation {
                         currentTab = .cover

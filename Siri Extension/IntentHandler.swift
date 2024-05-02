@@ -10,6 +10,10 @@ import AFBase
 import AFExtension
 
 final internal class IntentHandler: INExtension {
+    override func handler(for intent: INIntent) -> Any? {
+        self
+    }
+    
     func resolveMediaItems(mediaSearch: INMediaSearch) async throws -> [INMediaItem] {
         guard let primaryName = mediaSearch.mediaName ?? mediaSearch.albumName ?? mediaSearch.artistName else {
             throw SearchError.unsupportedMediaType

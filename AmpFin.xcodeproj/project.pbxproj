@@ -65,7 +65,6 @@
 		3A5A4DCC2B5F0C0D00E72E8B /* AFBase in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DCB2B5F0C0D00E72E8B /* AFBase */; };
 		3A5A4DCE2B5F0C1800E72E8B /* AFBase in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DCD2B5F0C1800E72E8B /* AFBase */; };
 		3A5A4DD02B5F0C1800E72E8B /* AFOffline in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DCF2B5F0C1800E72E8B /* AFOffline */; };
-		3A5A4DD22B5F0C1800E72E8B /* AFPlayback in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5A4DD12B5F0C1800E72E8B /* AFPlayback */; };
 		3A5B470F2B3B37A60075118F /* UIImage+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */; };
 		3A6565D72AAAADC400C1FBE9 /* NowPlayingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6565D62AAAADC400C1FBE9 /* NowPlayingQueue.swift */; };
 		3A6F50A72AACA3D600FC8A29 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6F50A62AACA3D600FC8A29 /* SearchView.swift */; };
@@ -314,7 +313,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A5A4DD22B5F0C1800E72E8B /* AFPlayback in Frameworks */,
 				3A5A4DCE2B5F0C1800E72E8B /* AFBase in Frameworks */,
 				3A5A4DD02B5F0C1800E72E8B /* AFOffline in Frameworks */,
 				3AAF0DEC2B4960EF0032DEFF /* Intents.framework in Frameworks */,
@@ -783,7 +781,6 @@
 			packageProductDependencies = (
 				3A5A4DCD2B5F0C1800E72E8B /* AFBase */,
 				3A5A4DCF2B5F0C1800E72E8B /* AFOffline */,
-				3A5A4DD12B5F0C1800E72E8B /* AFPlayback */,
 			);
 			productName = "Siri Extension";
 			productReference = 3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */;
@@ -1142,7 +1139,6 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1171,7 +1167,6 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1185,7 +1180,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Siri Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Siri Extension";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1194,13 +1188,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "${BUNDLE_ID_PREFIX}.ampfin.siri";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1213,7 +1205,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Siri Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Siri Extension";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1222,13 +1213,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "${BUNDLE_ID_PREFIX}.ampfin.siri";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1299,12 +1288,12 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "";
-				SDKROOT = macosx;
-				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SDKROOT = "";
+				SUPPORTED_PLATFORMS = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 17.2;
+				TVOS_DEPLOYMENT_TARGET = 17.4;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Debug;
@@ -1366,12 +1355,12 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = macosx;
-				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SDKROOT = "";
+				SUPPORTED_PLATFORMS = "";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 17.2;
+				TVOS_DEPLOYMENT_TARGET = 17.4;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1568,10 +1557,6 @@
 		3A5A4DCF2B5F0C1800E72E8B /* AFOffline */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AFOffline;
-		};
-		3A5A4DD12B5F0C1800E72E8B /* AFPlayback */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AFPlayback;
 		};
 		3ADE8E932AA9275C009826A3 /* UIImageColors */ = {
 			isa = XCSwiftPackageProductDependency;
