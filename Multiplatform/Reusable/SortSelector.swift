@@ -61,6 +61,7 @@ struct SortSelector: View {
             }
         } label: {
             Label("sort", systemImage: "arrow.up.arrow.down")
+                .labelStyle(.iconOnly)
                 .symbolVariant(ascending ? .circle.fill : .circle)
         }
     }

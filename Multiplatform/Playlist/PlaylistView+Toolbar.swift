@@ -69,6 +69,7 @@ extension PlaylistView {
                                 editMode = .inactive
                             } label: {
                                 Label("done", systemImage: "checkmark")
+                                    .labelStyle(.iconOnly)
                                     .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                             }
                         } else {

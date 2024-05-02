@@ -29,6 +29,7 @@ extension ArtistView {
                             }
                         } label: {
                             Label("favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
+                                .labelStyle(.iconOnly)
                                 .contentTransition(.symbolEffect(.replace))
                         }
                     }

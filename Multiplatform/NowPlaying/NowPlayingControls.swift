@@ -88,6 +88,7 @@ struct NowPlayingControls: View {
                         AudioPlayer.current.playing = !AudioPlayer.current.playing
                     } label: {
                         Label("playback.toggle", systemImage: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
+                            .labelStyle(.iconOnly)
                             .frame(width: 50, height:50)
                             .font(.system(size: 47))
                             .padding(.horizontal, 50)

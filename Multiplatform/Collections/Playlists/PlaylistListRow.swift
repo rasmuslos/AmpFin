@@ -53,13 +53,11 @@ struct PlaylistListRow: View {
                 switch offlineTracker.status {
                     case .none:
                         Label("download", systemImage: "arrow.down")
-                            .labelStyle(.iconOnly)
                             .tint(.green)
                     case .working:
                         ProgressView()
                     case .downloaded:
                         Label("download.remove", systemImage: "xmark")
-                            .labelStyle(.iconOnly)
                             .tint(.red)
                 }
             }
@@ -71,7 +69,6 @@ struct PlaylistListRow: View {
                 }
             } label: {
                 Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
-                    .labelStyle(.iconOnly)
                     .tint(.orange)
             }
         }
