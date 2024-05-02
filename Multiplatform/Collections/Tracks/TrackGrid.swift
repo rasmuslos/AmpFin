@@ -43,7 +43,7 @@ struct TrackGrid: View {
             .frame(height: 0)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHGrid(rows: [GridItem(.flexible(), spacing: 15)].repeated(count: amount), spacing: 0) {
+                LazyHGrid(rows: [GridItem(.flexible(), spacing: 15)].repeated(count: min(tracks.count, amount)), spacing: 0) {
                     ForEach(tracks) { track in
                         TrackListRow(track: track, disableMenu: true) {
                             if let index = tracks.firstIndex(where: { $0.id == track.id }) {
