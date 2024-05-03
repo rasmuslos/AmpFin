@@ -41,6 +41,10 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
             }
         }
         
+        if sortOrder == .random {
+            tracks.shuffle()
+        }
+        
         if ascending {
             tracks.reverse()
         }

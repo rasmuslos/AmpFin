@@ -73,12 +73,6 @@ struct Tabs: View {
         .modifier(NowPlaying.CompactViewModifier())
         .modifier(Navigation.NotificationModifier(
             navigateAlbum: {
-                activeTab = .library
-                
-                NotificationCenter.default.post(name: Navigation.navigateNotification, object: nil, userInfo: [
-                    "artistId": $0,
-                ])
-            }, navigateArtist: {
                 if OfflineManager.shared.isAlbumDownloaded(albumId: $0) {
                     activeTab = .downloads
                     
@@ -92,6 +86,12 @@ struct Tabs: View {
                         "albumId": $0
                     ])
                 }
+            }, navigateArtist: {
+                activeTab = .library
+                
+                NotificationCenter.default.post(name: Navigation.navigateNotification, object: nil, userInfo: [
+                    "artistId": $0,
+                ])
             }, navigatePlaylist: {
                 if OfflineManager.shared.isPlaylistDownloaded(playlistId: $0) {
                     activeTab = .downloads

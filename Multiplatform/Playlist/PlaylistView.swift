@@ -26,7 +26,7 @@ struct PlaylistView: View {
             }
             .padding(.bottom, 4)
             
-            TrackList(tracks: tracks, container: playlist, hideButtons: true, deleteCallback: JellyfinClient.shared.online ? removeTrack : nil, moveCallback: JellyfinClient.shared.online ? moveTrack : nil)
+            TrackList(tracks: tracks, container: playlist, deleteCallback: JellyfinClient.shared.online ? removeTrack : nil, moveCallback: JellyfinClient.shared.online ? moveTrack : nil)
                 .padding(.horizontal, 20)
         }
         .environment(\.editMode, $editMode)

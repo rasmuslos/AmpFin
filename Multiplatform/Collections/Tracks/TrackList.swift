@@ -13,7 +13,6 @@ struct TrackList: View {
     let tracks: [Track]
     let container: Item?
     
-    var hideButtons = false
     var deleteCallback: DeleteCallback = nil
     var moveCallback: MoveCallback = nil
     
@@ -40,14 +39,6 @@ struct TrackList: View {
     }
     
     var body: some View {
-        if !hideButtons {
-            TrackListButtons {
-                startPlayback(index: 0, shuffle: $0)
-            }
-            .listRowSeparator(.hidden)
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
-        }
-        
         if useDiskSections {
             ForEach(disks.sorted(), id: \.hashValue) { disk in
                 Section {

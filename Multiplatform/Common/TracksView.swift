@@ -8,6 +8,7 @@
 import SwiftUI
 import Defaults
 import AFBase
+import AFPlayback
 
 struct TracksView: View {
     @Default(.sortOrder) private var sortOrder
@@ -34,6 +35,22 @@ struct TracksView: View {
         VStack {
             if success {
                 List {
+                    TrackListButtons {
+                        if $0 {
+                            Task {
+                                if let tracks = try? await dataProvider.getTracks(limit: 200, startIndex: 0, sortOrder: .random, ascending: false, favorite: false, search: nil).0 {
+                                    AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: nil))
+                                } else {
+                                    AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: true, playbackInfo: .init(container: nil))
+                                }
+                            }
+                        } else {
+                            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: nil))
+                        }
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
+                    
                     TrackList(tracks: tracks, container: nil, count: count, loadMore: { () async -> Void in await loadTracks(shouldReset: false) })
                         .padding(.horizontal, 20)
                 }
