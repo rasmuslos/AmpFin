@@ -65,45 +65,43 @@ extension PlaybackInfo {
             
             var activity: NSUserActivity?
             
-            if let container = container {
-                let activityType: String
-                let userInfo: [String: Any]
-                
-                switch container.type {
-                    case .album:
-                        activityType = "album"
-                        userInfo = [
-                            "albumId": container.id,
-                        ]
-                    case .artist:
-                        activityType = "artist"
-                        userInfo = [
-                            "artistId": container.id,
-                        ]
-                    case .playlist:
-                        activityType = "playlist"
-                        userInfo = [
-                            "playlistId": container.id,
-                        ]
-                    case .track:
-                        activityType = "track"
-                        userInfo = [
-                            "trackId": container.id,
-                        ]
-                }
-                
-                activity = NSUserActivity(activityType: "io.rfk.ampfin.\(activityType)")
-                
-                activity!.title = container.name
-                activity!.persistentIdentifier = container.id
-                activity!.targetContentIdentifier = "\(activityType):\(container.id)"
-                
-                // Are these journal suggestions?
-                activity?.shortcutAvailability = [.sleepJournaling, .sleepMusic]
-                
-                activity!.isEligibleForPrediction = true
-                activity!.userInfo = userInfo
+            let activityType: String
+            let userInfo: [String: Any]
+            
+            switch item.type {
+                case .album:
+                    activityType = "album"
+                    userInfo = [
+                        "albumId": item.id,
+                    ]
+                case .artist:
+                    activityType = "artist"
+                    userInfo = [
+                        "artistId": item.id,
+                    ]
+                case .playlist:
+                    activityType = "playlist"
+                    userInfo = [
+                        "playlistId": item.id,
+                    ]
+                case .track:
+                    activityType = "track"
+                    userInfo = [
+                        "trackId": item.id,
+                    ]
             }
+            
+            activity = NSUserActivity(activityType: "io.rfk.ampfin.\(activityType)")
+            
+            activity!.title = item.name
+            activity!.persistentIdentifier = item.id
+            activity!.targetContentIdentifier = "\(activityType):\(item.id)"
+            
+            // Are these journal suggestions?
+            activity?.shortcutAvailability = [.sleepJournaling, .sleepMusic]
+            
+            activity!.isEligibleForPrediction = true
+            activity!.userInfo = userInfo
             
             let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: activity))
             try? await interaction.donate()
