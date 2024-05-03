@@ -12,7 +12,6 @@ import AFPlayback
 
 struct AlbumContextMenuModifier: ViewModifier {
     @Environment(\.libraryDataProvider) private var dataProvider
-    @Environment(\.libraryOnline) private var libraryOnline
     
     let album: Album
     let offlineTracker: ItemOfflineTracker
@@ -42,7 +41,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                 } label: {
                     Label("queue.mix", systemImage: "compass.drawing")
                 }
-                .disabled(!libraryOnline)
+                .disabled(!JellyfinClient.shared.online)
                 
                 Divider()
                 

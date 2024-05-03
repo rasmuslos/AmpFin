@@ -13,7 +13,6 @@ extension AlbumView {
     struct ToolbarModifier: ViewModifier {
         @Environment(\.dismiss) private var dismiss
         @Environment(\.isPresented) private var isPresented
-        @Environment(\.libraryOnline) private var libraryOnline
         @Environment(\.libraryDataProvider) private var dataProvider
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
@@ -119,7 +118,7 @@ extension AlbumView {
                             } label: {
                                 Label("queue.mix", systemImage: "compass.drawing")
                             }
-                            .disabled(!libraryOnline)
+                            .disabled(!JellyfinClient.shared.online)
                             
                             Divider()
                             

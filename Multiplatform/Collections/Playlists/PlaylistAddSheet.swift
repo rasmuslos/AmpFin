@@ -10,7 +10,6 @@ import AFBase
 
 struct PlaylistAddSheet: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.libraryOnline) var libraryOnline
     @Environment(\.colorScheme) var colorScheme
     
     let track: Track
@@ -26,7 +25,7 @@ struct PlaylistAddSheet: View {
     var body: some View {
         NavigationStack {
             Group {
-                if libraryOnline {
+                if JellyfinClient.shared.online {
                     List {
                         Section {
                             TrackListRow(track: track, disableMenu: true, startPlayback: {})

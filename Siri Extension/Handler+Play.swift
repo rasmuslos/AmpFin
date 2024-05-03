@@ -9,7 +9,6 @@ import Foundation
 import Intents
 import AFBase
 import AFExtension
-import AFPlayback
 
 extension IntentHandler: INPlayMediaIntentHandling {
     /*
@@ -25,7 +24,7 @@ extension IntentHandler: INPlayMediaIntentHandling {
     }
     
     func resolveMediaItems(for intent: INPlayMediaIntent) async -> [INPlayMediaMediaItemResolutionResult] {
-        guard JellyfinClient.shared.isAuthorized else {
+        guard JellyfinClient.shared.authorized else {
             return [.unsupported(forReason: .loginRequired)]
         }
         

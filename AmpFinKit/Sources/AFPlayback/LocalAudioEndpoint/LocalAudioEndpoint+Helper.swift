@@ -48,7 +48,7 @@ internal extension LocalAudioEndpoint {
         ]))
         #else
         let url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
-            URLQueryItem(name: "api_key", value: JellyfinClient.shared.token),
+            URLQueryItem(name: "api_key", value: JellyfinClient.shared.token!),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
             URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aiff|aif"),

@@ -171,7 +171,6 @@ extension TrackListRow {
     
     struct TrackMenu: View {
         @Environment(\.libraryDataProvider) var dataProvider
-        @Environment(\.libraryOnline) var libraryOnline
         
         let track: Track
         let album: Album?
@@ -201,7 +200,7 @@ extension TrackListRow {
             } label: {
                 Label("queue.mix", systemImage: "compass.drawing")
             }
-            .disabled(!libraryOnline)
+            .disabled(!JellyfinClient.shared.online)
             
             AddToPlaylistButton(track: track, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
             
@@ -278,8 +277,6 @@ extension TrackListRow {
     }
     
     struct AddToPlaylistButton: View {
-        @Environment(\.libraryOnline) var libraryOnline
-        
         let track: Track
         @Binding var addToPlaylistSheetPresented: Bool
         
@@ -289,7 +286,7 @@ extension TrackListRow {
             } label: {
                 Label("playlist.add", systemImage: "plus")
             }
-            .disabled(!libraryOnline)
+            .disabled(!JellyfinClient.shared.online)
             .tint(.green)
         }
     }

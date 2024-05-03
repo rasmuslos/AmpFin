@@ -58,7 +58,7 @@ struct AlbumView: View {
                     playbackInfo: .init(container: album, queueLocation: next ? .now : .later))
             }
         )
-        .modifier(NowPlayingBarSafeAreaModifier())
+        .modifier(NowPlaying.SafeAreaModifier())
         .userActivity("io.rfk.ampfin.album") {
             $0.title = album.name
             $0.isEligibleForHandoff = true

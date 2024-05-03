@@ -11,7 +11,6 @@ import AFPlayback
 
 struct PlaylistView: View {
     @Environment(\.libraryDataProvider) private var dataProvider
-    @Environment(\.libraryOnline) private var libraryOnline
     
     let playlist: Playlist
     
@@ -27,7 +26,7 @@ struct PlaylistView: View {
             }
             .padding(.bottom, 4)
             
-            TrackList(tracks: tracks, container: playlist, hideButtons: true, deleteCallback: libraryOnline ? removeTrack : nil, moveCallback: libraryOnline ? moveTrack : nil)
+            TrackList(tracks: tracks, container: playlist, hideButtons: true, deleteCallback: JellyfinClient.shared.online ? removeTrack : nil, moveCallback: JellyfinClient.shared.online ? moveTrack : nil)
                 .padding(.horizontal, 20)
         }
         .environment(\.editMode, $editMode)
@@ -35,7 +34,7 @@ struct PlaylistView: View {
         .ignoresSafeArea(edges: .top)
         .navigationTitle(playlist.name)
         .modifier(ToolbarModifier(playlist: playlist, toolbarVisible: toolbarVisible, tracks: $tracks, editMode: $editMode))
-        .modifier(NowPlayingBarSafeAreaModifier())
+        .modifier(NowPlaying.SafeAreaModifier())
         .userActivity("io.rfk.ampfin.playlist") {
             $0.title = playlist.name
             $0.isEligibleForHandoff = true

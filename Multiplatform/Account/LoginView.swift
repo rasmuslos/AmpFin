@@ -9,8 +9,6 @@ import SwiftUI
 import AFBase
 
 struct LoginView: View {
-    var callback : () -> ()
-    
     @State private var loginSheetPresented = false
     @State private var loginFlowState: LoginFlowState = .server
     
@@ -42,7 +40,12 @@ struct LoginView: View {
             } label: {
                 Text("login.promt")
             }
-            .buttonStyle(LargeButtonStyle())
+            .padding(.vertical, 12)
+            .padding(.horizontal, 45)
+            .foregroundColor(.white)
+            .background(Color.accentColor)
+            .font(.headline)
+            .cornerRadius(7)
             .padding()
             
             Spacer()
@@ -145,7 +148,6 @@ extension LoginView {
                     
                     JellyfinClient.shared.setToken(token)
                     JellyfinClient.shared.setUserId(userId)
-                    callback()
                 } catch {
                     loginError = .failed
                     loginFlowState = .credentials
@@ -168,7 +170,5 @@ extension LoginView {
 }
 
 #Preview {
-    LoginView() {
-        print("Login flow finished")
-    }
+    LoginView()
 }

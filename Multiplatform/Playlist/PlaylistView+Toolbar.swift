@@ -13,7 +13,6 @@ import AFPlayback
 
 extension PlaylistView {
     struct ToolbarModifier: ViewModifier {
-        @Environment(\.libraryOnline) private var libraryOnline
         @Environment(\.dismiss) private var dismiss
         
         let playlist: Playlist
@@ -108,14 +107,14 @@ extension PlaylistView {
                                 } label: {
                                     Label("playlist.edit", systemImage: "pencil")
                                 }
-                                .disabled(!libraryOnline)
+                                .disabled(!JellyfinClient.shared.online)
                                 
                                 Button(role: .destructive) {
                                     alertPresented.toggle()
                                 } label: {
                                     Label("playlist.delete", systemImage: "trash")
                                 }
-                                .disabled(!libraryOnline)
+                                .disabled(!JellyfinClient.shared.online)
                             } label: {
                                 Image(systemName: "ellipsis")
                                     .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))

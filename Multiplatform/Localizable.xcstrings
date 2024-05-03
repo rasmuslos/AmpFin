@@ -380,6 +380,7 @@
       }
     },
     "Command :)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

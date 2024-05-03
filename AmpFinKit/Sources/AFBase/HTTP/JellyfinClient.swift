@@ -6,10 +6,11 @@
 //
 
 import Foundation
-import UIKit
+import SwiftUI
 import OSLog
 
 /// API client for the Jellyfin server
+@Observable
 public final class JellyfinClient {
     public private(set) var serverUrl: URL!
     public private(set) var token: String!
@@ -21,8 +22,6 @@ public final class JellyfinClient {
     
     #if os(iOS)
     public let deviceType = "iOS"
-    #elseif os(watchOS)
-    public let deviceType = "watchOS"
     #else
     public let deviceType = "unknown"
     #endif
@@ -47,15 +46,8 @@ public final class JellyfinClient {
         }
     }
     
-    public var isOnline: Bool = false {
-        didSet {
-            Task { @MainActor in
-                NotificationCenter.default.post(name: Self.onlineStatusChanged, object: nil, userInfo: nil)
-            }
-        }
-    }
-    
-    public var isAuthorized: Bool {
+    public var online: Bool = false
+    public var authorized: Bool {
         get {
             self.token != nil
         }

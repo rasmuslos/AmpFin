@@ -58,7 +58,7 @@ extension JellyfinClient {
             let (data, _) = try await URLSession.shared.data(for: request)
             // print(clientRequest.path, String.init(data: data, encoding: .utf8))
             
-            isOnline = true
+            online = true
             
             if T.self == EmptyResponse.self {
                 return EmptyResponse() as! T
@@ -73,7 +73,7 @@ extension JellyfinClient {
                 // would be great if the documentation was good
                 if errorCode == .appTransportSecurityRequiresSecureConnection || errorCode == .callIsActive || errorCode == .cannotConnectToHost || errorCode == .cannotFindHost || errorCode == .cannotLoadFromNetwork || errorCode == .clientCertificateRejected || errorCode == .clientCertificateRequired || errorCode == .dataNotAllowed || errorCode == .dnsLookupFailed || errorCode == .internationalRoamingOff || errorCode == .serverCertificateUntrusted || errorCode == .serverCertificateHasBadDate || errorCode == .serverCertificateNotYetValid || errorCode == .serverCertificateHasUnknownRoot || errorCode == .secureConnectionFailed || errorCode == .timedOut {
                     logger.fault("Server appears to unreachable while requesting resource \(url): \(error.errorCode) \(error.localizedDescription)")
-                    isOnline = false
+                    online = false
                 } else {
                     logger.fault("Error while requesting resource \(url): \(error.errorCode) \(error.localizedDescription)")
                 }

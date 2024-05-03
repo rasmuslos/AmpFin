@@ -16,7 +16,7 @@ extension IntentHandler: INAddMediaIntentHandling {
     }
     
     func resolveMediaItems(for intent: INAddMediaIntent) async -> [INAddMediaMediaItemResolutionResult] {
-        guard JellyfinClient.shared.isAuthorized else {
+        guard JellyfinClient.shared.authorized else {
             return [.unsupported(forReason: .loginRequired)]
         }
         

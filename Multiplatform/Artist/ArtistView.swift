@@ -74,7 +74,7 @@ struct ArtistView: View {
             }
         }
         .modifier(Toolbar(artist: artist))
-        .modifier(NowPlayingBarSafeAreaModifier())
+        .modifier(NowPlaying.SafeAreaModifier())
         .task {
             await fetchTracks()
             await fetchAlbums()
