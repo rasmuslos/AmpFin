@@ -41,7 +41,7 @@ extension NowPlaying {
                             controlsDragging = $0
                         }))
                     .frame(height: 10)
-                    .padding(.bottom, compact ? 3 : 10)
+                    .padding(.bottom, compact ? 3 : 5)
                     
                     HStack {
                         Group {

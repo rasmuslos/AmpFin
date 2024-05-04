@@ -46,7 +46,7 @@ extension NowPlaying {
                 FavoriteButton(track: track)
                     .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .top)
             }
-            .padding(.vertical)
+            .padding(.bottom)
         }
     }
     

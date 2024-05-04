@@ -89,6 +89,7 @@ extension NowPlaying {
                                         Buttons(currentTab: $currentTab)
                                             .padding(.top, 20)
                                             .padding(.bottom, 30)
+                                            .padding(.horizontal, -30)
                                     }
                                     .transition(.opacity.animation(.linear(duration: 0.2)))
                                 }

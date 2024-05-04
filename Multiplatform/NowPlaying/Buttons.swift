@@ -42,6 +42,7 @@ extension NowPlaying {
                         Spacer()
                         
                         lyricsButton
+                            .frame(width: 45)
                         
                         Spacer()
                         
@@ -51,6 +52,7 @@ extension NowPlaying {
                         Spacer()
                         
                         queueButton
+                            .frame(width: 45)
                         
                         Spacer()
                     } else if horizontalSizeClass == .regular {
