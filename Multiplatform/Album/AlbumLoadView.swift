@@ -25,8 +25,7 @@ struct AlbumLoadView: View {
                 .onAppear {
                     if dataProvider.albumNotFoundFallbackToLibrary && !didPost {
                         dismiss()
-                        NotificationCenter.default.post(name: Navigation.navigateAlbumNotification, object: albumId)
-                        
+                        Navigation.navigate(albumId: albumId)
                         didPost = true
                     }
                 }

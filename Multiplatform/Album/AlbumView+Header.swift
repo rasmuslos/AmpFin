@@ -84,7 +84,7 @@ extension AlbumView.Header {
                     }
                     .onTapGesture {
                         if let artist = album.artists.first, dataProvider.supportsArtistLookup {
-                            NotificationCenter.default.post(name: Navigation.navigateArtistNotification, object: artist.id)
+                            Navigation.navigate(artistId: artist.id)
                         }
                     }
                 }

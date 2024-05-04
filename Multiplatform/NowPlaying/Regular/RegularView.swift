@@ -114,12 +114,9 @@ extension NowPlaying {
                         }
                         .padding(.top, 35)
                     }
-                    .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { _ in
+                    .modifier(Navigation.NavigationModifier() {
                         dismiss()
-                    }
-                    .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateAlbumNotification)) { _ in
-                        dismiss()
-                    }
+                    })
                 }
             }
         }

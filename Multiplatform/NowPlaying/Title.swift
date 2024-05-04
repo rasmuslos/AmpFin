@@ -121,7 +121,7 @@ private extension NowPlaying {
         var body: some View {
             Menu {
                 Button(action: {
-                    NotificationCenter.default.post(name: Navigation.navigateAlbumNotification, object: track.album.id)
+                    Navigation.navigate(albumId: track.album.id)
                 }) {
                     Label("album.view", systemImage: "square.stack")
                     
@@ -132,7 +132,7 @@ private extension NowPlaying {
                 
                 if let artistId = track.artists.first?.id, let artistName = track.artists.first?.name {
                     Button(action: {
-                        NotificationCenter.default.post(name: Navigation.navigateArtistNotification, object: artistId)
+                        Navigation.navigate(artistId: artistId)
                     }) {
                         Label("artist.view", systemImage: "music.mic")
                         Text(artistName)
@@ -141,7 +141,7 @@ private extension NowPlaying {
                 
                 if let playbackInfo = AudioPlayer.current.playbackInfo, let playlist = playbackInfo.container as? Playlist {
                     Button(action: {
-                        NotificationCenter.default.post(name: Navigation.navigatePlaylistNotification, object: playlist.id)
+                        Navigation.navigate(playlistId: playlist.id)
                     }) {
                         Label("playlist.view", systemImage: "list.bullet")
                         Text(playlist.name)

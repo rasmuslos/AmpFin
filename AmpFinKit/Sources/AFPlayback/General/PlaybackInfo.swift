@@ -63,8 +63,6 @@ extension PlaybackInfo {
                 playbackSpeed: 1,
                 mediaSearch: .init(mediaName: search))
             
-            var activity: NSUserActivity?
-            
             let activityType: String
             let userInfo: [String: Any]
             
@@ -91,17 +89,17 @@ extension PlaybackInfo {
                     ]
             }
             
-            activity = NSUserActivity(activityType: "io.rfk.ampfin.\(activityType)")
+            let activity = NSUserActivity(activityType: "io.rfk.ampfin.\(activityType)")
             
-            activity!.title = item.name
-            activity!.persistentIdentifier = item.id
-            activity!.targetContentIdentifier = "\(activityType):\(item.id)"
+            activity.title = item.name
+            activity.persistentIdentifier = item.id
+            activity.targetContentIdentifier = "\(activityType):\(item.id)"
             
             // Are these journal suggestions?
-            activity?.shortcutAvailability = [.sleepJournaling, .sleepMusic]
+            activity.shortcutAvailability = [.sleepJournaling, .sleepMusic]
             
-            activity!.isEligibleForPrediction = true
-            activity!.userInfo = userInfo
+            activity.isEligibleForPrediction = true
+            activity.userInfo = userInfo
             
             let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: activity))
             try? await interaction.donate()

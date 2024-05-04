@@ -139,11 +139,10 @@ struct SpotlightHelper {
             }
             
             if let albumId = albumId {
-                NotificationCenter.default.post(name: Navigation.navigateAlbumNotification, object: albumId)
-                return
+                Navigation.navigate(albumId: albumId)
+            } else {
+                Navigation.navigate(playlistId: identifier)
             }
-            
-            NotificationCenter.default.post(name: Navigation.navigatePlaylistNotification, object: identifier)
         }
     }
     

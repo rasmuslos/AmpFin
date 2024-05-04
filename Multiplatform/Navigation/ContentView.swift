@@ -46,21 +46,21 @@ struct ContentView: View {
                         return
                     }
                     
-                    NotificationCenter.default.post(name: Navigation.navigateAlbumNotification, object: identifier)
+                    Navigation.navigate(albumId: identifier)
                 }
                 .onContinueUserActivity("io.rfk.ampfin.artist") { activity in
                     guard let identifier = activity.persistentIdentifier else {
                         return
                     }
                     
-                    NotificationCenter.default.post(name: Navigation.navigateArtistNotification, object: identifier)
+                    Navigation.navigate(artistId: identifier)
                 }
                 .onContinueUserActivity("io.rfk.ampfin.playlist") { activity in
                     guard let identifier = activity.persistentIdentifier else {
                         return
                     }
                     
-                    NotificationCenter.default.post(name: Navigation.navigatePlaylistNotification, object: identifier)
+                    Navigation.navigate(playlistId: identifier)
                 }
                 .onContinueUserActivity("io.rfk.ampfin.track") { activity in
                     guard let identifier = activity.persistentIdentifier else {

@@ -47,7 +47,7 @@ extension NowPlaying {
                     
                     // why is SwiftUI so stupid?
                     Button(action: {
-                        NotificationCenter.default.post(name: Navigation.navigateAlbumNotification, object: track.album.id)
+                        Navigation.navigate(albumId: track.album.id)
                     }) {
                         Label("album.view", systemImage: "square.stack")
                         
@@ -58,7 +58,7 @@ extension NowPlaying {
                     
                     if let artistId = track.artists.first?.id, let artistName = track.artists.first?.name {
                         Button(action: {
-                            NotificationCenter.default.post(name: Navigation.navigateArtistNotification, object: artistId)
+                            Navigation.navigate(artistId: artistId)
                         }) {
                             Label("artist.view", systemImage: "music.mic")
                             Text(artistName)

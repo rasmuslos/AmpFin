@@ -19,6 +19,18 @@ struct Navigation {
 }
 
 extension Navigation {
+    static func navigate(albumId: String) {
+        NotificationCenter.default.post(name: Self.navigateAlbumNotification, object: albumId)
+    }
+    static func navigate(artistId: String) {
+        NotificationCenter.default.post(name: Self.navigateArtistNotification, object: artistId)
+    }
+    static func navigate(playlistId: String) {
+        NotificationCenter.default.post(name: Self.navigatePlaylistNotification, object: playlistId)
+    }
+}
+
+extension Navigation {
     struct NotificationModifier: ViewModifier {
         let navigateAlbum: (String) -> Void
         let navigateArtist: (String) -> Void
@@ -40,6 +52,23 @@ extension Navigation {
                     if let id = notification.object as? String {
                         navigatePlaylist(id)
                     }
+                }
+        }
+    }
+    
+    struct NavigationModifier: ViewModifier {
+        let didNavigate: () -> Void
+        
+        func body(content: Content) -> some View {
+            content
+                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { _ in
+                    didNavigate()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateAlbumNotification)) { _ in
+                    didNavigate()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigatePlaylistNotification)) { _ in
+                    didNavigate()
                 }
         }
     }
