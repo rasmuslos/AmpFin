@@ -38,7 +38,7 @@ extension NowPlaying {
                             }
 #else
                             if reader.size.width < 400 {
-                                NotificationCenter.default.post(name: Navigation.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
+                                NotificationCenter.default.post(name: NowPlaying.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
                             }
 #endif
                         }
@@ -74,10 +74,10 @@ extension NowPlaying {
                     GeometryReader { reader in
                         Color.clear
                             .onAppear {
-                                NotificationCenter.default.post(name: Navigation.widthChangeNotification, object: reader.size.width)
+                                NotificationCenter.default.post(name: NowPlaying.widthChangeNotification, object: reader.size.width)
                             }
                             .onChange(of: reader.size.width) {
-                                NotificationCenter.default.post(name: Navigation.widthChangeNotification, object: reader.size.width)
+                                NotificationCenter.default.post(name: NowPlaying.widthChangeNotification, object: reader.size.width)
                             }
                     }
                     .frame(height: 0)

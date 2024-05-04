@@ -37,9 +37,9 @@ extension NowPlaying {
                     .onAppear {
                         viewState.namespace = namespace
                     }
-                    .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateNotification)) { _ in
+                    .modifier(Navigation.NavigationModifier() {
                         viewState.setNowPlayingViewPresented(false)
-                    }
+                    })
                 
                 Group {
                     if let track = presentedTrack {
@@ -150,7 +150,6 @@ extension NowPlaying {
                     }
                 }
                 .allowsHitTesting(presentedTrack != nil)
-                // This is very reasonable and sane
                 .offset(y: dragOffset)
                 .animation(.spring, value: dragOffset)
             }
@@ -164,7 +163,9 @@ extension NowPlaying {
             }
         }
     }
-    
+}
+
+extension NowPlaying {
     @Observable
     final class CompactViewState {
         var namespace: Namespace.ID!

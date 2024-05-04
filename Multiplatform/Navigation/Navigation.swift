@@ -13,9 +13,6 @@ struct Navigation {
     static let navigateAlbumNotification = NSNotification.Name("io.rfk.ampfin.navigation.album")
     static let navigateArtistNotification = NSNotification.Name("io.rfk.ampfin.navigation.artist")
     static let navigatePlaylistNotification = NSNotification.Name("io.rfk.ampfin.navigation.playlist")
-    
-    static let widthChangeNotification = NSNotification.Name("io.rfk.ampfin.sidebar.width.changed")
-    static let offsetChangeNotification = NSNotification.Name("io.rfk.ampfin.sidebar.offset.changed")
 }
 
 extension Navigation {

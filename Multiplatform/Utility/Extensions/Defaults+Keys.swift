@@ -16,6 +16,7 @@ extension Defaults.Keys {
     
     // MARK: Navigation
     
+    static let searchTab = Key("searchTab", default: SearchView.Tab.online)
     static let lastActiveTab = Key("lastActiveTab", default: Tabs.Selection.library)
     
     static let lastSidebarSelection = Key<Sidebar.Selection?>("lastSidebarSelection")

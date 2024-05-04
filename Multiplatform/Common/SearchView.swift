@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
+import Defaults
 import AFBase
 import AFPlayback
 
 struct SearchView: View {
+    @Default(.searchTab) private var searchTab
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    @State private var selection = Tab.online
     
     @State private var query = ""
     @State private var task: Task<(), Never>? = nil
@@ -22,13 +22,10 @@ struct SearchView: View {
     @State private var artists = [Artist]()
     @State private var playlists = [Playlist]()
     
-    @State private var library: Tab = UserDefaults.standard.bool(forKey: "searchOnline") ? .online : .offline
-    @State private var dataProvider: LibraryDataProvider = UserDefaults.standard.bool(forKey: "searchOnline") ? OnlineLibraryDataProvider() : OfflineLibraryDataProvider()
-    
     var body: some View {
         NavigationStack {
             List {
-                Picker("search.library", selection: $selection) {
+                Picker("search.library", selection: $searchTab) {
                     Text("search.jellyfin", comment: "Search the Jellyfin server")
                         .tag(Tab.online)
                     Text("search.downloaded", comment: "Search the downloaded content")
@@ -91,9 +88,7 @@ struct SearchView: View {
                 fetchSearchResults()
             }
             // Online / Offline
-            .onChange(of: library) {
-                UserDefaults.standard.set(library == .online, forKey: "searchOnline")
-                
+            .onChange(of: searchTab) {
                 task?.cancel()
                 
                 tracks = []
@@ -101,37 +96,40 @@ struct SearchView: View {
                 artists = []
                 playlists = []
                 
-                switch library {
-                case .online:
-                    dataProvider = OnlineLibraryDataProvider()
-                case .offline:
-                    dataProvider = OfflineLibraryDataProvider()
-                }
-                
                 fetchSearchResults()
             }
             .onAppear(perform: fetchSearchResults)
         }
-        .environment(\.libraryDataProvider, dataProvider)
-    }
-}
-
-private extension SearchView {
-    enum Tab {
-        case online
-        case offline
+        .environment(\.libraryDataProvider, searchTab.dataProvider)
     }
     
-    func fetchSearchResults() {
+    private func fetchSearchResults() {
         task?.cancel()
         task = Task.detached {
             // I guess this runs in parallel?
-            (tracks, albums, artists, playlists) = (try? await (
-                dataProvider.searchTracks(query: query.lowercased()),
-                dataProvider.searchAlbums(query: query.lowercased()),
-                dataProvider.searchArtists(query: query.lowercased()),
-                dataProvider.searchPlaylists(query: query.lowercased())
-            )) ?? ([], [], [], [])
+            await (tracks, albums, artists, playlists) = (try? await (
+                searchTab.dataProvider.searchTracks(query: query.lowercased()),
+                searchTab.dataProvider.searchAlbums(query: query.lowercased()),
+                searchTab.dataProvider.searchArtists(query: query.lowercased()),
+                searchTab.dataProvider.searchPlaylists(query: query.lowercased()))
+            ) ?? ([], [], [], [])
+        }
+    }
+}
+
+extension SearchView {
+    enum Tab: Codable, _DefaultsSerializable {
+        case online
+        case offline
+    }
+}
+extension SearchView.Tab {
+    var dataProvider: LibraryDataProvider {
+        switch self {
+            case .online:
+                OnlineLibraryDataProvider()
+            case .offline:
+                OfflineLibraryDataProvider()
         }
     }
 }

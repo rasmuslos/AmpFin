@@ -121,6 +121,9 @@ extension NowPlaying {
 }
 
 extension NowPlaying {
+    #if os(visionOS)
+    typealias AirPlayPicker = EmptyView
+    #else
     struct AirPlayPicker: UIViewRepresentable {
         func makeUIView(context: Context) -> UIView {
             let routePickerView = AVRoutePickerView()
@@ -133,4 +136,5 @@ extension NowPlaying {
         
         func updateUIView(_ uiView: UIView, context: Context) {}
     }
+    #endif
 }

@@ -141,12 +141,12 @@ extension NowPlaying {
                         }
                     }
                 }
-                .onReceive(NotificationCenter.default.publisher(for: Navigation.widthChangeNotification)) { notification in
+                .onReceive(NotificationCenter.default.publisher(for: NowPlaying.widthChangeNotification)) { notification in
                     if let width = notification.object as? CGFloat {
                         self.width = min(width, 1100)
                     }
                 }
-                .onReceive(NotificationCenter.default.publisher(for: Navigation.offsetChangeNotification)) { notification in
+                .onReceive(NotificationCenter.default.publisher(for: NowPlaying.offsetChangeNotification)) { notification in
                     if let offset = notification.object as? CGFloat {
                         adjust = offset
                     }
