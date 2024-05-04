@@ -24,6 +24,7 @@ extension NowPlaying {
                     .labelStyle(.iconOnly)
             }
             .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
+            .modifier(ButtonHoverEffectModifier())
         }
         private var queueButton: some View {
             Button {
@@ -33,6 +34,7 @@ extension NowPlaying {
                     .labelStyle(.iconOnly)
             }
             .buttonStyle(SymbolButtonStyle(active: currentTab == .queue))
+            .modifier(ButtonHoverEffectModifier())
         }
         
         var body: some View {

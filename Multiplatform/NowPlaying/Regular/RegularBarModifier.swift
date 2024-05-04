@@ -43,6 +43,7 @@ extension NowPlaying {
                                     .fontWeight(.heavy)
                             }
                             .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled, heavy: true))
+                            .modifier(ButtonHoverEffectModifier())
                             
                             Button {
                                 animateBackwards.toggle()
@@ -53,6 +54,7 @@ extension NowPlaying {
                                     .symbolEffect(.bounce.up, value: animateBackwards)
                             }
                             .font(.title3)
+                            .modifier(ButtonHoverEffectModifier())
                             .padding(.horizontal, 7)
                             
                             Group {
@@ -79,6 +81,7 @@ extension NowPlaying {
                             }
                             .frame(width: 30)
                             .transition(.blurReplace)
+                            .modifier(ButtonHoverEffectModifier())
                             .font(.title)
                             
                             Button {
@@ -90,6 +93,7 @@ extension NowPlaying {
                                     .symbolEffect(.bounce.up, value: animateForwards)
                             }
                             .font(.title3)
+                            .modifier(ButtonHoverEffectModifier())
                             .padding(.horizontal, 7)
                             
                             Button {
@@ -107,17 +111,20 @@ extension NowPlaying {
                                     .fontWeight(.heavy)
                             }
                             .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none, heavy: true))
+                            .modifier(ButtonHoverEffectModifier())
                         }
                         .padding(.horizontal, 8)
                         .frame(height: 66)
                         .frame(maxWidth: width)
                         .foregroundStyle(.primary)
+                        .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 15, style: .continuous))
+                        .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                         .background {
                             Rectangle()
                                 .foregroundStyle(.regularMaterial)
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                        .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
+                        .hoverEffect(.highlight)
                         .draggable(currentTrack) {
                             TrackListRow.TrackPreview(track: currentTrack)
                                 .padding()

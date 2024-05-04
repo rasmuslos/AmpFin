@@ -15,6 +15,7 @@ struct AlbumCover: View {
         VStack(alignment: .leading, spacing: 0) {
             ItemImage(cover: album.cover)
                 .modifier(AlbumContextMenuModifier(album: album))
+                .hoverEffect(.highlight)
             
             Group {
                 Text(album.name)

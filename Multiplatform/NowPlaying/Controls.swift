@@ -85,6 +85,8 @@ extension NowPlaying {
                                 .labelStyle(.iconOnly)
                                 .font(.system(size: 30))
                         }
+                        .modifier(ButtonHoverEffectModifier())
+                        
                         Button {
                             AudioPlayer.current.playing = !AudioPlayer.current.playing
                         } label: {
@@ -92,9 +94,11 @@ extension NowPlaying {
                                 .labelStyle(.iconOnly)
                                 .frame(width: 50, height:50)
                                 .font(.system(size: 47))
-                                .padding(.horizontal, 50)
                                 .contentTransition(.symbolEffect(.replace))
                         }
+                        .modifier(ButtonHoverEffectModifier())
+                        .padding(.horizontal, 50)
+                        
                         Button {
                             withAnimation {
                                 AudioPlayer.current.advanceToNextTrack()
@@ -104,6 +108,7 @@ extension NowPlaying {
                                 .labelStyle(.iconOnly)
                                 .font(.system(size: 30))
                         }
+                        .modifier(ButtonHoverEffectModifier())
                     }
                     .foregroundStyle(.primary)
                 }

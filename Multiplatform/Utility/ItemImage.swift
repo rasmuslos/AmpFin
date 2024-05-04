@@ -26,6 +26,7 @@ struct ItemImage: View {
         .background(.gray.opacity(0.1))
         .aspectRatio(1, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: cornerRadius))
     }
     
     var body: some View {
@@ -41,6 +42,7 @@ struct ItemImage: View {
             }
             .aspectRatio(1, contentMode: .fit)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: cornerRadius))
         } else {
             placeholder
         }

@@ -42,9 +42,11 @@ struct TrackListButtons: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
             .background(background)
+            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 7))
+            .hoverEffect(.lift)
             .foregroundColor(.accentColor)
             .bold()
-            .cornerRadius(7)
             .onTapGesture {
                 callback()
             }

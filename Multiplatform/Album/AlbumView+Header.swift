@@ -151,13 +151,14 @@ extension AlbumView.Header {
                 Label(label, systemImage: icon)
             }
             .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
             .padding(.vertical, 10)
-            .padding(.horizontal, 20)
-            .bold()
             .foregroundColor(imageColors.secondary)
             .background(imageColors.primary.opacity(0.25))
-            .cornerRadius(7)
+            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 7))
+            .hoverEffect(.lift)
+            .foregroundColor(.accentColor)
+            .bold()
             .onTapGesture {
                 callback()
             }
@@ -200,6 +201,7 @@ extension AlbumView.Header {
                 ItemImage(cover: album.cover)
                     .shadow(color: .black.opacity(0.25), radius: 20)
                     .frame(width: 275)
+                    .hoverEffect(.highlight)
                     .padding(.trailing, 20)
                 
                 VStack(alignment: .leading, spacing: 20) {

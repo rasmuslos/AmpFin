@@ -29,6 +29,16 @@ struct AlbumContextMenuModifier: ViewModifier {
             .contextMenu {
                 Button {
                     Task {
+                        AudioPlayer.current.startPlayback(tracks: try await dataProvider.getTracks(albumId: album.id), startIndex: 0, shuffle: false, playbackInfo: .init(container: album))
+                    }
+                } label: {
+                    Label("play", systemImage: "play")
+                }
+                
+                Divider()
+                
+                Button {
+                    Task {
                         await album.setFavorite(favorite: !album.favorite)
                     }
                 } label: {
@@ -52,6 +62,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                 } label: {
                     Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
                 }
+                
                 Button {
                     Task {
                         AudioPlayer.current.queueTracks(try await dataProvider.getTracks(albumId: album.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: album, queueLocation: .later))

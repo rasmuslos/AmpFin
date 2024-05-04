@@ -60,6 +60,7 @@ extension NowPlaying {
                 }
                 .id(AudioPlayer.current.repeatMode)
                 .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
+                .modifier(ButtonHoverEffectModifier())
                 .padding(.horizontal, 4)
                 
                 Button {
@@ -69,6 +70,7 @@ extension NowPlaying {
                         .labelStyle(.iconOnly)
                 }
                 .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
+                .modifier(ButtonHoverEffectModifier())
                 .padding(.horizontal, 4)
                 
                 Button {
@@ -80,6 +82,7 @@ extension NowPlaying {
                         .labelStyle(.iconOnly)
                 }
                 .buttonStyle(SymbolButtonStyle(active: showHistory))
+                .modifier(ButtonHoverEffectModifier())
             }
             .padding(.top, 10)
             .padding(.bottom, -10)
@@ -88,8 +91,6 @@ extension NowPlaying {
                 if showHistory {
                     ForEach(Array(AudioPlayer.current.history.enumerated()), id: \.offset) { index, track in
                         Row(track: track, draggable: false)
-                            .padding(.top, index == 0 ? 15 : 0)
-                            .padding(.bottom, (index == AudioPlayer.current.history.count - 1) ? 15 : 0)
                             .onTapGesture {
                                 AudioPlayer.current.restoreHistory(index: index)
                             }
@@ -127,8 +128,6 @@ extension NowPlaying {
                             .onTapGesture {
                                 AudioPlayer.current.skip(to: index)
                             }
-                            .padding(.top, index == 0 ? 15 : 0)
-                            .padding(.bottom, (index == AudioPlayer.current.queue.count - 1) ? 15 : 0)
                     }
                     .onMove { from, to in
                         from.forEach {
@@ -142,9 +141,9 @@ extension NowPlaying {
                     }
                 }
             }
+            .safeAreaPadding(.vertical, 15)
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .padding(.horizontal, -30)
             // this is required because SwiftUI sucks ass
             .mask(
                 VStack(spacing: 0) {
@@ -170,7 +169,7 @@ private extension NowPlaying {
             HStack {
                 ItemImage(cover: track.cover)
                     .frame(width: 50)
-                    .padding(.trailing, 15)
+                    .padding(.trailing, 10)
                 
                 VStack(alignment: .leading) {
                     Text(track.name)
@@ -192,12 +191,13 @@ private extension NowPlaying {
                         .labelStyle(.iconOnly)
                         .imageScale(.large)
                         .foregroundStyle(.secondary)
+                        .modifier(ButtonHoverEffectModifier())
                         .padding(.leading, 15)
                 }
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
-            .listRowInsets(.init(top: 5, leading: 30, bottom: 5, trailing: 30))
+            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
         }
     }
 }

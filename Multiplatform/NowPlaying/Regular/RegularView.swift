@@ -112,6 +112,7 @@ extension NowPlaying {
                                 .frame(width: 50, height: 7)
                                 .clipShape(RoundedRectangle(cornerRadius: 10000))
                         }
+                        .modifier(ButtonHoverEffectModifier(hoverEffect: .lift))
                         .padding(.top, 35)
                     }
                     .modifier(Navigation.NavigationModifier() {

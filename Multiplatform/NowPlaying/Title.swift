@@ -109,6 +109,7 @@ private extension NowPlaying {
                         .contentTransition(.symbolEffect(.replace))
                         .foregroundStyle(.white)
                 }
+                .modifier(ButtonHoverEffectModifier())
             }
         }
     }

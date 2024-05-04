@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3A07CD932B4401BE00F9AB19 /* PlaylistAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */; };
 		3A0A49292B6C1EDC00AAA647 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A0A49282B6C1EDC00AAA647 /* InfoPlist.xcstrings */; };
+		3A0D2D112BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D2D102BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift */; };
+		3A0D2D132BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D2D122BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift */; };
 		3A1CBC192B0D284200855A70 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC182B0D284200855A70 /* Navigation.swift */; };
 		3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */; };
 		3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFA2AA883EC00197AA7 /* LibraryView.swift */; };
@@ -165,6 +167,8 @@
 		3A0345122B49634F007D6171 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistAddSheet.swift; sourceTree = "<group>"; };
 		3A0A49282B6C1EDC00AAA647 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		3A0D2D102BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentShapeKinds+HoverMenuInteraction.swift"; sourceTree = "<group>"; };
+		3A0D2D122BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonHoverEffectModifier.swift; sourceTree = "<group>"; };
 		3A1CBC182B0D284200855A70 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
 		3A234DFA2AA883EC00197AA7 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
@@ -499,6 +503,7 @@
 				3A234E142AA8DBC900197AA7 /* SortSelector.swift */,
 				3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */,
 				3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */,
+				3A0D2D122BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift */,
 				3A6FC1F52ACC0BE30070301B /* Intents */,
 				3ADE8E952AA92B03009826A3 /* Extensions */,
 				3AB6979F2B386B20009000DD /* LibraryDataProviders */,
@@ -603,6 +608,7 @@
 				3A44B06C2BA194410013E4EF /* Double+Duration.swift */,
 				3ABBB7262B755D3C00530BFB /* UIViewController+DarkMode.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
+				3A0D2D102BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -974,6 +980,7 @@
 				3A3DA66D2AAB2EAE0091211A /* ArtistView+Header.swift in Sources */,
 				3A6F50A72AACA3D600FC8A29 /* SearchView.swift in Sources */,
 				3A234E182AA8E0AD00197AA7 /* TrackListRow.swift in Sources */,
+				3A0D2D132BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift in Sources */,
 				3A8B99452AAA08B1004AAA7B /* Slider.swift in Sources */,
 				3A44B06D2BA194410013E4EF /* Double+Duration.swift in Sources */,
 				3AAE1B4C2BC5858200FD0200 /* SafeAreaModifier.swift in Sources */,
@@ -987,6 +994,7 @@
 				3A8850662AA9165300456DDD /* TrackListButtons.swift in Sources */,
 				3A5515F72BC449A400B922D7 /* Defaults+Keys.swift in Sources */,
 				3A36A59E2ADEF8BA00D83BE7 /* AlbumRow.swift in Sources */,
+				3A0D2D112BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift in Sources */,
 				3A3DA6612AAB29470091211A /* ArtistsView.swift in Sources */,
 				3ADE8EA02AA93D39009826A3 /* AlbumView+Toolbar.swift in Sources */,
 				3A3DA66B2AAB2DDA0091211A /* ArtistView.swift in Sources */,

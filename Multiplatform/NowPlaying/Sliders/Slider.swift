@@ -21,7 +21,8 @@ extension NowPlaying {
                         .foregroundStyle(dragging ? Color.white : Color.white.opacity(0.8))
                         .frame(width: geometry.size.width * min(1, max(0, CGFloat(self.percentage / 100))))
                 }
-                .cornerRadius(7)
+                .clipShape(RoundedRectangle(cornerRadius: 7))
+                .modifier(ButtonHoverEffectModifier())
                 .highPriorityGesture(DragGesture(minimumDistance: 0)
                     .onChanged { value in
                         percentage = min(max(0, Double(value.location.x / geometry.size.width * 100)), 100)

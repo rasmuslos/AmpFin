@@ -92,7 +92,7 @@ struct TrackListRow: View {
                     
                     Spacer()
                 }
-                .contentShape(Rectangle())
+                .contentShape(.hoverMenuInteraction, Rectangle())
             }
             .buttonStyle(.plain)
             
@@ -111,6 +111,7 @@ struct TrackListRow: View {
                         .padding(.leading, 0)
                 }
                 .buttonStyle(.plain)
+                .modifier(ButtonHoverEffectModifier())
                 .popoverTip(InstantMixTip())
             }
         }
@@ -185,6 +186,8 @@ extension TrackListRow {
             } label: {
                 Label("play", systemImage: "play")
             }
+            
+            Divider()
             
             PlayNextButton(track: track)
             PlayLastButton(track: track)

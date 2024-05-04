@@ -113,6 +113,7 @@ extension ArtistView {
                             } label: {
                                 Label("queue.mix", systemImage: "play.circle.fill")
                                     .labelStyle(.iconOnly)
+                                    .modifier(ButtonHoverEffectModifier())
                             }
                             .font(.title)
                             .padding(.leading)

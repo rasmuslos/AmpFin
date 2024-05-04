@@ -53,6 +53,7 @@ struct AlbumRow: View {
                     
                     Image(systemName: "chevron.right.circle.fill")
                         .imageScale(.small)
+                        .modifier(ButtonHoverEffectModifier())
                 }
                 .background {
                     NavigationLink {
@@ -84,6 +85,7 @@ struct AlbumRow: View {
                     .padding(.trailing, padding)
                 }
                 .scrollTargetBehavior(.viewAligned)
+                .scrollClipDisabled()
             }
         }
     }

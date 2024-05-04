@@ -58,7 +58,7 @@ extension NowPlaying {
                         .frame(maxWidth: .infinity)
                     }
                 }
-                .safeAreaPadding(.top, 25)
+                .safeAreaPadding(.top, 45)
                 .safeAreaPadding(.bottom, 100)
                 .mask(
                     VStack(spacing: 0) {

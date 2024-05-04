@@ -50,6 +50,7 @@ struct TracksView: View {
                     }
                     .listRowSeparator(.hidden)
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
+                    .padding(.horizontal, 20)
                     
                     TrackList(tracks: tracks, container: nil, count: count, loadMore: { () async -> Void in await loadTracks(shouldReset: false) })
                         .padding(.horizontal, 20)
