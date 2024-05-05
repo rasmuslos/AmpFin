@@ -47,5 +47,5 @@ protocol AudioEndpoint {
     func skip(to: Int)
     func restoreHistory(index: Int)
     
-    func getTrackData() async -> (String, Int)?
+    func getTrackData() async -> Track.TrackData?
 }

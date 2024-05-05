@@ -16,7 +16,8 @@ extension NowPlaying {
         
         @Binding var controlsDragging: Bool
         
-        @State private var quality: String?
+        @State private var trackDataToggled = false
+        @State private var trackData: Track.TrackData? = nil
         
         @State private var seekDragging = false
         @State private var volumeDragging = false
@@ -26,6 +27,37 @@ extension NowPlaying {
         
         private var playedPercentage: Double {
             (AudioPlayer.current.currentTime / AudioPlayer.current.duration) * 100
+        }
+        
+        private var qualityText: String? {
+            if let trackData = trackData {
+                var result = [String]()
+                
+                let formatter = NumberFormatter()
+                formatter.numberStyle = .decimal
+                formatter.maximumFractionDigits = 0
+                formatter.usesGroupingSeparator = true
+                
+                if trackDataToggled && (trackData.bitDepth != nil || trackData.sampleRate != nil) {
+                    if let bitDepth = trackData.bitDepth {
+                        result.append(formatter.string(from: .init(value: bitDepth))!)
+                    }
+                    if let sampleRate = trackData.sampleRate {
+                        result.append(formatter.string(from: .init(value: sampleRate))!)
+                    }
+                } else {
+                    if let codec = trackData.codec {
+                        result.append(codec.uppercased())
+                    }
+                    if let bitrate = trackData.bitrate {
+                        result.append(formatter.string(from: .init(value: bitrate / 1000))!)
+                    }
+                }
+                
+                return result.joined(separator: " - ")
+            }
+            
+            return nil
         }
         
         var body: some View {
@@ -54,16 +86,20 @@ extension NowPlaying {
                         }
                         .frame(width: 65, alignment: .leading)
                         
-                        if let quality = quality {
+                        if let qualityText = qualityText {
                             Spacer()
                             
-                            Text(quality)
-                                .font(.caption2)
-                                .foregroundStyle(.primary)
-                                .padding(.vertical, compact ? 1 : 4)
-                                .padding(.horizontal, compact ? 10 : 8)
-                                .background(.tertiary)
-                                .clipShape(RoundedRectangle(cornerRadius: 3))
+                            Button {
+                                trackDataToggled.toggle()
+                            } label: {
+                                Text(qualityText)
+                                    .font(.caption2)
+                                    .foregroundStyle(.primary)
+                                    .padding(.vertical, compact ? 1 : 4)
+                                    .padding(.horizontal, compact ? 10 : 8)
+                                    .background(.tertiary)
+                                    .clipShape(RoundedRectangle(cornerRadius: 3))
+                            }
                         }
                         Spacer()
                         
@@ -129,16 +165,11 @@ extension NowPlaying {
         
         private func fetchQuality() {
             Task.detached {
-                if let data = await AudioPlayer.current.getTrackData() {
-                    withAnimation {
-                        if data.1 == 0 {
-                            quality = data.0.uppercased()
-                        } else {
-                            quality = "\(data.0.uppercased()) \(data.1)"
-                        }
-                    }
+                if let trackData = await AudioPlayer.current.getTrackData() {
+                    self.trackData = trackData
+                    trackDataToggled = trackData.lossless ?? false
                 } else {
-                    quality = nil
+                    trackData = nil
                 }
             }
         }

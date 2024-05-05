@@ -120,4 +120,22 @@ public extension JellyfinClient {
         
         return lyrics
     }
+    
+    func getTrackData(id: String) async throws -> Track.TrackData {
+        let track = try await request(ClientRequest<JellyfinTrackItem>(path: "Items/\(id)", method: "GET", userPrefix: true))
+        
+        guard let mediaStreams = track.MediaStreams, let audioStream = mediaStreams.first(where: { $0.Type == "Audio" }) else {
+            throw JellyfinClientError.invalidResponse
+        }
+        
+        let lossless: Bool
+        
+        if let codec = audioStream.Codec?.lowercased(), codec == "flac" || codec == "alac" || codec == "ape" || codec == "wave" {
+            lossless = true
+        } else {
+            lossless = false
+        }
+        
+        return .init(codec: audioStream.Codec, lossless: lossless, bitrate: audioStream.BitRate, bitDepth: audioStream.BitDepth, sampleRate: audioStream.SampleRate)
+    }
 }

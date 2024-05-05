@@ -16,20 +16,26 @@ import AFOffline
 // MARK: Helper
 
 internal extension LocalAudioEndpoint {
-    func getTrackData() async -> (String, Int)? {
-        let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
-        let format = await track?.getMediaFormat()
-        let bitrate = try? await track?.load(.estimatedDataRate)
-        
-        if var format = format, let bitrate = bitrate {
-            while format.starts(with: ".") {
-                format.removeFirst()
-            }
-            
-            return (format, Int((bitrate / 1000).rounded()))
+    func getTrackData() async -> Track.TrackData? {
+        if let itemId = nowPlaying?.id, let trackData = try? await JellyfinClient.shared.getTrackData(id: itemId) {
+            return trackData
         }
         
-        return nil
+        let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
+        
+        var format = await track?.getMediaFormat()
+        var bitrate = try? await track?.load(.estimatedDataRate)
+        
+        if format != nil {
+            while format!.starts(with: ".") {
+                format!.removeFirst()
+            }
+        }
+        if bitrate != nil {
+            bitrate = (bitrate! / 1000).rounded()
+        }
+        
+        return .init(codec: format, lossless: false, bitrate: bitrate != nil ? Int(bitrate!) : nil, bitDepth: nil, sampleRate: nil)
     }
     
     func getAVPlayerItem(_ track: Track) -> AVPlayerItem {

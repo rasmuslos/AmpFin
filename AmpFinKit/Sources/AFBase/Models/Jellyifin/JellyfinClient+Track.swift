@@ -37,5 +37,17 @@ public extension JellyfinClient {
         
         let LUFS: Float?
         let RunTimeTicks: UInt64?
+        
+        let MediaStreams: [MediaStream]?
+    }
+    
+    struct MediaStream: Codable {
+        let `Type`: String?
+        
+        let Codec: String?
+        let BitRate: Int?
+        let BitDepth: Int?
+        let Channels: Int?
+        let SampleRate: Int?
     }
 }

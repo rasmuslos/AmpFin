@@ -258,7 +258,7 @@ extension AudioPlayer {
         endpoint?.restoreHistory(index: index)
     }
     
-    public func getTrackData() async -> (String, Int)? {
+    public func getTrackData() async -> Track.TrackData? {
         await endpoint?.getTrackData()
     }
 }

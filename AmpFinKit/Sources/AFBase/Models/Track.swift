@@ -111,6 +111,23 @@ extension Track {
             self.artists = artists
         }
     }
+    
+    public struct TrackData {
+        public let codec: String?
+        public let lossless: Bool?
+        
+        public let bitrate: Int?
+        public let bitDepth: Int?
+        public let sampleRate: Int?
+        
+        public init(codec: String?, lossless: Bool?, bitrate: Int?, bitDepth: Int?, sampleRate: Int?) {
+            self.codec = codec
+            self.lossless = lossless
+            self.bitrate = bitrate
+            self.bitDepth = bitDepth
+            self.sampleRate = sampleRate
+        }
+    }
 }
 
 // MARK: Convenience

@@ -278,5 +278,5 @@ extension RemoteAudioEndpoint: AudioEndpoint {
     func removeHistoryTrack(index: Int) {}
     func moveTrack(from: Int, to: Int) {}
     func restoreHistory(index: Int) {}
-    func getTrackData() async -> (String, Int)? { nil }
+    func getTrackData() async -> Track.TrackData? { nil }
 }
