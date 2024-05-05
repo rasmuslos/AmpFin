@@ -91,7 +91,10 @@ extension NowPlaying {
                                             .padding(.bottom, 30)
                                             .padding(.horizontal, -30)
                                     }
-                                    .transition(.opacity.animation(.linear(duration: 0.2)))
+                                    // .transition(.opacity.animation(.linear(duration: 0.2)))
+                                    .transition(.modifier(
+                                        active: CollapseTransitionModifier(active: true),
+                                        identity: CollapseTransitionModifier(active: false)))
                                 }
                             }
                         }
@@ -236,6 +239,16 @@ private extension NowPlaying {
                         .animation(Animation.smooth(duration: 0.4, extraBounce: 0.1), value: active)
                 }
                 .offset(y: active ? -92 : 0)
+        }
+    }
+    
+    struct CollapseTransitionModifier: ViewModifier {
+        let active: Bool
+        
+        func body(content: Content) -> some View {
+            content
+                .frame(height: active ? 0 : .infinity)
+                .animation(.spring(duration: 0.1), value: active)
         }
     }
 }

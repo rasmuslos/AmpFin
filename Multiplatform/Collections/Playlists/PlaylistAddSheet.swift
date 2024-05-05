@@ -81,6 +81,7 @@ struct PlaylistAddSheet: View {
                                         }
                                     } label: {
                                         PlaylistListRow(playlist: playlist)
+                                            .contentShape(.hoverMenuInteraction, Rectangle())
                                     }
                                     .buttonStyle(.plain)
                                 }
