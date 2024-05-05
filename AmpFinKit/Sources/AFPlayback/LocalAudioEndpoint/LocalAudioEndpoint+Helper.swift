@@ -31,7 +31,7 @@ internal extension LocalAudioEndpoint {
                 format!.removeFirst()
             }
         }
-        if bitrate != nil {
+        if bitrate != nil, bitrate! > 0 {
             bitrate = (bitrate! / 1000).rounded()
         }
         
