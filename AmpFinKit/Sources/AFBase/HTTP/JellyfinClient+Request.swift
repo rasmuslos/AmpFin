@@ -58,7 +58,9 @@ extension JellyfinClient {
             let (data, _) = try await URLSession.shared.data(for: request)
             // print(clientRequest.path, String.init(data: data, encoding: .utf8))
             
-            online = true
+            if !online {
+                online = true
+            }
             
             if T.self == EmptyResponse.self {
                 return EmptyResponse() as! T
