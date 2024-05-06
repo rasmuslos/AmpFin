@@ -16,8 +16,8 @@ struct AlbumRow: View {
     
     @State private var width: CGFloat = .zero
     
-    private let gap: CGFloat = 10
-    private let padding: CGFloat = 20
+    private let gap: CGFloat = .connectedSpacing
+    private let padding: CGFloat = .outerSpacing
     
     // For some reason HGrid do not work in ScrollViews, so we have to calculate this ourselves
     private var size: CGFloat {
@@ -47,9 +47,9 @@ struct AlbumRow: View {
                 HStack(alignment: .firstTextBaseline) {
                     Text(title)
                         .font(.headline)
-                        .padding(.leading, 20)
+                        .padding(.leading, .outerSpacing)
                         .padding(.bottom, 0)
-                        .padding(.top, 10)
+                        .padding(.top, .connectedSpacing)
                     
                     Image(systemName: "chevron.right.circle.fill")
                         .imageScale(.small)
@@ -59,7 +59,7 @@ struct AlbumRow: View {
                     NavigationLink {
                         ScrollView {
                             AlbumGrid(albums: albums)
-                                .padding(.horizontal)
+                                .padding(.horizontal, .outerSpacing)
                         }
                         .navigationTitle(title)
                         .modifier(NowPlaying.SafeAreaModifier())

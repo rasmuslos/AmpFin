@@ -84,7 +84,7 @@ extension NowPlaying {
                 .buttonStyle(SymbolButtonStyle(active: showHistory))
                 .modifier(ButtonHoverEffectModifier())
             }
-            .padding(.top, 10)
+            .padding(.top, .connectedSpacing)
             .padding(.bottom, -10)
             
             List {
@@ -141,7 +141,7 @@ extension NowPlaying {
                     }
                 }
             }
-            .safeAreaPadding(.vertical, 15)
+            .safeAreaPadding(.vertical, .innerSpacing)
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
             // this is required because SwiftUI sucks ass
@@ -166,10 +166,10 @@ private extension NowPlaying {
         let draggable: Bool
         
         var body: some View {
-            HStack {
+            HStack(spacing: 0) {
                 ItemImage(cover: track.cover)
                     .frame(width: 50)
-                    .padding(.trailing, 10)
+                    .padding(.trailing, .innerSpacing)
                 
                 VStack(alignment: .leading) {
                     Text(track.name)
@@ -192,7 +192,7 @@ private extension NowPlaying {
                         .imageScale(.large)
                         .foregroundStyle(.secondary)
                         .modifier(ButtonHoverEffectModifier())
-                        .padding(.leading, 15)
+                        .padding(.leading, .innerSpacing)
                 }
             }
             .listRowSeparator(.hidden)

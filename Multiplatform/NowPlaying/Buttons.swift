@@ -64,7 +64,7 @@ extension NowPlaying {
                         Spacer()
                         
                         lyricsButton
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, .innerSpacing)
                         queueButton
                     }
                 } else if AudioPlayer.current.source == .jellyfinRemote {

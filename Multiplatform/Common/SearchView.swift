@@ -37,7 +37,7 @@ struct SearchView: View {
                 if !artists.isEmpty {
                     Section("section.artists") {
                         ArtistList(artists: artists)
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, .outerSpacing)
                     }
                 }
                 
@@ -47,7 +47,7 @@ struct SearchView: View {
                             NavigationLink(destination: AlbumView(album: album)) {
                                 AlbumListRow(album: album)
                             }
-                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+                            .listRowInsets(.init(top: 6, leading: .outerSpacing, bottom: 6, trailing: .outerSpacing))
                         }
                     }
                 }
@@ -58,7 +58,7 @@ struct SearchView: View {
                             NavigationLink(destination: PlaylistView(playlist: playlist)) {
                                 PlaylistListRow(playlist: playlist)
                             }
-                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+                            .listRowInsets(.init(top: 6, leading: .outerSpacing, bottom: 6, trailing: .outerSpacing))
                         }
                     }
                 }
@@ -69,7 +69,7 @@ struct SearchView: View {
                             TrackListRow(track: track) {
                                 AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil, search: query))
                             }
-                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+                            .listRowInsets(.init(top: 6, leading: .outerSpacing, bottom: 6, trailing: .outerSpacing))
                         }
                     }
                 }

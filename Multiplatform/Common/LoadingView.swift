@@ -12,7 +12,7 @@ struct LoadingView: View {
         ProgressView()
         
         Text("loading")
-            .padding()
+            .padding(.outerSpacing)
             .font(.caption)
             .foregroundStyle(.secondary)
     }

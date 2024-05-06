@@ -13,7 +13,7 @@ struct TrackListButtons: View {
     let startPlayback: (_ shuffle: Bool) -> ()
     
     var body: some View {
-        LazyVGrid(columns: [.init(spacing: 15), .init()]) {
+        LazyVGrid(columns: [.init(spacing: .innerSpacing), .init()]) {
             TrackListButton(icon: "play.fill", label: "queue.play", background: background) {
                 startPlayback(false)
             }

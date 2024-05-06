@@ -90,7 +90,7 @@ extension ArtistView {
                                         NavigationStack {
                                             ScrollView {
                                                 Text(overview)
-                                                    .padding()
+                                                    .padding(.outerSpacing)
                                             }
                                             .navigationTitle(artist.name)
                                             .presentationDragIndicator(.visible)
@@ -116,10 +116,10 @@ extension ArtistView {
                                     .modifier(ButtonHoverEffectModifier())
                             }
                             .font(.title)
-                            .padding(.leading)
+                            .padding(.leading, .innerSpacing)
                             .popoverTip(ArtistPlaybackTip())
                         }
-                        .padding(20)
+                        .padding(.outerSpacing)
                     }
                 }
             }

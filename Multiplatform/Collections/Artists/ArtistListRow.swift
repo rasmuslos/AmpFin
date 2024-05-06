@@ -15,10 +15,11 @@ struct ArtistListRow: View {
         NavigationLink {
             ArtistView(artist: artist)
         } label: {
-            HStack {
+            HStack(spacing: 0) {
                 ItemImage(cover: artist.cover)
                     .clipShape(RoundedRectangle(cornerRadius: 1000))
                     .frame(width: 45)
+                    .padding(.trailing, .connectedSpacing)
                 
                 Text(artist.name)
                     .padding(.horizontal, 5)

@@ -9,6 +9,8 @@ import SwiftUI
 import AFBase
 
 struct AlbumCover: View {
+    @Environment(\.redactionReasons) private var redactionReasons
+    
     let album: Album
     
     var body: some View {

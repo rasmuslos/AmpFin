@@ -19,10 +19,10 @@ struct PlaylistListRow: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             ItemImage(cover: playlist.cover)
                 .frame(width: 60)
-                .padding(.trailing, 5)
+                .padding(.trailing, .connectedSpacing)
             
             VStack(alignment: .leading) {
                 Text(playlist.name)

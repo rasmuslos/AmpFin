@@ -24,10 +24,10 @@ struct PlaylistView: View {
             Header(playlist: playlist, toolbarVisible: $toolbarVisible) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: playlist))
             }
-            .padding(.bottom, 4)
+            .padding(.bottom, .connectedSpacing / 2)
             
             TrackList(tracks: tracks, container: playlist, deleteCallback: JellyfinClient.shared.online ? removeTrack : nil, moveCallback: JellyfinClient.shared.online ? moveTrack : nil)
-                .padding(.horizontal, 20)
+                .padding(.horizontal, .outerSpacing)
         }
         .environment(\.editMode, $editMode)
         .listStyle(.plain)

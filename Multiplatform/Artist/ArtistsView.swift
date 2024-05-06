@@ -26,7 +26,7 @@ struct ArtistsView: View {
             if success {
                 List {
                     ArtistList(artists: artists, count: count, expand: expand)
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, .outerSpacing)
                 }
                 .listStyle(.plain)
                 .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.artists")

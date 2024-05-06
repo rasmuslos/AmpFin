@@ -107,7 +107,7 @@ struct AlbumContextMenuModifier: ViewModifier {
             } preview: {
                 VStack(alignment: .leading) {
                     ItemImage(cover: album.cover)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, .connectedSpacing)
                     
                     Text(album.name)
                     if !album.artists.isEmpty {
@@ -117,7 +117,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                     }
                 }
                 .frame(width: 250)
-                .padding(20)
+                .padding(.outerSpacing)
                 .background(.ultraThickMaterial)
                 .onAppear {
                     showDownloadButton = true

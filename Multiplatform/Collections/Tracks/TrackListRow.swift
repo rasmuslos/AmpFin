@@ -40,7 +40,7 @@ struct TrackListRow: View {
             Button {
                 startPlayback()
             } label: {
-                HStack {
+                HStack(spacing: 0) {
                     Group {
                         if album != nil {
                             if isPlaying {
@@ -73,6 +73,7 @@ struct TrackListRow: View {
                     .frame(width: size, height: size)
                     .transition(.blurReplace)
                     .id(track.id)
+                    .padding(.trailing, .connectedSpacing)
                     
                     VStack(alignment: .leading) {
                         Text(track.name)

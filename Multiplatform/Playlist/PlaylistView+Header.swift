@@ -53,12 +53,12 @@ extension PlaylistView {
                     .font(.subheadline)
                     .fontDesign(.rounded)
                     .foregroundStyle(.secondary)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, .connectedSpacing)
                     
                     TrackListButtons(background: .ultraThinMaterial, startPlayback: startPlayback)
                 }
-                .padding(.bottom, 10)
-                .padding(.horizontal, 20)
+                .padding(.bottom, .connectedSpacing)
+                .padding(.horizontal, .outerSpacing)
                 .background {
                     Background(playlist: playlist)
                         .offset(y: -offset)

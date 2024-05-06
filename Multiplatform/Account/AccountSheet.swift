@@ -39,7 +39,7 @@ struct AccountSheet: View {
                         Text(JellyfinClient.shared.userId)
                             .font(.caption)
                     }
-                    .padding(.leading, 15)
+                    .padding(.leading, .innerSpacing)
                 }
                 
                 Remote()

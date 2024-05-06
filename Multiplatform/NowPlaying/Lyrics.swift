@@ -49,7 +49,7 @@ extension NowPlaying {
                                     .font(.caption.smallCaps())
                                     .foregroundStyle(.secondary)
                                     .multilineTextAlignment(.center)
-                                    .padding()
+                                    .padding(.outerSpacing)
                             } else {
                                 ProgressView()
                             }

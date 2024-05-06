@@ -47,8 +47,8 @@ extension AlbumView {
                     }
                 }
                 .padding(.top, 110)
-                .padding(.bottom, 10)
-                .padding(.horizontal, 20)
+                .padding(.bottom, .connectedSpacing)
+                .padding(.horizontal, .outerSpacing)
             }
             .background(imageColors.background)
             .listRowSeparator(.hidden)
@@ -123,7 +123,7 @@ extension AlbumView.Header {
         let startPlayback: (_ shuffle: Bool) -> ()
         
         var body: some View {
-            LazyVGrid(columns: [.init(spacing: 15), .init()]) {
+            LazyVGrid(columns: [.init(spacing: .innerSpacing), .init()]) {
                 PlayButton(icon: "play.fill", label: "queue.play", imageColors: imageColors) {
                     startPlayback(false)
                 }
@@ -202,7 +202,7 @@ extension AlbumView.Header {
                     .shadow(color: .black.opacity(0.25), radius: 20)
                     .frame(width: 275)
                     .hoverEffect(.highlight)
-                    .padding(.trailing, 20)
+                    .padding(.trailing, .outerSpacing)
                 
                 VStack(alignment: .leading, spacing: 20) {
                     Spacer()
@@ -211,7 +211,7 @@ extension AlbumView.Header {
                     PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
                 }
             }
-            .padding(.bottom, 20)
+            .padding(.bottom, .outerSpacing)
         }
     }
 }

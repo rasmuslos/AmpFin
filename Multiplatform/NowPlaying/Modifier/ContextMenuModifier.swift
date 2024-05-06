@@ -134,9 +134,8 @@ extension NowPlaying {
                         }
                     }
                 } preview: {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: .innerSpacing) {
                         ItemImage(cover: track.cover)
-                            .padding(.bottom, 10)
                         
                         Text(track.name)
                         

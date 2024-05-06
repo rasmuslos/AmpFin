@@ -83,12 +83,12 @@ extension NowPlaying {
                                                 .labelStyle(.iconOnly)
                                                 .symbolEffect(.bounce.up, value: animateForwards)
                                         }
-                                        .padding(.horizontal, 10)
+                                        .padding(.horizontal, .innerSpacing)
                                     }
                                     .imageScale(.large)
                                 }
                                 .frame(height: 56)
-                                .padding(.horizontal, 10)
+                                .padding(.horizontal, .outerSpacing / 2)
                                 .foregroundStyle(.primary)
                                 .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 15, style: .continuous))
                                 .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
@@ -104,7 +104,7 @@ extension NowPlaying {
                                 }
                                 .shadow(color: .black.opacity(0.25), radius: 20)
                                 .padding(.bottom, 10)
-                                .padding(.horizontal, 10)
+                                .padding(.horizontal, .outerSpacing / 2)
                                 .zIndex(1)
                                 .onTapGesture {
                                     nowPlayingViewState.setNowPlayingViewPresented(true)

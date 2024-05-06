@@ -24,7 +24,7 @@ extension AlbumView {
                 ProgressView()
                     .frame(height: 0)
                     .listRowSeparator(.hidden)
-                    .padding(.horizontal)
+                    .padding(.horizontal, .outerSpacing)
                     .task {
                         fetchAlbums()
                     }

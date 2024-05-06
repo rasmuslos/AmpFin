@@ -59,11 +59,11 @@ struct LibraryView: View {
                         .font(.headline)
                     Spacer()
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 10)
+                .padding(.horizontal, .outerSpacing)
+                .padding(.top, .connectedSpacing)
                 
                 AlbumGrid(albums: albums)
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, .outerSpacing)
             } else if !JellyfinClient.shared.online && dataProvider as? OnlineLibraryDataProvider != nil {
                 ContentUnavailableView("offline.title", systemImage: "network.slash", description: Text("offline.description"))
                     .padding(.top, 100)

@@ -19,8 +19,8 @@ struct TrackGrid: View {
     
     @State private var width: CGFloat = .zero
     
-    private let gap: CGFloat = 10
-    private let padding: CGFloat = 20
+    private let gap: CGFloat = .connectedSpacing
+    private let padding: CGFloat = .innerSpacing
     
     private var size: CGFloat {
         let minimum = horizontalSizeClass == .compact ? 300 : 450.0

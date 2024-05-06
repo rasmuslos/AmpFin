@@ -12,9 +12,10 @@ struct AlbumListRow: View {
     let album: Album
     
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             ItemImage(cover: album.cover)
                 .frame(width: 45)
+                .padding(.trailing, .connectedSpacing)
             
             VStack(alignment: .leading) {
                 Text(album.name)

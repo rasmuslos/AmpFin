@@ -44,10 +44,10 @@ struct ArtistView: View {
                             
                             Spacer()
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, .outerSpacing)
                         
                         TrackGrid(tracks: tracks, container: artist)
-                            .padding(.bottom, 10)
+                            .padding(.bottom, .connectedSpacing)
                     }
                     
                     if !albums.isEmpty {
@@ -57,11 +57,11 @@ struct ArtistView: View {
                             
                             Spacer()
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, .outerSpacing)
                         
                         AlbumGrid(albums: albums, count: count, loadMore: fetchAlbums)
-                            .padding(.horizontal, 20)
-                            .padding(.bottom, 10)
+                            .padding(.horizontal, .outerSpacing)
+                            .padding(.bottom, .connectedSpacing)
                     } else {
                         Text("artist.empty")
                             .font(.headline.smallCaps())
@@ -69,7 +69,7 @@ struct ArtistView: View {
                             .padding(.top, 100)
                     }
                 }
-                .padding(.top, artist.cover == nil ? 0 : 17)
+                .padding(.top, artist.cover == nil ? 0 : .connectedSpacing)
                 .background(.background)
             }
         }
