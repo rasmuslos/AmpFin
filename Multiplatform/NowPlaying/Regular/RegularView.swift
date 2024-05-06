@@ -37,7 +37,7 @@ extension NowPlaying {
                 .frame(height: 0)
                 
                 if let track = AudioPlayer.current.nowPlaying {
-                    Background(cover: track.cover)
+                    Background(cover: track.cover, dragging: false)
                         .clipped()
                     
                     VStack {

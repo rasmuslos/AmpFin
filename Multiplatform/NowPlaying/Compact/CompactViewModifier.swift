@@ -43,7 +43,7 @@ extension NowPlaying {
                 
                 Group {
                     if let track = presentedTrack {
-                        Background(cover: track.cover)
+                        Background(cover: track.cover, dragging: dragOffset != 0)
                             .zIndex(1)
                             .transition(.asymmetric(
                                 insertion: .modifier(active: BackgroundInsertTransitionModifier(active: true), identity: BackgroundInsertTransitionModifier(active: false)),
@@ -155,7 +155,6 @@ extension NowPlaying {
                 }
                 .allowsHitTesting(presentedTrack != nil)
                 .offset(y: dragOffset)
-                .animation(.spring, value: dragOffset)
             }
             .ignoresSafeArea(edges: .all)
             .environment(viewState)

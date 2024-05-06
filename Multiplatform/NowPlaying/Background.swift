@@ -7,12 +7,14 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 import FluidGradient
 import AFBase
 
 extension NowPlaying {
     struct Background: View {
         let cover: Item.Cover?
+        let dragging: Bool
         
         @State private var imageColors: ImageColors?
         
@@ -39,8 +41,8 @@ extension NowPlaying {
                     Color.gray.opacity(0.8)
                 }
             }
-            .ignoresSafeArea(edges: .all)
             .overlay(.black.opacity(0.25))
+            .clipShape(RoundedRectangle(cornerRadius: dragging ? UIScreen.main.displayCornerRadius : 0, style: .continuous))
             .allowsHitTesting(false)
         }
         

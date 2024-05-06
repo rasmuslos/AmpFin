@@ -11,6 +11,7 @@
 		3A0A49292B6C1EDC00AAA647 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A0A49282B6C1EDC00AAA647 /* InfoPlist.xcstrings */; };
 		3A0D2D112BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D2D102BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift */; };
 		3A0D2D132BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D2D122BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift */; };
+		3A0F99F02BE8BF4600F6B7B4 /* UIScreen+Radius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0F99EF2BE8BF4600F6B7B4 /* UIScreen+Radius.swift */; };
 		3A1CBC192B0D284200855A70 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1CBC182B0D284200855A70 /* Navigation.swift */; };
 		3A209FCC2AAB1F6700AD67C3 /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */; };
 		3A234DFB2AA883EC00197AA7 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234DFA2AA883EC00197AA7 /* LibraryView.swift */; };
@@ -169,6 +170,7 @@
 		3A0A49282B6C1EDC00AAA647 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		3A0D2D102BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentShapeKinds+HoverMenuInteraction.swift"; sourceTree = "<group>"; };
 		3A0D2D122BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonHoverEffectModifier.swift; sourceTree = "<group>"; };
+		3A0F99EF2BE8BF4600F6B7B4 /* UIScreen+Radius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Radius.swift"; sourceTree = "<group>"; };
 		3A1CBC182B0D284200855A70 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
 		3A234DFA2AA883EC00197AA7 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
@@ -606,6 +608,7 @@
 				3A5515F62BC449A400B922D7 /* Defaults+Keys.swift */,
 				3A5B470E2B3B37A60075118F /* UIImage+IsLight.swift */,
 				3A44B06C2BA194410013E4EF /* Double+Duration.swift */,
+				3A0F99EF2BE8BF4600F6B7B4 /* UIScreen+Radius.swift */,
 				3ABBB7262B755D3C00530BFB /* UIViewController+DarkMode.swift */,
 				3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */,
 				3A0D2D102BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift */,
@@ -934,6 +937,7 @@
 				3A36A5A02ADEF99700D83BE7 /* AlbumView+Additional.swift in Sources */,
 				3AEB32332AA7EC3C00853210 /* LoginView.swift in Sources */,
 				3A7939022B387851001B3B3D /* OnlineLibraryDataProivder.swift in Sources */,
+				3A0F99F02BE8BF4600F6B7B4 /* UIScreen+Radius.swift in Sources */,
 				3A2B28E52B433C8A00DF9731 /* PlaylistsView.swift in Sources */,
 				3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */,
 				3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */,
