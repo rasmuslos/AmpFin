@@ -159,9 +159,6 @@ extension AlbumView.Header {
             .hoverEffect(.lift)
             .foregroundColor(.accentColor)
             .bold()
-            .onTapGesture {
-                callback()
-            }
         }
     }
 }

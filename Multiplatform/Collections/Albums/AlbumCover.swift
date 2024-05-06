@@ -16,8 +16,6 @@ struct AlbumCover: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ItemImage(cover: album.cover)
-                .modifier(AlbumContextMenuModifier(album: album))
-                .hoverEffect(.highlight)
             
             Group {
                 Text(album.name)
@@ -32,6 +30,10 @@ struct AlbumCover: View {
             }
             .lineLimit(1)
         }
+        .padding(.innerSpacing / 2)
+        .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 7))
+        .modifier(AlbumContextMenuModifier(album: album))
+        .padding(.innerSpacing / -2)
     }
 }
 

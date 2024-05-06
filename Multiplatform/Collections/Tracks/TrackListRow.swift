@@ -116,17 +116,17 @@ struct TrackListRow: View {
                 .popoverTip(InstantMixTip())
             }
         }
+        .padding(7)
+        .contentShape([.hoverMenuInteraction, .dragPreview], RoundedRectangle(cornerRadius: 7))
         .draggable(track) {
             TrackPreview(track: track)
-                .padding(4)
         }
         .contextMenu {
             TrackMenu(track: track, album: album, deleteCallback: deleteCallback, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
         } preview: {
             TrackPreview(track: track)
-                .padding()
-                .clipShape(RoundedRectangle(cornerRadius: 15))
         }
+        .padding(-7)
         .sheet(isPresented: $addToPlaylistSheetPresented) {
             PlaylistAddSheet(track: track)
         }
@@ -168,6 +168,9 @@ extension TrackListRow {
                 
                 Spacer()
             }
+            .padding(.connectedSpacing)
+            .background()
+            .clipShape(RoundedRectangle(cornerRadius: 7))
         }
     }
     

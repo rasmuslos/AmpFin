@@ -59,6 +59,7 @@ struct TrackGrid: View {
                 .padding(.trailing, padding)
             }
             .scrollTargetBehavior(.viewAligned)
+            .scrollClipDisabled()
         }
     }
 }

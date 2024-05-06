@@ -8,6 +8,7 @@
 import SwiftUI
 import AFBase
 import AFOffline
+import AFPlayback
 
 struct PlaylistListRow: View {
     let playlist: Playlist
@@ -40,7 +41,27 @@ struct PlaylistListRow: View {
             
             return true
         }
-        .swipeActions(edge: .leading) {
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            Button {
+                Task {
+                    AudioPlayer.current.queueTracks(try await JellyfinClient.shared.getTracks(playlistId: playlist.id), index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
+                }
+            } label: {
+                Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
+            }
+            .tint(.orange)
+        }
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            Button {
+                Task {
+                    AudioPlayer.current.queueTracks(try await JellyfinClient.shared.getTracks(playlistId: playlist.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
+                }
+            } label: {
+                Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
+            }
+            .tint(.blue)
+        }
+        .swipeActions(edge: .trailing) {
             Button {
                 if offlineTracker.status == .none {
                     Task {
@@ -62,7 +83,7 @@ struct PlaylistListRow: View {
                 }
             }
         }
-        .swipeActions(edge: .trailing) {
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button {
                 Task {
                     await playlist.setFavorite(favorite: !playlist.favorite)

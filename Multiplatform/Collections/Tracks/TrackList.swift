@@ -46,8 +46,8 @@ struct TrackList: View {
                 } header: {
                     Text("tracks.disk \(disk)")
                         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        .padding(.top, -30)
                 }
-                .padding(.top, -25)
             }
         } else {
             TrackSection(tracks: sort(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, expand: expand)
