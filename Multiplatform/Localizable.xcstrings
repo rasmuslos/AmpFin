@@ -144,13 +144,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keine unterstützten Anwendungen gefunden"
+            "value" : "Keine Anwendungen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No supported clients found"
+            "value" : "No clients found"
           }
         }
       }
@@ -375,23 +375,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
-          }
-        }
-      }
-    },
-    "Command :)" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Command :)"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Command :)"
           }
         }
       }
