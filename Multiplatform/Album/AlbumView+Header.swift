@@ -90,27 +90,19 @@ extension AlbumView.Header {
                 }
                 
                 if album.releaseDate != nil || !album.genres.isEmpty {
-                    ZStack {
-                        Text(verbatim: "FFS")
-                        Rectangle()
-                            .frame(height: 0)
-                    }
-                    .opacity(0)
-                    .overlay(alignment: alignment == .leading ? .leading : .center) {
-                        HStack(spacing: 0) {
-                            if let releaseDate = album.releaseDate {
-                                Text(releaseDate, format: Date.FormatStyle().year())
-                                
-                                if !album.genres.isEmpty {
-                                    Text(verbatim: " • ")
-                                }
+                    HStack(spacing: 0) {
+                        if let releaseDate = album.releaseDate {
+                            Text(releaseDate, format: Date.FormatStyle().year())
+                            
+                            if !album.genres.isEmpty {
+                                Text(verbatim: " • ")
                             }
-                            Text(album.genres.joined(separator: String(", ")))
-                                .lineLimit(1)
                         }
-                        .font(.caption)
-                        .foregroundStyle(imageColors.primary.opacity(0.75))
+                        Text(album.genres.joined(separator: String(", ")))
+                            .lineLimit(1)
                     }
+                    .font(.caption)
+                    .foregroundStyle(imageColors.primary.opacity(0.75))
                 }
             }
         }
@@ -173,7 +165,7 @@ extension AlbumView.Header {
         let startPlayback: (_ shuffle: Bool) -> ()
         
         var body: some View {
-            VStack(spacing: 20) {
+            VStack(spacing: .innerSpacing) {
                 ItemImage(cover: album.cover)
                     .shadow(color: .black.opacity(0.25), radius: 20)
                     .frame(width: 275)
@@ -194,19 +186,23 @@ extension AlbumView.Header {
         let startPlayback: (_ shuffle: Bool) -> ()
         
         var body: some View {
-            HStack {
+            HStack(spacing: .innerSpacing) {
                 ItemImage(cover: album.cover)
                     .shadow(color: .black.opacity(0.25), radius: 20)
                     .frame(width: 275)
                     .hoverEffect(.highlight)
                     .padding(.trailing, .outerSpacing)
                 
-                VStack(alignment: .leading, spacing: 20) {
-                    Spacer()
-                    AlbumTitle(album: album, largeFont: true, imageColors: imageColors, alignment: .leading)
-                    Spacer()
-                    PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
-                }
+                Color.clear
+                    .frame(minWidth: 250)
+                    .overlay {
+                        VStack(alignment: .leading, spacing: .innerSpacing) {
+                            Spacer()
+                            AlbumTitle(album: album, largeFont: true, imageColors: imageColors, alignment: .leading)
+                            Spacer()
+                            PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
+                        }
+                    }
             }
             .padding(.bottom, .outerSpacing)
         }
