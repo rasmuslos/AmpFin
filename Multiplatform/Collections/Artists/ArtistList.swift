@@ -15,22 +15,20 @@ struct ArtistList: View {
     var expand: Expand? = nil
     
     var body: some View {
-        List {
-            ForEach(artists) { artist in
-                ArtistListRow(artist: artist)
-                    .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
-                    .onAppear {
-                        if artist == artists.last {
-                            expand?()
-                        }
+        ForEach(artists) { artist in
+            ArtistListRow(artist: artist)
+                .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+                .onAppear {
+                    if artist == artists.last {
+                        expand?()
                     }
-            }
-            ForEach(0..<(max(0, count - artists.count)), id: \.hashValue) { _ in
-                ArtistListRow.placeholder
-                    .onAppear { expand?() }
-            }
+                }
         }
-        .listStyle(.plain)
+        
+        ForEach(0..<(max(0, count - artists.count)), id: \.hashValue) { _ in
+            ArtistListRow.placeholder
+                .onAppear { expand?() }
+        }
     }
 }
 
@@ -40,20 +38,23 @@ extension ArtistList {
 
 #Preview {
     NavigationStack {
-        ArtistList(artists: [
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-            Artist.fixture,
-        ])
+        List {
+            ArtistList(artists: [
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+                Artist.fixture,
+            ])
+        }
+        .listStyle(.plain)
     }
 }

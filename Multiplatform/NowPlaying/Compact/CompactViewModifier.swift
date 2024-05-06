@@ -29,10 +29,22 @@ extension NowPlaying {
             
             return nil
         }
+        private var contentOffset: CGFloat {
+            return 1 - (0.07 - 0.07 * max(0, min(500, abs(dragOffset))) / 500)
+        }
         
         func body(content: Content) -> some View {
             ZStack {
+                Rectangle()
+                    .foregroundStyle(.black)
+                
                 content
+                /*
+                    .clipShape(RoundedRectangle(cornerRadius: UIScreen.main.displayCornerRadius * contentOffset, style: .continuous))
+                    .clipped(antialiased: true)
+                    .scaleEffect(viewState.presented ? contentOffset : 1, anchor: .bottom)
+                    .animation(.spring, value: viewState.presented)
+                 */
                     .allowsHitTesting(!viewState.presented)
                     .onAppear {
                         viewState.namespace = namespace
@@ -65,6 +77,7 @@ extension NowPlaying {
                                 } else {
                                     SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                                         .transition(.opacity.animation(.linear(duration: 0.1)))
+                                        .modifier(GestureModifier(active: true, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                                     
                                     Group {
                                         if currentTab == .lyrics {
@@ -91,7 +104,6 @@ extension NowPlaying {
                                             .padding(.bottom, 30)
                                             .padding(.horizontal, -30)
                                     }
-                                    // .transition(.opacity.animation(.linear(duration: 0.2)))
                                     .transition(.modifier(
                                         active: CollapseTransitionModifier(active: true),
                                         identity: CollapseTransitionModifier(active: false)))
@@ -110,6 +122,7 @@ extension NowPlaying {
                                         .frame(width: 50, height: 7)
                                         .clipShape(RoundedRectangle(cornerRadius: 10000))
                                 }
+                                .modifier(GestureModifier(active: true, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                                 .transition(.asymmetric(
                                     insertion: .opacity.animation(.linear(duration: 0.1).delay(0.3)),
                                     removal: .opacity.animation(.linear(duration: 0.05))))
@@ -117,33 +130,7 @@ extension NowPlaying {
                         }
                         .padding(.horizontal, 30)
                         .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
-                        .simultaneousGesture(
-                            DragGesture(minimumDistance: 25, coordinateSpace: .global)
-                                .onChanged {
-                                    if controlsDragging || currentTab == .lyrics {
-                                        return
-                                    }
-                                    
-                                    if $0.velocity.height > 3000 {
-                                        viewState.setNowPlayingViewPresented(false) {
-                                            dragOffset = 0
-                                        }
-                                    } else if $0.velocity.height < -3000 {
-                                        dragOffset = 0
-                                    } else {
-                                        dragOffset = max(0, $0.translation.height)
-                                    }
-                                }
-                                .onEnded {
-                                    if $0.translation.height > 200 && dragOffset != 0 {
-                                        viewState.setNowPlayingViewPresented(false) {
-                                            dragOffset = 0
-                                        }
-                                    } else {
-                                        dragOffset = 0
-                                    }
-                                }
-                        )
+                        .modifier(GestureModifier(active: currentTab == .cover, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                         .onChange(of: currentTab) {
                             dragOffset = 0
                             
@@ -202,6 +189,48 @@ extension NowPlaying {
                 
                 completion?()
             }
+        }
+    }
+}
+
+private extension NowPlaying {
+    struct GestureModifier: ViewModifier {
+        @Environment(CompactViewState.self) private var viewState
+        
+        let active: Bool
+        let controlsDragging: Bool
+        
+        @Binding var dragOffset: CGFloat
+        
+        func body(content: Content) -> some View {
+            content
+                .simultaneousGesture(
+                    DragGesture(minimumDistance: active ? 0 : 1000, coordinateSpace: .global)
+                        .onChanged {
+                            if controlsDragging {
+                                return
+                            }
+                            
+                            if $0.velocity.height > 3000 {
+                                viewState.setNowPlayingViewPresented(false) {
+                                    dragOffset = 0
+                                }
+                            } else if $0.velocity.height < -3000 {
+                                dragOffset = 0
+                            } else {
+                                dragOffset = max(0, $0.translation.height)
+                            }
+                        }
+                        .onEnded {
+                            if $0.translation.height > 200 && dragOffset != 0 {
+                                viewState.setNowPlayingViewPresented(false) {
+                                    dragOffset = 0
+                                }
+                            } else {
+                                dragOffset = 0
+                            }
+                        }
+                )
         }
     }
 }

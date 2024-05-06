@@ -28,8 +28,13 @@ struct DownloadIndicator: View {
         }
         .padding(.horizontal, 4)
         .foregroundStyle(.secondary)
-        .onAppear {
-            offlineTracker = item.offlineTracker
+        
+        if offlineTracker == nil {
+            Color.clear
+                .frame(width: 0, height: 0)
+                .onAppear {
+                    offlineTracker = item.offlineTracker
+                }
         }
     }
 }

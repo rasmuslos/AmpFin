@@ -22,19 +22,22 @@ struct ArtistsView: View {
     @State private var searchTask: Task<Void, Error>?
     
     var body: some View {
-        VStack {
+        Group {
             if success {
-                ArtistList(artists: artists, count: count, expand: expand)
-                    .padding(.horizontal, 20)
-                    .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.artists")
-                    .onChange(of: search) {
-                        searchTask?.cancel()
-                        searchTask = Task {
-                            try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
-                            await fetchArtists(search: self.search)
-                            searchTask = nil
-                        }
+                List {
+                    ArtistList(artists: artists, count: count, expand: expand)
+                        .padding(.horizontal, 20)
+                }
+                .listStyle(.plain)
+                .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.artists")
+                .onChange(of: search) {
+                    searchTask?.cancel()
+                    searchTask = Task {
+                        try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
+                        await fetchArtists(search: self.search)
+                        searchTask = nil
                     }
+                }
             } else if failed {
                 ErrorView()
             } else {

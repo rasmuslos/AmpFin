@@ -54,6 +54,10 @@ extension NowPlaying {
                     }
                 }
                 
+                if result.isEmpty {
+                    return nil
+                }
+                
                 return result.joined(separator: " - ")
             }
             

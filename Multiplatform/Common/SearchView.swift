@@ -36,10 +36,7 @@ struct SearchView: View {
                 
                 if !artists.isEmpty {
                     Section("section.artists") {
-                        ForEach(artists) { artist in
-                            ArtistListRow(artist: artist)
-                                .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
-                        }
+                        ArtistList(artists: artists)
                     }
                 }
                 

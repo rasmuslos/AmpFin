@@ -55,6 +55,7 @@ struct TrackList: View {
         
         ForEach(0..<(min(10000, max(0, count - tracks.count))), id: \.hashValue) { _ in
             TrackListRow.placeholder
+                .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
                 .onAppear { expand() }
         }
     }
