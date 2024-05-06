@@ -37,6 +37,7 @@ struct SearchView: View {
                 if !artists.isEmpty {
                     Section("section.artists") {
                         ArtistList(artists: artists)
+                            .padding(.horizontal, 20)
                     }
                 }
                 
