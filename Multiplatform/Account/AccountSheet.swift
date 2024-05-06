@@ -14,14 +14,13 @@ import AFPlayback
 
 struct AccountSheet: View {
     @State private var username: String?
-    @State private var sessions: [Session]? = nil
     @State private var downloads: [Track]? = nil
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
             List {
-                HStack {
+                HStack(spacing: 0) {
                     ItemImage(cover: Item.Cover(type: .remote, url: URL(string: "\(JellyfinClient.shared.serverUrl!)/Users/\(JellyfinClient.shared.userId!)/Images/Primary?quality=90")!))
                         .frame(width: 50)
                         .clipShape(RoundedRectangle(cornerRadius: 10000))
@@ -40,69 +39,19 @@ struct AccountSheet: View {
                         Text(JellyfinClient.shared.userId)
                             .font(.caption)
                     }
-                    .padding(.trailing, 5)
+                    .padding(.leading, 15)
                 }
                 
-                Section("account.remote") {
-                    if JellyfinWebSocket.shared.isConnected {
-                        if AudioPlayer.current.source == .jellyfinRemote {
-                            Button {
-                                AudioPlayer.current.destroy()
-                            } label: {
-                                Text("remote.disconnect")
-                            }
-                        } else if let sessions = sessions {
-                            if sessions.count == 0 {
-                                Text("account.remote.empty")
-                                    .foregroundStyle(.secondary)
-                            } else {
-                                ForEach(sessions) { session in
-                                    Button {
-                                        AudioPlayer.current.startRemoteControl(session: session)
-                                    } label: {
-                                        VStack(alignment: .leading, spacing: 7) {
-                                            Text(verbatim: "\(session.name) • \(session.client)")
-                                            
-                                            if let nowPlaying = session.nowPlaying {
-                                                HStack {
-                                                    Image(systemName: "waveform")
-                                                        .symbolEffect(.pulse.byLayer)
-                                                    
-                                                    Text(nowPlaying.name)
-                                                    
-                                                    Spacer()
-                                                }
-                                                .font(.caption)
-                                                .foregroundStyle(.secondary)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            Text("account.remote.loading")
-                                .foregroundStyle(.secondary)
-                                .task {
-                                    sessions = await JellyfinClient.shared.getControllableSessions()
-                                }
-                        }
-                    } else {
-                        Button {
-                            JellyfinWebSocket.shared.connect()
-                        } label: {
-                            Text("remote.connect")
-                        }
-                    }
-                }
-                .popoverTip(RemoteTip())
+                Remote()
                 
                 Section {
                     Button {
                         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                     } label: {
-                        Text("account.settings")
+                        Label("account.settings", systemImage: "gear")
                     }
                 }
+                .foregroundStyle(.primary)
                 
                 Section("account.downloads.queue") {
                     if let downloads = downloads {
@@ -122,46 +71,52 @@ struct AccountSheet: View {
                     }
                 }
                 
-                Section() {
-                    Button(role: .destructive) {
-                        JellyfinClient.shared.logout()
-                    } label: {
-                        Text("account.logout")
-                    }
-                    Button(role: .destructive) {
-                        try! OfflineManager.shared.deleteAll()
-                    } label: {
-                        Text("account.deleteDownloads")
-                    }
-                    Button(role: .destructive) {
-                        SpotlightHelper.deleteSpotlightIndex()
-                        ImagePipeline.shared.cache.removeAll()
-                    } label: {
-                        Text("account.deleteSpotlightIndex")
-                    }
-                }
-                
                 Section {
                     Button {
                         UIApplication.shared.open(URL(string: "https://github.com/rasmuslos/AmpFin")!)
                     } label: {
-                        Text("account.github")
+                        Label("account.github", systemImage: "chevron.left.forwardslash.chevron.right")
                     }
                     
                     Button {
                         UIApplication.shared.open(URL(string: "https://rfk.io/support.htm")!)
                     } label: {
-                        Text("account.support")
+                        Label("account.support", systemImage: "lifepreserver")
                     }
                 }
+                .foregroundStyle(.primary)
+                
+                Section {
+                    Button(role: .destructive) {
+                        JellyfinClient.shared.logout()
+                    } label: {
+                        Label("account.logout", systemImage: "person.crop.circle.badge.minus")
+                    }
+                    
+                    Button(role: .destructive) {
+                        SpotlightHelper.deleteSpotlightIndex()
+                        ImagePipeline.shared.cache.removeAll()
+                    } label: {
+                        Label("account.deleteSpotlightIndex", systemImage: "square.stack.3d.up.slash")
+                    }
+                    
+                    Button(role: .destructive) {
+                        try! OfflineManager.shared.deleteAll()
+                    } label: {
+                        Label("account.deleteDownloads", systemImage: "slash.circle")
+                    }
+                }
+                .foregroundStyle(.red)
                 
                 Section("account.server") {
                     Group {
                         Text(JellyfinClient.shared.serverUrl.absoluteString)
+                        Text(JellyfinClient.shared.clientId)
                         Text(JellyfinClient.shared.token)
                             .privacySensitive()
                     }
                     .font(.footnote)
+                    .fontDesign(.monospaced)
                     .foregroundStyle(.secondary)
                 }
             }

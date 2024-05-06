@@ -34,6 +34,7 @@
 		3A36A59E2ADEF8BA00D83BE7 /* AlbumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A59D2ADEF8BA00D83BE7 /* AlbumRow.swift */; };
 		3A36A5A02ADEF99700D83BE7 /* AlbumView+Additional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */; };
 		3A36A5A22ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */; };
+		3A36ED3F2BE8EDD200AECE9C /* Account+Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36ED3E2BE8EDD200AECE9C /* Account+Remote.swift */; };
 		3A3AF1A62AC4523600811D7D /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AF1A52AC4523600811D7D /* AccountSheet.swift */; };
 		3A3DA6612AAB29470091211A /* ArtistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3DA6602AAB29470091211A /* ArtistsView.swift */; };
 		3A3DA6642AAB2BC10091211A /* ArtistList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3DA6632AAB2BC10091211A /* ArtistList.swift */; };
@@ -197,6 +198,7 @@
 		3A36A59D2ADEF8BA00D83BE7 /* AlbumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumRow.swift; sourceTree = "<group>"; };
 		3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Additional.swift"; sourceTree = "<group>"; };
 		3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumContextMenuModifier.swift; sourceTree = "<group>"; };
+		3A36ED3E2BE8EDD200AECE9C /* Account+Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Remote.swift"; sourceTree = "<group>"; };
 		3A3AF1A52AC4523600811D7D /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
 		3A3DA6602AAB29470091211A /* ArtistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistsView.swift; sourceTree = "<group>"; };
 		3A3DA6632AAB2BC10091211A /* ArtistList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistList.swift; sourceTree = "<group>"; };
@@ -679,6 +681,7 @@
 			children = (
 				3AEB32292AA7EC3C00853210 /* LoginView.swift */,
 				3A3AF1A52AC4523600811D7D /* AccountSheet.swift */,
+				3A36ED3E2BE8EDD200AECE9C /* Account+Remote.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -982,6 +985,7 @@
 				3A5515F42BC4391300B922D7 /* Sidebar+Links.swift in Sources */,
 				3A773C5B2BA5F2F2005FD583 /* ContextMenuModifier.swift in Sources */,
 				3A3DA66D2AAB2EAE0091211A /* ArtistView+Header.swift in Sources */,
+				3A36ED3F2BE8EDD200AECE9C /* Account+Remote.swift in Sources */,
 				3A6F50A72AACA3D600FC8A29 /* SearchView.swift in Sources */,
 				3A234E182AA8E0AD00197AA7 /* TrackListRow.swift in Sources */,
 				3A0D2D132BE6C8B00001EC15 /* ButtonHoverEffectModifier.swift in Sources */,

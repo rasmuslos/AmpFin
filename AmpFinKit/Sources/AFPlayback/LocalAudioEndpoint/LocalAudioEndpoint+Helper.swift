@@ -31,11 +31,11 @@ internal extension LocalAudioEndpoint {
                 format!.removeFirst()
             }
         }
-        if bitrate != nil, bitrate! > 0 {
+        if bitrate != nil {
             bitrate = (bitrate! / 1000).rounded()
         }
         
-        return .init(codec: format, lossless: false, bitrate: bitrate != nil ? Int(bitrate!) : nil, bitDepth: nil, sampleRate: nil)
+        return .init(codec: format, lossless: false, bitrate: bitrate != nil && bitrate! > 0 ? Int(bitrate!) : nil, bitDepth: nil, sampleRate: nil)
     }
     
     func getAVPlayerItem(_ track: Track) -> AVPlayerItem {

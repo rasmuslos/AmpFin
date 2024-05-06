@@ -130,7 +130,7 @@ public extension JellyfinClient {
         
         let lossless: Bool
         
-        if let codec = audioStream.Codec?.lowercased(), codec == "flac" || codec == "alac" || codec == "ape" || codec == "wave" {
+        if let codec = audioStream.Codec?.lowercased(), codec == "flac" || codec == "alac" || codec == "ape" || codec == "wave" || codec.starts(with: "pcm") {
             lossless = true
         } else {
             lossless = false

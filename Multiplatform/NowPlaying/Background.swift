@@ -42,7 +42,7 @@ extension NowPlaying {
                 }
             }
             .overlay(.black.opacity(0.25))
-            .clipShape(RoundedRectangle(cornerRadius: dragging ? UIScreen.main.displayCornerRadius : 0, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: dragging ? UIScreen.main.displayCornerRadius : 0))
             .allowsHitTesting(false)
         }
         
