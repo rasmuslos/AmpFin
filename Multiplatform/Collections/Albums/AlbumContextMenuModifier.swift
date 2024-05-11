@@ -110,6 +110,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                         .padding(.bottom, .connectedSpacing)
                     
                     Text(album.name)
+                    
                     if !album.artists.isEmpty {
                         Text(album.artistName)
                             .font(.subheadline)

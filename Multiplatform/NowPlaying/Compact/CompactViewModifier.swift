@@ -29,9 +29,6 @@ extension NowPlaying {
             
             return nil
         }
-        private var contentOffset: CGFloat {
-            return 1 - (0.07 - 0.07 * max(0, min(500, abs(dragOffset))) / 500)
-        }
         
         func body(content: Content) -> some View {
             ZStack {
@@ -39,12 +36,6 @@ extension NowPlaying {
                     .foregroundStyle(.black)
                 
                 content
-                /*
-                    .clipShape(RoundedRectangle(cornerRadius: UIScreen.main.displayCornerRadius * contentOffset, style: .continuous))
-                    .clipped(antialiased: true)
-                    .scaleEffect(viewState.presented ? contentOffset : 1, anchor: .bottom)
-                    .animation(.spring, value: viewState.presented)
-                 */
                     .allowsHitTesting(!viewState.presented)
                     .onAppear {
                         viewState.namespace = namespace
@@ -74,6 +65,7 @@ extension NowPlaying {
                             if let track = presentedTrack {
                                 if currentTab == .cover {
                                     Cover(track: track, currentTab: currentTab, namespace: namespace)
+                                        .modifier(GestureModifier(active: currentTab == .cover, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                                 } else {
                                     SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                                         .transition(.opacity.animation(.linear(duration: 0.1)))
@@ -99,6 +91,7 @@ extension NowPlaying {
                                 if controlsVisible {
                                     Group {
                                         Controls(compact: false, controlsDragging: $controlsDragging)
+                                            .modifier(GestureModifier(active: currentTab == .cover, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                                         Buttons(currentTab: $currentTab)
                                             .padding(.top, 20)
                                             .padding(.bottom, 30)
@@ -130,7 +123,6 @@ extension NowPlaying {
                         }
                         .padding(.horizontal, 30)
                         .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
-                        .modifier(GestureModifier(active: currentTab == .cover, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                         .onChange(of: currentTab) {
                             dragOffset = 0
                             
