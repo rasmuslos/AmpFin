@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AFBase
+import AFOffline
 import AFPlayback
 
 struct TrackListRow: View {
@@ -175,14 +176,26 @@ extension TrackListRow {
     }
     
     struct TrackMenu: View {
-        @Environment(\.libraryDataProvider) var dataProvider
+        @Environment(\.libraryDataProvider) private var dataProvider
         
         let track: Track
         let album: Album?
         
         let deleteCallback: TrackList.DeleteCallback
         
+        let offlineTracker: ItemOfflineTracker
+        
         @Binding var addToPlaylistSheetPresented: Bool
+        
+        init(track: Track, album: Album?, deleteCallback: TrackList.DeleteCallback, addToPlaylistSheetPresented: Binding<Bool>) {
+            self.track = track
+            self.album = album
+            self.deleteCallback = deleteCallback
+            
+            offlineTracker = track.offlineTracker
+            
+            _addToPlaylistSheetPresented = addToPlaylistSheetPresented
+        }
         
         var body: some View {
             Button {
@@ -238,6 +251,16 @@ extension TrackListRow {
                     deleteCallback(track)
                 } label: {
                     Label("playlist.remove", systemImage: "trash.fill")
+                }
+            }
+            
+            if offlineTracker.status == .downloaded {
+                Divider()
+                
+                Button {
+                    try? OfflineManager.shared.update(trackId: track.id)
+                } label: {
+                    Label("download.update", systemImage: "arrow.triangle.2.circlepath")
                 }
             }
         }

@@ -9,8 +9,8 @@ import Foundation
 import AFBase
 
 extension DownloadManager {
-    func download(track: Track) -> URLSessionDownloadTask {
-        urlSession.downloadTask(with: URLRequest(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
+    func download(trackId: String) -> URLSessionDownloadTask {
+        urlSession.downloadTask(with: URLRequest(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: trackId).appending(path: "universal").appending(queryItems: [
             URLQueryItem(name: "api_key", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),

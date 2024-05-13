@@ -18,7 +18,7 @@ extension OfflineManager {
             return
         }
         
-        let downloadTask = DownloadManager.shared.download(track: track)
+        let downloadTask = DownloadManager.shared.download(trackId: track.id)
         
         let offlineItem = OfflineTrack(
             id: track.id,
@@ -34,12 +34,7 @@ extension OfflineManager {
         downloadTask.resume()
         
         Task.detached {
-            if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: track.id) {
-                Task.detached { @MainActor in
-                    let offlineLyrics = OfflineLyrics(trackId: track.id, lyrics: lyrics)
-                    PersistenceManager.shared.modelContainer.mainContext.insert(offlineLyrics)
-                }
-            }
+            let _ = await updateLyrics(trackId: track.id)
         }
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
@@ -158,5 +153,20 @@ public extension OfflineManager {
         }
         
         return nil
+    }
+    
+    @MainActor
+    func update(trackId: String) throws {
+        let track = try getOfflineTrack(trackId: trackId)
+        let downloadTask = DownloadManager.shared.download(trackId: trackId)
+        
+        track.downloadId = downloadTask.taskIdentifier
+        downloadTask.resume()
+        
+        Task.detached {
+            let _ = await updateLyrics(trackId: trackId)
+        }
+        
+        NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
     }
 }
