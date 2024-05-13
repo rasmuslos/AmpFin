@@ -141,9 +141,9 @@ private extension NowPlaying.Lyrics {
             failed = false
             
             Task.detached {
-                if let lyrics = await OfflineManager.shared.getLyrics(trackId: trackId) {
+                if let lyrics = await OfflineManager.shared.updateLyrics(trackId: trackId) {
                     self.lyrics = lyrics
-                } else if let lyrics = await OfflineManager.shared.updateLyrics(trackId: trackId) {
+                } else if let lyrics = await OfflineManager.shared.getLyrics(trackId: trackId) {
                     self.lyrics = lyrics
                 } else {
                     failed = true

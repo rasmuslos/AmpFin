@@ -8,6 +8,8 @@
 import Foundation
 
 extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
+    static var parentNotifyTask: Task<Void, Error>? = nil
+    
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         // Make sure the system does not delete the file
         let tmpLocation = documentsURL.appending(path: String(downloadTask.taskIdentifier))
@@ -37,8 +39,13 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                     
                     NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
                     
-                    for parentId in try OfflineManager.shared.getParentIds(childId: track.id) {
-                        NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: parentId)
+                    Self.parentNotifyTask?.cancel()
+                    Self.parentNotifyTask = Task {
+                        try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
+                        
+                        for parentId in try OfflineManager.shared.getParentIds(childId: track.id) {
+                            NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: parentId)
+                        }
                     }
                     
                     logger.info("Download finished: \(track.id) (\(track.name))")

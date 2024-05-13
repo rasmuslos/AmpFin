@@ -90,8 +90,8 @@ public extension OfflineManager {
             offlinePlaylist = try await create(playlist: playlist, tracks: tracks)
         }
         
-        for track in tracks {
-            Task.detached {
+        Task.detached {
+            for track in tracks {
                 await download(track: track)
             }
         }

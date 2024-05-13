@@ -33,7 +33,7 @@ struct PlaylistView: View {
         .listStyle(.plain)
         .ignoresSafeArea(edges: .top)
         .navigationTitle(playlist.name)
-        .modifier(ToolbarModifier(playlist: playlist, toolbarVisible: toolbarVisible, tracks: $tracks, editMode: $editMode))
+        .modifier(ToolbarModifier(playlist: playlist, toolbarVisible: $toolbarVisible, tracks: $tracks, editMode: $editMode))
         .modifier(NowPlaying.SafeAreaModifier())
         .userActivity("io.rfk.ampfin.playlist") {
             $0.title = playlist.name

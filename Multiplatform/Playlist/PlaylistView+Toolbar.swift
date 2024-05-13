@@ -18,16 +18,16 @@ extension PlaylistView {
         let playlist: Playlist
         let offlineTracker: ItemOfflineTracker
         
-        var toolbarVisible = false
+        @Binding var toolbarVisible: Bool
         
         @Binding var tracks: [Track]
         @Binding var editMode: EditMode
         
-        init(playlist: Playlist, toolbarVisible: Bool, tracks: Binding<[Track]>, editMode: Binding<EditMode>) {
+        init(playlist: Playlist, toolbarVisible: Binding<Bool>, tracks: Binding<[Track]>, editMode: Binding<EditMode>) {
             self.playlist = playlist
             offlineTracker = playlist.offlineTracker
             
-            self.toolbarVisible = toolbarVisible
+            _toolbarVisible = toolbarVisible
             
             _tracks = tracks
             _editMode = editMode
@@ -115,6 +115,17 @@ extension PlaylistView {
                                     Label("playlist.delete", systemImage: "trash")
                                 }
                                 .disabled(!JellyfinClient.shared.online)
+                                
+                                if offlineTracker.status != .none {
+                                    Divider()
+                                    
+                                    Button(role: .destructive) {
+                                        try? OfflineManager.shared.delete(playlistId: playlist.id)
+                                    } label: {
+                                        Label("download.remove.force", systemImage: "trash")
+                                            .foregroundStyle(.red)
+                                    }
+                                }
                             } label: {
                                 Image(systemName: "ellipsis")
                                     .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
