@@ -272,7 +272,7 @@ private extension NowPlaying {
         
         func body(content: Content) -> some View {
             content
-                .frame(height: active ? 0 : .infinity)
+                .frame(height: active ? 0 : nil)
                 .animation(.spring(duration: 0.1), value: active)
         }
     }
