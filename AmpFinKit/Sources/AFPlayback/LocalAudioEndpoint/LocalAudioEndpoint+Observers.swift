@@ -18,13 +18,18 @@ internal extension LocalAudioEndpoint {
             
             // Only check isPlaybackLikelyToKeepUp will not be enough because this value will return false
             // when the buffer is full and the playback time is not able to statisically predict if the playback can keepup
-            if let playItem = audioPlayer.currentItem {
+            // When curren item is not even playing, checking buffering will cause false positives
+            if let playItem = audioPlayer.currentItem, _playing{
                 // We have to check buffer empty first becaue Apple thinks it is valid to have
                 // isPlaybackBufferEmpty == true and isPlaybackBufferFull == true at the same time
                 if playItem.isPlaybackBufferEmpty {
                     buffering = true
                 } else if playItem.isPlaybackLikelyToKeepUp || playItem.isPlaybackBufferFull {
                     buffering = false
+                } else {
+                    // The buffer has something, not full, but unlikely to keepup
+                    // Uncommon for music files, but added for completeness
+                    buffering = true
                 }
             } else {
                 buffering = false
