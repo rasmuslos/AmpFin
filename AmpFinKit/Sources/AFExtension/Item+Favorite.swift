@@ -6,33 +6,43 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
+import AFNetwork
 
 #if canImport(AFOffline)
 import AFOffline
 #endif
 
-// MARK: Favorite
-
-extension Item {
-    @MainActor
-    public func setFavorite(favorite: Bool) async {
-        self.favorite = favorite
-
-        #if canImport(AFOffline)
-        OfflineManager.shared.updateOfflineFavorite(itemId: id, favorite: favorite)
-        
-        do {
-            try await JellyfinClient.shared.setFavorite(itemId: id, favorite: favorite)
-        } catch {
-            OfflineManager.shared.cacheFavorite(itemId: id, favorite: favorite)
+public extension Item {
+    var favorite: Bool {
+        get {
+            _favorite
         }
-        #endif
-        
-        try? await JellyfinClient.shared.setFavorite(itemId: id, favorite: favorite)
-        
-        NotificationCenter.default.post(name: Self.affinityChanged, object: id, userInfo: [
-            "favorite": favorite,
-        ])
+        set {
+            #if canImport(AFOffline)
+            _favorite = newValue
+            
+            Task {
+                await OfflineManager.shared.update(favorite: newValue, itemId: self.id)
+                
+                do {
+                    try await JellyfinClient.shared.favorite(newValue, identifier: self.id)
+                } catch {
+                    await OfflineManager.shared.cache(favorite: newValue, itemId: self.id)
+                }
+            }
+            #else
+            Task {
+                do {
+                    try await JellyfinClient.shared.favorite(newValue, identifier: self.id)
+                    _favorite = newValue
+                } catch {}
+            }
+            #endif
+            
+            NotificationCenter.default.post(name: Self.affinityChangedNotification, object: id, userInfo: [
+                "favorite": newValue,
+            ])
+        }
     }
 }

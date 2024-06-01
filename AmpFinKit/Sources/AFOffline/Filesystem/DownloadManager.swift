@@ -8,34 +8,39 @@
 import Foundation
 import OSLog
 
-/// HTTP & Filesystem manager for the offline system
 public final class DownloadManager: NSObject {
-    var documentsURL: URL!
     var urlSession: URLSession!
+    
+    let tracks: URL
+    let covers: URL
+    
+    let documents: URL
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "Download")
     
     override init() {
+        documents = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        
+        tracks = documents.appending(path: "tracks")
+        covers = documents.appending(path: "covers")
+        
         super.init()
+        
+        createDirectories()
         
         let config = URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
         config.isDiscretionary = false
         config.sessionSendsLaunchEvents = true
         
         urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
-        documentsURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        
-        createDirectories()
     }
     
     func createDirectories() {
-        try! FileManager.default.createDirectory(at: documentsURL.appending(path: "covers"), withIntermediateDirectories: true)
-        try! FileManager.default.createDirectory(at: documentsURL.appending(path: "tracks"), withIntermediateDirectories: true)
+        try! FileManager.default.createDirectory(at: covers, withIntermediateDirectories: true)
+        try! FileManager.default.createDirectory(at: tracks, withIntermediateDirectories: true)
     }
 }
 
-// MARK: Singleton
-
-extension DownloadManager {
-    public static let shared = DownloadManager()
+public extension DownloadManager {
+    static let shared = DownloadManager()
 }

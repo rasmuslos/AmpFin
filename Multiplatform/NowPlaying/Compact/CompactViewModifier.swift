@@ -7,7 +7,7 @@
 
 import SwiftUI
 import UIImageColors
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 extension NowPlaying {
@@ -32,17 +32,21 @@ extension NowPlaying {
         
         func body(content: Content) -> some View {
             ZStack {
-                Rectangle()
-                    .foregroundStyle(.black)
-                
                 content
                     .allowsHitTesting(!viewState.presented)
-                    .onAppear {
-                        viewState.namespace = namespace
-                    }
                     .modifier(Navigation.NavigationModifier() {
                         viewState.setNowPlayingViewPresented(false)
                     })
+                    .onAppear {
+                        viewState.namespace = namespace
+                    }
+                    .onChange(of: AudioPlayer.current.nowPlaying) { previous, current in
+                        guard previous == nil && current != nil else {
+                            return
+                        }
+                        
+                        viewState.setNowPlayingViewPresented(true)
+                    }
                 
                 Group {
                     if let track = presentedTrack {
@@ -64,12 +68,13 @@ extension NowPlaying {
                         VStack {
                             if let track = presentedTrack {
                                 if currentTab == .cover {
-                                    Cover(track: track, currentTab: currentTab, namespace: namespace)
+                                    LargeTitle(track: track, currentTab: currentTab, namespace: namespace)
                                         .modifier(GestureModifier(active: currentTab == .cover, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                                 } else {
                                     SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                                         .transition(.opacity.animation(.linear(duration: 0.1)))
                                         .modifier(GestureModifier(active: true, controlsDragging: controlsDragging, dragOffset: $dragOffset))
+                                        .padding(.top, 40)
                                     
                                     Group {
                                         if currentTab == .lyrics {
@@ -91,11 +96,12 @@ extension NowPlaying {
                                 if controlsVisible {
                                     Group {
                                         Controls(compact: false, controlsDragging: $controlsDragging)
+                                            .padding(.top, 12)
                                             .modifier(GestureModifier(active: currentTab == .cover, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                                         Buttons(currentTab: $currentTab)
                                             .padding(.top, 20)
-                                            .padding(.bottom, 30)
-                                            .padding(.horizontal, -30)
+                                            .padding(.bottom, 32)
+                                            .padding(.horizontal, -28)
                                     }
                                     .transition(.modifier(
                                         active: CollapseTransitionModifier(active: true),
@@ -111,18 +117,21 @@ extension NowPlaying {
                                     viewState.setNowPlayingViewPresented(false)
                                 } label: {
                                     Rectangle()
-                                        .foregroundStyle(.white.secondary.opacity(0.75))
-                                        .frame(width: 50, height: 7)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10000))
+                                        .foregroundStyle(.thinMaterial)
+                                        .frame(width: 32, height: 4)
+                                        .clipShape(.rect(cornerRadius: .infinity))
                                 }
+                                .padding(40)
                                 .modifier(GestureModifier(active: true, controlsDragging: controlsDragging, dragOffset: $dragOffset))
+                                .padding(-40)
                                 .transition(.asymmetric(
                                     insertion: .opacity.animation(.linear(duration: 0.1).delay(0.3)),
                                     removal: .opacity.animation(.linear(duration: 0.05))))
                             }
                         }
-                        .padding(.horizontal, 30)
+                        .padding(.horizontal, 28)
                         .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
+                        .environment(\.colorScheme, .light)
                         .onChange(of: currentTab) {
                             dragOffset = 0
                             
@@ -147,7 +156,7 @@ extension NowPlaying {
     }
 }
 
-extension NowPlaying {
+internal extension NowPlaying {
     @Observable
     final class CompactViewState {
         var namespace: Namespace.ID!
@@ -159,7 +168,7 @@ extension NowPlaying {
         private(set) var lastActive = Date()
         
         func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
-            if active && lastActive.timeIntervalSince(Date()) > -1 {
+            guard !active && lastActive.timeIntervalSince(Date()) <= -1 else {
                 return
             }
             
@@ -199,7 +208,7 @@ private extension NowPlaying {
                 .simultaneousGesture(
                     DragGesture(minimumDistance: active ? 0 : 1000, coordinateSpace: .global)
                         .onChanged {
-                            if controlsDragging {
+                            guard !controlsDragging else {
                                 return
                             }
                             
@@ -229,8 +238,6 @@ private extension NowPlaying {
 
 private extension NowPlaying {
     struct BackgroundInsertTransitionModifier: ViewModifier {
-        @Environment(CompactViewState.self) private var viewState
-        
         let active: Bool
         
         func body(content: Content) -> some View {
@@ -246,8 +253,6 @@ private extension NowPlaying {
     
     // This is more a "collapse" than a move thing
     struct BackgroundRemoveTransitionModifier: ViewModifier {
-        @Environment(CompactViewState.self) private var viewState
-        
         let active: Bool
         
         func body(content: Content) -> some View {
@@ -256,7 +261,7 @@ private extension NowPlaying {
                     Rectangle()
                         .frame(maxHeight: active ? 0 : .infinity)
                         .padding(.horizontal, active ? 12 : 0)
-                        .animation(Animation.smooth(duration: 0.4, extraBounce: 0.1), value: active)
+                        .animation(Animation.smooth(duration: 0.5, extraBounce: 0.1), value: active)
                 }
                 .offset(y: active ? -92 : 0)
         }

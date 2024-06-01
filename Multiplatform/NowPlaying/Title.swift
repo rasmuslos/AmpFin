@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     // MARK: Cover
     
-    struct Cover: View {
+    struct LargeTitle: View {
         let track: Track
         let currentTab: Tab
         let namespace: Namespace.ID
@@ -28,8 +28,8 @@ extension NowPlaying {
             
             Spacer()
             
-            HStack {
-                VStack(alignment: .leading, spacing: 3) {
+            HStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(track.name)
                         .font(.headline)
                         .lineLimit(1)
@@ -41,12 +41,11 @@ extension NowPlaying {
                         .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .top)
                 }
                 
-                Spacer()
+                Spacer(minLength: 12)
                 
                 FavoriteButton(track: track)
                     .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .top)
             }
-            .padding(.bottom, .innerSpacing)
         }
     }
     
@@ -59,9 +58,9 @@ extension NowPlaying {
         @Binding var currentTab: Tab
         
         var body: some View {
-            HStack(spacing: 15) {
+            HStack(spacing: 8) {
                 ItemImage(cover: track.cover)
-                    .frame(width: 70, height: 70)
+                    .frame(width: 72, height: 72)
                     .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab != .cover)
                     .onTapGesture {
                         withAnimation {
@@ -86,7 +85,7 @@ extension NowPlaying {
                 FavoriteButton(track: track)
                     .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .bottom)
             }
-            .padding(.top, 40)
+            .contentShape(.rect)
         }
     }
 }
@@ -98,18 +97,17 @@ private extension NowPlaying {
         var body: some View {
             if AudioPlayer.current.source == .local {
                 Button {
-                    Task.detached {
-                        await track.setFavorite(favorite: !track.favorite)
-                    }
+                    track.favorite = !track.favorite
                 } label: {
                     Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
                         .labelStyle(.iconOnly)
                         .font(.system(size: 24))
+                        .foregroundStyle(.white)
                         .symbolRenderingMode(.palette)
                         .contentTransition(.symbolEffect(.replace))
-                        .foregroundStyle(.white)
                 }
-                .modifier(ButtonHoverEffectModifier())
+                .buttonStyle(.plain)
+                .modifier(HoverEffectModifier())
             }
         }
     }
@@ -121,9 +119,7 @@ private extension NowPlaying {
         
         var body: some View {
             Menu {
-                Button(action: {
-                    Navigation.navigate(albumId: track.album.id)
-                }) {
+                Button(action: { Navigation.navigate(albumId: track.album.id) }) {
                     Label("album.view", systemImage: "square.stack")
                     
                     if let albumName = track.album.name {
@@ -158,7 +154,9 @@ private extension NowPlaying {
                 Text(track.artistName ?? String(localized: "artist.unknown"))
                     .lineLimit(1)
             }
-            .foregroundStyle(.secondary)
+            .buttonStyle(.plain)
+            .foregroundStyle(.thinMaterial)
+            .modifier(HoverEffectModifier())
             .sheet(isPresented: $addToPlaylistSheetPresented) {
                 PlaylistAddSheet(track: track)
             }

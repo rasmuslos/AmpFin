@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 struct PlaylistLoadView: View {
     @Environment(\.libraryDataProvider) private var dataProvider
@@ -19,17 +19,22 @@ struct PlaylistLoadView: View {
     var body: some View {
         if failed {
             ErrorView()
-        } else if let playlist = playlist {
+                .refreshable { await loadPlaylist() }
+        } else if let playlist {
             PlaylistView(playlist: playlist)
         } else {
             LoadingView()
-                .task {
-                    if let playlist = try? await dataProvider.getPlaylist(playlistId: playlistId) {
-                        self.playlist = playlist
-                    } else {
-                        self.failed = true
-                    }
-                }
+                .task { await loadPlaylist() }
+                .refreshable { await loadPlaylist() }
         }
+    }
+    
+    private func loadPlaylist() async {
+        guard let playlist = try? await dataProvider.playlist(identifier: playlistId) else {
+            failed = true
+            return
+        }
+        
+        self.playlist = playlist
     }
 }

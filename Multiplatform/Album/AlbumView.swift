@@ -6,27 +6,28 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 struct AlbumView: View {
-    @Environment(\.libraryDataProvider) var dataProvider
+    @Environment(\.libraryDataProvider) private var dataProvider
     
     let album: Album
     
-    @State var tracks = [Track]()
-    @State var imageColors = ImageColors()
-    @State var toolbarBackgroundVisible = false
+    @State private var tracks = [Track]()
+    
+    @State private var imageColors = ImageColors()
+    @State private var toolbarBackgroundVisible = false
     
     var body: some View {
         List {
             Header(album: album, imageColors: imageColors, toolbarBackgroundVisible: $toolbarBackgroundVisible) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: album))
             }
-            .padding(.bottom, .connectedSpacing / 2)
+            .padding(.bottom, 8)
             
             TrackList(tracks: tracks, container: album)
-                .padding(.horizontal, .outerSpacing)
+                .padding(.horizontal, 20)
             
             if let overview = album.overview, overview.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                 Text(overview)
@@ -37,10 +38,10 @@ struct AlbumView: View {
                     Text(releaseDate, style: .date)
                 }
                 
-                Text(tracks.reduce(0, { $0 + $1.runtime }).formatDuration())
+                Text(tracks.reduce(0, { $0 + $1.runtime }).duration)
             }
             .font(.subheadline)
-            .listRowSeparator(.hidden)
+            .listRowSeparator(.hidden, edges: .top)
             .foregroundStyle(.secondary)
             
             AdditionalAlbums(album: album)
@@ -49,16 +50,24 @@ struct AlbumView: View {
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .ignoresSafeArea(edges: .top)
-        // introspect does not work here
         .modifier(
-            ToolbarModifier(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible) { next in
+            ToolbarModifier(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible) {
                 AudioPlayer.current.queueTracks(
                     tracks.sorted { $0.index < $1.index },
-                    index: next ? 0 : AudioPlayer.current.queue.count,
-                    playbackInfo: .init(container: album, queueLocation: next ? .now : .later))
+                    index: $0 ? 0 : AudioPlayer.current.queue.count,
+                    playbackInfo: .init(container: album, queueLocation: $0 ? .now : .later))
             }
         )
         .modifier(NowPlaying.SafeAreaModifier())
+        .task {
+            await imageColors.update(cover: album.cover)
+        }
+        .task {
+            await loadTracks()
+        }
+        .refreshable {
+            await loadTracks()
+        }
         .userActivity("io.rfk.ampfin.album") {
             $0.title = album.name
             $0.isEligibleForHandoff = true
@@ -67,45 +76,23 @@ struct AlbumView: View {
             $0.userInfo = [
                 "albumId": album.id
             ]
-            $0.webpageURL = JellyfinClient.shared.serverUrl.appending(path: "web").appending(path: "#").appending(path: "details").appending(queryItems: [
+            $0.webpageURL = URL(string: JellyfinClient.shared.serverUrl.appending(path: "web").absoluteString + "#")!.appending(path: "details").appending(queryItems: [
                 .init(name: "id", value: album.id),
             ])
         }
-        .task {
-            if let tracks = try? await dataProvider.getTracks(albumId: album.id) {
-                self.tracks = tracks
-            }
+    }
+    
+    private func loadTracks() async {
+        guard let tracks = try? await dataProvider.tracks(albumId: album.id) else {
+            return
         }
-        .onAppear {
-            Task.detached {
-                if let imageColors = await ImageColors.getImageColors(cover: album.cover) {
-                    withAnimation {
-                        self.imageColors = imageColors
-                    }
-                }
-            }
-        }
+        
+        self.tracks = tracks
     }
 }
 
 #Preview {
     NavigationStack {
-        AlbumView(album: Album.fixture, tracks: [
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-            Track.fixture,
-        ])
+        AlbumView(album: Album.fixture)
     }
 }

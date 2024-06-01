@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Navigation {
+internal struct Navigation {
     static let navigateNotification = NSNotification.Name("io.rfk.ampfin.navigation")
     
     static let navigateAlbumNotification = NSNotification.Name("io.rfk.ampfin.navigation.album")
@@ -15,7 +15,7 @@ struct Navigation {
     static let navigatePlaylistNotification = NSNotification.Name("io.rfk.ampfin.navigation.playlist")
 }
 
-extension Navigation {
+internal extension Navigation {
     static func navigate(albumId: String) {
         NotificationCenter.default.post(name: Self.navigateAlbumNotification, object: albumId)
     }
@@ -27,7 +27,7 @@ extension Navigation {
     }
 }
 
-extension Navigation {
+internal extension Navigation {
     struct NotificationModifier: ViewModifier {
         let navigateAlbum: (String) -> Void
         let navigateArtist: (String) -> Void
@@ -35,20 +35,25 @@ extension Navigation {
         
         func body(content: Content) -> some View {
             content
-                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { notification in
-                    if let id = notification.object as? String {
-                        navigateArtist(id)
-                    }
-                }
                 .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateAlbumNotification)) { notification in
-                    if let id = notification.object as? String {
-                        navigateAlbum(id)
+                    guard let id = notification.object as? String else {
+                        return
                     }
+                    
+                    navigateAlbum(id)
+                }
+                .onReceive(NotificationCenter.default.publisher(for: Navigation.navigateArtistNotification)) { notification in
+                    guard let id = notification.object as? String else {
+                        return
+                    }
+                    
+                    navigateArtist(id)
                 }
                 .onReceive(NotificationCenter.default.publisher(for: Navigation.navigatePlaylistNotification)) { notification in
-                    if let id = notification.object as? String {
-                        navigatePlaylist(id)
+                    guard let id = notification.object as? String else {
+                        return
                     }
+                    navigatePlaylist(id)
                 }
         }
     }
@@ -86,7 +91,7 @@ extension Navigation {
     }
 }
 
-extension Navigation {
+internal extension Navigation {
     struct AlbumLoadDestination: Hashable {
         let albumId: String
     }

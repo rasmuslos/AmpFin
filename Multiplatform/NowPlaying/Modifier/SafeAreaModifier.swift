@@ -15,7 +15,7 @@ extension NowPlaying {
      The NavigationSplitView is implemented with a wrapper around UIKit, so not a SwiftUI native component.
      A SwiftUI way to determine if we need the offset to make space for the sidebar is to monitor the binded
      value columnVisibility of the NavigationSplitView, but since this is a UIKit wrapped component, this value
-     changes AFTER the view change has been commited, which means when the size of the view changes and triggers
+     changes AFTER the view change has been committed, which means when the size of the view changes and triggers
      SwiftUI update, this value will not change until all animations are done. The onDisappear trigger also has
      similar problem, so we have to use our old friend GeometryReader to actually read the origin and pass the x
      value as our offset
@@ -32,15 +32,15 @@ extension NowPlaying {
                 GeometryReader { reader in
                     Color.clear
                         .onChange(of: reader.frame(in: .global).origin) {
-#if targetEnvironment(macCatalyst)
+                            #if targetEnvironment(macCatalyst)
                             if reader.frame(in: .global).origin.x <= 0 {
-                                NotificationCenter.default.post(name: SidebarView.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
+                                NotificationCenter.default.post(name: NowPlaying.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
                             }
-#else
+                            #else
                             if reader.size.width < 400 {
                                 NotificationCenter.default.post(name: NowPlaying.offsetChangeNotification, object: reader.frame(in: .global).origin.x + reader.size.width)
                             }
-#endif
+                            #endif
                         }
                 }
                 .frame(height: 0)
@@ -68,7 +68,7 @@ extension NowPlaying {
         func body(content: Content) -> some View {
             if horizontalSizeClass == .compact {
                 content
-                    .safeAreaPadding(.bottom, isVisible ? 75 : 0)
+                    .safeAreaPadding(.bottom, isVisible ? 80 : 0)
             } else {
                 ZStack {
                     GeometryReader { reader in
@@ -83,7 +83,7 @@ extension NowPlaying {
                     .frame(height: 0)
                     
                     content
-                        .safeAreaPadding(.bottom, isVisible ? 75 : 0)
+                        .safeAreaPadding(.bottom, isVisible ? 100 : 0)
                 }
             }
         }

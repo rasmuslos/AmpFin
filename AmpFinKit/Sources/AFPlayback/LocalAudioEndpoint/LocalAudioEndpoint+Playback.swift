@@ -6,30 +6,9 @@
 //
 
 import Foundation
-import AFBase
+import MediaPlayer
 import AVKit
-
-internal extension LocalAudioEndpoint {
-    func _setPlaying(_ playing: Bool) {
-        if playing {
-            audioPlayer.play()
-            AudioPlayer.updateAudioSession(active: true)
-        } else {
-            audioPlayer.pause()
-        }
-        
-        _playing = playing
-        
-        updateNowPlayingStatus()
-        updatePlaybackReporter(scheduled: false)
-    }
-    
-    func _seek(seconds: Double) {
-        audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000)) { _ in
-            self.updatePlaybackReporter(scheduled: false)
-        }
-    }
-}
+import AFFoundation
 
 internal extension LocalAudioEndpoint {
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
@@ -53,12 +32,12 @@ internal extension LocalAudioEndpoint {
         queue = Array(tracks[startIndex + 1..<tracks.count])
         
         setNowPlaying(track: tracks[startIndex])
+        audioPlayer.replaceCurrentItem(with: avPlayerItem(track: nowPlaying!))
         
-        audioPlayer.insert(getAVPlayerItem(nowPlaying!), after: nil)
-        populateQueue()
-        
+        #if !os(macOS)
         AudioPlayer.setupAudioSession()
         AudioPlayer.updateAudioSession(active: true)
+        #endif
         
         playing = true
         
@@ -69,8 +48,6 @@ internal extension LocalAudioEndpoint {
             playing = false
         }
         
-        audioPlayer.removeAllItems()
-        
         queue = []
         unalteredQueue = []
         
@@ -78,11 +55,89 @@ internal extension LocalAudioEndpoint {
         history = []
         
         clearNowPlayingMetadata()
+        #if !os(macOS)
         AudioPlayer.updateAudioSession(active: false)
+        #endif
     }
     
     func seek(seconds: Double) async {
         await audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000))
         updatePlaybackReporter(scheduled: false)
+    }
+}
+
+internal extension LocalAudioEndpoint {
+    var playing: Bool {
+        get {
+            _playing
+        }
+        set {
+            if newValue {
+                audioPlayer.play()
+                #if !os(macOS)
+                AudioPlayer.updateAudioSession(active: true)
+                #endif
+            } else {
+                audioPlayer.pause()
+            }
+            
+            _playing = newValue
+            
+            updateNowPlayingStatus()
+            updatePlaybackReporter(scheduled: false)
+        }
+    }
+    
+    var currentTime: Double {
+        get {
+            _currentTime
+        }
+        set {
+            Task {
+                await seek(seconds: newValue)
+            }
+        }
+    }
+    
+    var shuffled: Bool {
+        get {
+            _shuffled
+        }
+        set {
+            _shuffled = newValue
+            
+            if(newValue) {
+                queue.shuffle()
+            } else {
+                queue = unalteredQueue.filter { track in
+                    queue.contains { $0.id == track.id }
+                }
+            }
+        }
+    }
+    var repeatMode: RepeatMode {
+        get {
+            _repeatMode
+        }
+        set {
+            _repeatMode = newValue
+        }
+    }
+    
+    var volume: Float {
+        get {
+            #if os(iOS) && !targetEnvironment(macCatalyst)
+            AVAudioSession.sharedInstance().outputVolume
+            #else
+            audioPlayer.volume
+            #endif
+        }
+        set {
+            #if os(iOS) && !targetEnvironment(macCatalyst)
+            MPVolumeView.setVolume(newValue)
+            #else
+            audioPlayer.volume = newValue
+            #endif
+        }
     }
 }

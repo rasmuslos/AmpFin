@@ -7,82 +7,78 @@
 
 import Foundation
 import SwiftData
-import AFBase
-
-// MARK: Remove tracks
+import AFFoundation
+import AFNetwork
 
 public extension OfflineManager {
     @MainActor
-    func deleteAll() throws {
-        for album in try getOfflineAlbums() {
+    func delete() throws {
+        for album in try offlineAlbums() {
             try delete(offlineAlbum: album)
         }
         
-        for playlist in try getOfflinePlaylists() {
+        for playlist in try offlinePlaylists() {
             try delete(playlist: playlist)
         }
         
-        for track in try getOfflineTracks() {
+        for track in try offlineTracks() {
             delete(track: track)
         }
         
         try DownloadManager.shared.cleanupDirectory()
     }
     
+    @MainActor
     func syncPlaysToJellyfinServer() {
-        Task.detached { @MainActor in
-            let plays = try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflinePlay>())
-            
-            Self.logger.info("Syncing \(plays.count) plays to the server")
-            
+        guard let plays = try? PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflinePlay>()) else {
+            return
+        }
+        
+        Self.logger.info("Syncing \(plays.count) plays to the server")
+        
+        Task.detached {
             for play in plays {
-                Task.detached {
-                    do {
-                        try await JellyfinClient.shared.reportPlaybackStopped(trackId: play.trackId, positionSeconds: play.positionSeconds)
-                        
-                        Task.detached { @MainActor in
-                            PersistenceManager.shared.modelContainer.mainContext.delete(play)
-                        }
-                    } catch {
-                        Self.logger.fault("Error while syncing play to Jellyfin server \(play.trackId) (\(play.positionSeconds)")
-                    }
+                try await JellyfinClient.shared.playbackStopped(identifier: play.trackId, positionSeconds: play.positionSeconds)
+                
+                await MainActor.run {
+                    PersistenceManager.shared.modelContainer.mainContext.delete(play)
                 }
             }
         }
     }
     
-    func updateOfflineItems() {
+    func update() {
         let waitTime: Double = 60 * 60 * 12
-        let lastDonation = UserDefaults.standard.double(forKey: "lastOfflineItemUpdate")
+        let lastUpdate = UserDefaults.standard.double(forKey: "lastOfflineItemUpdate")
         
-        if lastDonation + waitTime > Date.timeIntervalSinceReferenceDate {
-            updateOfflineFavorites()
+        if lastUpdate + waitTime > Date.timeIntervalSinceReferenceDate {
+            updateFavorites()
         } else {
             UserDefaults.standard.set(Date.timeIntervalSinceReferenceDate, forKey: "lastOfflineItemUpdate")
             
-            Task.detached { @MainActor in
-                for album in try getAlbums() {
+            Task {
+                for album in try await albums() {
                     try await download(album: album)
                 }
                 
-                for playlist in try getPlaylists() {
+                for playlist in try await playlists() {
                     try await download(playlist: playlist)
                 }
                 
-                try? removeOrphanedTracks()
+                try? await removeOrphans()
             }
         }
     }
     
     @MainActor
-    func removeOrphanedTracks() throws {
-        let albums = try getOfflineAlbums()
-        let playlists = try getOfflinePlaylists()
+    func removeOrphans() throws {
+        let albums = try offlineAlbums()
+        let playlists = try offlinePlaylists()
         
-        let albumTrackIds = reduceToChildrenIds(parents: albums)
-        let playlistTrackIds = reduceToChildrenIds(parents: playlists)
+        let albumTrackIds = reduceToChildrenIdentifiers(parents: albums)
+        let playlistTrackIds = reduceToChildrenIdentifiers(parents: playlists)
         
-        let tracks = try getOfflineTracks()
+        let tracks = try offlineTracks()
         let orphaned = tracks.filter { !albumTrackIds.contains($0.id) && !playlistTrackIds.contains($0.id) }
         
         for orphan in orphaned {

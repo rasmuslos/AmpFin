@@ -6,25 +6,103 @@
 //
 
 import Foundation
-import AFBase
-import AFOffline
+import AmpFinKit
 
 public struct OfflineLibraryDataProvider: LibraryDataProvider {
     public var supportsArtistLookup: Bool = false
     public var supportsAdvancedFilters: Bool = false
     public var albumNotFoundFallbackToLibrary: Bool = true
     
-    public func getRecentAlbums() async throws -> [Album] {
-        try await OfflineManager.shared.getRecentAlbums()
-    }
-    public func getRandomAlbums() async throws -> [Album] {
-        try await OfflineManager.shared.getRandomAlbums()
-    }
-    
     // MARK: Track
     
-    public func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, favorite: Bool, search: String?) async throws -> ([Track], Int) {
-        var tracks = try await OfflineManager.shared.getTracks(favorite: favorite).sorted {
+    public func tracks(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favoriteOnly: Bool, search: String?) async throws -> ([Track], Int) {
+        var tracks: [Track]
+        
+        if let search = search, !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            tracks = try await OfflineManager.shared.tracks(search: search)
+        } else {
+            tracks = try await OfflineManager.shared.tracks(favoriteOnly: favoriteOnly)
+        }
+        tracks = filterSort(tracks: tracks, sortOrder: sortOrder, ascending: ascending)
+        
+        return (tracks, tracks.count)
+    }
+    
+    // MARK: Album
+    
+    public func recentAlbums() async throws -> [Album] {
+        try await OfflineManager.shared.recentAlbums()
+    }
+    public func randomAlbums() async throws -> [Album] {
+        try await OfflineManager.shared.randomAlbums()
+    }
+    
+    public func album(identifier: String) async throws -> Album {
+        try await OfflineManager.shared.album(identifier: identifier)
+    }
+    public func albums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Album], Int) {
+        var albums: [Album]
+        
+        if let search = search, !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            albums = try await OfflineManager.shared.albums(search: search)
+        } else {
+            albums = try await OfflineManager.shared.albums()
+        }
+        
+        albums = filterSort(albums: albums, sortOrder: sortOrder, ascending: ascending, artistId: nil)
+        return (albums, albums.count)
+    }
+    
+    public func tracks(albumId: String) async throws -> [Track] {
+        try await OfflineManager.shared.tracks(albumId: albumId)
+    }
+    
+    // MARK: Artist
+    
+    public func artist(identifier: String) async throws -> Artist {
+        throw JellyfinClient.ClientError.invalidHttpBody
+    }
+    public func artists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int) {
+        ([], 0)
+    }
+    
+    public func tracks(artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        var tracks = try await OfflineManager.shared.tracks(artistId: artistId)
+        tracks = filterSort(tracks: tracks, sortOrder: sortOrder, ascending: ascending)
+        
+        return tracks
+    }
+    public func albums(artistId: String, limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool) async throws -> ([Album], Int) {
+        var albums = try await OfflineManager.shared.albums()
+        albums = filterSort(albums: albums, sortOrder: sortOrder, ascending: ascending, artistId: artistId)
+        
+        return (albums, albums.count)
+    }
+    
+    // MARK: Playlist
+    
+    public func playlist(identifier: String) async throws -> Playlist {
+        try await OfflineManager.shared.playlist(playlistId: identifier)
+    }
+    public func playlists(search: String?) async throws -> [Playlist] {
+        var playlists = try await OfflineManager.shared.playlists()
+        
+        if let search, !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            playlists = playlists.filter { $0.name.localizedStandardContains(search) }
+        }
+        
+        return playlists
+    }
+    public func tracks(playlistId: String) async throws -> [Track] {
+        try await OfflineManager.shared.tracks(playlistId: playlistId)
+    }
+}
+
+private extension OfflineLibraryDataProvider {
+    func filterSort(tracks: [Track], sortOrder: ItemSortOrder, ascending: Bool) -> [Track] {
+        var tracks = tracks
+        
+        tracks.sort {
             switch sortOrder {
                 case .name:
                     return $0.name < $1.name
@@ -43,29 +121,21 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         
         if sortOrder == .random {
             tracks.shuffle()
-        }
-        
-        if ascending {
+        } else if ascending {
             tracks.reverse()
         }
         
-        if let search = search {
-            tracks = tracks.filter {
-                $0.name.localizedStandardContains(search)
-                || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(search) })
-            }
+        return tracks
+    }
+    
+    func filterSort(albums: [Album], sortOrder: ItemSortOrder, ascending: Bool, artistId: String?) -> [Album] {
+        var albums = albums
+        
+        if let artistId {
+            albums = albums.filter { $0.artists.map { $0.id }.contains(artistId) }
         }
         
-        return (tracks, tracks.count)
-    }
-    
-    // MARK: Album
-    
-    public func getAlbum(albumId: String) async throws -> Album {
-        try await OfflineManager.shared.getAlbum(albumId: albumId)
-    }
-    public func getAlbums(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Album], Int) {
-        var albums = try await OfflineManager.shared.getAlbums().sorted {
+        albums.sort {
             switch sortOrder {
                 case .name, .album:
                     return $0.name < $1.name
@@ -78,66 +148,12 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
             }
         }
         
-        if ascending {
+        if sortOrder == .random {
+            albums.shuffle()
+        } else if ascending {
             albums.reverse()
         }
         
-        
-        if let search = search {
-            albums = albums.filter {
-                $0.name.localizedStandardContains(search)
-                || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(search) })
-            }
-        }
-        
-        return (albums, albums.count)
-    }
-    
-    public func getTracks(albumId: String) async throws -> [Track] {
-        return try await OfflineManager.shared.getTracks(albumId: albumId)
-    }
-    
-    // MARK: Artist
-    
-    public func getArtist(artistId: String) async throws -> Artist {
-        throw JellyfinClientError.invalidResponse
-    }
-    public func getArtists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int) {
-        throw JellyfinClientError.invalidResponse
-    }
-    
-    public func getTracks(artistId: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
-        // The requested sort order is ignored
-        try await OfflineManager.shared.getTracks(artistId: artistId).shuffled()
-    }
-    public func getAlbums(artistId: String, limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([Album], Int) {
-        throw JellyfinClientError.invalidResponse
-    }
-    
-    // MARK: Search
-    
-    public func searchTracks(query: String) async throws -> [Track] {
-        try await OfflineManager.shared.getTracks(query: query)
-    }
-    public func searchAlbums(query: String) async throws -> [Album] {
-        try await OfflineManager.shared.getAlbums(query: query)
-    }
-    public func searchArtists(query: String) async throws -> [Artist] {
-        []
-    }
-    public func searchPlaylists(query: String) async throws -> [Playlist] {
-        try await OfflineManager.shared.getPlaylists(query: query)
-    }
-    
-    // MARK: Playlist
-    
-    public func getPlaylist(playlistId: String) async throws -> Playlist {
-        try await OfflineManager.shared.getPlaylist(playlistId: playlistId)
-    }
-    public func getPlaylists() async throws -> [Playlist] {
-        try await OfflineManager.shared.getPlaylists()
-    }
-    public func getTracks(playlistId: String) async throws -> [Track] {
-        try await OfflineManager.shared.getTracks(playlistId: playlistId)
+        return albums
     }
 }

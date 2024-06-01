@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 struct PlaylistView: View {
@@ -24,17 +24,19 @@ struct PlaylistView: View {
             Header(playlist: playlist, toolbarVisible: $toolbarVisible) { shuffle in
                 AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: playlist))
             }
-            .padding(.bottom, .connectedSpacing / 2)
+            .padding(.bottom, 12)
             
             TrackList(tracks: tracks, container: playlist, deleteCallback: JellyfinClient.shared.online ? removeTrack : nil, moveCallback: JellyfinClient.shared.online ? moveTrack : nil)
-                .padding(.horizontal, .outerSpacing)
+                .padding(.horizontal, 20)
         }
-        .environment(\.editMode, $editMode)
         .listStyle(.plain)
-        .ignoresSafeArea(edges: .top)
+        .environment(\.editMode, $editMode)
         .navigationTitle(playlist.name)
+        .ignoresSafeArea(edges: .top)
         .modifier(ToolbarModifier(playlist: playlist, toolbarVisible: $toolbarVisible, tracks: $tracks, editMode: $editMode))
         .modifier(NowPlaying.SafeAreaModifier())
+        .task { await loadTracks() }
+        .refreshable { await loadTracks() }
         .userActivity("io.rfk.ampfin.playlist") {
             $0.title = playlist.name
             $0.isEligibleForHandoff = true
@@ -43,36 +45,34 @@ struct PlaylistView: View {
             $0.userInfo = [
                 "playlistId": playlist.id
             ]
-            $0.webpageURL = JellyfinClient.shared.serverUrl.appending(path: "web").appending(path: "#").appending(path: "details").appending(queryItems: [
+            $0.webpageURL = URL(string: JellyfinClient.shared.serverUrl.appending(path: "web").absoluteString + "#")!.appending(path: "details").appending(queryItems: [
                 .init(name: "id", value: playlist.id),
             ])
         }
-        .task { await fetchTracks() }
-        .refreshable { await fetchTracks() }
     }
 }
 
-extension PlaylistView {
-    func fetchTracks() async {
-        if let tracks = try? await dataProvider.getTracks(playlistId: playlist.id) {
-            self.tracks = tracks
+private extension PlaylistView {
+    func loadTracks() async {
+        guard let tracks = try? await dataProvider.tracks(playlistId: playlist.id) else {
+            return
         }
+        
+        self.tracks = tracks
     }
     
     func removeTrack(track: Track) {
         Task {
-            do {
-                try await JellyfinClient.shared.remove(trackId: track.id, playlistId: playlist.id)
-                
-                withAnimation {
-                    if let firstMatching = tracks.firstIndex(of: track) {
-                        tracks.remove(at: firstMatching)
-                        
-                        playlist.trackCount = tracks.count
-                        playlist.duration = tracks.reduce(0, { $0 + $1.runtime })
-                    }
+            try await JellyfinClient.shared.remove(trackId: track.id, playlistId: playlist.id)
+            
+            withAnimation {
+                if let firstMatching = tracks.firstIndex(of: track) {
+                    tracks.remove(at: firstMatching)
+                    
+                    playlist.trackCount = tracks.count
+                    playlist.duration = tracks.reduce(0, { $0 + $1.runtime })
                 }
-            } catch {}
+            }
         }
     }
     
@@ -84,7 +84,7 @@ extension PlaylistView {
                 to -= 1
             }
             
-            try? await JellyfinClient.shared.move(trackId: track.id, index: to, playlistId: playlist.id)
+            try await JellyfinClient.shared.move(trackId: track.id, index: to, playlistId: playlist.id)
         }
     }
 }

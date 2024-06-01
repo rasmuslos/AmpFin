@@ -7,9 +7,7 @@
 
 import Foundation
 import Intents
-import AFBase
-import AFExtension
-import AFOffline
+import AmpFinKit
 import AFPlayback
 
 final class AddMediaHandler: NSObject, INAddMediaIntentHandling {
@@ -18,12 +16,10 @@ final class AddMediaHandler: NSObject, INAddMediaIntentHandling {
         
         if let mediaItems = intent.mediaItems, let mediaItem = mediaItems.first, let identifier = mediaItem.identifier {
             trackId = identifier
+        } else if intent.mediaSearch?.reference == .currentlyPlaying, let nowPlaying = AudioPlayer.current.nowPlaying {
+            trackId = nowPlaying.id
         } else {
-            if intent.mediaSearch?.reference == .currentlyPlaying, let nowPlaying = AudioPlayer.current.nowPlaying {
-                trackId = nowPlaying.id
-            } else {
-                return .init(code: .failure, userActivity: nil)
-            }
+            return .init(code: .failure, userActivity: nil)
         }
         
         guard let destination = intent.mediaDestination, case INMediaDestination.playlist(let playlistName) = destination else {

@@ -7,19 +7,19 @@
 
 import Foundation
 import Defaults
-import AFBase
+import AmpFinKit
 
-extension Defaults.Keys {
+internal extension Defaults.Keys {
     // MARK: Sort
     static let sortAscending = Key("sortAscending", default: false)
-    static let sortOrder = Key<JellyfinClient.ItemSortOrder>("sortOrder", default: .added)
+    static let sortOrder = Key<ItemSortOrder>("sortOrder", default: .added)
     
     // MARK: Navigation
     
-    static let searchTab = Key("searchTab", default: SearchView.Tab.online)
-    static let lastActiveTab = Key("lastActiveTab", default: Tabs.Selection.library)
+    static let searchTab = Key<SearchView.Tab>("searchTab", default: .online)
+    static let activeTab = Key<Tabs.Selection>("activeTab", default: .library)
     
-    static let lastSidebarSelection = Key<Sidebar.Selection?>("lastSidebarSelection")
+    static let sidebarSelection = Key<Sidebar.Selection?>("sidebarSelection")
     static let playlistSectionExpanded = Key("playlistSectionExpanded", default: true)
     
     static func providerExpanded(_ provider: Sidebar.DataProvider) -> Key<Bool> {

@@ -7,30 +7,33 @@
 
 import SwiftUI
 import MediaPlayer
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 extension NowPlaying {
     struct Controls: View {
+        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        
         let compact: Bool
         
         @Binding var controlsDragging: Bool
         
-        @State private var trackDataToggled = false
-        @State private var trackData: Track.TrackData? = nil
+        @State private var mediaInfoToggled = false
+        @State private var mediaInfo: Track.MediaInfo? = nil
         
         @State private var seekDragging = false
         @State private var volumeDragging = false
         @State private var draggedPercentage = 0.0
         
-        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        @State private var animateBackward = false
+        @State private var animateForward = false
         
         private var playedPercentage: Double {
             (AudioPlayer.current.currentTime / AudioPlayer.current.duration) * 100
         }
         
         private var qualityText: String? {
-            if let trackData = trackData {
+            if let mediaInfo = mediaInfo {
                 var result = [String]()
                 
                 let formatter = NumberFormatter()
@@ -38,18 +41,18 @@ extension NowPlaying {
                 formatter.maximumFractionDigits = 0
                 formatter.usesGroupingSeparator = true
                 
-                if trackDataToggled && (trackData.bitDepth != nil || trackData.sampleRate != nil) {
-                    if let bitDepth = trackData.bitDepth {
+                if mediaInfoToggled && (mediaInfo.bitDepth != nil || mediaInfo.sampleRate != nil) {
+                    if let bitDepth = mediaInfo.bitDepth {
                         result.append(formatter.string(from: .init(value: bitDepth))!)
                     }
-                    if let sampleRate = trackData.sampleRate {
+                    if let sampleRate = mediaInfo.sampleRate {
                         result.append(formatter.string(from: .init(value: sampleRate))!)
                     }
                 } else {
-                    if let codec = trackData.codec {
+                    if let codec = mediaInfo.codec {
                         result.append(codec.uppercased())
                     }
-                    if let bitrate = trackData.bitrate {
+                    if let bitrate = mediaInfo.bitrate {
                         result.append(formatter.string(from: .init(value: bitrate / 1000))!)
                     }
                 }
@@ -65,8 +68,8 @@ extension NowPlaying {
         }
         
         var body: some View {
-            VStack {
-                VStack {
+            VStack(spacing: 0) {
+                VStack(spacing: 2) {
                     Slider(
                         percentage: .init(get: { seekDragging ? draggedPercentage : playedPercentage }, set: {
                             draggedPercentage = $0
@@ -77,83 +80,88 @@ extension NowPlaying {
                             controlsDragging = $0
                         }))
                     .frame(height: 10)
-                    .padding(.bottom, compact ? 3 : 5)
+                    .padding(.bottom, compact ? 2 : 4)
                     
-                    HStack {
+                    HStack(spacing: 0) {
                         Group {
                             if AudioPlayer.current.buffering {
                                 ProgressView()
                                     .scaleEffect(0.5)
+                                    .tint(.white)
                             } else {
                                 Text(Duration.seconds(AudioPlayer.current.currentTime).formatted(.time(pattern: .minuteSecond)))
                             }
                         }
-                        .frame(width: 65, alignment: .leading)
+                        .frame(width: 64, alignment: .leading)
                         
-                        if let qualityText = qualityText {
-                            Spacer()
-                            
-                            Button {
-                                trackDataToggled.toggle()
-                            } label: {
-                                Text(qualityText)
-                                    .font(.caption2)
-                                    .foregroundStyle(.primary)
-                                    .padding(.vertical, compact ? 1 : 4)
-                                    .padding(.horizontal, compact ? 10 : 8)
-                                    .background(.tertiary)
-                                    .clipShape(RoundedRectangle(cornerRadius: 3))
-                            }
+                        Spacer()
+                        
+                        Button {
+                            mediaInfoToggled.toggle()
+                        } label: {
+                            Text(qualityText ?? String(""))
+                                .font(.footnote.smallCaps())
+                                .foregroundStyle(.primary)
+                                .padding(.vertical, compact ? 1 : 2)
+                                .padding(.horizontal, compact ? 12 : 8)
+                                .background(.ultraThinMaterial)
+                                .clipShape(.rect(cornerRadius: 4))
+                                .opacity(qualityText == nil ? 0 : 1)
                         }
                         Spacer()
                         
                         Text(Duration.seconds(AudioPlayer.current.duration).formatted(.time(pattern: .minuteSecond)))
-                            .frame(width: 65, alignment: .trailing)
+                            .frame(width: 64, alignment: .trailing)
                     }
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.footnote.smallCaps())
+                    .foregroundStyle(.thinMaterial)
                 }
                 
-                HStack {
-                    Group {
-                        Button {
-                            withAnimation {
-                                AudioPlayer.current.backToPreviousItem()
-                            }
-                        } label: {
-                            Label("playback.back", systemImage: "backward.fill")
-                                .labelStyle(.iconOnly)
-                                .font(.system(size: 30))
+                HStack(spacing: 0) {
+                    Button {
+                        withAnimation {
+                            animateBackward.toggle()
+                            AudioPlayer.current.backToPreviousItem()
                         }
-                        .modifier(ButtonHoverEffectModifier())
-                        
-                        Button {
-                            AudioPlayer.current.playing = !AudioPlayer.current.playing
-                        } label: {
-                            Label("playback.toggle", systemImage: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
-                                .labelStyle(.iconOnly)
-                                .frame(width: 50, height:50)
-                                .font(.system(size: 47))
-                                .contentTransition(.symbolEffect(.replace))
-                        }
-                        .modifier(ButtonHoverEffectModifier())
-                        .padding(.horizontal, 50)
-                        
-                        Button {
-                            withAnimation {
-                                AudioPlayer.current.advanceToNextTrack()
-                            }
-                        } label: {
-                            Label("playback.next", systemImage: "forward.fill")
-                                .labelStyle(.iconOnly)
-                                .font(.system(size: 30))
-                        }
-                        .modifier(ButtonHoverEffectModifier())
+                    } label: {
+                        Label("playback.back", systemImage: "backward.fill")
+                            .labelStyle(.iconOnly)
+                            .symbolEffect(.bounce.up, value: animateBackward)
+                            .font(.system(size: 30))
                     }
-                    .foregroundStyle(.primary)
+                    .modifier(HoverEffectModifier())
+                    .sensoryFeedback(.decrease, trigger: animateBackward)
+                    
+                    Button {
+                        AudioPlayer.current.playing.toggle()
+                    } label: {
+                        Label("playback.toggle", systemImage: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
+                            .labelStyle(.iconOnly)
+                            .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+                    }
+                    .frame(width: 50, height: 50)
+                    .font(.system(size: 47))
+                    .modifier(HoverEffectModifier())
+                    .padding(.horizontal, 50)
+                    .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
+                    
+                    Button {
+                        withAnimation {
+                            animateForward.toggle()
+                            AudioPlayer.current.advanceToNextTrack()
+                        }
+                    } label: {
+                        Label("playback.next", systemImage: "forward.fill")
+                            .labelStyle(.iconOnly)
+                            .symbolEffect(.bounce.up, value: animateForward)
+                            .font(.system(size: 30))
+                    }
+                    .modifier(HoverEffectModifier())
+                    .sensoryFeedback(.increase, trigger: animateForward)
                 }
-                .padding(.top, compact ? 20 : 35)
-                .padding(.bottom, compact ? 40 : 65)
+                .foregroundStyle(.primary)
+                .padding(.top, compact ? 20 : 36)
+                .padding(.bottom, compact ? 40 : 64)
                 
                 // The first view is the visible slider, the second one is there to hide the iOS indicator (10/10 hack)
                 VolumeSlider(dragging: .init(get: { volumeDragging }, set: {
@@ -163,32 +171,30 @@ extension NowPlaying {
                 VolumePicker()
                     .frame(width: 0, height: 0)
             }
-            .onChange(of: AudioPlayer.current.nowPlaying) { fetchQuality() }
-            .onAppear(perform: fetchQuality)
+            .task(id: AudioPlayer.current.nowPlaying) {
+                await fetchQuality()
+            }
         }
         
-        private func fetchQuality() {
-            Task.detached {
-                if let trackData = await AudioPlayer.current.getTrackData() {
-                    self.trackData = trackData
-                    trackDataToggled = trackData.lossless ?? false
-                } else {
-                    trackData = nil
-                }
+        private func fetchQuality() async {
+            if let mediaInfo = await AudioPlayer.current.mediaInfo {
+                self.mediaInfo = mediaInfo
+                mediaInfoToggled = mediaInfo.lossless ?? false
+            } else {
+                mediaInfo = nil
             }
         }
     }
 }
 
-extension NowPlaying {
-    struct VolumePicker: UIViewRepresentable {
-        func makeUIView(context: Context) -> MPVolumeView {
-            let volumeView = MPVolumeView(frame: CGRect.zero)
-            volumeView.alpha = 0.001
-            
-            return volumeView
-        }
+
+private struct VolumePicker: UIViewRepresentable {
+    func makeUIView(context: Context) -> MPVolumeView {
+        let volumeView = MPVolumeView(frame: CGRect.zero)
+        volumeView.alpha = 0.001
         
-        func updateUIView(_ uiView: MPVolumeView, context: Context) {}
+        return volumeView
     }
+    
+    func updateUIView(_ uiView: MPVolumeView, context: Context) {}
 }

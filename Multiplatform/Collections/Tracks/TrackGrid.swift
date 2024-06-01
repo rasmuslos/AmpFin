@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 struct TrackGrid: View {
@@ -17,50 +17,35 @@ struct TrackGrid: View {
     
     var amount = 2
     
-    @State private var width: CGFloat = .zero
-    
-    private let gap: CGFloat = .connectedSpacing
-    private let padding: CGFloat = .innerSpacing
-    
-    private var size: CGFloat {
-        let minimum = horizontalSizeClass == .compact ? 300 : 450.0
-        
-        let usable = width - (padding + gap)
-        let amount = CGFloat(Int(usable / minimum))
-        let available = usable - gap * (amount - 1)
-        
-        return max(minimum, available / amount)
+    private var count: Int {
+        horizontalSizeClass == .compact ? 1 : 2
     }
     
     var body: some View {
-        ZStack {
-            GeometryReader { proxy in
-                Color.clear
-                    .onChange(of: proxy.size.width, initial: true) {
-                        width = proxy.size.width
-                    }
-            }
-            .frame(height: 0)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHGrid(rows: [GridItem(.flexible(), spacing: 15)].repeated(count: min(tracks.count, amount)), spacing: 0) {
-                    ForEach(tracks) { track in
-                        TrackListRow(track: track, disableMenu: true) {
-                            if let index = tracks.firstIndex(where: { $0.id == track.id }) {
-                                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
-                            }
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHGrid(rows: [GridItem(.flexible(), spacing: 16)].repeated(count: min(tracks.count, amount)), spacing: 0) {
+                ForEach(tracks) { track in
+                    TrackListRow(track: track) {
+                        if let index = tracks.firstIndex(where: { $0.id == track.id }) {
+                            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
                         }
-                        .padding(.leading, gap)
-                        .frame(width: size)
                     }
+                    .containerRelativeFrame(.horizontal) { length, _ in
+                        let minimum = horizontalSizeClass == .compact ? 300 : 450.0
+                        
+                        let amount = CGFloat(Int(length / minimum))
+                        let available = length - 12 * (amount - 1)
+                        
+                        return max(minimum, available / amount)
+                    }
+                    .padding(.trailing, 12)
                 }
-                .scrollTargetLayout()
-                .padding(.leading, gap)
-                .padding(.trailing, padding)
             }
-            .scrollTargetBehavior(.viewAligned)
-            .scrollClipDisabled()
+            .scrollTargetLayout()
         }
+        .scrollTargetBehavior(.viewAligned)
+        .scrollClipDisabled()
+        .padding(.horizontal, 20)
     }
 }
 

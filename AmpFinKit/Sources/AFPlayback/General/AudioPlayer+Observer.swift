@@ -6,17 +6,18 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
+import AFNetwork
 
 extension AudioPlayer {
-    func setupObservers() {
+    func setupObservers() async {
         NotificationCenter.default.addObserver(forName: JellyfinWebSocket.disconnectedNotification, object: nil, queue: nil) { [self] _ in
             if source == .jellyfinRemote {
-                destroy()
+                stopPlayback()
             }
         }
         
-        NotificationCenter.default.addObserver(forName: Item.affinityChanged, object: nil, queue: nil) { [self] event in
+        NotificationCenter.default.addObserver(forName: Item.affinityChangedNotification, object: nil, queue: nil) { [self] event in
             updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
         }
         
@@ -50,8 +51,8 @@ extension AudioPlayer {
             let trackIds = notification.userInfo?["trackIds"] as? [String]
             let index = notification.userInfo?["index"] as? Int ?? 0
             
-            Task.detached { [self] in
-                guard let tracks = await trackIds?.parallelMap(JellyfinClient.shared.getTrack).filter({ $0 != nil }) as? [Track], !tracks.isEmpty else { return }
+            Task {
+                guard let tracks = try await trackIds?.parallelMap(JellyfinClient.shared.track) as? [Track], !tracks.isEmpty else { return }
                 
                 if command == "playnow" {
                     startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil))

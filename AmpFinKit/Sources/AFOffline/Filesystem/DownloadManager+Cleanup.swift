@@ -9,10 +9,10 @@ import Foundation
 
 public extension DownloadManager {
     func cleanupDirectory() throws {
-        let contents = try FileManager.default.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil)
+        let contents = try FileManager.default.contentsOfDirectory(at: documents, includingPropertiesForKeys: nil)
         
-        try contents.forEach {
-            try FileManager.default.removeItem(at: $0)
+        for entity in contents {
+            try FileManager.default.removeItem(at: entity)
         }
         
         createDirectories()

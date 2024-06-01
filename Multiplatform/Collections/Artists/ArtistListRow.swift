@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
-struct ArtistListRow: View {
+internal struct ArtistListRow: View {
     let artist: Artist
 
     var body: some View {
@@ -17,27 +17,26 @@ struct ArtistListRow: View {
         } label: {
             HStack(spacing: 0) {
                 ItemImage(cover: artist.cover)
-                    .clipShape(RoundedRectangle(cornerRadius: 1000))
-                    .frame(width: 45)
-                    .padding(.trailing, .connectedSpacing)
+                    .frame(width: 44)
+                    .clipShape(.rect(cornerRadius: .infinity))
+                    .padding(.trailing, 8)
                 
                 Text(artist.name)
-                    .padding(.horizontal, 5)
             }
         }
     }
 }
 
-extension ArtistListRow {
+internal extension ArtistListRow {
     typealias Expand = (() -> Void)
     
     // NavigationLink cannot be disabled by allowHitsTesting, make a non-link version for placeholder
     static let placeholder: some View = HStack {
         ItemImage(cover: nil)
-            .clipShape(RoundedRectangle(cornerRadius: 1000))
-            .frame(width: 45)
+            .clipShape(RoundedRectangle(cornerRadius: .infinity))
+            .frame(width: 44)
+            .padding(.trailing, 8)
         
         Text("placeholder")
-            .padding(.horizontal, 5)
     }.redacted(reason: .placeholder)
 }

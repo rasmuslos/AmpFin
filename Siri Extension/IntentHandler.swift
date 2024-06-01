@@ -6,7 +6,7 @@
 //
 
 import Intents
-import AFBase
+import AFFoundation
 import AFExtension
 
 final internal class IntentHandler: INExtension {
@@ -48,16 +48,16 @@ final internal class IntentHandler: INExtension {
         }
         
         guard !results.isEmpty else {
-            throw SearchError.unavailable
+            throw SearchError.notFound
         }
         
         results.sort { $0.name.levenshteinDistanceScore(to: primaryName) > $1.name.levenshteinDistanceScore(to: primaryName) }
         
-        return MediaResolver.shared.convert(items: results)
+        return await MediaResolver.shared.convert(items: results)
     }
     
     enum SearchError: Error {
-        case unavailable
+        case notFound
         case unsupportedMediaType
     }
 }

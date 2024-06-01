@@ -8,10 +8,11 @@
 import Foundation
 import MediaPlayer
 import SwiftUI
-import AFBase
+import AFFoundation
+import AFNetwork
 
 @Observable
-final class RemoteAudioEndpoint {
+internal final class RemoteAudioEndpoint {
     let clientId: String
     let sessionId: String
     
@@ -50,7 +51,9 @@ final class RemoteAudioEndpoint {
         _repeatMode = .none
         
         setupObserver()
+        #if !os(macOS)
         AudioPlayer.setupAudioSession()
+        #endif
         
         startDummyAudioPlayer()
         updateNowPlayingWidget()
@@ -68,7 +71,7 @@ final class RemoteAudioEndpoint {
     }
 }
 
-extension RemoteAudioEndpoint {
+internal extension RemoteAudioEndpoint {
     func setupObserver() {
         token = NotificationCenter.default.addObserver(forName: JellyfinWebSocket.sessionUpdateNotification, object: nil, queue: nil) { [weak self] notification in
             guard let session = notification.object as? Session else { return }
@@ -89,194 +92,4 @@ extension RemoteAudioEndpoint {
             }
         }
     }
-    
-    func startDummyAudioPlayer() {
-        // this horrible abomination is required to show up in now playing
-        let path = Bundle.module.path(forResource: "silence", ofType: "wav")
-        let url = NSURL.fileURL(withPath: path!)
-        let asset = AVAsset(url: url)
-        let playerItem = AVPlayerItem(asset: asset)
-        
-        queuePlayer = AVQueuePlayer(playerItem: playerItem)
-        let _ = AVPlayerLooper(player: queuePlayer, templateItem: playerItem)
-    }
-    
-    func updateNowPlayingWidget() {
-        if let nowPlaying = nowPlaying {
-            if playing {
-                queuePlayer.play()
-            } else {
-                queuePlayer.pause()
-            }
-            
-            AudioPlayer.current.updateCommandCenter(favorite: nowPlaying.favorite)
-            
-            nowPlayingInfo[MPMediaItemPropertyTitle] = nowPlaying.name
-            nowPlayingInfo[MPMediaItemPropertyArtist] = nowPlaying.artistName
-            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = nowPlaying.album.name
-            nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = nowPlaying.album.artistName
-            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackProgress] = currentTime / duration
-            
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playing ? 1.0 : 0.0
-            
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            MPNowPlayingInfoCenter.default().playbackState = playing ? .playing : .paused
-            
-            updateNowPlayingCover()
-        }
-        
-        if nowPlaying != nil && active == false {
-            AudioPlayer.updateAudioSession(active: true)
-            
-            active = true
-        } else if nowPlaying == nil && active == true {
-            AudioPlayer.updateAudioSession(active: false)
-            queuePlayer.pause()
-            
-            nowPlayingInfo = [:]
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            
-            active = false
-        }
-    }
-    
-    func updateNowPlayingCover() {
-        let identifier = nowPlayingInfo[MPNowPlayingInfoPropertyExternalContentIdentifier] as? String
-        
-        if let nowPlaying = nowPlaying, identifier != nowPlaying.id {
-            nowPlayingInfo[MPNowPlayingInfoPropertyExternalContentIdentifier] = nowPlaying.id
-            
-            #if canImport(UIKit)
-            Task.detached { [self] in
-                if let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url), let image = UIImage(data: data) {
-                    let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { _ -> UIImage in image })
-                    nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
-                }
-            }
-            #else
-            // TODO: code this
-            #endif
-        }
-    }
-}
-
-extension RemoteAudioEndpoint: AudioEndpoint {
-    var playing: Bool {
-        get {
-            _playing
-        }
-        set {
-            Task {
-                try? await JellyfinClient.shared.issuePlayStateCommand(sessionId: sessionId, command: _playing ? .pause : .play)
-            }
-        }
-    }
-    
-    var duration: Double {
-        nowPlaying?.runtime ?? 0
-    }
-    var currentTime: Double {
-        get {
-            _currentTime
-        }
-        set {
-            Task {
-                await seek(seconds: newValue)
-            }
-        }
-    }
-    
-    var shuffled: Bool {
-        get {
-            _shuffled
-        }
-        set {
-            _shuffled = newValue
-            
-            Task {
-                try? await JellyfinClient.shared.setShuffleMode(sessionId: sessionId, shuffled: newValue)
-            }
-        }
-    }
-    var repeatMode: RepeatMode {
-        get {
-            _repeatMode
-        }
-        set {
-            _repeatMode = newValue
-            
-            Task {
-                try? await JellyfinClient.shared.setRepeatMode(sessionId: sessionId, repeatMode: newValue)
-            }
-        }
-    }
-    
-    public var volume: Float {
-        get {
-            _volume
-        }
-        set {
-            Task {
-                try? await JellyfinClient.shared.setOutputVolume(sessionId: sessionId, volume: newValue)
-            }
-        }
-    }
-    
-    func seek(seconds: Double) async {
-        try? await JellyfinClient.shared.seek(sessionId: sessionId, positionSeconds: seconds)
-    }
-    
-    func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
-        Task {
-            var tracks = tracks
-            if shuffle {
-                tracks = tracks.shuffled()
-            }
-            
-            try? await JellyfinClient.shared.playTracks(sessionId: sessionId, tracks: tracks, index: startIndex)
-        }
-    }
-    
-    func stopPlayback() {
-        Task {
-            try? await JellyfinClient.shared.issuePlayStateCommand(sessionId: sessionId, command: .stop)
-        }
-    }
-    
-    func advanceToNextTrack() {
-        Task {
-            try? await JellyfinClient.shared.issuePlayStateCommand(sessionId: sessionId, command: .next)
-        }
-    }
-    
-    func backToPreviousItem() {
-        Task {
-            try? await JellyfinClient.shared.issuePlayStateCommand(sessionId: sessionId, command: .previous)
-        }
-    }
-    
-    func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool) {
-        queueTracks([track], index: index)
-    }
-    
-    func queueTracks(_ tracks: [Track], index: Int) {
-        Task {
-            try? await JellyfinClient.shared.queueTracks(sessionId: sessionId, tracks: tracks, queuePosition: index == 0 ? .next : .last)
-        }
-    }
-    
-    // Jellyfin does not support these
-    
-    var queue: [Track] { [] }
-    var history: [Track] { [] }
-    var buffering: Bool { false }
-    
-    func skip(to: Int) {}
-    func removeTrack(index: Int) -> Track? { nil }
-    func removeHistoryTrack(index: Int) {}
-    func moveTrack(from: Int, to: Int) {}
-    func restoreHistory(index: Int) {}
-    func getTrackData() async -> Track.TrackData? { nil }
 }

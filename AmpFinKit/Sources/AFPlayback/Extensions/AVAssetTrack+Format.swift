@@ -8,8 +8,8 @@
 import Foundation
 import AVFoundation
 
-extension AVAssetTrack {
-    func getMediaFormat() async -> String? {
+internal extension AVAssetTrack {
+    func mediaFormat() async -> String? {
         if let descriptions = try? await load(.formatDescriptions), let first = descriptions.first {
             return CMFormatDescriptionGetMediaSubType(first).toString()
         }
@@ -18,7 +18,7 @@ extension AVAssetTrack {
     }
 }
 
-extension FourCharCode {
+private extension FourCharCode {
     func toString() -> String {
         let bytes: [CChar] = [
             CChar((self >> 24) & 0xff),

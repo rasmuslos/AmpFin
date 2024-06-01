@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 struct PlaylistAddSheet: View {
-    @Environment(\.dismiss) var dismiss
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dismiss) private var dismiss
     
     let track: Track
     
@@ -87,14 +87,13 @@ struct PlaylistAddSheet: View {
                                 }
                             } else {
                                 ProgressView()
-                                    .onAppear {
-                                        Task {
-                                            do {
-                                                playlists = try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .added, ascending: false, favorite: false)
-                                            } catch {
-                                                failed = true
-                                            }
+                                    .task {
+                                        guard let playlists = try? await JellyfinClient.shared.playlists(limit: 0, sortOrder: .lastPlayed, ascending: false) else {
+                                            failed = true
+                                            return
                                         }
+                                        
+                                        self.playlists = playlists
                                     }
                             }
                         }
@@ -105,7 +104,7 @@ struct PlaylistAddSheet: View {
                 }
             }
             .navigationTitle("playlist.add.title")
-            #if targetEnvironment(macCatalyst)
+            #if targetEnvironment(macCatalyst) || os(visionOS)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 extension AlbumView {
     struct AdditionalAlbums: View {
@@ -14,52 +14,73 @@ extension AlbumView {
         
         let album: Album
         
-        @State var alsoFromArtist: [Album]?
-        @State var similar: [Album]?
+        @State private var similar = [Album]()
+        @State private var alsoByArtist = [Album]()
         
-        @State var completedOperations = 0
+        @State private var completedOperations = 0
         
         var body: some View {
             if completedOperations < 1 {
                 ProgressView()
                     .frame(height: 0)
                     .listRowSeparator(.hidden)
-                    .padding(.horizontal, .outerSpacing)
-                    .task {
-                        fetchAlbums()
-                    }
+                    .padding(.horizontal, 20)
+                    .task { await loadSimilarAlbums() }
+                    .task { await loadAlbumsByArtist() }
             }
             
-            if let alsoFromArtist = alsoFromArtist, alsoFromArtist.count > 1, let first = album.artists.first {
-                AlbumRow(title: String(localized: "album.similar \(first.name)"), albums: alsoFromArtist)
+            Group {
+                if !alsoByArtist.isEmpty, let first = album.artists.first {
+                    AlbumRow(title: String(localized: "album.similar \(first.name)"), albums: alsoByArtist)
+                        .padding(.vertical, 12)
+                }
+                
+                if !similar.isEmpty {
+                    AlbumRow(title: String(localized: "album.similar"), albums: similar)
+                        .padding(.vertical, 12)
+                }
             }
-            
-            if let similar = similar, !similar.isEmpty {
-                AlbumRow(title: String(localized: "album.similar"), albums: similar)
-            }
-        }
-    }
-}
-
-// MARK: Helper
-
-extension AlbumView.AdditionalAlbums {
-    func fetchAlbums() {
-        if dataProvider as? OfflineLibraryDataProvider != nil {
-            completedOperations = 2
-            return
+            .refreshable { await loadSimilarAlbums() }
+            .refreshable { await loadAlbumsByArtist() }
         }
         
-        Task.detached {
-            if let artist = album.artists.first {
-                alsoFromArtist = try? await JellyfinClient.shared.getAlbums(limit: 10, startIndex: 0, artistId: artist.id, sortOrder: .released, ascending: false).0.filter { $0.id != album.id }
+        func loadSimilarAlbums() async {
+            guard dataProvider as? OfflineLibraryDataProvider == nil else {
+                completedOperations += 1
+                return
+            }
+            
+            guard let similar = try? await JellyfinClient.shared.albums(similarToAlbumId: album.id).filter({ $0.id != album.id }) else {
+                completedOperations += 1
+                return
+            }
+            
+            guard !Task.isCancelled else {
+                completedOperations += 1
+                return
             }
             
             completedOperations += 1
+            self.similar = similar
         }
-        Task.detached {
-            similar = try? await JellyfinClient.shared.getAlbums(similarToAlbumId: album.id)
+        func loadAlbumsByArtist() async {
+            guard dataProvider as? OfflineLibraryDataProvider != nil, let artist = album.artists.first else {
+                completedOperations += 1
+                return
+            }
+            
+            guard let alsoByArtist = try? await dataProvider.albums(artistId: artist.id, limit: 20, startIndex: 0, sortOrder: .released, ascending: false).0.filter({ $0.id != album.id }) else {
+                completedOperations += 1
+                return
+            }
+            
+            guard !Task.isCancelled else {
+                completedOperations += 1
+                return
+            }
+            
             completedOperations += 1
+            self.alsoByArtist = alsoByArtist
         }
     }
 }

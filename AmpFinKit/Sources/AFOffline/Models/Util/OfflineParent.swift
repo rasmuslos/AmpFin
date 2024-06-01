@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
 
 protocol OfflineParent {
     var id: String { get }
@@ -14,7 +14,7 @@ protocol OfflineParent {
 }
 
 extension OfflineParent {
-    public var trackCount: Int {
+    var trackCount: Int {
         childrenIds.count
     }
 }

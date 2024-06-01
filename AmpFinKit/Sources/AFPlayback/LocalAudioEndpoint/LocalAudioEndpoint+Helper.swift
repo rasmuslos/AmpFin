@@ -7,8 +7,8 @@
 
 import Foundation
 import AVKit
-import AFBase
-
+import AFFoundation
+import AFNetwork
 #if canImport(AFOffline)
 import AFOffline
 #endif
@@ -16,45 +16,39 @@ import AFOffline
 // MARK: Helper
 
 internal extension LocalAudioEndpoint {
-    func getTrackData() async -> Track.TrackData? {
-        if let itemId = nowPlaying?.id, let trackData = try? await JellyfinClient.shared.getTrackData(id: itemId) {
-            return trackData
-        }
-        
-        let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
-        
-        var format = await track?.getMediaFormat()
-        var bitrate = try? await track?.load(.estimatedDataRate)
-        
-        if format != nil {
-            while format!.starts(with: ".") {
-                format!.removeFirst()
+    var mediaInfo: Track.MediaInfo? {
+        get async {
+            if let itemId = nowPlaying?.id, let mediaInfo = try? await JellyfinClient.shared.mediaInfo(trackId: itemId) {
+                return mediaInfo
             }
+            
+            let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
+            
+            var format = await track?.mediaFormat()
+            var bitrate = try? await track?.load(.estimatedDataRate)
+            
+            if format != nil {
+                while format!.starts(with: ".") {
+                    format!.removeFirst()
+                }
+            }
+            if bitrate != nil {
+                bitrate = (bitrate! / 1000).rounded()
+            }
+            
+            return .init(codec: format, lossless: false, bitrate: bitrate != nil && bitrate! > 0 ? Int(bitrate!) : nil, bitDepth: nil, sampleRate: nil)
         }
-        if bitrate != nil {
-            bitrate = (bitrate! / 1000).rounded()
-        }
-        
-        return .init(codec: format, lossless: false, bitrate: bitrate != nil && bitrate! > 0 ? Int(bitrate!) : nil, bitDepth: nil, sampleRate: nil)
     }
     
-    func getAVPlayerItem(_ track: Track) -> AVPlayerItem {
+    func avPlayerItem(track: Track) -> AVPlayerItem {
         #if canImport(AFOffline)
-        if DownloadManager.shared.isDownloaded(trackId: track.id) {
-            return AVPlayerItem(url: DownloadManager.shared.getUrl(trackId: track.id))
+        if DownloadManager.shared.downloaded(trackId: track.id) {
+            return AVPlayerItem(url: DownloadManager.shared.url(trackId: track.id))
         }
         #endif
         
-        #if os(watchOS)
-        return AVPlayerItem(url: JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "stream").appending(queryItems: [
-            URLQueryItem(name: "profile", value: "28"),
-            URLQueryItem(name: "audioCodec", value: "aac"),
-            URLQueryItem(name: "audioBitRate", value: "128000"),
-            URLQueryItem(name: "audioSampleRate", value: "44100"),
-        ]))
-        #else
         let url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
-            URLQueryItem(name: "api_key", value: JellyfinClient.shared.token!),
+            URLQueryItem(name: "api_key", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
             URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aiff|aif"),
@@ -65,7 +59,6 @@ internal extension LocalAudioEndpoint {
         ])
         
         return AVPlayerItem(url: url)
-        #endif
     }
     
     func updatePlaybackReporter(scheduled: Bool) {
@@ -83,9 +76,6 @@ internal extension LocalAudioEndpoint {
         
         if let track = track {
             AudioPlayer.current.updateCommandCenter(favorite: track.favorite)
-        }
-        
-        if let track = track {
             playbackReporter = PlaybackReporter(trackId: track.id, queue: queue)
         } else {
             playbackReporter = nil

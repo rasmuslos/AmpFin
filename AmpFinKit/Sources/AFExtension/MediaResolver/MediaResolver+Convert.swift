@@ -7,13 +7,14 @@
 
 import Foundation
 import Intents
-import AFBase
+import AFFoundation
 
-extension MediaResolver {
-    public func convert(items: [Item]) -> [INMediaItem] {
-        items.map(convert)
+@available(macOS, unavailable)
+public extension MediaResolver {
+    func convert(items: [Item]) async -> [INMediaItem] {
+        await items.parallelMap(convert)
     }
-    public func convert(item: Item) -> INMediaItem {
+    func convert(item: Item) async -> INMediaItem {
         var artist: String?
         
         if let track = item as? Track {
@@ -25,12 +26,15 @@ extension MediaResolver {
         return INMediaItem(
             identifier: item.id,
             title: item.name,
-            type: convertType(type: item.type),
-            artwork: convertImage(cover: item.cover),
+            type: convert(type: item.type),
+            artwork: await convert(cover: item.cover),
             artist: artist)
     }
-    
-    private func convertType(type: Item.ItemType) -> INMediaItemType {
+}
+
+@available(macOS, unavailable)
+private extension MediaResolver {
+    func convert(type: Item.ItemType) -> INMediaItemType {
         switch type {
             case .album:
                 return .album
@@ -43,17 +47,19 @@ extension MediaResolver {
         }
     }
     
-    private func convertImage(cover: Item.Cover?) -> INImage? {
-        guard let cover = cover else { return nil }
+    func convert(cover: Cover?) async -> INImage? {
+        guard let cover = cover else {
+            return nil
+        }
         
         if cover.type == .local {
             return INImage(url: cover.url)
         }
         
-        if let data = try? Data(contentsOf: cover.url) {
-            return INImage(imageData: data)
+        guard let data = try? Data(contentsOf: cover.url) else {
+            return nil
         }
         
-        return nil
+        return INImage(imageData: data)
     }
 }

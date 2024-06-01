@@ -6,20 +6,14 @@
 //
 
 import SwiftUI
-import AFBase
-import AFOffline
+import AmpFinKit
 import AFPlayback
 
 struct AlbumContextMenuModifier: ViewModifier {
     @Environment(\.libraryDataProvider) private var dataProvider
     
     let album: Album
-    let offlineTracker: ItemOfflineTracker
-    
-    init(album: Album) {
-        self.album = album
-        self.offlineTracker = album.offlineTracker
-    }
+    @State private var offlineTracker: ItemOfflineTracker?
     
     // this prevents the album from fetching its offline status prematurely
     @State private var showDownloadButton = false
@@ -29,21 +23,12 @@ struct AlbumContextMenuModifier: ViewModifier {
             .contextMenu {
                 Button {
                     Task {
-                        AudioPlayer.current.startPlayback(tracks: try await dataProvider.getTracks(albumId: album.id), startIndex: 0, shuffle: false, playbackInfo: .init(container: album))
+                        AudioPlayer.current.startPlayback(tracks: try await dataProvider.tracks(albumId: album.id), startIndex: 0, shuffle: false, playbackInfo: .init(container: album))
                     }
                 } label: {
                     Label("play", systemImage: "play")
                 }
                 
-                Divider()
-                
-                Button {
-                    Task {
-                        await album.setFavorite(favorite: !album.favorite)
-                    }
-                } label: {
-                    Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
-                }
                 Button {
                     Task {
                         try? await album.startInstantMix()
@@ -57,7 +42,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                 
                 Button {
                     Task {
-                        AudioPlayer.current.queueTracks(try await dataProvider.getTracks(albumId: album.id), index: 0, playbackInfo: .init(container: album, queueLocation: .next))
+                        AudioPlayer.current.queueTracks(try await dataProvider.tracks(albumId: album.id), index: 0, playbackInfo: .init(container: album, queueLocation: .next))
                     }
                 } label: {
                     Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
@@ -65,10 +50,18 @@ struct AlbumContextMenuModifier: ViewModifier {
                 
                 Button {
                     Task {
-                        AudioPlayer.current.queueTracks(try await dataProvider.getTracks(albumId: album.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: album, queueLocation: .later))
+                        AudioPlayer.current.queueTracks(try await dataProvider.tracks(albumId: album.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: album, queueLocation: .later))
                     }
                 } label: {
                     Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                }
+                
+                Divider()
+                
+                Button {
+                    album.favorite.toggle()
+                } label: {
+                    Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
                 }
                 
                 Divider()
@@ -84,10 +77,11 @@ struct AlbumContextMenuModifier: ViewModifier {
                 }
                 
                 Divider()
+                    .onAppear {
+                        offlineTracker = album.offlineTracker
+                    }
                 
-                if showDownloadButton {
-                    let offlineTracker = album.offlineTracker
-                    
+                if let offlineTracker = offlineTracker {
                     if offlineTracker.status == .none {
                         Button {
                             Task {
@@ -105,29 +99,26 @@ struct AlbumContextMenuModifier: ViewModifier {
                     }
                 }
             } preview: {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 0) {
                     ItemImage(cover: album.cover)
-                        .padding(.bottom, .connectedSpacing)
                     
                     Text(album.name)
+                        .padding(.top, 16)
+                        .padding(.bottom, 2)
                     
-                    if !album.artists.isEmpty {
-                        Text(album.artistName)
+                    if let artistName = album.artistName {
+                        Text(artistName)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                 }
                 .frame(width: 250)
-                .padding(.outerSpacing)
-                .background(.ultraThickMaterial)
-                .onAppear {
-                    showDownloadButton = true
-                }
+                .padding(20)
             }
     }
 }
 
 #Preview {
     Text(verbatim: ":)")
-        .modifier(AlbumContextMenuModifier(album: Album.fixture))
+        .modifier(AlbumContextMenuModifier(album: .fixture))
 }

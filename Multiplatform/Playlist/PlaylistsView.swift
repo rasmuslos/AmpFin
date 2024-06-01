@@ -6,48 +6,48 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 struct PlaylistsView: View {
-    @Environment(\.libraryDataProvider) var dataProvider
+    @Environment(\.libraryDataProvider) private var dataProvider
     
-    @State var playlists = [Playlist]()
-    @State var failed = false
+    @State private var failed = false
+    @State private var playlists = [Playlist]()
     
     var body: some View {
         Group {
             if !playlists.isEmpty {
                 List {
                     PlaylistsList(playlists: playlists)
-                        .padding(.horizontal, .outerSpacing)
+                        .padding(.horizontal, 20)
                 }
+                .listStyle(.plain)
             } else if failed {
                 ErrorView()
             } else {
-                VStack {
-                    LoadingView()
-                }
+                LoadingView()
+                    .task { await loadPlaylists() }
             }
         }
         .navigationTitle("title.playlists")
-        .task { await fetchPlaylists() }
-        .refreshable { await fetchPlaylists() }
         .modifier(NowPlaying.SafeAreaModifier())
+        .refreshable { await loadPlaylists() }
     }
-}
-
-extension PlaylistsView {
-    func fetchPlaylists() async {
+    
+    private func loadPlaylists() async {
         failed = false
         
-        do {
-            playlists = try await dataProvider.getPlaylists()
-        } catch {
+        guard let playlists = try? await dataProvider.playlists(search: nil) else {
             failed = true
+            return
         }
+        
+        self.playlists = playlists
     }
 }
 
 #Preview {
-    PlaylistsView()
+    NavigationStack {
+        PlaylistsView()
+    }
 }

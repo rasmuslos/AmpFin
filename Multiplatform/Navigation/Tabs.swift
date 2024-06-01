@@ -7,14 +7,13 @@
 
 import SwiftUI
 import Defaults
-import AFBase
-import AFOffline
+import AmpFinKit
 
-struct Tabs: View {
-    @Default(.lastActiveTab) private var activeTab
+internal struct Tabs: View {
+    @Default(.activeTab) private var activeTab
     
-    @State var libraryPath = NavigationPath()
-    @State var downloadsPath = NavigationPath()
+    @State private var libraryPath = NavigationPath()
+    @State private var downloadsPath = NavigationPath()
     
     var body: some View {
         TabView(selection: $activeTab) {
@@ -73,7 +72,7 @@ struct Tabs: View {
         .modifier(NowPlaying.CompactViewModifier())
         .modifier(Navigation.NotificationModifier(
             navigateAlbum: {
-                if OfflineManager.shared.isAlbumDownloaded(albumId: $0) {
+                if OfflineManager.shared.offlineStatus(albumId: $0) == .downloaded {
                     activeTab = .downloads
                     
                     NotificationCenter.default.post(name: Navigation.navigateNotification, object: nil, userInfo: [
@@ -93,7 +92,7 @@ struct Tabs: View {
                     "artistId": $0,
                 ])
             }, navigatePlaylist: {
-                if OfflineManager.shared.isPlaylistDownloaded(playlistId: $0) {
+                if OfflineManager.shared.offlineStatus(playlistId: $0) == .downloaded {
                     activeTab = .downloads
                     
                     NotificationCenter.default.post(name: Navigation.navigateNotification, object: nil, userInfo: [
@@ -110,7 +109,7 @@ struct Tabs: View {
     }
 }
 
-extension Tabs {
+internal extension Tabs {
     enum Selection: Int, Defaults.Serializable {
         case library = 0
         case downloads = 1

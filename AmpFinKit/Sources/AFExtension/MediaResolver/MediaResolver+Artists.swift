@@ -6,16 +6,22 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
+import AFNetwork
 #if canImport(AFOffline)
 import AFOffline
 #endif
 
+@available(macOS, unavailable)
 public extension MediaResolver {
-    func search(artistName: String?) async throws -> [Artist] {
-        guard let artistName = artistName else { throw ResolveError.missing }
+    func search(artistName name: String?) async throws -> [Artist] {
+        guard let name = name else { throw ResolveError.missing }
         
-        let result = try await JellyfinClient.shared.getArtists(query: artistName)
+        guard !JellyfinClient.shared.siriOfflineMode else {
+            return []
+        }
+        
+        let result = try await JellyfinClient.shared.artists(search: name)
         
         guard !result.isEmpty else {
             throw ResolveError.empty
@@ -24,13 +30,13 @@ public extension MediaResolver {
         return result
     }
     
-    func resolve(artistId: String) async throws -> [Track] {
+    func tracks(artistId identifier: String) async throws -> [Track] {
         #if canImport(AFOffline)
-        if let tracks = try? await OfflineManager.shared.getTracks(artistId: artistId) {
+        if let tracks = try? await OfflineManager.shared.tracks(artistId: identifier) {
             return tracks.shuffled()
         }
         #endif
         
-        return try await JellyfinClient.shared.getTracks(artistId: artistId, sortOrder: .random, ascending: true)
+        return try await JellyfinClient.shared.tracks(artistId: identifier, sortOrder: .random, ascending: true)
     }
 }

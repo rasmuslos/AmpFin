@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NowPlaying {
+internal struct NowPlaying {
     private init() {}
     
     enum Tab {
@@ -17,7 +17,7 @@ struct NowPlaying {
     }
 }
 
-extension NowPlaying {
+internal extension NowPlaying {
     static let widthChangeNotification = NSNotification.Name("io.rfk.ampfin.sidebar.width.changed")
     static let offsetChangeNotification = NSNotification.Name("io.rfk.ampfin.sidebar.offset.changed")
 }

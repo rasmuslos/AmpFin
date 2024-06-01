@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 extension AccountSheet {
@@ -15,10 +15,10 @@ extension AccountSheet {
         
         var body: some View {
             Section("account.remote") {
-                if JellyfinWebSocket.shared.isConnected {
+                if JellyfinWebSocket.shared.connected {
                     if AudioPlayer.current.source == .jellyfinRemote {
                         Button(role: .destructive) {
-                            AudioPlayer.current.destroy()
+                            AudioPlayer.current.stopPlayback()
                         } label: {
                             Label("remote.disconnect", systemImage: "network.slash")
                         }
@@ -32,7 +32,7 @@ extension AccountSheet {
                                 Button {
                                     AudioPlayer.current.startRemoteControl(session: session)
                                 } label: {
-                                    VStack(alignment: .leading, spacing: 7) {
+                                    VStack(alignment: .leading, spacing: 8) {
                                         Text(verbatim: "\(session.name) • \(session.client)")
                                         
                                         if let nowPlaying = session.nowPlaying {
@@ -55,7 +55,7 @@ extension AccountSheet {
                         Label("account.remote.loading", systemImage: "network")
                             .foregroundStyle(.secondary)
                             .task {
-                                sessions = await JellyfinClient.shared.getControllableSessions()
+                                sessions = await JellyfinClient.shared.controllableSessions()
                             }
                     }
                 } else {

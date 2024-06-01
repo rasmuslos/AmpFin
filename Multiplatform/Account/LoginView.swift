@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 struct LoginView: View {
     @State private var loginSheetPresented = false
@@ -27,8 +27,8 @@ struct LoginView: View {
                 .resizable()
                 .aspectRatio(1, contentMode: .fit)
                 .frame(width: 100)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
-                .padding(.bottom, 50)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .padding(.bottom, 40)
             
             Text("login.welcome")
                 .font(.headline)
@@ -39,85 +39,87 @@ struct LoginView: View {
                 loginSheetPresented.toggle()
             } label: {
                 Text("login.promt")
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 44)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .font(.headline)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 8))
             }
-            .padding(.vertical, 12)
-            .padding(.horizontal, 45)
-            .foregroundColor(.white)
-            .background(Color.accentColor)
-            .font(.headline)
-            .cornerRadius(7)
-            .padding()
+            .buttonStyle(.plain)
+            .padding(20)
             
             Spacer()
         }
         .sheet(isPresented: $loginSheetPresented, content: {
             switch loginFlowState {
-            case .server, .credentials:
-                Form {
-                    Section {
-                        if loginFlowState == .server {
-                            TextField("login.server", text: $server)
-                                .keyboardType(.URL)
-                                .autocorrectionDisabled()
-                                .textInputAutocapitalization(.never)
-                        } else if loginFlowState == .credentials {
-                            TextField("login.username", text: $username)
-                            SecureField("login.password", text: $password)
-                                .autocorrectionDisabled()
-                                .textInputAutocapitalization(.never)
-                        }
-                        
-                        Button {
-                            flowStep()
-                        } label: {
-                            Text("login.next")
-                        }
-                    } header: {
-                        if let serverVersion = serverVersion {
-                            Text("login.version \(serverVersion)")
-                        } else {
-                            Text("login.title")
-                        }
-                    } footer: {
-                        Group {
-                            switch loginError {
-                            case .server:
-                                Text("login.error.server")
-                            case .url:
-                                Text("login.error.url")
-                            case .failed:
-                                Text("login.error.failed")
-                            case nil:
-                                Text(verbatim: "")
+                case .server, .credentials:
+                    Form {
+                        Section {
+                            if loginFlowState == .server {
+                                TextField("login.server", text: $server)
+                                    .keyboardType(.URL)
+                                    .autocorrectionDisabled()
+                                    .textInputAutocapitalization(.never)
+                            } else if loginFlowState == .credentials {
+                                TextField("login.username", text: $username)
+                                SecureField("login.password", text: $password)
+                                    .autocorrectionDisabled()
+                                    .textInputAutocapitalization(.never)
                             }
+                            
+                            Button {
+                                flowStep()
+                            } label: {
+                                Text("login.next")
+                            }
+                        } header: {
+                            if let serverVersion {
+                                Text("login.version \(serverVersion)")
+                            } else {
+                                Text("login.title")
+                            }
+                        } footer: {
+                            Group {
+                                switch loginError {
+                                    case .server:
+                                        Text("login.error.server")
+                                    case .url:
+                                        Text("login.error.url")
+                                    case .failed:
+                                        Text("login.error.failed")
+                                    case nil:
+                                        EmptyView()
+                                }
+                            }
+                            .foregroundStyle(.red)
                         }
-                        .foregroundStyle(.red)
                     }
-                }
-                .onSubmit(flowStep)
-            case .serverLoading, .credentialsLoading:
-                VStack {
-                    ProgressView()
-                    Text("login.loading")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .padding()
-                }
+                    .onSubmit(flowStep)
+                case .serverLoading, .credentialsLoading:
+                    VStack {
+                        ProgressView()
+                        
+                        Text("login.loading")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .padding(20)
+                    }
             }
         })
     }
 }
 
-// MARK: Functions
-
-extension LoginView {
+internal extension LoginView {
     private func flowStep() {
         if loginFlowState == .server {
             loginFlowState = .serverLoading
             
             // Verify url format
+            
             do {
-                try JellyfinClient.shared.setServerUrl(server)
+                try JellyfinClient.shared.store(serverUrl: server)
             } catch {
                 loginError = .url
                 loginFlowState = .server
@@ -126,9 +128,10 @@ extension LoginView {
             }
             
             // Verify server
+            
             Task {
                 do {
-                    serverVersion = try await JellyfinClient.shared.getServerPublicVersion()
+                    serverVersion = try await JellyfinClient.shared.serverVersion()
                 } catch {
                     loginError = .server
                     loginFlowState = .server
@@ -146,8 +149,8 @@ extension LoginView {
                 do {
                     let (token, userId) = try await JellyfinClient.shared.login(username: username, password: password)
                     
-                    JellyfinClient.shared.setToken(token)
-                    JellyfinClient.shared.setUserId(userId)
+                    JellyfinClient.shared.store(token: token)
+                    JellyfinClient.shared.store(userId: userId)
                 } catch {
                     loginError = .failed
                     loginFlowState = .credentials

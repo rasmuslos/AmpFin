@@ -8,7 +8,7 @@
 import SwiftUI
 import TipKit
 
-struct HistoryTip: Tip {
+internal struct HistoryTip: Tip {
     var title: Text {
         Text("tip.history.title")
     }

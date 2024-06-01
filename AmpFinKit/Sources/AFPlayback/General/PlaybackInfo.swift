@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
 import AFExtension
 import Intents
 
@@ -29,32 +29,42 @@ public struct PlaybackInfo {
     }
 }
 
+#if os(macOS)
+public enum INPlaybackQueueLocation {
+    case now
+    case next
+    case later
+}
+#endif
+
+@available(macOS, unavailable)
 extension PlaybackInfo {
     internal func donate() {
-        if preventDonation { return }
-        
-        guard let item = container ?? tracks.first else {
-            return
-        }
-        
-        let repeatMode: INPlaybackRepeatMode
-        
-        switch AudioPlayer.current.repeatMode {
-            case .none:
-                repeatMode = .none
-                break
-            case .track:
-                repeatMode = .one
-                break
-            case .queue:
-                repeatMode = .all
-                break
-        }
-        
-        Task.detached {
+        Task {
+            if preventDonation { return }
+            
+            guard let item = container ?? tracks.first else {
+                return
+            }
+            
+            let repeatMode: INPlaybackRepeatMode
+            
+            switch AudioPlayer.current.repeatMode {
+                case .none:
+                    repeatMode = .none
+                    break
+                case .track:
+                    repeatMode = .one
+                    break
+                case .queue:
+                    repeatMode = .all
+                    break
+            }
+            
+            #if !os(macOS)
             // this is wrong... But apple begs to differ...
             let intent = INPlayMediaIntent(
-                mediaItems: [MediaResolver.shared.convert(item: item)],
+                mediaItems: [await MediaResolver.shared.convert(item: item)],
                 mediaContainer: nil,
                 playShuffled: AudioPlayer.current.shuffled,
                 playbackRepeatMode: repeatMode,
@@ -103,6 +113,7 @@ extension PlaybackInfo {
             
             let interaction = INInteraction(intent: intent, response: INPlayMediaIntentResponse(code: .success, userActivity: activity))
             try? await interaction.donate()
+            #endif
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftData
-import AFBase
+import AFFoundation
 
 @Model
 final class OfflineLyrics {

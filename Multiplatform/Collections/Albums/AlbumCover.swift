@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
-struct AlbumCover: View {
+internal struct AlbumCover: View {
     @Environment(\.redactionReasons) private var redactionReasons
     
     let album: Album
@@ -17,27 +17,31 @@ struct AlbumCover: View {
         VStack(alignment: .leading, spacing: 0) {
             ItemImage(cover: album.cover)
             
+            Text(album.name)
+                .font(.subheadline)
+                .lineLimit(1)
+                .padding(.top, 8)
+                .padding(.bottom, 2)
+            
             Group {
-                Text(album.name)
-                    .font(.subheadline)
-                    .padding(.top, 7)
-                    .padding(.bottom, 2)
-                
-                Text(album.artistName)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .padding(.bottom, 7)
+                if let artistName = album.artistName {
+                    Text(artistName)
+                } else {
+                    Text(verbatim: "")
+                }
             }
+            .font(.subheadline)
             .lineLimit(1)
+            .foregroundStyle(.secondary)
         }
-        .padding(.innerSpacing / 2)
-        .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 7))
+        .padding(8)
+        .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 12))
         .modifier(AlbumContextMenuModifier(album: album))
-        .padding(.innerSpacing / -2)
+        .padding(-8)
     }
 }
 
-extension AlbumCover {
+internal extension AlbumCover {
     static let placeholder: some View = AlbumCover(album: .init(
         id: "placeholder",
         name: "Placeholder",

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 extension NowPlaying {
@@ -17,7 +17,6 @@ extension NowPlaying {
         @State private var adjust: CGFloat = .zero
         @State private var sheetPresented = false
         
-        @State private var animateImage = false
         @State private var animateForwards = false
         @State private var animateBackwards = false
         
@@ -25,9 +24,9 @@ extension NowPlaying {
             content
                 .safeAreaInset(edge: .bottom) {
                     if let currentTrack = AudioPlayer.current.nowPlaying {
-                        HStack {
+                        HStack(spacing: 8) {
                             ItemImage(cover: currentTrack.cover)
-                                .frame(width: 50, height: 50)
+                                .frame(width: 48, height: 48)
                             
                             Text(currentTrack.name)
                                 .lineLimit(1)
@@ -43,7 +42,7 @@ extension NowPlaying {
                                     .fontWeight(.heavy)
                             }
                             .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled, heavy: true))
-                            .modifier(ButtonHoverEffectModifier())
+                            .modifier(HoverEffectModifier(padding: 4))
                             
                             Button {
                                 animateBackwards.toggle()
@@ -54,35 +53,27 @@ extension NowPlaying {
                                     .symbolEffect(.bounce.up, value: animateBackwards)
                             }
                             .font(.title3)
-                            .modifier(ButtonHoverEffectModifier())
-                            .padding(.horizontal, 7)
+                            .modifier(HoverEffectModifier())
+                            .sensoryFeedback(.decrease, trigger: animateBackwards)
                             
                             Group {
                                 if AudioPlayer.current.buffering {
                                     ProgressView()
                                 } else {
                                     Button {
-                                        AudioPlayer.current.playing = !AudioPlayer.current.playing
+                                        AudioPlayer.current.playing.toggle()
                                     } label: {
                                         Label("playback.toggle", systemImage: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
                                             .labelStyle(.iconOnly)
                                             .contentTransition(.symbolEffect(.replace.byLayer.downUp))
-                                            .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
-                                            .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
-                                            .onChange(of: AudioPlayer.current.playing) {
-                                                withAnimation {
-                                                    animateImage = true
-                                                } completion: {
-                                                    animateImage = false
-                                                }
-                                            }
                                     }
                                 }
                             }
-                            .frame(width: 30)
-                            .transition(.blurReplace)
-                            .modifier(ButtonHoverEffectModifier())
+                            .frame(width: 32)
                             .font(.title)
+                            .modifier(HoverEffectModifier())
+                            .transition(.blurReplace)
+                            .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
                             
                             Button {
                                 animateForwards.toggle()
@@ -93,8 +84,8 @@ extension NowPlaying {
                                     .symbolEffect(.bounce.up, value: animateForwards)
                             }
                             .font(.title3)
-                            .modifier(ButtonHoverEffectModifier())
-                            .padding(.horizontal, 7)
+                            .modifier(HoverEffectModifier())
+                            .sensoryFeedback(.increase, trigger: animateForwards)
                             
                             Button {
                                 if AudioPlayer.current.repeatMode == .none {
@@ -111,42 +102,48 @@ extension NowPlaying {
                                     .fontWeight(.heavy)
                             }
                             .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none, heavy: true))
-                            .modifier(ButtonHoverEffectModifier())
+                            .modifier(HoverEffectModifier(padding: 4))
                         }
-                        .padding(.horizontal, 8)
+                        .padding(.horizontal, 10)
                         .frame(height: 66)
                         .frame(maxWidth: width)
-                        .foregroundStyle(.primary)
                         .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 15, style: .continuous))
-                        .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
+                        .foregroundStyle(.primary)
                         .background {
                             Rectangle()
                                 .foregroundStyle(.regularMaterial)
                         }
-                        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                        .hoverEffect(.highlight)
+                        .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                         .draggable(currentTrack) {
                             TrackListRow.TrackPreview(track: currentTrack)
                                 .padding()
                         }
+                        .clipShape(.rect(cornerRadius: 16, style: .continuous))
                         .shadow(color: .black.opacity(0.25), radius: 20)
                         .padding(.bottom, 10)
-                        .padding(.horizontal, 25)
+                        .padding(.horizontal, 10)
                         .padding(.leading, adjust)
                         .animation(.spring, value: width)
                         .animation(.spring, value: adjust)
+                        .onTapGesture {
+                            sheetPresented.toggle()
+                        }
                         .dropDestination(for: Track.self) { tracks, _ in
                             AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                             return true
-                        }
-                        .onTapGesture {
-                            sheetPresented.toggle()
                         }
                         .fullScreenCover(isPresented: $sheetPresented) {
                             RegularView()
                                 .ignoresSafeArea(edges: .all)
                         }
                     }
+                }
+                .onChange(of: AudioPlayer.current.nowPlaying) { previous, current in
+                    guard previous == nil && current != nil else {
+                        return
+                    }
+                    
+                    sheetPresented = true
                 }
                 .onReceive(NotificationCenter.default.publisher(for: NowPlaying.widthChangeNotification)) { notification in
                     if let width = notification.object as? CGFloat {

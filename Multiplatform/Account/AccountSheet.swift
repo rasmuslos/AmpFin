@@ -8,38 +8,39 @@
 import SwiftUI
 import TipKit
 import Nuke
-import AFBase
-import AFOffline
-import AFPlayback
+import AmpFinKit
 
-struct AccountSheet: View {
+internal struct AccountSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var username: String?
     @State private var downloads: [Track]? = nil
-    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
             List {
                 HStack(spacing: 0) {
-                    ItemImage(cover: Item.Cover(type: .remote, url: URL(string: "\(JellyfinClient.shared.serverUrl!)/Users/\(JellyfinClient.shared.userId!)/Images/Primary?quality=90")!))
-                        .frame(width: 50)
-                        .clipShape(RoundedRectangle(cornerRadius: 10000))
+                    ItemImage(cover: Cover(
+                        type: .remote,
+                        size: .normal,
+                        url: URL(string: "\(JellyfinClient.shared.serverUrl!)/Users/\(JellyfinClient.shared.userId)/Images/Primary?quality=90")!))
+                    .frame(width: 52)
+                    .clipShape(.rect(cornerRadius: .infinity))
                     
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 4) {
                         if let username = username {
                             Text(username)
                                 .font(.headline)
-                                .padding(.bottom, 1)
                         } else {
                             ProgressView()
                                 .scaleEffect(0.5)
-                                .padding(.bottom, 1)
                         }
                         
                         Text(JellyfinClient.shared.userId)
                             .font(.caption)
+                            .fontDesign(.monospaced)
                     }
-                    .padding(.leading, .innerSpacing)
+                    .padding(.leading, 16)
                 }
                 
                 Remote()
@@ -66,7 +67,7 @@ struct AccountSheet: View {
                     } else {
                         ProgressView()
                             .onAppear {
-                                downloads = try? OfflineManager.shared.getDownloadingTracks()
+                                downloads = try? OfflineManager.shared.downloading()
                             }
                     }
                 }
@@ -101,7 +102,7 @@ struct AccountSheet: View {
                     }
                     
                     Button(role: .destructive) {
-                        try! OfflineManager.shared.deleteAll()
+                        try! OfflineManager.shared.delete()
                     } label: {
                         Label("account.deleteDownloads", systemImage: "slash.circle")
                     }
@@ -119,13 +120,19 @@ struct AccountSheet: View {
                     .fontDesign(.monospaced)
                     .foregroundStyle(.secondary)
                 }
+                
+                Section {
+                    Text("account.verson \(JellyfinClient.shared.clientVersion) \(JellyfinClient.shared.clientBuild)")
+                }
+                .font(.footnote)
+                .foregroundStyle(.secondary)
             }
             .task {
                 do {
-                    (username, _, _, _) = try await JellyfinClient.shared.getUserData()
+                    (username, _, _, _) = try await JellyfinClient.shared.userData()
                 } catch {}
             }
-            #if targetEnvironment(macCatalyst)
+            #if targetEnvironment(macCatalyst) || os(visionOS)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -140,7 +147,7 @@ struct AccountSheet: View {
     }
 }
 
-struct AccountToolbarButtonModifier: ViewModifier {
+internal struct AccountToolbarButtonModifier: ViewModifier {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @State private var accountSheetPresented = false

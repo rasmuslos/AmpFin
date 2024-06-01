@@ -7,55 +7,52 @@
 
 import SwiftUI
 import Defaults
-import AFBase
+import AmpFinKit
 import AFPlayback
 
-struct TracksView: View {
+internal struct TracksView: View {
+    @Environment(\.libraryDataProvider) private var dataProvider
+    
     @Default(.sortOrder) private var sortOrder
     @Default(.sortAscending) private var sortAscending
-    @Environment(\.libraryDataProvider) private var dataProvider
     
     let favoritesOnly: Bool
     
-    @State private var count = 0
     @State private var success = false
     @State private var failure = false
+    @State private var working = false
+    
+    @State private var count = 0
     @State private var tracks = [Track]()
     
     @State private var search: String = ""
-    @State private var searchTask: Task<Void, Error>?
+    @State private var task: Task<Void, Error>?
     
-    var sortState: [String] {[
+    var viewState: [String] {[
         search,
-        sortOrder.rawValue,
         sortAscending.description,
+        sortOrder.hashValue.description,
     ]}
     
     var body: some View {
-        VStack {
+        Group {
             if success {
                 List {
-                    TrackListButtons {
-                        if $0 {
-                            Task {
-                                if let tracks = try? await dataProvider.getTracks(limit: 200, startIndex: 0, sortOrder: .random, ascending: false, favorite: false, search: nil).0 {
-                                    AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: nil))
-                                } else {
-                                    AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: true, playbackInfo: .init(container: nil))
-                                }
-                            }
-                        } else {
-                            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: nil))
-                        }
-                    }
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(.init(top: 0, leading: 0, bottom: .connectedSpacing, trailing: 0))
-                    .padding(.horizontal, .outerSpacing)
+                    TrackListButtons(startPlayback: startPlayback)
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
+                        .padding(.horizontal, 20)
                     
-                    TrackList(tracks: tracks, container: nil, count: count, loadMore: { () async -> Void in await loadTracks(shouldReset: false) })
-                        .padding(.horizontal, .outerSpacing)
+                    TrackList(tracks: tracks, container: nil, count: count) {
+                        loadTracks(reset: false)
+                    }
+                    .padding(.horizontal, 20)
                 }
                 .listStyle(.plain)
+                .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.tracks")
+                .toolbar {
+                    SortSelector()
+                }
             } else if failure {
                 ErrorView()
             } else {
@@ -63,58 +60,76 @@ struct TracksView: View {
             }
         }
         .navigationTitle(favoritesOnly ? "title.favorites" : "title.tracks")
-        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.tracks")
         .modifier(NowPlaying.SafeAreaModifier())
-        .toolbar {
-            SortSelector(ascending: $sortAscending, sortOrder: $sortOrder)
-        }
-        .task {
+        .onAppear {
             if tracks.isEmpty {
-                await loadTracks(shouldReset: false)
+                loadTracks(reset: true)
             }
         }
-        .refreshable {
-            await loadTracks(shouldReset: true)
+        .onDisappear {
+            task?.cancel()
         }
-        .onChange(of: sortState) {
-            searchTask?.cancel()
-            searchTask = Task {
-                try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
-                await loadTracks(shouldReset: true)
-                searchTask = nil
+        .onChange(of: viewState) {
+            loadTracks(reset: true)
+        }
+        .refreshable {
+            await withTaskCancellationHandler {
+                loadTracks(reset: true)
+            } onCancel: {
+                Task {
+                    await task?.cancel()
+                }
             }
         }
     }
-}
-
-// MARK: Helper
-
-extension TracksView {
-    func loadTracks(shouldReset: Bool) async {
+    
+    private func loadTracks(reset: Bool) {
         failure = false
         
-        let search: String?
-        
-        if self.search.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-            search = nil
-        } else {
-            search = self.search
-        }
-        
-        if shouldReset {
+        if reset {
             count = 0
             tracks = []
+            
+            working = false
         }
         
-        do {
-            let result = try await dataProvider.getTracks(limit: 100, startIndex: tracks.count, sortOrder: sortOrder, ascending: sortAscending, favorite: favoritesOnly, search: search)
+        guard !working, count == 0 || count > tracks.count else {
+            return
+        }
+        
+        working = true
+        
+        task?.cancel()
+        task = Task.detached(priority: .userInitiated) {
+            guard let result = try? await dataProvider.tracks(limit: 100, startIndex: tracks.count, sortOrder: sortOrder, ascending: sortAscending, favoriteOnly: favoritesOnly, search: search) else {
+                await MainActor.run {
+                    failure = true
+                }
+                return
+            }
             
-            count = result.1
-            tracks += result.0
+            try Task.checkCancellation()
             
-            success = true
-        } catch {
-            failure = true
+            await MainActor.run {
+                count = result.1
+                tracks += result.0
+                
+                success = true
+                working = false
+            }
+        }
+    }
+    private func startPlayback(shuffled: Bool) {
+        if shuffled {
+            Task {
+                if let tracks = try? await dataProvider.tracks(limit: 200, startIndex: 0, sortOrder: .random, ascending: false, favoriteOnly: false, search: nil).0 {
+                    AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: nil))
+                } else {
+                    AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: true, playbackInfo: .init(container: nil))
+                }
+            }
+        } else {
+            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: nil))
         }
     }
 }

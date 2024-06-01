@@ -7,7 +7,7 @@
 
 import SwiftUI
 import AVKit
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 extension NowPlaying {
@@ -16,6 +16,10 @@ extension NowPlaying {
         
         @Binding var currentTab: Tab
         
+        private var compactLayout: Bool {
+            horizontalSizeClass == .compact
+        }
+        
         private var lyricsButton: some View {
             Button {
                 setActiveTab(.lyrics)
@@ -23,38 +27,64 @@ extension NowPlaying {
                 Label("lyrics", systemImage: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
                     .labelStyle(.iconOnly)
             }
-            .foregroundStyle(currentTab == .lyrics ? .primary : .secondary)
-            .modifier(ButtonHoverEffectModifier())
+            .foregroundStyle(currentTab == .lyrics ? .thickMaterial : .thinMaterial)
+            .animation(.none, value: currentTab)
+            .buttonStyle(.plain)
+            .modifier(HoverEffectModifier(padding: 4))
         }
         private var queueButton: some View {
-            Button {
-                setActiveTab(.queue)
+            Menu {
+                Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { AudioPlayer.current.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
+                
+                Menu {
+                    Button {
+                        AudioPlayer.current.repeatMode = .none
+                    } label: {
+                        Label("repeat.none", systemImage: "slash.circle")
+                    }
+                    
+                    Button {
+                        AudioPlayer.current.repeatMode = .queue
+                    } label: {
+                        Label("repeat.queue", systemImage: "repeat")
+                    }
+                    
+                    Button {
+                        AudioPlayer.current.repeatMode = .track
+                    } label: {
+                        Label("repeat.track", systemImage: "repeat.1")
+                    }
+                } label: {
+                    Label("repeat", systemImage: "repeat")
+                }
             } label: {
                 Label("queue", systemImage: "list.dash")
                     .labelStyle(.iconOnly)
+            } primaryAction: {
+                setActiveTab(.queue)
             }
             .buttonStyle(SymbolButtonStyle(active: currentTab == .queue))
-            .modifier(ButtonHoverEffectModifier())
+            .modifier(HoverEffectModifier(padding: 4))
         }
         
         var body: some View {
             HStack {
                 if AudioPlayer.current.source == .local {
-                    if horizontalSizeClass == .compact {
+                    if compactLayout {
                         Spacer()
                         
                         lyricsButton
-                            .frame(width: 45)
+                            .frame(width: 44)
                         
                         Spacer()
                         
                         AirPlayPicker()
-                            .frame(width: 45)
+                            .frame(width: 44)
                         
                         Spacer()
                         
                         queueButton
-                            .frame(width: 45)
+                            .frame(width: 44)
                         
                         Spacer()
                     } else if horizontalSizeClass == .regular {
@@ -64,7 +94,7 @@ extension NowPlaying {
                         Spacer()
                         
                         lyricsButton
-                            .padding(.horizontal, .innerSpacing)
+                            .padding(.horizontal, 16)
                         queueButton
                     }
                 } else if AudioPlayer.current.source == .jellyfinRemote {
@@ -97,7 +127,7 @@ extension NowPlaying {
                     Spacer()
                     
                     Button {
-                        AudioPlayer.current.destroy()
+                        AudioPlayer.current.stopPlayback()
                     } label: {
                         Label("remote.stop", systemImage: "xmark")
                             .labelStyle(.iconOnly)
@@ -109,7 +139,7 @@ extension NowPlaying {
             }
             .bold()
             .font(.system(size: 20))
-            .frame(height: 45)
+            .frame(height: 44)
         }
         
         private func setActiveTab(_ tab: Tab) {

@@ -6,26 +6,21 @@
 //
 
 import SwiftUI
-import AFBase
-import AFOffline
+import AmpFinKit
 import AFPlayback
 
 struct PlaylistListRow: View {
     let playlist: Playlist
-    let offlineTracker: ItemOfflineTracker
     
-    init(playlist: Playlist) {
-        self.playlist = playlist
-        offlineTracker = playlist.offlineTracker
-    }
+    @State private var offlineTracker: ItemOfflineTracker?
     
     var body: some View {
         HStack(spacing: 0) {
             ItemImage(cover: playlist.cover)
                 .frame(width: 60)
-                .padding(.trailing, .connectedSpacing)
+                .padding(.trailing, 8)
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(playlist.name)
                 Text("playlist.trackCount \(playlist.trackCount)")
                     .font(.subheadline)
@@ -44,7 +39,7 @@ struct PlaylistListRow: View {
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             Button {
                 Task {
-                    AudioPlayer.current.queueTracks(try await JellyfinClient.shared.getTracks(playlistId: playlist.id), index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
+                    AudioPlayer.current.queueTracks(try await JellyfinClient.shared.tracks(playlistId: playlist.id), index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
                 }
             } label: {
                 Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
@@ -54,7 +49,7 @@ struct PlaylistListRow: View {
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             Button {
                 Task {
-                    AudioPlayer.current.queueTracks(try await JellyfinClient.shared.getTracks(playlistId: playlist.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
+                    AudioPlayer.current.queueTracks(try await JellyfinClient.shared.tracks(playlistId: playlist.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
                 }
             } label: {
                 Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
@@ -62,36 +57,39 @@ struct PlaylistListRow: View {
             .tint(.blue)
         }
         .swipeActions(edge: .trailing) {
-            Button {
-                if offlineTracker.status == .none {
-                    Task {
-                        try! await OfflineManager.shared.download(playlist: playlist)
+            if let offlineTracker {
+                Button {
+                    if offlineTracker.status == .none {
+                        Task {
+                            try! await OfflineManager.shared.download(playlist: playlist)
+                        }
+                    } else if offlineTracker.status == .downloaded {
+                        try! OfflineManager.shared.delete(playlistId: playlist.id)
                     }
-                } else if offlineTracker.status == .downloaded {
-                    try! OfflineManager.shared.delete(playlistId: playlist.id)
-                }
-            } label: {
-                switch offlineTracker.status {
-                    case .none:
-                        Label("download", systemImage: "arrow.down")
-                            .tint(.green)
-                    case .working:
-                        ProgressView()
-                    case .downloaded:
-                        Label("download.remove", systemImage: "xmark")
-                            .tint(.red)
+                } label: {
+                    switch offlineTracker.status {
+                        case .none:
+                            Label("download", systemImage: "arrow.down")
+                                .tint(.green)
+                        case .working:
+                            ProgressView()
+                        case .downloaded:
+                            Label("download.remove", systemImage: "xmark")
+                                .tint(.red)
+                    }
                 }
             }
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button {
-                Task {
-                    await playlist.setFavorite(favorite: !playlist.favorite)
-                }
+                playlist.favorite.toggle()
             } label: {
-                Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
+                Label("favorite", systemImage: playlist.favorite ? "heart.slash" : "heart")
                     .tint(.orange)
             }
+        }
+        .task {
+            offlineTracker = playlist.offlineTracker
         }
     }
 }

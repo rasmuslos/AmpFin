@@ -7,8 +7,9 @@
 
 import Foundation
 import Intents
-import AFBase
+import AFFoundation
 import AFExtension
+import AFNetwork
 
 extension IntentHandler: INAddMediaIntentHandling {
     func handle(intent: INAddMediaIntent) async -> INAddMediaIntentResponse {
@@ -37,20 +38,16 @@ extension IntentHandler: INAddMediaIntentHandling {
             }
             
             return resolved
+        } catch SearchError.notFound {
+            return []
+        } catch SearchError.unsupportedMediaType {
+            return [.unsupported(forReason: .unsupportedMediaType)]
         } catch {
             print(error)
-            if let error = error as? SearchError {
-                switch error {
-                    case .unavailable:
-                        return [.unsupported(forReason: .serviceUnavailable)]
-                    case .unsupportedMediaType:
-                        return [.unsupported(forReason: .unsupportedMediaType)]
-                }
-            }
-            
             return [.unsupported(forReason: .serviceUnavailable)]
         }
     }
+    
     func resolveMediaDestination(for intent: INAddMediaIntent) async -> INAddMediaMediaDestinationResolutionResult {
         guard let mediaDestination = intent.mediaDestination, let playlistName = mediaDestination.playlistName else {
             return .unsupported(forReason: .playlistNameNotFound)
@@ -65,8 +62,8 @@ extension IntentHandler: INAddMediaIntentHandling {
             }
             
             return .success(with: .playlist(playlist.name))
-        } catch {}
-        
-        return .unsupported(forReason: .playlistNameNotFound)
+        } catch {
+            return .unsupported(forReason: .playlistNameNotFound)
+        }
     }
 }

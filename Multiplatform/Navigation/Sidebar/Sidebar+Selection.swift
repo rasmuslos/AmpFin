@@ -8,9 +8,9 @@
 import Foundation
 import Defaults
 import SwiftUI
-import AFBase
+import AmpFinKit
 
-extension Sidebar {
+internal extension Sidebar {
     struct Selection: Hashable, Equatable, Codable, Defaults.Serializable {
         var provider: DataProvider?
         var panel: Panel
@@ -39,7 +39,7 @@ extension Sidebar {
 
 // MARK: Providers
 
-extension Sidebar.DataProvider {
+internal extension Sidebar.DataProvider {
     var libraryProvider: LibraryDataProvider {
         switch self {
             case .online:
@@ -80,7 +80,7 @@ extension Sidebar.DataProvider {
 
 // MARK: Sections
 
-extension Sidebar.Panel {
+internal extension Sidebar.Panel {
     var title: LocalizedStringKey? {
         switch self {
             case .tracks:
@@ -118,32 +118,31 @@ extension Sidebar.Panel {
         }
     }
     
+    @ViewBuilder
     var content: some View {
-        Group {
-            switch self {
-                case .tracks:
-                    TracksView(favoritesOnly: false)
-                case .albums:
-                    AlbumsView()
-                case .playlists:
-                    PlaylistsView()
-                case .favorites:
-                    TracksView(favoritesOnly: true)
-                case .albumArtists:
-                    ArtistsView(albumOnly: true)
-                case .artists:
-                    ArtistsView(albumOnly: false)
-                    
-                case .search:
-                    SearchView()
-                    
-                case .playlist(let id):
-                    PlaylistLoadView(playlistId: id)
-                case .album(let id):
-                    AlbumLoadView(albumId: id)
-                case .artist(let id):
-                    ArtistLoadView(artistId: id)
-            }
+        switch self {
+            case .tracks:
+                TracksView(favoritesOnly: false)
+            case .albums:
+                AlbumsView()
+            case .playlists:
+                PlaylistsView()
+            case .favorites:
+                TracksView(favoritesOnly: true)
+            case .albumArtists:
+                ArtistsView(albumOnly: true)
+            case .artists:
+                ArtistsView(albumOnly: false)
+                
+            case .search:
+                SearchView()
+                
+            case .playlist(let id):
+                PlaylistLoadView(playlistId: id)
+            case .album(let id):
+                AlbumLoadView(albumId: id)
+            case .artist(let id):
+                ArtistLoadView(artistId: id)
         }
     }
 }

@@ -7,10 +7,12 @@
 
 import Foundation
 import SwiftData
-import AFBase
+import AFFoundation
 
 public struct PersistenceManager {
-    public let modelContainer: ModelContainer = {
+    public let modelContainer: ModelContainer
+    
+    private init() {
         let schema = Schema([
             OfflineTrack.self,
             OfflineAlbum.self,
@@ -20,18 +22,12 @@ public struct PersistenceManager {
             OfflinePlay.self,
             OfflineFavorite.self,
         ])
-        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: AFKIT_ENABLE_ALL_FEATURES ? .identifier("group.io.rfk.ampfin") : .none)
         
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: AFKIT_ENABLE_ALL_FEATURES ? .identifier("group.io.rfk.ampfin") : .none)
+        modelContainer = try! ModelContainer(for: schema, configurations: [modelConfiguration])
+    }
 }
 
-// MARK: Singleton
-
-extension PersistenceManager {
-    public static let shared = PersistenceManager()
+public extension PersistenceManager {
+    static let shared = PersistenceManager()
 }

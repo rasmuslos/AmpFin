@@ -7,18 +7,11 @@
 
 import Foundation
 import Intents
-import AFBase
+import AFFoundation
 import AFExtension
+import AFNetwork
 
 extension IntentHandler: INPlayMediaIntentHandling {
-    /*
-     Things that do not need resolving:
-     - Queue location
-     - Shuffled
-     - Repeat
-     - Resume playback
-     */
-    
     func handle(intent: INPlayMediaIntent) async -> INPlayMediaIntentResponse {
         return .init(code: .handleInApp, userActivity: nil)
     }
@@ -49,16 +42,11 @@ extension IntentHandler: INPlayMediaIntentHandling {
             }
             
             return resolved
+        } catch SearchError.unsupportedMediaType {
+            return [.unsupported(forReason: .unsupportedMediaType)]
+        } catch SearchError.notFound {
+            return []
         } catch {
-            if let error = error as? SearchError {
-                switch error {
-                    case .unavailable:
-                        return [.unsupported(forReason: .serviceUnavailable)]
-                    case .unsupportedMediaType:
-                        return [.unsupported(forReason: .unsupportedMediaType)]
-                }
-            }
-            
             return [.unsupported(forReason: .serviceUnavailable)]
         }
     }

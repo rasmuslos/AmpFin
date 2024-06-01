@@ -8,7 +8,7 @@
 import SwiftUI
 import TipKit
 
-struct RemoteTip: Tip {
+internal struct RemoteTip: Tip {
     var title: Text {
         Text("tip.remote.title")
     }

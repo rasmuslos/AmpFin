@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
+import AFNetwork
 
 extension DownloadManager {
     func download(trackId: String) -> URLSessionDownloadTask {
@@ -22,18 +23,34 @@ extension DownloadManager {
         ])))
     }
     
+    @MainActor
+    func failed(taskIdentifier: Int) {
+        guard let track = try? OfflineManager.shared.offlineTrack(taskId: taskIdentifier) else {
+            logger.fault("Could not resolve track from task identifier \(taskIdentifier)")
+            return
+        }
+        
+        logger.fault("Error while downloading track \(track.id) (\(track.name))")
+        
+        if let parents = try? OfflineManager.shared.parentIds(childId: track.id).filter({ $0 != track.album.id }) {
+            for parent in parents {
+                try? OfflineManager.shared.delete(playlistId: parent)
+            }
+        }
+        
+        try? OfflineManager.shared.delete(albumId: track.album.id)
+    }
     func delete(trackId: String) {
-        try? FileManager.default.removeItem(at: getUrl(trackId: trackId))
+        try? FileManager.default.removeItem(at: url(trackId: trackId))
     }
     
-    public func getUrl(trackId: String) -> URL {
-        // the audio player refuses to play anything without an extension. but it can be wrong...
-        documentsURL.appending(path: "tracks").appending(path: "\(trackId).flac")
+    public func url(trackId: String) -> URL {
+        tracks.appending(path: "\(trackId).flac")
     }
 }
 
-extension DownloadManager {
-    public func isDownloaded(trackId: String) -> Bool {
-        FileManager.default.fileExists(atPath: getUrl(trackId: trackId).relativePath)
+public extension DownloadManager {
+    func downloaded(trackId: String) -> Bool {
+        FileManager.default.fileExists(atPath: url(trackId: trackId).relativePath)
     }
 }

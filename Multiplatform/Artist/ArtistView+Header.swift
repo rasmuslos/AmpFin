@@ -7,10 +7,10 @@
 
 import SwiftUI
 import Defaults
-import AFBase
+import AmpFinKit
 import AFPlayback
 
-extension ArtistView {
+internal extension ArtistView {
     struct Header: View {
         @Default(.artistInstantMix) private var artistInstantMix
         @Environment(\.libraryDataProvider) private var dataProvider
@@ -33,10 +33,7 @@ extension ArtistView {
             ZStack(alignment: .top) {
                 GeometryReader { proxy in
                     Color.clear
-                        .onAppear {
-                            width = proxy.size.width
-                        }
-                        .onChange(of: proxy.frame(in: .global)) {
+                        .onChange(of: proxy.frame(in: .global), initial: true) {
                             let offset = proxy.frame(in: .global).minY
                             
                             if offset > 0 {
@@ -66,16 +63,12 @@ extension ArtistView {
                     ZStack(alignment: .bottom) {
                         LinearGradient(colors: [.clear, .clear, .black.opacity(0.6)], startPoint: .top, endPoint: .bottom)
                         
-                        HStack(alignment: .bottom) {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text(artist.name)
-                                        .bold()
-                                        .font(.title)
-                                        .foregroundStyle(.white)
-                                    
-                                    Spacer()
-                                }
+                        HStack(alignment: .bottom, spacing: 0) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(artist.name)
+                                    .bold()
+                                    .font(.title)
+                                    .foregroundStyle(.white)
                                 
                                 if let overview = artist.overview {
                                     Button {
@@ -86,11 +79,12 @@ extension ArtistView {
                                             .foregroundStyle(Color.gray)
                                     }
                                     .buttonStyle(.plain)
+                                    .hoverEffectDisabled()
                                     .sheet(isPresented: $overviewSheetPresented) {
                                         NavigationStack {
                                             ScrollView {
                                                 Text(overview)
-                                                    .padding(.outerSpacing)
+                                                    .padding(20)
                                             }
                                             .navigationTitle(artist.name)
                                             .presentationDragIndicator(.visible)
@@ -99,27 +93,28 @@ extension ArtistView {
                                 }
                             }
                             
+                            Spacer(minLength: 12)
+                            
                             Button {
-                                if artistInstantMix {
-                                    Task {
+                                Task {
+                                    if artistInstantMix {
                                         try? await artist.startInstantMix()
-                                    }
-                                } else {
-                                    Task {
-                                        let tracks = try await dataProvider.getTracks(artistId: artist.id, sortOrder: .random, ascending: true)
+                                    } else {
+                                        let tracks = try await dataProvider.tracks(artistId: artist.id, sortOrder: .random, ascending: true)
                                         AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: artist))
                                     }
                                 }
                             } label: {
                                 Label("queue.mix", systemImage: "play.circle.fill")
                                     .labelStyle(.iconOnly)
-                                    .modifier(ButtonHoverEffectModifier())
                             }
+                            .buttonBorderShape(.circle)
+                            .hoverEffect(.lift)
                             .font(.title)
-                            .padding(.leading, .innerSpacing)
                             .popoverTip(ArtistPlaybackTip())
                         }
-                        .padding(.outerSpacing)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 20)
                     }
                 }
             }

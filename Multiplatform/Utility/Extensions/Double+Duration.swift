@@ -8,14 +8,11 @@
 import Foundation
 
 extension Double {
-    func formatDuration() -> String {
-        let seconds = Int(self)
-        let hours = seconds / 3600
+    var duration: String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.unitsStyle = .short
         
-        if hours > 0 {
-            return String(localized: "hours \(hours)")
-        } else {
-            return String(localized: "minutes \((seconds % 3600) / 60)")
-        }
+        return formatter.string(from: TimeInterval(self))!
     }
 }

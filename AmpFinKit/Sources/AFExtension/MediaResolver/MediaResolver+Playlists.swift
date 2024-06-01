@@ -6,24 +6,26 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
+import AFNetwork
 #if canImport(AFOffline)
 import AFOffline
 #endif
 
+@available(macOS, unavailable)
 public extension MediaResolver {
-    func search(playlistName: String?) async throws -> [Playlist] {
-        guard let playlistName = playlistName else { throw ResolveError.missing }
+    func search(playlistName name: String?) async throws -> [Playlist] {
+        guard let name = name else { throw ResolveError.missing }
         
         var result = [Playlist]()
         
         #if canImport(AFOffline)
-        if let offlinePlaylists = try? await OfflineManager.shared.getPlaylists(query: playlistName) {
+        if let offlinePlaylists = try? await OfflineManager.shared.playlists().filter({ $0.name.localizedStandardContains(name) }) {
             result += offlinePlaylists
         }
         #endif
         
-        if !UserDefaults.standard.bool(forKey: "siriOfflineMode"), let fetchedPlaylists = try? await JellyfinClient.shared.getPlaylists(query: playlistName) {
+        if !JellyfinClient.shared.siriOfflineMode, let fetchedPlaylists = try? await JellyfinClient.shared.playlists(limit: 0, sortOrder: .lastPlayed, ascending: false, search: name) {
             result += fetchedPlaylists.filter { !result.contains($0) }
         }
         
@@ -34,13 +36,13 @@ public extension MediaResolver {
         return result
     }
     
-    func resolve(playlistId: String) async throws -> [Track] {
+    func tracks(playlistId identifier: String) async throws -> [Track] {
         #if canImport(AFOffline)
-        if let tracks = try? await OfflineManager.shared.getTracks(playlistId: playlistId) {
+        if let tracks = try? await OfflineManager.shared.tracks(playlistId: identifier) {
             return tracks
         }
         #endif
         
-        return try await JellyfinClient.shared.getTracks(playlistId: playlistId)
+        return try await JellyfinClient.shared.tracks(playlistId: identifier)
     }
 }

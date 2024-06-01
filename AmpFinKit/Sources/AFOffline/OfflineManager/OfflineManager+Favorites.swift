@@ -7,40 +7,39 @@
 
 import Foundation
 import SwiftData
-import AFBase
+import AFFoundation
+import AFNetwork
 
 extension OfflineManager {
-    func updateOfflineFavorites() {
-        Task.detached {
+    func updateFavorites() {
+        Task {
             do {
-                // MARK: sync
-                Task { @MainActor in
+                // MARK: Sync
+                
+                try await MainActor.run {
                     let descriptor = FetchDescriptor<OfflineFavorite>()
                     let favorites = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
                     
-                    for favorite in favorites {
-                        Task.detached {
-                            do {
-                                try await JellyfinClient.shared.setFavorite(itemId: favorite.itemId, favorite: favorite.favorite)
-                                
-                                Task { @MainActor in
-                                    PersistenceManager.shared.modelContainer.mainContext.delete(favorite)
-                                }
-                            } catch {
-                                Self.logger.fault("Failed to sync offline favorite to server \(favorite.itemId) (\(favorite.favorite))")
+                    Task {
+                        for favorite in favorites {
+                            try await JellyfinClient.shared.favorite(favorite.favorite, identifier: favorite.itemId)
+                            
+                            await MainActor.run {
+                                PersistenceManager.shared.modelContainer.mainContext.delete(favorite)
                             }
                         }
                     }
                 }
                 
-                // MARK: tracks
-                let trackFavorites = try await JellyfinClient.shared.getTracks(limit: 0, startIndex: 0, sortOrder: .added, ascending: true, favorite: true, search: nil).0
+                // MARK: Tracks
                 
-                Task { @MainActor in
+                let trackFavorites = try await JellyfinClient.shared.tracks(limit: 0, startIndex: 0, sortOrder: .added, ascending: true, favoriteOnly: true).0
+                
+                try await MainActor.run {
                     if !trackFavorites.isEmpty {
                         for track in trackFavorites {
-                            if let offline = try? OfflineManager.shared.getOfflineTrack(trackId: track.id), track.favorite != offline.favorite {
-                                offline.favorite = track.favorite
+                            if let offline = try? offlineTrack(trackId: track.id), track._favorite != offline.favorite {
+                                offline.favorite = track._favorite
                             }
                         }
                     }
@@ -55,14 +54,15 @@ extension OfflineManager {
                     }
                 }
                 
-                // MARK: albums
-                let albumFavorites = try await JellyfinClient.shared.getAlbums(limit: 0, startIndex: 0, sortOrder: .added, ascending: true, favorite: true, search: nil).0
+                // MARK: Albums
                 
-                Task { @MainActor in
+                let albumFavorites = try await JellyfinClient.shared.albums(limit: 0, startIndex: 0, sortOrder: .added, ascending: true, favoriteOnly: true).0
+                
+                try await MainActor.run {
                     if !albumFavorites.isEmpty {
                         for album in albumFavorites {
-                            if let offline = try? OfflineManager.shared.getOfflineAlbum(albumId: album.id), album.favorite != offline.favorite {
-                                offline.favorite = album.favorite
+                            if let offline = try? offlineAlbum(albumId: album.id), album._favorite != offline.favorite {
+                                offline.favorite = album._favorite
                             }
                         }
                         
@@ -78,13 +78,14 @@ extension OfflineManager {
                 }
                 
                 // MARK: Playlists
-                let playlistFavorites = try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .added, ascending: true, favorite: true)
                 
-                Task { @MainActor in
+                let playlistFavorites = try await JellyfinClient.shared.playlists(limit: 0, sortOrder: .added, ascending: true, favoriteOnly: true)
+                
+                try await MainActor.run {
                     if !playlistFavorites.isEmpty {
                         for playlist in playlistFavorites {
-                            if let offline = try? OfflineManager.shared.getOfflinePlaylist(playlistId: playlist.id), playlist.favorite != offline.favorite {
-                                offline.favorite = playlist.favorite
+                            if let offline = try? offlinePlaylist(playlistId: playlist.id), playlist._favorite != offline.favorite {
+                                offline.favorite = playlist._favorite
                             }
                         }
                         
@@ -108,7 +109,7 @@ extension OfflineManager {
 
 public extension OfflineManager {
     @MainActor
-    func cacheFavorite(itemId: String, favorite: Bool) {
+    func cache(favorite: Bool, itemId: String) {
         if let existing = try? PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineFavorite>(predicate: #Predicate { $0.itemId == itemId })).first {
             existing.favorite = favorite
         } else {
@@ -118,12 +119,12 @@ public extension OfflineManager {
     }
     
     @MainActor
-    func updateOfflineFavorite(itemId: String, favorite: Bool) {
-        if let offlineTrack = try? OfflineManager.shared.getOfflineTrack(trackId: itemId) {
+    func update(favorite: Bool, itemId: String) {
+        if let offlineTrack = try? offlineTrack(trackId: itemId) {
             offlineTrack.favorite = favorite
-        } else if let offlineAlbum = try? OfflineManager.shared.getOfflineAlbum(albumId: itemId) {
+        } else if let offlineAlbum = try? offlineAlbum(albumId: itemId) {
             offlineAlbum.favorite = favorite
-        } else if let offlinePlaylist = try? OfflineManager.shared.getOfflinePlaylist(playlistId: itemId) {
+        } else if let offlinePlaylist = try? offlinePlaylist(playlistId: itemId) {
             offlinePlaylist.favorite = favorite
         }
     }

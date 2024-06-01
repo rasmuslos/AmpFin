@@ -8,7 +8,7 @@
 import SwiftUI
 import TipKit
 
-struct InstantMixTip: Tip {
+internal struct InstantMixTip: Tip {
     var title: Text {
         Text("tip.mix.title")
     }

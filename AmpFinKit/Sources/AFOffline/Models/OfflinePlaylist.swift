@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class OfflinePlaylist: OfflineParent {
-    public let id: String
+    let id: String
     public let name: String
     
     public var favorite: Bool

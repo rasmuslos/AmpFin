@@ -10,8 +10,7 @@ import Defaults
 import CoreSpotlight
 import OSLog
 import Intents
-import AFBase
-import AFOffline
+import AmpFinKit
 
 struct SpotlightHelper {
     // 48 hours
@@ -30,7 +29,7 @@ struct SpotlightHelper {
         
         Defaults[.lastSpotlightDonation] = Date.timeIntervalSinceReferenceDate
         
-        Task.detached {
+        Task.detached(priority: .background) {
             do {
                 let index = CSSearchableIndex(name: "items", protectionClass: .completeUntilFirstUserAuthentication)
                 var startIndex = 0
@@ -50,7 +49,7 @@ struct SpotlightHelper {
                 while shouldTryMore {
                     index.beginBatch()
                     
-                    let (tracks, totalTracks) = try await JellyfinClient.shared.getTracks(limit: 250, startIndex: startIndex, sortOrder: .name, ascending: true, favorite: false, search: nil, coverSize: 125)
+                    let (tracks, totalTracks) = try await JellyfinClient.shared.tracks(limit: 250, startIndex: startIndex, sortOrder: .name, ascending: true, coverSize: .small)
                     var items = [CSSearchableItem]()
                     
                     startIndex += tracks.count
@@ -91,7 +90,7 @@ struct SpotlightHelper {
                 
                 // MARK: Playlists
                 
-                let playlists = try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .name, ascending: true, favorite: false)
+                let playlists = try await JellyfinClient.shared.playlists(limit: 0, sortOrder: .name, ascending: true)
                 if AFKIT_ENABLE_ALL_FEATURES {
                     INVocabulary.shared().setVocabularyStrings(NSOrderedSet(array: playlists.map { $0.name }), of: .mediaPlaylistTitle)
                 }
@@ -127,18 +126,18 @@ struct SpotlightHelper {
     }
     
     static func navigate(identifier: String) {
-        Task { @MainActor in
+        Task.detached(priority: .high) {
             let albumId: String?
             
-            if let track = try? OfflineManager.shared.getTrack(id: identifier) {
+            if let track = try? await OfflineManager.shared.track(identifier: identifier) {
                 albumId = track.album.id
-            } else if let track = try? await JellyfinClient.shared.getTrack(id: identifier) {
+            } else if let track = try? await JellyfinClient.shared.track(identifier: identifier) {
                 albumId = track.album.id
             } else {
                 albumId = nil
             }
             
-            if let albumId = albumId {
+            if let albumId {
                 Navigation.navigate(albumId: albumId)
             } else {
                 Navigation.navigate(playlistId: identifier)

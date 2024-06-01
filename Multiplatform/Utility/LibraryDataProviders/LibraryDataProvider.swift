@@ -7,47 +7,40 @@
 
 import Foundation
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 public protocol LibraryDataProvider {
     var supportsArtistLookup: Bool { get }
     var supportsAdvancedFilters: Bool { get }
     var albumNotFoundFallbackToLibrary: Bool { get }
     
-    func getRecentAlbums() async throws -> [Album]
-    func getRandomAlbums() async throws -> [Album]
+    // MARK: Tracks
     
-    // MARK: Track
+    func tracks(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favoriteOnly: Bool, search: String?) async throws -> ([Track], Int)
     
-    func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, favorite: Bool, search: String?) async throws -> ([Track], Int)
+    // MARK: Albums
     
-    // MARK: Album
+    func recentAlbums() async throws -> [Album]
+    func randomAlbums() async throws -> [Album]
     
-    func getAlbum(albumId: String) async throws -> Album
-    func getAlbums(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Album], Int)
+    func album(identifier: String) async throws -> Album
+    func albums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Album], Int)
     
-    func getTracks(albumId: String) async throws -> [Track]
+    func tracks(albumId: String) async throws -> [Track]
     
-    // MARK: Artist
+    // MARK: Artists
     
-    func getArtist(artistId: String) async throws -> Artist
-    func getArtists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int)
+    func artist(identifier: String) async throws -> Artist
+    func artists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int)
     
-    func getTracks(artistId: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track]
-    func getAlbums(artistId: String, limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([Album], Int)
+    func tracks(artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Track]
+    func albums(artistId: String, limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool) async throws -> ([Album], Int)
     
-    // MARK: Search
+    // MARK: Playlists
     
-    func searchTracks(query: String) async throws -> [Track]
-    func searchAlbums(query: String) async throws -> [Album]
-    func searchArtists(query: String) async throws -> [Artist]
-    func searchPlaylists(query: String) async throws -> [Playlist]
-    
-    // MARK: Playlist
-    
-    func getPlaylist(playlistId: String) async throws -> Playlist
-    func getPlaylists() async throws -> [Playlist]
-    func getTracks(playlistId: String) async throws -> [Track]
+    func playlist(identifier: String) async throws -> Playlist
+    func playlists(search: String?) async throws -> [Playlist]
+    func tracks(playlistId: String) async throws -> [Track]
 }
 
 // MARK: Environment

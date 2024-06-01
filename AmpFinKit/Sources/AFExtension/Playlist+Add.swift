@@ -6,23 +6,22 @@
 //
 
 import Foundation
-import AFBase
-
+import AFFoundation
+import AFNetwork
 #if canImport(AFOffline)
 import AFOffline
 #endif
 
-extension Playlist {
-    public func add(trackIds: [String]) async throws {
+public extension Playlist {
+    func add(trackIds: [String]) async throws {
         try await JellyfinClient.shared.add(trackIds: trackIds, playlistId: id)
         
         #if canImport(AFOffline)
-        if await OfflineManager.shared.isPlaylistDownloaded(playlistId: id) {
+        if await OfflineManager.shared.offlineStatus(playlistId: id) != .none {
             try await OfflineManager.shared.download(playlist: self)
         }
         #endif
         
-        // might not be true but who cares
-        trackCount += 1
+        trackCount = try await JellyfinClient.shared.tracks(playlistId: id).count
     }
 }

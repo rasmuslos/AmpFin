@@ -7,8 +7,7 @@
 
 import Foundation
 import Intents
-import AFBase
-import AFExtension
+import AmpFinKit
 import AFPlayback
 
 final class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
@@ -26,13 +25,13 @@ final class PlayMediaHandler: NSObject, INPlayMediaIntentHandling {
         
         do {
             if mediaItem.type == .album {
-                tracks = try await MediaResolver.shared.resolve(albumId: identifier)
+                tracks = try await MediaResolver.shared.tracks(albumId: identifier)
             } else if mediaItem.type == .artist {
-                tracks = try await MediaResolver.shared.resolve(artistId: identifier)
+                tracks = try await MediaResolver.shared.tracks(artistId: identifier)
             } else if mediaItem.type == .playlist {
-                tracks = try await MediaResolver.shared.resolve(playlistId: identifier)
+                tracks = try await MediaResolver.shared.tracks(playlistId: identifier)
             } else if mediaItem.type == .song {
-                tracks = [try await MediaResolver.shared.resolve(trackId: identifier)]
+                tracks = [try await MediaResolver.shared.track(id: identifier)]
             }
             
             guard !tracks.isEmpty else {

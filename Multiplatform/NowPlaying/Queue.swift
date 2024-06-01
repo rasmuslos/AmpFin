@@ -7,7 +7,7 @@
 
 import SwiftUI
 import TipKit
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 extension NowPlaying {
@@ -15,16 +15,15 @@ extension NowPlaying {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
         @State private var showHistory = false
-        @Environment(\.colorScheme) var colorScheme
         
         var body: some View {
-            HStack {
-                VStack(alignment: .leading) {
+            HStack(spacing: 4) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(showHistory ? "queue.history" : "queue")
                         .font(.headline)
                         .foregroundStyle(.primary)
                     
-                    if !showHistory, let playbackInfo = AudioPlayer.current.playbackInfo {
+                    if let playbackInfo = AudioPlayer.current.playbackInfo {
                         Group {
                             if let container = playbackInfo.container {
                                 if container.type == .album {
@@ -39,52 +38,50 @@ extension NowPlaying {
                             }
                         }
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.thinMaterial)
                         .lineLimit(1)
                     }
                 }
                 
                 Spacer()
                 
-                Button {
-                    if AudioPlayer.current.repeatMode == .none {
-                        AudioPlayer.current.repeatMode = .queue
-                    } else if AudioPlayer.current.repeatMode == .queue {
-                        AudioPlayer.current.repeatMode = .track
-                    } else if AudioPlayer.current.repeatMode == .track {
-                        AudioPlayer.current.repeatMode = .none
+                Group {
+                    Button {
+                        if AudioPlayer.current.repeatMode == .none {
+                            AudioPlayer.current.repeatMode = .queue
+                        } else if AudioPlayer.current.repeatMode == .queue {
+                            AudioPlayer.current.repeatMode = .track
+                        } else if AudioPlayer.current.repeatMode == .track {
+                            AudioPlayer.current.repeatMode = .none
+                        }
+                    } label: {
+                        Label("repeat", systemImage: "repeat\(AudioPlayer.current.repeatMode == .track ? ".1" : "")")
+                            .labelStyle(.iconOnly)
                     }
-                } label: {
-                    Label("repeat", systemImage: "repeat\(AudioPlayer.current.repeatMode == .track ? ".1" : "")")
-                        .labelStyle(.iconOnly)
-                }
-                .id(AudioPlayer.current.repeatMode)
-                .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
-                .modifier(ButtonHoverEffectModifier())
-                .padding(.horizontal, 4)
-                
-                Button {
-                    AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
-                } label: {
-                    Label("shuffle", systemImage: "shuffle")
-                        .labelStyle(.iconOnly)
-                }
-                .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
-                .modifier(ButtonHoverEffectModifier())
-                .padding(.horizontal, 4)
-                
-                Button {
-                    withAnimation(.easeInOut(duration: 0.25)) {
-                        showHistory.toggle()
+                    .id(AudioPlayer.current.repeatMode)
+                    .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
+                    
+                    Button {
+                        AudioPlayer.current.shuffled.toggle()
+                    } label: {
+                        Label("shuffle", systemImage: "shuffle")
+                            .labelStyle(.iconOnly)
                     }
-                } label: {
-                    Label("history", systemImage: "calendar.day.timeline.leading")
-                        .labelStyle(.iconOnly)
+                    .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
+                    
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            showHistory.toggle()
+                        }
+                    } label: {
+                        Label("history", systemImage: "calendar.day.timeline.leading")
+                            .labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(SymbolButtonStyle(active: showHistory))
                 }
-                .buttonStyle(SymbolButtonStyle(active: showHistory))
-                .modifier(ButtonHoverEffectModifier())
+                .modifier(HoverEffectModifier(padding: 4))
             }
-            .padding(.top, .connectedSpacing)
+            .padding(.top, 16)
             .padding(.bottom, -10)
             
             List {
@@ -113,14 +110,11 @@ extension NowPlaying {
                                 .tint(.blue)
                             }
                     }
-                    .defaultScrollAnchor(.bottom)
                 } else {
                     TipView(HistoryTip())
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
-                        .foregroundStyle(colorScheme == .dark ? .white : .black)
-                        .padding(.top, 20)
-                        .padding(.horizontal, horizontalSizeClass == .compact ? 10 : 20)
+                        .listRowInsets(.init(top: 20, leading: 0, bottom: 12, trailing: 0))
                     
                     ForEach(Array(AudioPlayer.current.queue.enumerated()), id: \.offset) { index, track in
                         Row(track: track, draggable: true)
@@ -141,16 +135,18 @@ extension NowPlaying {
                     }
                 }
             }
-            .safeAreaPadding(.vertical, .innerSpacing)
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            // this is required because SwiftUI sucks ass
+            .scrollIndicators(.hidden)
+            .defaultScrollAnchor(showHistory ? .bottom : .top)
+            .safeAreaPadding(.vertical, 15)
             .mask(
                 VStack(spacing: 0) {
                     LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
                         .frame(height: 40)
                     
-                    Rectangle().fill(Color.black)
+                    Rectangle()
+                        .fill(Color.black)
                     
                     LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
                         .frame(height: 40)
@@ -168,10 +164,10 @@ private extension NowPlaying {
         var body: some View {
             HStack(spacing: 0) {
                 ItemImage(cover: track.cover)
-                    .frame(width: 50)
-                    .padding(.trailing, .innerSpacing)
+                    .frame(width: 48)
+                    .padding(.trailing, 8)
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(track.name)
                         .lineLimit(1)
                         .font(.body)
@@ -180,7 +176,7 @@ private extension NowPlaying {
                         Text(artistName)
                             .lineLimit(1)
                             .font(.callout)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.thinMaterial)
                     }
                 }
                 
@@ -190,14 +186,14 @@ private extension NowPlaying {
                     Label("queue.reorder", systemImage: "line.3.horizontal")
                         .labelStyle(.iconOnly)
                         .imageScale(.large)
-                        .foregroundStyle(.secondary)
-                        .modifier(ButtonHoverEffectModifier())
-                        .padding(.leading, .innerSpacing)
+                        .foregroundStyle(.thinMaterial)
+                        .padding(.leading, 16)
                 }
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
-            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+            .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+            .contentShape(.hoverMenuInteraction, .rect)
         }
     }
 }

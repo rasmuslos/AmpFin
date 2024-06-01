@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 struct PlaylistsList: View {
     let playlists: [Playlist]
@@ -16,7 +16,7 @@ struct PlaylistsList: View {
             NavigationLink(destination: PlaylistView(playlist: playlist)) {
                 PlaylistListRow(playlist: playlist)
             }
-            .listRowInsets(.init(top: .connectedSpacing, leading: 0, bottom: .connectedSpacing, trailing: 0))
+            .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
         }
     }
 }
@@ -33,6 +33,8 @@ struct PlaylistsList: View {
                 Playlist.fixture,
                 Playlist.fixture,
             ])
+            .padding(.horizontal, 20)
         }
+        .listStyle(.plain)
     }
 }

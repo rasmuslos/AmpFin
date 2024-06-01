@@ -7,8 +7,7 @@
 
 import SwiftUI
 import Defaults
-import AFBase
-import AFPlayback
+import AmpFinKit
 
 struct LibraryView: View {
     @Environment(\.libraryDataProvider) private var dataProvider
@@ -16,7 +15,7 @@ struct LibraryView: View {
     
     @Default(.libraryRandomAlbums) private var libraryRandomAlbums
     
-    @State private var albums: [Album]?
+    @State private var albums = [Album]()
     
     var body: some View {
         ScrollView {
@@ -37,8 +36,6 @@ struct LibraryView: View {
                         Label("title.favorites", systemImage: "heart")
                     }
                     
-                    // MARK: Artists
-                    
                     NavigationLink(destination: ArtistsView(albumOnly: true)) {
                         Label("title.albumArtists", systemImage: "music.mic")
                     }
@@ -48,22 +45,23 @@ struct LibraryView: View {
                     }
                     .disabled(!dataProvider.supportsArtistLookup)
                 }
-                .font(.headline)
+                .lineLimit(1)
             }
             .listStyle(.plain)
             .frame(height: 6 * minRowHeight)
             
-            if let albums = albums, albums.count > 0 {
-                HStack {
+            if !albums.isEmpty {
+                HStack(spacing: 0) {
                     Text(libraryRandomAlbums ? "home.randomAlbums" : "home.recentlyAdded")
                         .font(.headline)
+                    
                     Spacer()
                 }
-                .padding(.horizontal, .outerSpacing)
-                .padding(.top, .connectedSpacing)
+                .padding(.horizontal, 20)
+                .padding(.top, 12)
                 
                 AlbumGrid(albums: albums)
-                    .padding(.horizontal, .outerSpacing)
+                    .padding(.horizontal, 20)
             } else if !JellyfinClient.shared.online && dataProvider as? OnlineLibraryDataProvider != nil {
                 ContentUnavailableView("offline.title", systemImage: "network.slash", description: Text("offline.description"))
                     .padding(.top, 100)
@@ -74,7 +72,7 @@ struct LibraryView: View {
         .navigationTitle("title.library")
         .modifier(NowPlaying.SafeAreaModifier())
         .task {
-            if !libraryRandomAlbums || albums == nil || albums?.isEmpty == true {
+            if !libraryRandomAlbums || albums.isEmpty == true {
                 await loadAlbums()
             }
         }
@@ -82,11 +80,13 @@ struct LibraryView: View {
     }
     
     private func loadAlbums() async {
-        if libraryRandomAlbums {
-            albums = try? await dataProvider.getRandomAlbums()
-        } else {
-            albums = try? await dataProvider.getRecentAlbums()
+        let function = libraryRandomAlbums ? dataProvider.randomAlbums : dataProvider.recentAlbums
+        
+        guard let albums = try? await function() else {
+            return
         }
+        
+        self.albums = albums
     }
 }
 

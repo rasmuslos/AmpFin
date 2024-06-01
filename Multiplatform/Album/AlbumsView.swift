@@ -7,39 +7,43 @@
 
 import SwiftUI
 import Defaults
-import AFBase
+import AmpFinKit
 
-struct AlbumsView: View {
+internal struct AlbumsView: View {
+    @Environment(\.libraryDataProvider) private var dataProvider
+    
     @Default(.sortOrder) private var sortOrder
     @Default(.sortAscending) private var sortAscending
-    @Environment(\.libraryDataProvider) var dataProvider
     
-    @State var success = false
-    @State var failure = false
+    @State private var success = false
+    @State private var failure = false
+    @State private var working = false
     
     @State private var count = 0
     @State private var albums = [Album]()
     
     @State private var search: String = ""
-    @State private var searchTask: Task<Void, Error>?
-
+    @State private var task: Task<Void, Error>?
+    
     
     var sortState: [String] {[
         search,
-        sortOrder.rawValue,
         sortAscending.description,
+        sortOrder.hashValue.description,
     ]}
     
     var body: some View {
         VStack {
-            if failure {
-                ErrorView()
-            } else if success {
+            if success {
                 ScrollView {
-                    AlbumGrid(albums: albums, count: count, loadMore: { () async -> Void in await fetchAlbums(shouldReset: false) })
-                        .padding(.horizontal, .outerSpacing)
+                    AlbumGrid(albums: albums, count: count) {
+                        loadAlbums(reset: false)
+                    }
+                    .padding(.horizontal, 20)
                 }
                 .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.albums")
+            } else if failure {
+                ErrorView()
             } else {
                 LoadingView()
             }
@@ -47,50 +51,64 @@ struct AlbumsView: View {
         .navigationTitle("title.albums")
         .modifier(NowPlaying.SafeAreaModifier())
         .toolbar {
-            SortSelector(ascending: $sortAscending, sortOrder: $sortOrder)
+            SortSelector()
         }
-        .task {
+        .onAppear {
             if albums.isEmpty {
-                await fetchAlbums(shouldReset: false)
+                loadAlbums(reset: true)
             }
         }
+        .onDisappear {
+            task?.cancel()
+        }
         .onChange(of: sortState) {
-            searchTask?.cancel()
-            searchTask = Task {
-                try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
-                await fetchAlbums(shouldReset: true)
-                searchTask = nil
+            loadAlbums(reset: true)
+        }
+        .refreshable {
+            await withTaskCancellationHandler {
+                loadAlbums(reset: true)
+            } onCancel: {
+                Task {
+                    await task?.cancel()
+                }
             }
         }
     }
-}
-
-// MARK: Helper
-
-private extension AlbumsView {
-    func fetchAlbums(shouldReset: Bool) async {
+    
+    private func loadAlbums(reset: Bool) {
         failure = false
         
-        var search: String? = search
-        
-        if self.search.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-            search = nil
-        }
-        
-        if shouldReset {
+        if reset {
             count = 0
             albums = []
+            
+            working = false
         }
         
-        do {
-            let result = try await dataProvider.getAlbums(limit: 100, startIndex: albums.count, sortOrder: sortOrder, ascending: sortAscending, search: search)
+        guard !working, count == 0 || count > albums.count else {
+            return
+        }
+        
+        working = true
+        
+        task?.cancel()
+        task = Task.detached(priority: .userInitiated) {
+            guard let result = try? await dataProvider.albums(limit: 100, startIndex: albums.count, sortOrder: sortOrder, ascending: sortAscending, search: search) else {
+                await MainActor.run {
+                    failure = true
+                }
+                return
+            }
             
-            count = result.1
-            albums += result.0
+            try Task.checkCancellation()
             
-            success = true
-        } catch {
-            failure = true
+            await MainActor.run {
+                count = result.1
+                albums += result.0
+                
+                success = true
+                working = false
+            }
         }
     }
 }

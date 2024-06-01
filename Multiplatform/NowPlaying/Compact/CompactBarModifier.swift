@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 extension NowPlaying {
@@ -14,13 +14,12 @@ extension NowPlaying {
         @Environment(CompactViewState.self) private var nowPlayingViewState
         @Environment(\.libraryDataProvider) private var dataProvider
         
-        @State private var animateImage = false
         @State private var animateForwards = false
         
         func body(content: Content) -> some View {
             content
                 .safeAreaInset(edge: .bottom) {
-                    if let currentTrack = AudioPlayer.current.nowPlaying {
+                    if let nowPlaying = AudioPlayer.current.nowPlaying {
                         ZStack(alignment: .bottom) {
                             Rectangle()
                                 .frame(height: 300)
@@ -33,18 +32,18 @@ extension NowPlaying {
                                             .frame(height: 250)
                                     }
                                 }
-                                .foregroundStyle(.regularMaterial)
+                                .foregroundStyle(.bar)
                                 .padding(.bottom, -225)
                                 .allowsHitTesting(false)
                                 .toolbarBackground(.hidden, for: .tabBar)
                             
                             if !nowPlayingViewState.presented {
-                                HStack {
-                                    ItemImage(cover: currentTrack.cover)
+                                HStack(spacing: 8) {
+                                    ItemImage(cover: nowPlaying.cover)
                                         .frame(width: 40, height: 40)
                                         .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
                                     
-                                    Text(currentTrack.name)
+                                    Text(nowPlaying.name)
                                         .lineLimit(1)
                                         .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
                                     
@@ -56,21 +55,14 @@ extension NowPlaying {
                                                 ProgressView()
                                             } else {
                                                 Button {
-                                                    AudioPlayer.current.playing = !AudioPlayer.current.playing
+                                                    AudioPlayer.current.playing.toggle()
                                                 } label: {
                                                     Label("playback.toggle", systemImage: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
                                                         .labelStyle(.iconOnly)
                                                         .contentTransition(.symbolEffect(.replace.byLayer.downUp))
-                                                        .scaleEffect(animateImage ? AudioPlayer.current.playing ? 1.1 : 0.9 : 1)
-                                                        .animation(.spring(duration: 0.2, bounce: 0.7), value: animateImage)
-                                                        .onChange(of: AudioPlayer.current.playing) {
-                                                            withAnimation {
-                                                                animateImage = true
-                                                            } completion: {
-                                                                animateImage = false
-                                                            }
-                                                        }
+                                                        .animation(.spring(duration: 0.2, bounce: 0.7), value: AudioPlayer.current.playing)
                                                 }
+                                                .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
                                             }
                                         }
                                         .transition(.blurReplace)
@@ -83,39 +75,40 @@ extension NowPlaying {
                                                 .labelStyle(.iconOnly)
                                                 .symbolEffect(.bounce.up, value: animateForwards)
                                         }
-                                        .padding(.horizontal, .innerSpacing)
+                                        .padding(.horizontal, 8)
+                                        .sensoryFeedback(.increase, trigger: animateForwards)
                                     }
                                     .imageScale(.large)
                                 }
                                 .frame(height: 56)
-                                .padding(.horizontal, .outerSpacing / 2)
+                                .padding(.horizontal, 10)
+                                .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 16, style: .continuous))
+                                .modifier(NowPlaying.ContextMenuModifier(track: nowPlaying, animateForwards: $animateForwards))
                                 .foregroundStyle(.primary)
-                                .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 15, style: .continuous))
-                                .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
                                 .background {
                                     Rectangle()
                                         .foregroundStyle(.ultraThinMaterial)
                                 }
                                 .transition(.move(edge: .bottom))
-                                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                                .draggable(currentTrack) {
-                                    TrackListRow.TrackPreview(track: currentTrack)
+                                .clipShape(.rect(cornerRadius: 16, style: .continuous))
+                                .draggable(nowPlaying) {
+                                    TrackListRow.TrackPreview(track: nowPlaying)
                                         .padding()
                                 }
                                 .shadow(color: .black.opacity(0.25), radius: 20)
                                 .padding(.bottom, 10)
-                                .padding(.horizontal, .outerSpacing / 2)
+                                .padding(.horizontal, 10)
                                 .zIndex(1)
                                 .onTapGesture {
                                     nowPlayingViewState.setNowPlayingViewPresented(true)
                                 }
+                                .dropDestination(for: Track.self) { tracks, _ in
+                                    AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
+                                    return true
+                                }
                             }
                         }
                     }
-                }
-                .dropDestination(for: Track.self) { tracks, _ in
-                    AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
-                    return true
                 }
         }
     }

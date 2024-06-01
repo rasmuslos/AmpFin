@@ -7,11 +7,12 @@
 
 import Foundation
 import SwiftData
-import AFBase
+import AFFoundation
 
 @Model
 final class OfflineAlbum: OfflineParent {
-    @Attribute(.unique) let id: String
+    @Attribute(.unique)
+    let id: String
     let name: String
     
     let overview: String?

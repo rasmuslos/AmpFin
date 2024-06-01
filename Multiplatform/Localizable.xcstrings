@@ -219,6 +219,22 @@
         }
       }
     },
+    "account.verson %@ %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AmpFin %1$@ (%2$@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AmpFin %1$@ (%2$@)"
+          }
+        }
+      }
+    },
     "album.similar" : {
       "localizations" : {
         "de" : {
@@ -363,6 +379,22 @@
         }
       }
     },
+    "back" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
+    },
     "cancel" : {
       "localizations" : {
         "de" : {
@@ -480,13 +512,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitte stelle sicher, dass du mit dem Internet verbunden bist"
+            "value" : "Bitte stelle sicher, dass du mit dem Internet verbunden bist und dein Gerät eine Verbindung zu deiner Jellyfin-Instanz herstellen kann."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please ensure that you are connected to the internet"
+            "value" : "To access Jellyfin features, please ensure your device is connected to the internet and can reach your Jellyfin instance."
           }
         }
       }
@@ -588,46 +620,6 @@
         }
       }
     },
-    "hours %lld" : {
-      "localizations" : {
-        "de" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Eine Stunde"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Stunden"
-                }
-              }
-            }
-          }
-        },
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "one hour"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld hours"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "loading" : {
       "localizations" : {
         "de" : {
@@ -665,13 +657,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jellyfin Server nicht gefunden"
+            "value" : "Jellyfin Instanz nicht gefunden"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jellyfin server not found"
+            "value" : "Jellyfin instance not found"
           }
         }
       }
@@ -688,7 +680,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Invalid server URL (Format: http(s)://host:port)"
+            "value" : "The server URL appears to be invalid (Format: http(s)://host:port)"
           }
         }
       }
@@ -880,47 +872,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lyrics cannot be fetched (only available with Jellyfin 10.9+)"
-          }
-        }
-      }
-    },
-    "minutes %lld" : {
-      "localizations" : {
-        "de" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Eine Minute"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Minuten"
-                }
-              }
-            }
-          }
-        },
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "one minute"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld minutes"
-                }
-              }
-            }
+            "value" : "Lyrics cannot be retrieved (requires Jellyfin 10.9 or later)"
           }
         }
       }
@@ -962,13 +914,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es kann keine Verbindung zu deinem Jellyfin-Server hergestellt werden. Überprüfe deine Verbindung"
+            "value" : "Es kann keine Verbindung zu deiner Jellyfin Instanz hergestellt werden. Überprüfe die Verbindung"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connection to your Jellyfin server cannot be established. Please check your connection."
+            "value" : "Failed to establish a connection to your Jellyfin instance. Please verify your network connection and try again."
           }
         }
       }
@@ -1000,7 +952,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PlaceHolder"
+            "value" : "Placeholder"
           }
         }
       }
@@ -1520,7 +1472,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Establish connection to the Jellyfin server"
+            "value" : "Connect to your Jellyfin instance"
           }
         }
       }
@@ -2060,13 +2012,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es kann in der Einstellungs-App geändert werden, was dieser Knopf abspielt."
+            "value" : "Ändere das Verhalten beim spielen von Künstlern in der Einstellungs-App"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can change what you want to her when tapping this button in the Settings-app"
+            "value" : "Configure artist play behavior options in the Settings app"
           }
         }
       }
@@ -2076,13 +2028,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Instant-Mix oder zufällige Lieder"
+            "value" : "Instant-Mix oder zufällige Lieder?"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Instant mix or shuffle"
+            "value" : "Instant-Mix or random tracks?"
           }
         }
       }
@@ -2098,7 +2050,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Download this album and listen to it while on the go"
+            "value" : "Download this album for seamless listening on-the-go"
           }
         }
       }
@@ -2130,7 +2082,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To access your current listening history tap the button next to the shuffle icon"
+            "value" : "To view your current listening history, tap the button beside the shuffle icon."
           }
         }
       }
@@ -2146,7 +2098,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "View history"
+            "value" : "View playback history"
           }
         }
       }
@@ -2162,7 +2114,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generate a dynamic playlist based on the track you select"
+            "value" : "Discover similar music by generating a dynamic queue based on the track you choose"
           }
         }
       }
@@ -2188,13 +2140,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es ist möglich, eine andere unterstütze Anwendung - z.B. Jellyfin-Web - mit AmpFin zu steuern. Es können auch Befehle an diese App gesendet werden."
+            "value" : "Es ist möglich eine andere unterstütze Anwendung - z.B. Jellyfin-Web - mit AmpFin zu steuern. Es können auch Befehle empfangen werden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can control playback on another supported Jellyfin client (e.g. Jellyfin-Web) using AmpFin. You can also send commands to this app"
+            "value" : "Take command of another supported Jellyfin client (e.g., Jellyfin Web), or have one of them take control of your current session"
           }
         }
       }

@@ -10,14 +10,14 @@ import Defaults
 import SwiftUI
 import AFOffline
 
-struct Sidebar: View {
-    @Default(.lastSidebarSelection) private var selection
+internal struct Sidebar: View {
+    @Default(.sidebarSelection) private var sidebarSelection
     
     var provider: DataProvider?
     
     var body: some View {
         NavigationSplitView {
-            List(selection: $selection) {
+            List(selection: $sidebarSelection) {
                 if let provider = provider {
                     LibraryLinks(provider: provider)
                 } else {
@@ -34,7 +34,7 @@ struct Sidebar: View {
                 if provider == nil {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            selection = .init(provider: nil, panel: .search)
+                            sidebarSelection = .init(provider: nil, panel: .search)
                         } label: {
                             Label("search", systemImage: "magnifyingglass")
                                 .labelStyle(.iconOnly)
@@ -43,35 +43,35 @@ struct Sidebar: View {
                 }
             }
         } detail: {
-            if let selection = selection {
+            if let sidebarSelection = sidebarSelection {
                 NavigationStack {
-                    selection.panel.content
-                        .id(selection.panel)
-                        .id(selection.provider)
+                    sidebarSelection.panel.content
+                        .id(sidebarSelection.panel)
+                        .id(sidebarSelection.provider)
                 }
             } else {
                 ProgressView()
                     .onAppear {
-                        selection = .init(provider: .online, panel: .tracks)
+                        sidebarSelection = .init(provider: .online, panel: .tracks)
                     }
             }
         }
-        .environment(\.libraryDataProvider, selection?.provider?.libraryProvider ?? MockLibraryDataProvider())
+        .environment(\.libraryDataProvider, sidebarSelection?.provider?.libraryProvider ?? MockLibraryDataProvider())
         .modifier(NowPlayingBarModifier(visible: provider == nil))
         .modifier(Navigation.NotificationModifier(
             navigateAlbum: {
-                selection = .init(provider: .online, panel: .artist(id: $0))
-            }, navigateArtist: {
-                if OfflineManager.shared.isAlbumDownloaded(albumId: $0) {
-                    selection = .init(provider: .offline, panel: .album(id: $0))
+                if OfflineManager.shared.offlineStatus(albumId: $0) == .downloaded {
+                    sidebarSelection = .init(provider: .offline, panel: .album(id: $0))
                 } else {
-                    selection = .init(provider: .online, panel: .album(id: $0))
+                    sidebarSelection = .init(provider: .online, panel: .album(id: $0))
                 }
+            }, navigateArtist: {
+                sidebarSelection = .init(provider: .online, panel: .artist(id: $0))
             }, navigatePlaylist: {
-                if OfflineManager.shared.isAlbumDownloaded(albumId: $0) {
-                    selection = .init(provider: .offline, panel: .album(id: $0))
+                if OfflineManager.shared.offlineStatus(albumId: $0) == .downloaded {
+                    sidebarSelection = .init(provider: .offline, panel: .album(id: $0))
                 } else {
-                    selection = .init(provider: .online, panel: .album(id: $0))
+                    sidebarSelection = .init(provider: .online, panel: .album(id: $0))
                 }
             }))
     }

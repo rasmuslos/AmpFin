@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
-extension PlaylistView {
+internal extension PlaylistView {
     struct Header: View {
         let playlist: Playlist
         
@@ -23,10 +23,7 @@ extension PlaylistView {
             ZStack {
                 GeometryReader { proxy in
                     Color.clear
-                        .onAppear {
-                            height = max(height, proxy.size.height)
-                        }
-                        .onChange(of: proxy.size.height) {
+                        .onChange(of: proxy.size.height, initial: true) {
                             height = max(height, proxy.size.height)
                         }
                         .onChange(of: proxy.frame(in: .global)) {
@@ -42,23 +39,23 @@ extension PlaylistView {
                         }
                 }
                 
-                VStack {
+                VStack(spacing: 0) {
                     Spacer(minLength: 400)
                     
                     HStack {
                         Text("playlist.trackCount \(playlist.trackCount)")
                         + Text(verbatim: " • ")
-                        + Text(playlist.duration.formatDuration())
+                        + Text(playlist.duration.duration)
                     }
                     .font(.subheadline)
                     .fontDesign(.rounded)
                     .foregroundStyle(.secondary)
-                    .padding(.bottom, .connectedSpacing)
+                    .padding(.bottom, 12)
                     
                     TrackListButtons(background: .ultraThinMaterial, startPlayback: startPlayback)
                 }
-                .padding(.bottom, .connectedSpacing)
-                .padding(.horizontal, .outerSpacing)
+                .padding(.bottom, 12)
+                .padding(.horizontal, 20)
                 .background {
                     Background(playlist: playlist)
                         .offset(y: -offset)
@@ -68,7 +65,7 @@ extension PlaylistView {
                 VStack {
                     Rectangle()
                         .foregroundStyle(.linearGradient(colors: [.gray.opacity(0.3), .clear], startPoint: .top, endPoint: .bottom))
-                        .frame(height: 225)
+                        .frame(height: 220)
                         .offset(y: -offset)
                     
                     Spacer()

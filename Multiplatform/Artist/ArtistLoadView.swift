@@ -6,30 +6,35 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 struct ArtistLoadView: View {
-    @Environment(\.libraryDataProvider) var dataProvider
+    @Environment(\.libraryDataProvider) private var dataProvider
     
     let artistId: String
     
-    @State var artist: Artist?
-    @State var failed = false
+    @State private var failed = false
+    @State private var artist: Artist?
     
     var body: some View {
         if failed {
             ErrorView()
-        } else if let artist = artist {
+                .refreshable { await loadArtist() }
+        } else if let artist {
             ArtistView(artist: artist)
         } else {
             LoadingView()
-                .task {
-                    if let artist = try? await dataProvider.getArtist(artistId: artistId) {
-                        self.artist = artist
-                    } else {
-                        self.failed = true
-                    }
-                }
+                .task { await loadArtist() }
+                .refreshable { await loadArtist() }
         }
+    }
+    
+    private func loadArtist() async {
+        guard let artist = try? await dataProvider.artist(identifier: artistId) else {
+            failed = true
+            return
+        }
+        
+        self.artist = artist
     }
 }

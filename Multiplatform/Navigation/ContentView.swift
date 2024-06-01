@@ -8,13 +8,12 @@
 import SwiftUI
 import SwiftData
 import Intents
-import AFBase
-import AFOffline
-import AFPlayback
 import CoreSpotlight
 import Network
+import AmpFinKit
+import AFPlayback
 
-struct ContentView: View {
+internal struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     private var navigationController: some View {
@@ -79,7 +78,7 @@ struct ContentView: View {
                         SpotlightHelper.updateIndex()
                         INMediaUserContext.donate()
                         
-                        OfflineManager.shared.updateOfflineItems()
+                        OfflineManager.shared.update()
                         OfflineManager.shared.syncPlaysToJellyfinServer()
                     }
                     

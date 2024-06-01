@@ -7,8 +7,7 @@
 
 import Foundation
 import SwiftUI
-import AFBase
-import AFOffline
+import AmpFinKit
 import AFPlayback
 
 extension PlaylistView {
@@ -16,56 +15,55 @@ extension PlaylistView {
         @Environment(\.dismiss) private var dismiss
         
         let playlist: Playlist
-        let offlineTracker: ItemOfflineTracker
         
         @Binding var toolbarVisible: Bool
         
         @Binding var tracks: [Track]
         @Binding var editMode: EditMode
         
-        init(playlist: Playlist, toolbarVisible: Binding<Bool>, tracks: Binding<[Track]>, editMode: Binding<EditMode>) {
-            self.playlist = playlist
-            offlineTracker = playlist.offlineTracker
-            
-            _toolbarVisible = toolbarVisible
-            
-            _tracks = tracks
-            _editMode = editMode
-        }
-        
         @State private var alertPresented = false
+        @State private var offlineTracker: ItemOfflineTracker?
         
         func body(content: Content) -> some View {
             content
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            if offlineTracker.status == .none {
-                                Task {
-                                    try! await OfflineManager.shared.download(playlist: playlist)
+                        if let offlineTracker {
+                            Button {
+                                if offlineTracker.status == .none {
+                                    Task {
+                                        try! await OfflineManager.shared.download(playlist: playlist)
+                                    }
+                                } else if offlineTracker.status == .downloaded {
+                                    try! OfflineManager.shared.delete(playlistId: playlist.id)
                                 }
-                            } else if offlineTracker.status == .downloaded {
-                                try! OfflineManager.shared.delete(playlistId: playlist.id)
+                            } label: {
+                                switch offlineTracker.status {
+                                    case .none:
+                                        Label("download", systemImage: "arrow.down")
+                                            .labelStyle(.iconOnly)
+                                    case .working:
+                                        ProgressView()
+                                    case .downloaded:
+                                        Label("download.remove", systemImage: "xmark")
+                                            .labelStyle(.iconOnly)
+                                }
                             }
-                        } label: {
-                            switch offlineTracker.status {
-                                case .none:
-                                    Label("download", systemImage: "arrow.down")
-                                        .labelStyle(.iconOnly)
-                                case .working:
-                                    ProgressView()
-                                case .downloaded:
-                                    Label("download.remove", systemImage: "xmark")
-                                        .labelStyle(.iconOnly)
-                            }
+                            .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
+                        } else {
+                            ProgressView()
+                                .task {
+                                    offlineTracker = playlist.offlineTracker
+                                }
                         }
-                        .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
                     }
                     
                     ToolbarItem(placement: .topBarTrailing) {
                         if editMode == .active {
                             Button {
-                                editMode = .inactive
+                                withAnimation {
+                                    editMode = .inactive
+                                }
                             } label: {
                                 Label("done", systemImage: "checkmark")
                                     .labelStyle(.iconOnly)
@@ -74,9 +72,7 @@ extension PlaylistView {
                         } else {
                             Menu {
                                 Button {
-                                    Task {
-                                        await playlist.setFavorite(favorite: !playlist.favorite)
-                                    }
+                                    playlist.favorite.toggle()
                                 } label: {
                                     Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
                                 }
@@ -98,11 +94,7 @@ extension PlaylistView {
                                 
                                 Button {
                                     withAnimation {
-                                        if editMode == .active {
-                                            editMode = .inactive
-                                        } else {
-                                            editMode = .active
-                                        }
+                                        editMode = .active
                                     }
                                 } label: {
                                     Label("playlist.edit", systemImage: "pencil")
@@ -116,7 +108,7 @@ extension PlaylistView {
                                 }
                                 .disabled(!JellyfinClient.shared.online)
                                 
-                                if offlineTracker.status != .none {
+                                if let offlineTracker, offlineTracker.status != .none {
                                     Divider()
                                     
                                     Button(role: .destructive) {
@@ -142,7 +134,7 @@ extension PlaylistView {
                     
                     Button(role: .destructive) {
                         Task {
-                            try! await JellyfinClient.shared.delete(itemId: playlist.id)
+                            try! await JellyfinClient.shared.delete(identifier: playlist.id)
                             alertPresented = false
                             
                             dismiss()
@@ -155,27 +147,25 @@ extension PlaylistView {
     }
 }
 
-extension PlaylistView.ToolbarModifier {
-    struct FullscreenToolbarModifier: ViewModifier {
-        @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-        
-        let toolbarVisible: Bool
-        
-        func body(content: Content) -> some View {
-            if horizontalSizeClass == .regular {
-                content
-                    .symbolVariant(.circle)
-            } else if toolbarVisible {
-                content
-                    .symbolVariant(.circle)
-                    .animation(.easeInOut, value: toolbarVisible)
-            } else {
-                content
-                    .symbolVariant(.circle.fill)
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.white, .black.opacity(0.25))
-                    .animation(.easeInOut, value: toolbarVisible)
-            }
+private struct FullscreenToolbarModifier: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    let toolbarVisible: Bool
+    
+    func body(content: Content) -> some View {
+        if horizontalSizeClass == .regular {
+            content
+                .symbolVariant(.circle)
+        } else if toolbarVisible {
+            content
+                .symbolVariant(.circle)
+                .animation(.easeInOut, value: toolbarVisible)
+        } else {
+            content
+                .symbolVariant(.circle.fill)
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(.white, .black.opacity(0.25))
+                .animation(.easeInOut, value: toolbarVisible)
         }
     }
 }

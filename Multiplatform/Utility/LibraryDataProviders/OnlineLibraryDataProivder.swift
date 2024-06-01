@@ -6,80 +6,64 @@
 //
 
 import Foundation
-import AFBase
-import AFOffline
+import AmpFinKit
 
 public struct OnlineLibraryDataProvider: LibraryDataProvider {
     public var supportsArtistLookup: Bool = true
     public var supportsAdvancedFilters: Bool = true
     public var albumNotFoundFallbackToLibrary: Bool = false
     
-    public func getRecentAlbums() async throws -> [Album] {
-        return try await JellyfinClient.shared.getAlbums(limit: 20, startIndex: 0, sortOrder: .added, ascending: false, favorite: false, search: nil).0
-    }
-    public func getRandomAlbums() async throws -> [Album] {
-        return try await JellyfinClient.shared.getAlbums(limit: 20)
-    }
-    
     // MARK: Track
     
-    public func getTracks(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, favorite: Bool, search: String?) async throws -> ([Track], Int) {
-        try await JellyfinClient.shared.getTracks(limit: limit, startIndex: startIndex, sortOrder: sortOrder, ascending: ascending, favorite: favorite, search: search)
+    public func tracks(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favoriteOnly: Bool, search: String?) async throws -> ([Track], Int) {
+        try await JellyfinClient.shared.tracks(limit: limit, startIndex: startIndex, sortOrder: sortOrder, ascending: ascending, favoriteOnly: favoriteOnly, search: search)
     }
     
     // MARK: Album
     
-    public func getAlbum(albumId: String) async throws -> Album {
-        try await JellyfinClient.shared.getAlbum(albumId: albumId)
+    public func recentAlbums() async throws -> [Album] {
+        return try await JellyfinClient.shared.albums(limit: 20, startIndex: 0, sortOrder: .added, ascending: false).0
     }
-    public func getAlbums(limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Album], Int) {
-        try await JellyfinClient.shared.getAlbums(limit: limit, startIndex: startIndex, sortOrder: sortOrder, ascending: ascending, favorite: false, search: search)
+    public func randomAlbums() async throws -> [Album] {
+        return try await JellyfinClient.shared.albums(limit: 20, startIndex: 0, sortOrder: .random, ascending: true).0
     }
     
-    public func getTracks(albumId: String) async throws -> [Track] {
-        try await JellyfinClient.shared.getTracks(albumId: albumId)
+    public func album(identifier: String) async throws -> Album {
+        try await JellyfinClient.shared.album(identifier: identifier)
+    }
+    public func albums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Album], Int) {
+        try await JellyfinClient.shared.albums(limit: limit, startIndex: startIndex, sortOrder: sortOrder, ascending: ascending, search: search)
+    }
+    
+    public func tracks(albumId: String) async throws -> [Track] {
+        try await JellyfinClient.shared.tracks(albumId: albumId)
     }
     
     // MARK: Artist
     
-    public func getArtist(artistId: String) async throws -> Artist {
-        try await JellyfinClient.shared.getArtist(artistId: artistId)
+    public func artist(identifier: String) async throws -> Artist {
+        try await JellyfinClient.shared.artist(identifier: identifier)
     }
-    public func getArtists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int) {
-        try await JellyfinClient.shared.getArtists(limit: limit, startIndex: startIndex, albumOnly: albumOnly, search: search)
-    }
-    
-    public func getTracks(artistId: String, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> [Track] {
-        try await JellyfinClient.shared.getTracks(artistId: artistId, sortOrder: sortOrder, ascending: ascending)
-    }
-    public func getAlbums(artistId: String, limit: Int, startIndex: Int, sortOrder: JellyfinClient.ItemSortOrder, ascending: Bool) async throws -> ([Album], Int) {
-        try await JellyfinClient.shared.getAlbums(limit: limit, startIndex: startIndex, artistId: artistId, sortOrder: sortOrder, ascending: ascending)
+    public func artists(limit: Int, startIndex: Int, albumOnly: Bool, search: String?) async throws -> ([Artist], Int) {
+        try await JellyfinClient.shared.artists(limit: limit, startIndex: startIndex, albumOnly: albumOnly, search: search)
     }
     
-    // MARK: Search
-    
-    public func searchTracks(query: String) async throws -> [Track] {
-        try await JellyfinClient.shared.getTracks(query: query)
+    public func tracks(artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Track] {
+        try await JellyfinClient.shared.tracks(artistId: artistId, sortOrder: sortOrder, ascending: ascending)
     }
-    public func searchAlbums(query: String) async throws -> [Album] {
-        try await JellyfinClient.shared.getAlbums(query: query)
-    }
-    public func searchArtists(query: String) async throws -> [Artist] {
-        try await JellyfinClient.shared.getArtists(query: query)
-    }
-    public func searchPlaylists(query: String) async throws -> [Playlist] {
-        try await JellyfinClient.shared.getPlaylists(query: query)
+    public func albums(artistId: String, limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool) async throws -> ([Album], Int) {
+        try await JellyfinClient.shared.albums(limit: limit, startIndex: startIndex, sortOrder: sortOrder, ascending: ascending, artistId: artistId)
     }
     
-    // MARK: Playlist
+    // MARK: Playlists
     
-    public func getPlaylist(playlistId: String) async throws -> Playlist {
-        try await JellyfinClient.shared.getPlaylist(playlistId: playlistId)
+    public func playlist(identifier: String) async throws -> Playlist {
+        try await JellyfinClient.shared.playlist(identifier: identifier)
     }
-    public func getPlaylists() async throws -> [Playlist] {
-        try await JellyfinClient.shared.getPlaylists(limit: 0, sortOrder: .added, ascending: false, favorite: false)
+    public func playlists(search: String?) async throws -> [Playlist] {
+        try await JellyfinClient.shared.playlists(limit: 0, sortOrder: .lastPlayed, ascending: false, search: search)
     }
-    public func getTracks(playlistId: String) async throws -> [Track] {
-        try await JellyfinClient.shared.getTracks(playlistId: playlistId)
+    public func tracks(playlistId: String) async throws -> [Track] {
+        try await JellyfinClient.shared.tracks(playlistId: playlistId)
     }
 }

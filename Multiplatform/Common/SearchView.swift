@@ -7,14 +7,13 @@
 
 import SwiftUI
 import Defaults
-import AFBase
+import AmpFinKit
 import AFPlayback
 
-struct SearchView: View {
+internal struct SearchView: View {
     @Default(.searchTab) private var searchTab
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    @State private var query = ""
+    @State private var search = ""
     @State private var task: Task<(), Never>? = nil
     
     @State private var tracks = [Track]()
@@ -26,18 +25,19 @@ struct SearchView: View {
         NavigationStack {
             List {
                 Picker("search.library", selection: $searchTab) {
-                    Text("search.jellyfin", comment: "Search the Jellyfin server")
+                    Text("search.jellyfin")
                         .tag(Tab.online)
-                    Text("search.downloaded", comment: "Search the downloaded content")
+                    Text("search.downloaded")
                         .tag(Tab.offline)
                 }
-                .pickerStyle(SegmentedPickerStyle())
+                .pickerStyle(.segmented)
                 .listRowSeparator(.hidden)
+                .listRowInsets(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
                 
                 if !artists.isEmpty {
                     Section("section.artists") {
                         ArtistList(artists: artists)
-                            .padding(.horizontal, .outerSpacing)
+                            .padding(.horizontal, 20)
                     }
                 }
                 
@@ -47,7 +47,7 @@ struct SearchView: View {
                             NavigationLink(destination: AlbumView(album: album)) {
                                 AlbumListRow(album: album)
                             }
-                            .listRowInsets(.init(top: 6, leading: .outerSpacing, bottom: 6, trailing: .outerSpacing))
+                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                         }
                     }
                 }
@@ -58,7 +58,7 @@ struct SearchView: View {
                             NavigationLink(destination: PlaylistView(playlist: playlist)) {
                                 PlaylistListRow(playlist: playlist)
                             }
-                            .listRowInsets(.init(top: 6, leading: .outerSpacing, bottom: 6, trailing: .outerSpacing))
+                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                         }
                     }
                 }
@@ -67,61 +67,71 @@ struct SearchView: View {
                     Section("section.tracks") {
                         ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
                             TrackListRow(track: track) {
-                                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil, search: query))
+                                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil, search: search))
                             }
-                            .listRowInsets(.init(top: 6, leading: .outerSpacing, bottom: 6, trailing: .outerSpacing))
+                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                         }
                     }
                 }
             }
             .listStyle(.plain)
             .navigationTitle("title.search")
-            .modifier(NowPlaying.SafeAreaModifier())
-            .modifier(AccountToolbarButtonModifier(requiredSize: .compact))
-            // Query
-            .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "search.placeholder")
+            .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "search.placeholder")
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)
-            .onChange(of: query) {
-                fetchSearchResults()
+            .modifier(NowPlaying.SafeAreaModifier())
+            .task(id: searchTab) {
+                fetchSearchResults(shouldReset: true)
             }
-            // Online / Offline
-            .onChange(of: searchTab) {
-                task?.cancel()
-                
-                tracks = []
-                albums = []
-                artists = []
-                playlists = []
-                
-                fetchSearchResults()
+            .refreshable {
+                fetchSearchResults(shouldReset: true)
             }
-            .onAppear(perform: fetchSearchResults)
+            .onChange(of: search) {
+                fetchSearchResults(shouldReset: false)
+            }
+            .modifier(AccountToolbarButtonModifier(requiredSize: .compact))
         }
         .environment(\.libraryDataProvider, searchTab.dataProvider)
     }
     
-    private func fetchSearchResults() {
+    private func fetchSearchResults(shouldReset: Bool) {
+        let search = search.lowercased()
+        
+        if shouldReset {
+            tracks = []
+            albums = []
+            artists = []
+            playlists = []
+        }
+        
         task?.cancel()
-        task = Task.detached {
-            // I guess this runs in parallel?
-            await (tracks, albums, artists, playlists) = (try? await (
-                searchTab.dataProvider.searchTracks(query: query.lowercased()),
-                searchTab.dataProvider.searchAlbums(query: query.lowercased()),
-                searchTab.dataProvider.searchArtists(query: query.lowercased()),
-                searchTab.dataProvider.searchPlaylists(query: query.lowercased()))
-            ) ?? ([], [], [], [])
+        task = Task.detached(priority: .userInitiated) { [search] in
+            async let tracks = searchTab.dataProvider.tracks(limit: 20, startIndex: 0, sortOrder: .lastPlayed, ascending: false, favoriteOnly: false, search: search).0
+            async let albums = searchTab.dataProvider.albums(limit: 20, startIndex: 0, sortOrder: .lastPlayed, ascending: false, search: search).0
+            async let artists = searchTab.dataProvider.artists(limit: 20, startIndex: 0, albumOnly: false, search: search).0
+            async let playlists = searchTab.dataProvider.playlists(search: search)
+            
+            try? await MainActor.run { [tracks, albums, artists, playlists] in
+                guard !Task.isCancelled else {
+                    return
+                }
+                
+                self.tracks = Array(tracks.prefix(20))
+                self.albums = Array(albums.prefix(20))
+                self.artists = Array(artists.prefix(20))
+                self.playlists = Array(playlists.prefix(20))
+            }
         }
     }
 }
 
-extension SearchView {
+internal extension SearchView {
     enum Tab: Codable, _DefaultsSerializable {
         case online
         case offline
     }
 }
-extension SearchView.Tab {
+private extension SearchView.Tab {
     var dataProvider: LibraryDataProvider {
         switch self {
             case .online:

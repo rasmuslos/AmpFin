@@ -7,10 +7,9 @@
 
 import SwiftUI
 import Defaults
-import AFBase
-import AFOffline
+import AmpFinKit
 
-extension Sidebar {
+internal extension Sidebar {
     struct LibraryLinks: View {
         @Default private var expanded: Bool
         
@@ -44,7 +43,7 @@ extension Sidebar {
                 Section("section.playlists", isExpanded: $playlistSectionExpanded) {
                     ForEach(playlists) { playlist in
                         NavigationLink(value: Selection(
-                            provider: provider ?? (OfflineManager.shared.isPlaylistDownloaded(playlistId: playlist.id) ? .offline : .online),
+                            provider: provider ?? (OfflineManager.shared.offlineStatus(playlistId: playlist.id) == .downloaded ? .offline : .online),
                             panel: .playlist(id: playlist.id))) {
                             HStack {
                                 ItemImage(cover: playlist.cover)
@@ -64,11 +63,11 @@ extension Sidebar {
         }
         
         private func fetchPlaylists() async {
-            if let playlists = try? await provider?.libraryProvider.getPlaylists() {
+            if let playlists = try? await provider?.libraryProvider.playlists(search: nil) {
                 self.playlists = playlists
-            } else if let playlists = try? await OnlineLibraryDataProvider().getPlaylists() {
+            } else if let playlists = try? await OnlineLibraryDataProvider().playlists(search: nil) {
                 self.playlists = playlists
-            } else if let playlists = try? await OfflineLibraryDataProvider().getPlaylists() {
+            } else if let playlists = try? await OfflineLibraryDataProvider().playlists(search: nil) {
                 self.playlists = playlists
             }
         }

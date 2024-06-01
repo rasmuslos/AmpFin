@@ -7,7 +7,8 @@
 
 import Foundation
 import Intents
-import AFBase
+import AFFoundation
+import AFNetwork
 
 extension IntentHandler: INSearchForMediaIntentHandling {
     func handle(intent: INSearchForMediaIntent) async -> INSearchForMediaIntentResponse {
@@ -67,16 +68,11 @@ extension IntentHandler: INSearchForMediaIntentHandling {
             }
             
             return resolved
+        } catch SearchError.unsupportedMediaType {
+            return [.unsupported(forReason: .unsupportedMediaType)]
+        } catch SearchError.notFound {
+            return []
         } catch {
-            if let error = error as? SearchError {
-                switch error {
-                    case .unavailable:
-                        return [.unsupported(forReason: .serviceUnavailable)]
-                    case .unsupportedMediaType:
-                        return [.unsupported(forReason: .unsupportedMediaType)]
-                }
-            }
-            
             return [.unsupported(forReason: .serviceUnavailable)]
         }
     }

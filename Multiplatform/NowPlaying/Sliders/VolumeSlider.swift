@@ -23,6 +23,7 @@ extension NowPlaying {
                     Label("mute", systemImage: "speaker.fill")
                         .labelStyle(.iconOnly)
                 }
+                .buttonStyle(.plain)
                 
                 Slider(percentage: $volume, dragging: $dragging)
                 
@@ -32,6 +33,7 @@ extension NowPlaying {
                     Label("fullVolume", systemImage: "speaker.wave.3.fill")
                         .labelStyle(.iconOnly)
                 }
+                .buttonStyle(.plain)
             }
             .dynamicTypeSize(dragging ? .xLarge : .medium)
             .frame(height: 0)

@@ -8,13 +8,12 @@
 import Foundation
 import AVKit
 import OSLog
-import AFBase
+import AFFoundation
 import MediaPlayer
 
 @Observable
 internal final class LocalAudioEndpoint: AudioEndpoint {
-    let audioPlayer: AVQueuePlayer
-    let audioSession: AVAudioSession
+    let audioPlayer: AVPlayer
     
     var history: [Track]
     var nowPlaying: Track?
@@ -25,63 +24,6 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     var nowPlayingInfo = [String: Any]()
     var playbackReporter: PlaybackReporter?
     
-    // MARK: Computed
-    
-    var playing: Bool {
-        get {
-            _playing
-        }
-        set {
-            _setPlaying(newValue)
-        }
-    }
-    
-    var duration: Double = 0
-    var currentTime: Double {
-        get {
-            _currentTime
-        }
-        set {
-            _seek(seconds: newValue)
-        }
-    }
-    
-    var buffering: Bool = false
-    
-    var shuffled: Bool {
-        get {
-            _shuffled
-        }
-        set {
-            _shuffle(newValue)
-        }
-    }
-    var repeatMode: RepeatMode {
-        get {
-            _repeatMode
-        }
-        set {
-            _setRepeatMode(newValue)
-        }
-    }
-    
-    public var volume: Float {
-        get {
-#if targetEnvironment(macCatalyst)
-            audioPlayer.volume
-#else
-            audioSession.outputVolume
-#endif
-        }
-        set {
-#if targetEnvironment(macCatalyst)
-            audioPlayer.volume = newValue
-#else
-            MPVolumeView.setVolume(newValue)
-#endif
-        }
-    }
-    
     // MARK: Helper
     
     var _playing: Bool = false
@@ -90,13 +32,17 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     var _shuffled: Bool = false
     var _repeatMode: RepeatMode = .none
     
+    var buffering: Bool = false
+    var duration: Double = 0
+    
     // MARK: Util
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
     
-    init() {
-        audioPlayer = AVQueuePlayer()
-        audioSession = AVAudioSession.sharedInstance()
+    private init() {
+        audioPlayer = .init()
+        audioPlayer.allowsExternalPlayback = false
+        audioPlayer.usesExternalPlaybackWhileExternalScreenIsActive = true
         
         history = []
         nowPlaying = nil
@@ -107,7 +53,9 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
         setupTimeObserver()
         setupObservers()
         
+        #if !os(macOS)
         AudioPlayer.updateAudioSession(active: false)
+        #endif
     }
 }
 

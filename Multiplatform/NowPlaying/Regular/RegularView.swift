@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
 extension NowPlaying {
     struct RegularView: View {
         @Namespace private var namespace
-        @Environment(\.dismiss) var dismiss
+        @Environment(\.dismiss) private var dismiss
         
         @State private var availableWidth: CGFloat = .zero
         
@@ -27,10 +27,7 @@ extension NowPlaying {
             ZStack {
                 GeometryReader { proxy in
                     Color.clear
-                        .onAppear {
-                            availableWidth = proxy.size.width
-                        }
-                        .onChange(of: proxy.size.width) {
+                        .onChange(of: proxy.size.width, initial: true) {
                             availableWidth = proxy.size.width
                         }
                 }
@@ -38,16 +35,16 @@ extension NowPlaying {
                 
                 if let track = AudioPlayer.current.nowPlaying {
                     Background(cover: track.cover, dragging: false)
-                        .clipped()
                     
                     VStack {
                         HStack {
                             VStack {
                                 // Single column layout
                                 if !singleColumnLayout || currentTab == .cover {
-                                    Cover(track: track, currentTab: currentTab, namespace: namespace)
+                                    LargeTitle(track: track, currentTab: currentTab, namespace: namespace)
                                 } else {
                                     SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
+                                        .padding(.top, 40)
                                     
                                     Group {
                                         if currentTab == .lyrics {
@@ -67,7 +64,8 @@ extension NowPlaying {
                                 }
                                 
                                 Controls(compact: !singleColumnLayout, controlsDragging: $controlsDragging)
-                                    .padding(.bottom, 30)
+                                    .padding(.top, 12)
+                                    .padding(.bottom, 32)
                             }
                             .frame(maxWidth: singleColumnLayout ? .infinity : 475)
                             
@@ -84,12 +82,14 @@ extension NowPlaying {
                                     .transition(.blurReplace)
                                 }
                                 .padding(.leading, 80)
+                                .padding(.top, currentTab == .queue ? 62 : 0)
                                 .transition(.move(edge: .trailing))
                             }
                         }
                         
                         Buttons(currentTab: $currentTab)
                     }
+                    .foregroundStyle(.white)
                     .simultaneousGesture(
                         DragGesture(minimumDistance: 25, coordinateSpace: .global)
                             .onEnded {
@@ -98,23 +98,24 @@ extension NowPlaying {
                                 }
                             }
                     )
-                    .padding(.bottom, singleColumnLayout ? 30 : 20)
-                    .padding(.horizontal, singleColumnLayout ? 60 : 40)
-                    .padding(.top, 60)
+                    .padding(.bottom, singleColumnLayout ? 32 : 20)
+                    .padding(.horizontal, singleColumnLayout ? 62 : 40)
+                    .padding(.top, 40)
+                    // this has to be here!
                     .ignoresSafeArea(edges: .all)
-                    .foregroundStyle(.white)
                     .overlay(alignment: .top) {
                         Button {
                             dismiss()
                         } label: {
                             Rectangle()
-                                .foregroundStyle(.white.secondary.opacity(0.75))
-                                .frame(width: 50, height: 7)
-                                .clipShape(RoundedRectangle(cornerRadius: 10000))
+                                .foregroundStyle(.thinMaterial)
+                                .frame(width: 52, height: 8)
+                                .clipShape(.rect(cornerRadius: .infinity))
                         }
-                        .modifier(ButtonHoverEffectModifier(hoverEffect: .lift))
-                        .padding(.top, 35)
+                        .modifier(HoverEffectModifier(hoverEffect: .lift))
+                        .padding(.top, 36)
                     }
+                    .environment(\.colorScheme, .light)
                     .modifier(Navigation.NavigationModifier() {
                         dismiss()
                     })

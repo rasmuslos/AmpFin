@@ -7,16 +7,16 @@
 
 import Foundation
 import SwiftData
-import AFBase
+import AFFoundation
 
 public extension OfflineManager {
     @MainActor
-    func getTracks(artistId: String) throws -> [Track] {
+    func tracks(artistId identifier: String) throws -> [Track] {
         let descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate {
-            $0.artists.contains(where: { $0.id == artistId })
+            $0.artists.contains(where: { $0.id == identifier })
         })
         let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
         
-        return tracks.map(Track.convertFromOffline)
+        return tracks.map(Track.init)
     }
 }

@@ -8,7 +8,10 @@
 import Foundation
 import Intents
 
+@available(macOS, unavailable)
 public final class MediaResolver {
+    private init() {}
+    
     public enum ResolveError: Error {
         case empty
         case missing
@@ -16,6 +19,7 @@ public final class MediaResolver {
     }
 }
 
+@available(macOS, unavailable)
 public extension MediaResolver {
     static let shared = MediaResolver()
 }

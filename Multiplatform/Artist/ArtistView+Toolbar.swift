@@ -7,74 +7,67 @@
 
 import SwiftUI
 import Defaults
-import AFBase
+import AmpFinKit
 import AFPlayback
 
-extension ArtistView {
+internal extension ArtistView {
     struct Toolbar: ViewModifier {
-        @Default(.sortOrder) private var sortOrder
-        @Default(.sortAscending) private var sortAscending
-        
         let artist: Artist
         
         func body(content: Content) -> some View {
             content
                 .navigationTitle(artist.name)
-                .modifier(AdditionalToolbarModifier(artist: artist))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
+                        SortSelector()
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            Task {
-                                await artist.setFavorite(favorite: !artist.favorite)
-                            }
+                            artist.favorite.toggle()
                         } label: {
                             Label("favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
                                 .labelStyle(.iconOnly)
                                 .contentTransition(.symbolEffect(.replace))
                         }
                     }
-                    
-                    ToolbarItem(placement: .topBarTrailing) {
-                        SortSelector(ascending: $sortAscending, sortOrder: $sortOrder)
-                    }
                 }
+                .modifier(AdditionalToolbarModifier(artist: artist))
         }
     }
 }
 
-extension ArtistView.Toolbar {
-    struct AdditionalToolbarModifier: ViewModifier {
-        @Default(.artistInstantMix) private var artistInstantMix
-        @Environment(\.libraryDataProvider) private var dataProvider
-        
-        let artist: Artist
-        
-        func body(content: Content) -> some View {
-            if artist.cover == nil {
-                content
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button {
+
+private struct AdditionalToolbarModifier: ViewModifier {
+    @Environment(\.libraryDataProvider) private var dataProvider
+    
+    @Default(.artistInstantMix) private var artistInstantMix
+    
+    let artist: Artist
+    
+    func body(content: Content) -> some View {
+        if artist.cover == nil {
+            content
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            Task {
                                 if artistInstantMix {
-                                    Task {
-                                        try? await artist.startInstantMix()
-                                    }
+                                    try? await artist.startInstantMix()
                                 } else {
-                                    Task {
-                                        let tracks = try await dataProvider.getTracks(artistId: artist.id, sortOrder: .random, ascending: true)
-                                        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: artist))
-                                    }
+                                    let tracks = try await dataProvider.tracks(artistId: artist.id, sortOrder: .random, ascending: true)
+                                    AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: .init(container: artist))
                                 }
-                            } label: {
-                                Label("queue.mix", systemImage: "play.circle.fill")
-                                    .labelStyle(.iconOnly)
                             }
+                        } label: {
+                            Label("queue.mix", systemImage: "play.circle.fill")
+                                .labelStyle(.iconOnly)
                         }
                     }
-            } else {
-                content
-                    .ignoresSafeArea(edges: .top)
-            }
+                }
+        } else {
+            content
+                .ignoresSafeArea(edges: .top)
         }
     }
 }
+

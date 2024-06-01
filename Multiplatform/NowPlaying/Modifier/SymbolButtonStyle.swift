@@ -20,9 +20,24 @@ struct SymbolButtonStyle: ButtonStyle {
             .aspectRatio(1, contentMode: .fit)
             .padding(7)
             .background(active ? color : .clear)
-            .foregroundStyle(active ? .primary : .secondary)
+            .modifier(ForegroundStyleModifier(active: active, heavy: heavy))
             .clipShape(RoundedRectangle(cornerRadius: 7))
             .animation(.easeInOut, value: active)
+    }
+}
+
+private struct ForegroundStyleModifier: ViewModifier {
+    let active: Bool
+    let heavy: Bool
+    
+    func body(content: Content) -> some View {
+        if heavy {
+            content
+                .foregroundStyle(active ? .primary : .secondary)
+        } else {
+            content
+                .foregroundStyle(active ? .thickMaterial : .thinMaterial)
+        }
     }
 }
 

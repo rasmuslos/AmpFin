@@ -7,14 +7,15 @@
 
 import Foundation
 import SwiftData
-import AFBase
+import AFFoundation
+import AFNetwork
 
 // MARK: Private
 
 extension OfflineManager {
     @MainActor
     func download(track: Track) {
-        if (try? getOfflineTrack(trackId: track.id)) != nil {
+        guard offlineStatus(trackId: track.id) == .none else {
             return
         }
         
@@ -26,7 +27,7 @@ extension OfflineManager {
             releaseDate: track.releaseDate,
             album: track.album,
             artists: track.artists,
-            favorite: track.favorite,
+            favorite: track._favorite,
             runtime: track.runtime,
             downloadId: downloadTask.taskIdentifier)
         
@@ -34,7 +35,7 @@ extension OfflineManager {
         downloadTask.resume()
         
         Task.detached {
-            let _ = await updateLyrics(trackId: track.id)
+            await updateLyrics(trackId: track.id)
         }
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
@@ -44,42 +45,51 @@ extension OfflineManager {
     func delete(track: OfflineTrack) {
         DownloadManager.shared.delete(trackId: track.id)
         PersistenceManager.shared.modelContainer.mainContext.delete(track)
+        
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
     }
     
     @MainActor
-    func getOfflineTrack(trackId: String) throws -> OfflineTrack {
+    func offlineTrack(trackId: String) throws -> OfflineTrack {
         var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
         descriptor.fetchLimit = 1
         
-        if let track = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first {
-            return track
+        guard let track = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first else {
+            throw OfflineError.notFound
         }
         
-        throw OfflineError.notFoundError
+        return track
     }
     
     @MainActor
-    func getOfflineTrack(taskId: Int) throws -> OfflineTrack {
-        var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId == taskId })
+    func offlineTrack(taskId taskIdentifier: Int) throws -> OfflineTrack {
+        var track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId == taskIdentifier })
         track.fetchLimit = 1
         
-        if let track = try? PersistenceManager.shared.modelContainer.mainContext.fetch(track).first {
-            return track
+        guard let track = try? PersistenceManager.shared.modelContainer.mainContext.fetch(track).first else {
+            throw OfflineError.notFound
         }
         
-        throw OfflineError.notFoundError
+        return track
     }
     
     @MainActor
-    func getOfflineTracks() throws -> [OfflineTrack] {
+    func offlineTracks() throws -> [OfflineTrack] {
         return try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
     }
     
-    @MainActor
-    func getUnfinishedDownloads() throws -> [OfflineTrack] {
-        let track = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId != nil })
-        return try PersistenceManager.shared.modelContainer.mainContext.fetch(track)
+    func updateLyrics(trackId: String) async {
+        guard let lyrics = try? await JellyfinClient.shared.lyrics(trackId: trackId) else {
+            return
+        }
+        
+        await MainActor.run {
+            try? PersistenceManager.shared.modelContainer.mainContext.delete(model: OfflineLyrics.self, where: #Predicate {
+                $0.trackId == trackId
+            })
+            let offlineLyrics = OfflineLyrics(trackId: trackId, lyrics: lyrics)
+            PersistenceManager.shared.modelContainer.mainContext.insert(offlineLyrics)
+        }
     }
 }
 
@@ -87,84 +97,80 @@ extension OfflineManager {
 
 public extension OfflineManager {
     @MainActor
-    func getTrack(id: String) throws -> Track {
-        let track = try getOfflineTrack(trackId: id)
-        return Track.convertFromOffline(track)
+    func track(identifier: String) throws -> Track {
+        let track = try offlineTrack(trackId: identifier)
+        return Track(track)
     }
     
     @MainActor
-    func getTracks(favorite: Bool = false) throws -> [Track] {
+    func tracks(favoriteOnly: Bool = false) throws -> [Track] {
         let descriptor: FetchDescriptor<OfflineTrack>
         
-        if favorite {
+        if favoriteOnly {
             descriptor = FetchDescriptor(predicate: #Predicate { $0.favorite == true })
         } else {
             descriptor = FetchDescriptor()
         }
         
         let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
-        return tracks.map(Track.convertFromOffline)
+        return tracks.map(Track.init)
     }
     
     @MainActor
-    func getTracks(query: String) throws -> [Track] {
-        // SwiftData has serious flaws
-        let tracks = try getOfflineTracks().filter {
-            $0.name.localizedStandardContains(query)
-            || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(query) })
+    func tracks(search: String) throws -> [Track] {
+        var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate {
+            $0.name.localizedStandardContains(search)
+        })
+        descriptor.fetchLimit = 20
+        
+        return try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).map(Track.init)
+    }
+    
+    @MainActor
+    func downloading() throws -> [Track] {
+        let descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.downloadId != nil })
+        let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
+        
+        return tracks.map(Track.init)
+    }
+    
+    @MainActor
+    func offlineStatus(trackId: String) -> ItemOfflineTracker.OfflineStatus {
+        guard let track = try? offlineTrack(trackId: trackId) else {
+            return .none
         }
         
-        return tracks.map(Track.convertFromOffline)
+        return track.downloadId == nil ? .downloaded : .working
     }
     
     @MainActor
-    func getDownloadingTracks() throws -> [Track] {
-        let tracks = try getUnfinishedDownloads()
-        return tracks.map(Track.convertFromOffline)
-    }
-    
-    @MainActor
-    func getOfflineStatus(trackId: String) -> ItemOfflineTracker.OfflineStatus {
-        if let track = try? getOfflineTrack(trackId: trackId) {
-            return track.downloadId == nil ? .downloaded : .working
+    func lyrics(trackId: String, allowUpdate: Bool = false) throws -> Track.Lyrics {
+        if allowUpdate {
+            Task.detached {
+                await updateLyrics(trackId: trackId)
+            }
         }
         
-        return .none
-    }
-    
-    @MainActor
-    func getLyrics(trackId: String) -> Track.Lyrics? {
-        var lyrics = FetchDescriptor<OfflineLyrics>(predicate: #Predicate { $0.trackId == trackId })
-        lyrics.fetchLimit = 1
+        var descriptor = FetchDescriptor<OfflineLyrics>(predicate: #Predicate { $0.trackId == trackId })
+        descriptor.fetchLimit = 1
         
-        return try? PersistenceManager.shared.modelContainer.mainContext.fetch(lyrics).first?.lyrics
-    }
-    
-    @MainActor
-    func updateLyrics(trackId: String) async -> Track.Lyrics? {
-        if let lyrics = try? await JellyfinClient.shared.getLyrics(trackId: trackId) {
-            try? PersistenceManager.shared.modelContainer.mainContext.delete(model: OfflineLyrics.self, where: #Predicate {
-                $0.trackId == trackId
-            })
-            let offlineLyrics = OfflineLyrics(trackId: trackId, lyrics: lyrics)
-            PersistenceManager.shared.modelContainer.mainContext.insert(offlineLyrics)
-            
-            return lyrics
+        guard let entity = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first else {
+            throw OfflineError.notFound
         }
         
-        return nil
+        return entity.lyrics
     }
     
     @MainActor
     func update(trackId: String) throws {
-        let track = try getOfflineTrack(trackId: trackId)
+        let track = try offlineTrack(trackId: trackId)
         let downloadTask = DownloadManager.shared.download(trackId: trackId)
         
         track.downloadId = downloadTask.taskIdentifier
         downloadTask.resume()
         
         Task.detached {
-            let _ = await updateLyrics(trackId: trackId)
+            await updateLyrics(trackId: trackId)
         }
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)

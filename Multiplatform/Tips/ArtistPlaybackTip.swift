@@ -8,7 +8,7 @@
 import SwiftUI
 import TipKit
 
-struct ArtistPlaybackTip: Tip {
+internal struct ArtistPlaybackTip: Tip {
     var title: Text {
         Text("tip.artistPlayback.title")
     }

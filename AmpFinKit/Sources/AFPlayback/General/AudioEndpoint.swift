@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
 
 protocol AudioEndpoint {
     // MARK: Computed properties
@@ -25,6 +25,8 @@ protocol AudioEndpoint {
     
     var shuffled: Bool { get set }
     var repeatMode: RepeatMode { get set }
+    
+    var mediaInfo: Track.MediaInfo? { get async }
     
     // MARK: Functions
     
@@ -46,6 +48,4 @@ protocol AudioEndpoint {
     
     func skip(to: Int)
     func restoreHistory(index: Int)
-    
-    func getTrackData() async -> Track.TrackData?
 }

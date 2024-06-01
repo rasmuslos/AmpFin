@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 struct AlbumListRow: View {
     let album: Album
@@ -14,24 +14,23 @@ struct AlbumListRow: View {
     var body: some View {
         HStack(spacing: 0) {
             ItemImage(cover: album.cover)
-                .frame(width: 45)
-                .padding(.trailing, .connectedSpacing)
+                .frame(width: 60)
+                .padding(.trailing, 8)
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(album.name)
                     .lineLimit(1)
                     .font(.body)
                 
-                if album.artists.count > 0 {
-                    Text(album.artistName)
+                if let artistName = album.artistName {
+                    Text(artistName)
                         .lineLimit(1)
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
             }
-            .padding(.horizontal, 5)
             
-            Spacer()
+            Spacer(minLength: 8)
             
             DownloadIndicator(item: album)
         }
@@ -42,11 +41,11 @@ struct AlbumListRow: View {
 
 #Preview {
     List {
-        AlbumListRow(album: Album.fixture)
-        AlbumListRow(album: Album.fixture)
-        AlbumListRow(album: Album.fixture)
-        AlbumListRow(album: Album.fixture)
-        AlbumListRow(album: Album.fixture)
+        AlbumListRow(album: .fixture)
+        AlbumListRow(album: .fixture)
+        AlbumListRow(album: .fixture)
+        AlbumListRow(album: .fixture)
+        AlbumListRow(album: .fixture)
     }
     .listStyle(.plain)
 }

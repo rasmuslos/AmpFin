@@ -11,18 +11,18 @@ import OSLog
 
 public struct OfflineManager {
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "Offline")
+    
+    public static let itemDownloadStatusChanged = Notification.Name.init("io.rfk.ampfin.download.updated")
+    
+    private init() {}
 }
 
-// MARK: Error
-
-extension OfflineManager {
+internal extension OfflineManager {
     enum OfflineError: Error {
-        case notFoundError
+        case notFound
     }
 }
 
-// MARK: Singleton
-
-extension OfflineManager {
-    public static let shared = OfflineManager()
+public extension OfflineManager {
+    static let shared = OfflineManager()
 }

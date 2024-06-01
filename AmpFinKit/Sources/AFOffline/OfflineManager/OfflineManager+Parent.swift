@@ -7,12 +7,12 @@
 
 import Foundation
 import SwiftData
-import AFBase
+import AFFoundation
 
 extension OfflineManager {
     @MainActor
-    func getOfflineTracks(parent: OfflineParent) throws -> [OfflineTrack] {
-        var tracks = try parent.childrenIds.map { try getOfflineTrack(trackId: $0) }
+    func offlineTracks(parent: OfflineParent) throws -> [OfflineTrack] {
+        var tracks = try parent.childrenIds.map { try offlineTrack(trackId: $0) }
         
         tracks.sort {
             let lhs = parent.childrenIds.firstIndex(of: $0.id)!
@@ -25,23 +25,21 @@ extension OfflineManager {
     }
     
     @MainActor
-    func getParentIds(childId: String) throws -> [String] {
-        // this is the best way to do this, fuck SwiftData
+    func parentIds(childId: String) throws -> [String] {
         var parents = [OfflineParent]()
         
-        parents += try getOfflineAlbums()
-        parents += try getOfflinePlaylists()
+        parents += try offlineAlbums()
+        parents += try offlinePlaylists()
         
         return parents.filter { $0.childrenIds.contains(childId) }.map { $0.id }
     }
     
     @MainActor
-    func isDownloadInProgress(parent: OfflineParent) throws -> Bool {
-        let tracks = try getOfflineTracks(parent: parent)
-        return tracks.reduce(false) { $1.downloadId == nil ? $0 : true }
+    func downloadInProgress(parent: OfflineParent) throws -> Bool {
+        try offlineTracks(parent: parent).reduce(false) { $1.downloadId == nil ? $0 : true }
     }
     
-    func reduceToChildrenIds(parents: [OfflineParent]) -> Set<String> {
+    func reduceToChildrenIdentifiers(parents: [OfflineParent]) -> Set<String> {
         var result = Set<String>()
         
         for parent in parents {

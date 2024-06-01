@@ -11,6 +11,10 @@ import UIKit
 // Lets do a little UIKit tomfoolery
 // Taken from https://github.com/kylebshr/ScreenCorners/tree/main
 
+@available(tvOS, unavailable)
+@available(macOS, unavailable)
+@available(watchOS, unavailable)
+@available(visionOS, unavailable)
 extension UIScreen {
     private static let cornerRadiusKey: String = {
         let components = ["Radius", "Corner", "display", "_"]

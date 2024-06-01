@@ -8,7 +8,8 @@
 import Foundation
 import SwiftData
 import OSLog
-import AFBase
+import AFFoundation
+import AFNetwork
 
 #if canImport(AFOffline)
 import AFOffline
@@ -22,8 +23,8 @@ public final class PlaybackReporter {
     init(trackId: String, queue: [Track]) {
         self.trackId = trackId
         
-        Task.detached {
-            try? await JellyfinClient.shared.reportPlaybackStarted(trackId: trackId, queue: queue)
+        Task {
+            try? await JellyfinClient.shared.playbackStarted(identifier: trackId, queueIds: queue.map { $0.id })
         }
     }
     deinit {
@@ -45,10 +46,10 @@ public final class PlaybackReporter {
             }
         }
         
-        Task.detached { [self] in
-            try? await JellyfinClient.shared.reportPlaybackProgress(
-                trackId: trackId,
-                positionSeconds: positionSeconds,
+        Task {
+            try? await JellyfinClient.shared.progress(
+                identifier: trackId,
+                position: positionSeconds,
                 paused: paused,
                 repeatMode: repeatMode,
                 shuffled: shuffled,
@@ -57,21 +58,17 @@ public final class PlaybackReporter {
     }
 }
 
-// MARK: Playback stop
-
 extension PlaybackReporter {
     static func playbackStopped(trackId: String, currentTime: Double) {
-        Task.detached { [self] in
+        Task {
             do {
-                try await JellyfinClient.shared.reportPlaybackStopped(trackId: trackId, positionSeconds: currentTime)
+                try await JellyfinClient.shared.playbackStopped(identifier: trackId, positionSeconds: currentTime)
             } catch {
                 await cacheReport(trackId: trackId, positionSeconds: currentTime)
             }
         }
     }
 }
-
-// MARK: Offline
 
 extension PlaybackReporter {
     @MainActor

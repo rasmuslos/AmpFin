@@ -8,7 +8,7 @@
 import SwiftUI
 import TipKit
 
-struct DownloadTip: Tip {
+internal struct DownloadTip: Tip {
     var title: Text {
         Text("tip.download.title")
     }

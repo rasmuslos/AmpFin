@@ -6,59 +6,36 @@
 //
 
 import SwiftUI
-import AFBase
+import Defaults
+import AmpFinKit
 
-struct SortSelector: View {
+internal struct SortSelector: View {
+    @Default(.sortOrder) private var sortOrder
+    @Default(.sortAscending) private var ascending
+    
     @Environment(\.libraryDataProvider) private var dataProvider
     
-    @Binding var ascending: Bool
-    @Binding var sortOrder: JellyfinClient.ItemSortOrder
-    
-    private var supported: [JellyfinClient.ItemSortOrder] {
+    private var supported: [ItemSortOrder] {
         if dataProvider.supportsAdvancedFilters {
-            return JellyfinClient.ItemSortOrder.allCases
+            return ItemSortOrder.allCases
         } else {
-            return [.name, .album, .albumArtist, .artist, .added, .released]
+            return [.name, .album, .albumArtist, .artist, .added, .released, .random]
         }
     }
     
     var body: some View {
         Menu {
             ForEach(supported, id: \.hashValue) { option in
-                Button {
-                    withAnimation {
+                Toggle(option.title, isOn: .init(get: { sortOrder == option }, set: {
+                    if $0 {
                         sortOrder = option
                     }
-                } label: {
-                    if sortOrder == option {
-                        #if targetEnvironment(macCatalyst)
-                        Toggle(option.title, isOn: .constant(true))
-                        #else
-                        Label(option.title, systemImage: "checkmark")
-                        #endif
-                    } else {
-                        Text(option.title)
-                    }
-                }
+                }))
             }
             
             Divider()
             
-            Button {
-                withAnimation {
-                    ascending.toggle()
-                }
-            } label: {
-                if ascending {
-                    #if targetEnvironment(macCatalyst)
-                    Toggle("ascending", isOn: $ascending)
-                    #else
-                    Label("ascending", systemImage: "checkmark")
-                    #endif
-                } else {
-                    Text("ascending")
-                }
-            }
+            Toggle("ascending", isOn: $ascending)
         } label: {
             Label("sort", systemImage: "arrow.up.arrow.down")
                 .labelStyle(.iconOnly)
@@ -67,7 +44,7 @@ struct SortSelector: View {
     }
 }
 
-private extension JellyfinClient.ItemSortOrder {
+private extension ItemSortOrder {
     var title: LocalizedStringKey {
         switch self {
             case .added:
@@ -95,5 +72,5 @@ private extension JellyfinClient.ItemSortOrder {
 }
 
 #Preview {
-    SortSelector(ascending: .constant(true), sortOrder: .constant(.added))
+    SortSelector()
 }

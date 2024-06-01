@@ -6,39 +6,35 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
-struct ArtistsView: View {
-    @Environment(\.libraryDataProvider) var dataProvider
+internal struct ArtistsView: View {
+    @Environment(\.libraryDataProvider) private var dataProvider
     
     let albumOnly: Bool
     
-    @State var count = 0
     @State private var working = false
-    @State private var search: String = ""
     @State private var success = false
-    @State private var failed = false
+    @State private var failure = false
+    
+    @State private var count = 0
     @State private var artists = [Artist]()
-    @State private var searchTask: Task<Void, Error>?
+    
+    @State private var search: String = ""
+    @State private var task: Task<Void, Error>?
     
     var body: some View {
         Group {
             if success {
                 List {
-                    ArtistList(artists: artists, count: count, expand: expand)
-                        .padding(.horizontal, .outerSpacing)
+                    ArtistList(artists: artists, count: count) {
+                        loadArtists(reset: false)
+                    }
+                    .padding(.horizontal, 20)
                 }
                 .listStyle(.plain)
                 .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.artists")
-                .onChange(of: search) {
-                    searchTask?.cancel()
-                    searchTask = Task {
-                        try await Task.sleep(nanoseconds: UInt64(0.5 * TimeInterval(NSEC_PER_SEC)))
-                        await fetchArtists(search: self.search)
-                        searchTask = nil
-                    }
-                }
-            } else if failed {
+            } else if failure {
                 ErrorView()
             } else {
                 LoadingView()
@@ -46,49 +42,60 @@ struct ArtistsView: View {
         }
         .navigationTitle(albumOnly ? "title.albumArtists" : "title.artists")
         .modifier(NowPlaying.SafeAreaModifier())
-        .task { await fetchArtists() }
-        .refreshable { await fetchArtists() }
-    }
-}
-
-// MARK: Helper
-
-extension ArtistsView {
-    func expand() {
-        if !working && count > artists.count {
-            working = true
-            
-            let search: String?
-            
-            if self.search.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-                search = nil
-            } else {
-                search = self.search
+        .onAppear {
+            if artists.isEmpty {
+                loadArtists(reset: true)
             }
-            Task.detached {
-                await fetchArtists(search: search)
-                working = false
+        }
+        .onDisappear {
+            task?.cancel()
+        }
+        .onChange(of: search) {
+            loadArtists(reset: true)
+        }
+        .refreshable {
+            await withTaskCancellationHandler {
+                loadArtists(reset: true)
+            } onCancel: {
+                task?.cancel()
             }
         }
     }
     
-    func fetchArtists(search: String? = nil) async {
-        failed = false
+    private func loadArtists(reset: Bool) {
+        failure = false
         
-        if search != nil {
+        if reset {
             count = 0
             artists = []
+            
+            working = false
         }
         
-        do {
-            let result = try await dataProvider.getArtists(limit: 100, startIndex: artists.count, albumOnly: albumOnly, search: search)
+        guard !working, count == 0 || count > artists.count else {
+            return
+        }
+        
+        working = true
+        
+        task?.cancel()
+        task = Task.detached(priority: .userInitiated) {
+            guard let result = try? await dataProvider.artists(limit: 100, startIndex: artists.count, albumOnly: albumOnly, search: search) else {
+                await MainActor.run {
+                    failure = true
+                }
+                return
+            }
             
-            count = result.1
-            artists += result.0
+            try Task.checkCancellation()
             
-            success = true
-        } catch {
-            failed = true
+            await MainActor.run {
+                count = result.1
+                artists += result.0
+                
+                success = true
+                working = false
+            }
         }
     }
 }

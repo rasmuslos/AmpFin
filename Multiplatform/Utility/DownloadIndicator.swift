@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import AFBase
-import AFOffline
+import AmpFinKit
 
-struct DownloadIndicator: View {
+internal struct DownloadIndicator: View {
     let item: Item
     
     @State private var offlineTracker: ItemOfflineTracker?

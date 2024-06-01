@@ -2,40 +2,64 @@
 
 import PackageDescription
 
+private let offlineCondition: TargetDependencyCondition? = .when(platforms: [.iOS, .watchOS, .visionOS, .macOS, .macCatalyst])
+
 let package = Package(
     name: "AmpFinKit",
     platforms: [
         .iOS(.v17),
-        .watchOS(.v10),
         .tvOS(.v17),
+        .macOS(.v14),
+        .watchOS(.v10),
+        .visionOS(.v1),
     ],
     products: [
-        .library(name: "AFBase", targets: ["AFBase", "AFExtension"]),
-        .library(name: "AFOffline", targets: ["AFOffline"]),
+        .library(name: "AmpFinKit", targets: ["AmpFinKit"]),
         .library(name: "AFPlayback", targets: ["AFPlayback"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/daltoniam/Starscream.git", from: .init(4, 0, 0)),
+        .package(url: "https://github.com/daltoniam/Starscream.git", from: .init(4, 0, 8)),
         .package(url: "https://github.com/sindresorhus/Defaults.git", from: .init(8, 2, 0)),
     ],
     targets: [
-        .target(name: "AFBase", dependencies: [
+        // Umbrella library
+        .target(name: "AmpFinKit", dependencies: [
+            .targetItem(name: "AFFoundation", condition: .none),
+            .targetItem(name: "AFExtension", condition: .none),
+            .targetItem(name: "AFNetwork", condition: .none),
+            
+            .targetItem(name: "AFOffline", condition: offlineCondition),
+        ]),
+        
+        // Foundation
+        .target(name: "AFFoundation", dependencies: [
             .byName(name: "Defaults"),
             .byName(name: "Starscream"),
         ]),
         .target(name: "AFExtension", dependencies: [
-            .byName(name: "AFBase"),
-            .byName(name: "AFOffline", condition: .when(platforms: [.iOS, .watchOS, .visionOS, .macOS]))
+            .targetItem(name: "AFFoundation", condition: .none),
+            .targetItem(name: "AFNetwork", condition: .none),
+            
+            .targetItem(name: "AFOffline", condition: offlineCondition),
         ]),
         
-        .target(name: "AFOffline", dependencies: [.byName(name: "AFBase")]),
+        // Network
+        .target(name: "AFNetwork", dependencies: [
+            .targetItem(name: "AFFoundation", condition: .none),
+        ]),
         
-        .target(
-            name: "AFPlayback",
-            dependencies: [
-                .byName(name: "AFBase"),
-                .byName(name: "AFExtension"),
-                .byName(name: "AFOffline", condition: .when(platforms: [.iOS, .watchOS, .visionOS, .macOS]))],
-            resources: [.process("RemoteAudioEndpoint/silence.wav")]),
+        // Offline
+        .target(name: "AFOffline", dependencies: [
+            .targetItem(name: "AFFoundation", condition: .none),
+            .targetItem(name: "AFNetwork", condition: .none),
+        ]),
+        
+        // Playback
+        .target(name: "AFPlayback", dependencies: [
+            .targetItem(name: "AFFoundation", condition: .none),
+            .targetItem(name: "AFExtension", condition: .none),
+            
+            .targetItem(name: "AFOffline", condition: offlineCondition),
+        ], resources: [.process("RemoteAudioEndpoint/silence.wav")]),
     ]
 )

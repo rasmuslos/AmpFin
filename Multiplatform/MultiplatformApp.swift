@@ -8,8 +8,8 @@
 import SwiftUI
 import TipKit
 import Nuke
-import AFBase
-import AFOffline
+import Defaults
+import AmpFinKit
 
 @main
 struct MultiplatformApp: App {
@@ -23,7 +23,7 @@ struct MultiplatformApp: App {
         ImagePipeline.shared = ImagePipeline(configuration: .withDataCache)
         
         try? Tips.configure([
-            .displayFrequency(.daily)
+            .displayFrequency(.daily),
         ])
     }
     

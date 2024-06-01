@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 
 struct AlbumLoadView: View {
-    @Environment(\.libraryDataProvider) private var dataProvider
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.libraryDataProvider) private var dataProvider
     
     let albumId: String
     
@@ -26,21 +26,26 @@ struct AlbumLoadView: View {
                     if dataProvider.albumNotFoundFallbackToLibrary && !didPost {
                         dismiss()
                         Navigation.navigate(albumId: albumId)
+                        
                         didPost = true
                     }
                 }
-        } else if let album = album {
+                .refreshable { await loadAlbum() }
+        } else if let album {
             AlbumView(album: album)
         } else {
             LoadingView()
-                .navigationBarBackButtonHidden()
-                .task {
-                    if let album = try? await dataProvider.getAlbum(albumId: albumId) {
-                        self.album = album
-                    } else {
-                        self.failed = true
-                    }
-                }
+                .task { await loadAlbum() }
+                .refreshable { await loadAlbum() }
         }
+    }
+    
+    private func loadAlbum() async {
+        guard let album = try? await dataProvider.album(identifier: albumId) else {
+            failed = true
+            return
+        }
+        
+        self.album = album
     }
 }

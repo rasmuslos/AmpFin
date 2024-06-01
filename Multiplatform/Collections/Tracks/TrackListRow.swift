@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-import AFBase
-import AFOffline
+import AmpFinKit
 import AFPlayback
 
 struct TrackListRow: View {
@@ -22,7 +21,7 @@ struct TrackListRow: View {
     @State private var addToPlaylistSheetPresented = false
     
     private var size: CGFloat {
-        album == nil ? 50 : 23
+        album == nil ? 48 : 24
     }
     private var showArtist: Bool {
         album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
@@ -37,7 +36,7 @@ struct TrackListRow: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 4) {
             Button {
                 startPlayback()
             } label: {
@@ -50,8 +49,8 @@ struct TrackListRow: View {
                                     .foregroundStyle(.secondary)
                             } else {
                                 Text(String(track.index.index))
-                                    .fontDesign(.rounded)
                                     .bold(track.favorite)
+                                    .fontDesign(.rounded)
                                     .foregroundStyle(.secondary)
                                     .padding(.vertical, 4)
                             }
@@ -71,10 +70,10 @@ struct TrackListRow: View {
                                 }
                         }
                     }
-                    .frame(width: size, height: size)
-                    .transition(.blurReplace)
                     .id(track.id)
-                    .padding(.trailing, .connectedSpacing)
+                    .frame(width: size, height: size)
+                    .padding(.trailing, 8)
+                    .transition(.blurReplace)
                     
                     VStack(alignment: .leading) {
                         Text(track.name)
@@ -90,13 +89,13 @@ struct TrackListRow: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
-                    .padding(.horizontal, 5)
                     
-                    Spacer()
+                    Spacer(minLength: 8)
                 }
                 .contentShape(.hoverMenuInteraction, Rectangle())
             }
             .buttonStyle(.plain)
+            .hoverEffectDisabled()
             
             DownloadIndicator(item: track)
             
@@ -113,12 +112,13 @@ struct TrackListRow: View {
                         .padding(.leading, 0)
                 }
                 .buttonStyle(.plain)
-                .modifier(ButtonHoverEffectModifier())
+                .hoverEffect(.lift)
                 .popoverTip(InstantMixTip())
             }
         }
-        .padding(7)
-        .contentShape([.hoverMenuInteraction, .dragPreview], RoundedRectangle(cornerRadius: 7))
+        .padding(8)
+        .contentShape([.hoverMenuInteraction, .dragPreview], .rect(cornerRadius: 12))
+        .hoverEffect(.highlight)
         .draggable(track) {
             TrackPreview(track: track)
         }
@@ -127,7 +127,7 @@ struct TrackListRow: View {
         } preview: {
             TrackPreview(track: track)
         }
-        .padding(-7)
+        .padding(-8)
         .sheet(isPresented: $addToPlaylistSheetPresented) {
             PlaylistAddSheet(track: track)
         }
@@ -146,16 +146,14 @@ struct TrackListRow: View {
     }
 }
 
-// MARK: Buttons
-
-extension TrackListRow {
+internal extension TrackListRow {
     struct TrackPreview: View {
         let track: Track
         
         var body: some View {
-            HStack {
+            HStack(spacing: 8) {
                 ItemImage(cover: track.cover)
-                    .frame(width: 45)
+                    .frame(width: 44)
                 
                 VStack(alignment: .leading) {
                     Text(track.name)
@@ -169,9 +167,9 @@ extension TrackListRow {
                 
                 Spacer()
             }
-            .padding(.connectedSpacing)
+            .padding(12)
             .background()
-            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
     
@@ -183,19 +181,9 @@ extension TrackListRow {
         
         let deleteCallback: TrackList.DeleteCallback
         
-        let offlineTracker: ItemOfflineTracker
-        
         @Binding var addToPlaylistSheetPresented: Bool
         
-        init(track: Track, album: Album?, deleteCallback: TrackList.DeleteCallback, addToPlaylistSheetPresented: Binding<Bool>) {
-            self.track = track
-            self.album = album
-            self.deleteCallback = deleteCallback
-            
-            offlineTracker = track.offlineTracker
-            
-            _addToPlaylistSheetPresented = addToPlaylistSheetPresented
-        }
+        @State private var offlineTracker: ItemOfflineTracker?
         
         var body: some View {
             Button {
@@ -203,15 +191,6 @@ extension TrackListRow {
             } label: {
                 Label("play", systemImage: "play")
             }
-            
-            Divider()
-            
-            PlayNextButton(track: track)
-            PlayLastButton(track: track)
-            
-            Divider()
-            
-            FavoriteButton(track: track)
             
             Button {
                 Task {
@@ -222,6 +201,14 @@ extension TrackListRow {
             }
             .disabled(!JellyfinClient.shared.online)
             
+            Divider()
+            
+            PlayNextButton(track: track)
+            PlayLastButton(track: track)
+            
+            Divider()
+            
+            FavoriteButton(track: track)
             AddToPlaylistButton(track: track, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
             
             Divider()
@@ -239,7 +226,6 @@ extension TrackListRow {
             if let artist = track.artists.first {
                 NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
                     Label("artist.view", systemImage: "music.mic")
-                    Text(artist.name)
                 }
                 .disabled(!dataProvider.supportsArtistLookup)
             }
@@ -254,75 +240,77 @@ extension TrackListRow {
                 }
             }
             
-            if offlineTracker.status == .downloaded {
-                Divider()
-                
+            Divider()
+                .onAppear {
+                    offlineTracker = track.offlineTracker
+                }
+            
+            if let offlineTracker = offlineTracker, offlineTracker.status == .downloaded {
                 Button {
                     try? OfflineManager.shared.update(trackId: track.id)
                 } label: {
                     Label("download.update", systemImage: "arrow.triangle.2.circlepath")
                 }
+                .disabled(!JellyfinClient.shared.online)
             }
-        }
-    }
-    
-    struct PlayNextButton: View {
-        let track: Track
-        
-        var body: some View {
-            Button {
-                AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
-            } label: {
-                Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
-            }
-            .tint(.orange)
-        }
-    }
-    struct PlayLastButton: View {
-        let track: Track
-        
-        var body: some View {
-            Button {
-                AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
-            } label: {
-                Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
-            }
-            .tint(.blue)
-        }
-    }
-    
-    struct FavoriteButton: View {
-        let track: Track
-        
-        var body: some View {
-            Button {
-                Task {
-                    await track.setFavorite(favorite: !track.favorite)
-                }
-            } label: {
-                Label("favorite", systemImage: track.favorite ? "heart.slash.fill" : "heart.fill")
-            }
-            .tint(.orange)
-        }
-    }
-    
-    struct AddToPlaylistButton: View {
-        let track: Track
-        @Binding var addToPlaylistSheetPresented: Bool
-        
-        var body: some View {
-            Button {
-                addToPlaylistSheetPresented.toggle()
-            } label: {
-                Label("playlist.add", systemImage: "plus")
-            }
-            .disabled(!JellyfinClient.shared.online)
-            .tint(.green)
         }
     }
 }
 
-extension TrackListRow {
+private struct PlayNextButton: View {
+    let track: Track
+    
+    var body: some View {
+        Button {
+            AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
+        } label: {
+            Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
+        }
+        .tint(.orange)
+    }
+}
+private struct PlayLastButton: View {
+    let track: Track
+    
+    var body: some View {
+        Button {
+            AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
+        } label: {
+            Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
+        }
+        .tint(.blue)
+    }
+}
+
+private struct FavoriteButton: View {
+    let track: Track
+    
+    var body: some View {
+        Button {
+            track.favorite.toggle()
+        } label: {
+            Label("favorite", systemImage: track.favorite ? "heart.slash" : "heart")
+        }
+        .tint(.orange)
+    }
+}
+
+private struct AddToPlaylistButton: View {
+    let track: Track
+    @Binding var addToPlaylistSheetPresented: Bool
+    
+    var body: some View {
+        Button {
+            addToPlaylistSheetPresented.toggle()
+        } label: {
+            Label("playlist.add", systemImage: "plus")
+        }
+        .disabled(!JellyfinClient.shared.online)
+        .tint(.green)
+    }
+}
+
+internal extension TrackListRow {
     static let placeholder: some View = TrackListRow(
         track: .init(
             id: "placeholder",

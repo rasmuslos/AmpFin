@@ -7,14 +7,16 @@
 
 import SwiftUI
 
-struct LoadingView: View {
+internal struct LoadingView: View {
     var body: some View {
-        ProgressView()
-        
-        Text("loading")
-            .padding(.outerSpacing)
-            .font(.caption)
-            .foregroundStyle(.secondary)
+        VStack(spacing: 0) {
+            ProgressView()
+            
+            Text("loading")
+                .padding(20)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 

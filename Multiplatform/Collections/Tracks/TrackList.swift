@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
-struct TrackList: View {
+internal struct TrackList: View {
     let tracks: [Track]
     let container: Item?
     
@@ -42,7 +42,7 @@ struct TrackList: View {
         if useDiskSections {
             ForEach(disks.sorted(), id: \.hashValue) { disk in
                 Section {
-                    TrackSection(tracks: sort(tracks: tracks.filter{ $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, expand: expand)
+                    TrackSection(tracks: sort(tracks: tracks.filter{ $0.index.disk == disk }), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, loadMore: loadMore)
                 } header: {
                     Text("tracks.disk \(disk)")
                         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -50,46 +50,18 @@ struct TrackList: View {
                 }
             }
         } else {
-            TrackSection(tracks: sort(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, expand: expand)
+            TrackSection(tracks: sort(tracks: tracks), album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, moveCallback: moveCallback, loadMore: loadMore)
         }
         
         ForEach(0..<(min(10000, max(0, count - tracks.count))), id: \.hashValue) { _ in
             TrackListRow.placeholder
-                .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-                .onAppear { expand() }
+                .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .onAppear { loadMore?() }
         }
     }
 }
 
-extension TrackList {
-    struct TrackSection: View {
-        let tracks: [Track]
-        let album: Album?
-        
-        let startPlayback: (Track) -> ()
-        let deleteCallback: DeleteCallback
-        let moveCallback: MoveCallback
-        let expand: Expand
-        
-        var body: some View {
-            if let moveCallback = moveCallback {
-                ForEach(tracks) { track in
-                    ModifiedTrackListRow(track: track, album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, expand: track == tracks.last ? expand : nil)
-                }
-                .onDelete(perform: { _ in })
-                .onMove(perform: { from, to in
-                    from.map { tracks[$0] }.forEach {
-                        moveCallback($0, to)
-                    }
-                })
-            } else {
-                ForEach(tracks) { track in
-                    ModifiedTrackListRow(track: track, album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, expand: track == tracks.last ? expand : nil)
-                }
-            }
-        }
-    }
-    
+private extension TrackList {
     func sort(tracks: [Track]) -> [Track] {
         if album != nil {
             return tracks.sorted { $0.index < $1.index }
@@ -98,86 +70,99 @@ extension TrackList {
         }
     }
     
-    // ...
-    struct ModifiedTrackListRow: View {
-        let track: Track
-        let album: Album?
-        
-        let startPlayback: (Track) -> ()
-        let deleteCallback: DeleteCallback
-        
-        let expand: Expand?
-        
-        var body: some View {
-            TrackListRow(track: track, album: album, deleteCallback: deleteCallback) {
-                startPlayback(track)
-            }
-            .id(track.id)
-            .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
-            .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
-            .onAppear { expand?() }
-        }
-    }
-}
-
-extension TrackList {
-    typealias Expand = (() -> Void)
-    typealias LoadCallback = (() async -> Void)?
-    
-    typealias DeleteCallback = ((_ track: Track) -> Void)?
-    typealias MoveCallback = ((_ track: Track, _ to: Int) -> Void)?
-    
-    struct DeleteSwipeActionModifier: ViewModifier {
-        let track: Track
-        let callback: DeleteCallback
-        
-        func body(content: Content) -> some View {
-            if let callback = callback {
-                content
-                    .swipeActions(edge: .trailing) {
-                        Button {
-                            callback(track)
-                        } label: {
-                            Label("download.remove", systemImage: "trash.fill")
-                                .tint(.red)
-                        }
-                    }
-            } else {
-                content
-            }
-        }
-    }
-}
-
-// MARK: Helper
-
-extension TrackList {
-    func expand() {
-        if !working && count > tracks.count, let loadMore = loadMore {
-            working = true
-            
-            Task.detached {
-                await loadMore()
-                working = false
-            }
-        }
-    }
-    
-    private func startPlayback(index: Int, shuffle: Bool) {
+    func startPlayback(index: Int, shuffle: Bool) {
         AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(container: container))
     }
-    private func startPlayback(track: Track) {
+    func startPlayback(track: Track) {
         if let index = tracks.firstIndex(where: { $0.id == track.id }) {
             AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
         }
     }
 }
 
+private struct TrackSection: View {
+    let tracks: [Track]
+    let album: Album?
+    
+    let startPlayback: (Track) -> ()
+    let deleteCallback: TrackList.DeleteCallback
+    let moveCallback: TrackList.MoveCallback
+    let loadMore: TrackList.LoadCallback
+    
+    var body: some View {
+        if let moveCallback = moveCallback {
+            ForEach(tracks) { track in
+                ModifiedTrackListRow(track: track, album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, loadMore: track == tracks.last ? loadMore : nil)
+            }
+            .onDelete(perform: { _ in })
+            .onMove(perform: { from, to in
+                from.map { tracks[$0] }.forEach {
+                    moveCallback($0, to)
+                }
+            })
+        } else {
+            ForEach(tracks) { track in
+                ModifiedTrackListRow(track: track, album: album, startPlayback: startPlayback, deleteCallback: deleteCallback, loadMore: track == tracks.last ? loadMore : nil)
+            }
+        }
+    }
+}
+
+private struct ModifiedTrackListRow: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    let track: Track
+    let album: Album?
+    
+    let startPlayback: (Track) -> ()
+    let deleteCallback: TrackList.DeleteCallback
+    
+    let loadMore: TrackList.LoadCallback
+    
+    var body: some View {
+        TrackListRow(track: track, album: album, deleteCallback: deleteCallback) {
+            startPlayback(track)
+        }
+        .id(track.id)
+        .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+        .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
+        .onAppear { loadMore?() }
+    }
+}
+
+private struct DeleteSwipeActionModifier: ViewModifier {
+    let track: Track
+    let callback: TrackList.DeleteCallback
+    
+    func body(content: Content) -> some View {
+        if let callback = callback {
+            content
+                .swipeActions(edge: .trailing) {
+                    Button {
+                        callback(track)
+                    } label: {
+                        Label("download.remove", systemImage: "trash.fill")
+                            .tint(.red)
+                    }
+                }
+        } else {
+            content
+        }
+    }
+}
+
+internal extension TrackList {
+    typealias LoadCallback = (() -> Void)?
+    
+    typealias DeleteCallback = ((_ track: Track) -> Void)?
+    typealias MoveCallback = ((_ track: Track, _ to: Int) -> Void)?
+}
 
 #Preview {
     NavigationStack {
         List {
             TrackList(tracks: [Track.fixture], container: nil)
+                .padding(.horizontal, 20)
         }
         .listStyle(.plain)
     }

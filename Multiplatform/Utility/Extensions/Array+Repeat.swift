@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Array {
+internal extension Array {
     init(repeating: [Element], count: Int) {
         self.init([[Element]](repeating: repeating, count: count).flatMap{$0})
     }

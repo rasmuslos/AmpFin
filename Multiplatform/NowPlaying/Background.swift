@@ -9,18 +9,18 @@ import Foundation
 import SwiftUI
 import UIKit
 import FluidGradient
-import AFBase
+import AmpFinKit
 
 extension NowPlaying {
     struct Background: View {
-        let cover: Item.Cover?
+        let cover: Cover?
         let dragging: Bool
         
-        @State private var imageColors: ImageColors?
+        @State private var imageColors = ImageColors()
         
         var body: some View {
             ZStack {
-                if let cover = cover {
+                if let cover {
                     Color.black
                     
                     ItemImage(cover: cover)
@@ -28,32 +28,20 @@ extension NowPlaying {
                         .blur(radius: 100)
                         .frame(maxWidth: .infinity)
                     
-                    if let imageColors = imageColors {
-                        FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
-                            .ignoresSafeArea(edges: .all)
-                            .onChange(of: cover.url) { determineImageColors() }
-                    } else {
-                        Color.clear
-                            .onAppear { determineImageColors() }
-                    }
+                    FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
+                        .ignoresSafeArea(edges: .all)
                 } else {
                     Color.black
                     Color.gray.opacity(0.8)
                 }
             }
-            .overlay(.black.opacity(0.25))
-            .clipShape(RoundedRectangle(cornerRadius: dragging ? UIScreen.main.displayCornerRadius : 0))
             .allowsHitTesting(false)
-        }
-        
-        private func determineImageColors() {
-            Task.detached {
-                let imageColors = await ImageColors.getImageColors(cover: cover)
-                imageColors?.updateHue(saturation: 0.6, luminance: 0.6)
-                
-                withAnimation(.easeInOut(duration: 1)) {
-                    self.imageColors = imageColors
-                }
+            .overlay(.black.opacity(0.25))
+            #if !os(visionOS)
+            .clipShape(.rect(cornerRadius: dragging ? UIScreen.main.displayCornerRadius : 0))
+            #endif
+            .task(id: cover?.url) {
+                await imageColors.update(cover: cover)
             }
         }
     }

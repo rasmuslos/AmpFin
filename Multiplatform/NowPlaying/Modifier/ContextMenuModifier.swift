@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import AFBase
+import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct ContextMenuModifier: ViewModifier {
         let track: Track
         @Binding var animateForwards: Bool
@@ -21,20 +21,20 @@ extension NowPlaying {
                 .contextMenu {
                     Button {
                         Task {
-                            await track.setFavorite(favorite: !track.favorite)
-                        }
-                    } label: {
-                        Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
-                    }
-                    
-                    Button {
-                        Task {
                             try? await track.startInstantMix()
                         }
                     } label: {
                         Label("queue.mix", systemImage: "compass.drawing")
                     }
                     .disabled(!JellyfinClient.shared.online)
+                    
+                    Divider()
+                    
+                    Button {
+                        track.favorite.toggle()
+                    } label: {
+                        Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
+                    }
                     
                     Button {
                         addToPlaylistSheetPresented.toggle()
@@ -45,41 +45,19 @@ extension NowPlaying {
                     
                     Divider()
                     
-                    // why is SwiftUI so stupid?
-                    Button(action: {
-                        Navigation.navigate(albumId: track.album.id)
-                    }) {
+                    Button(action: { Navigation.navigate(albumId: track.album.id) }) {
                         Label("album.view", systemImage: "square.stack")
-                        
-                        if let albumName = track.album.name {
-                            Text(albumName)
-                        }
                     }
                     
-                    if let artistId = track.artists.first?.id, let artistName = track.artists.first?.name {
-                        Button(action: {
-                            Navigation.navigate(artistId: artistId)
-                        }) {
+                    if let artistId = track.artists.first?.id {
+                        Button(action: { Navigation.navigate(artistId: artistId) }) {
                             Label("artist.view", systemImage: "music.mic")
-                            Text(artistName)
                         }
                     }
                     
                     Divider()
                     
-                    Button {
-                        AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
-                    } label: {
-                        if AudioPlayer.current.shuffled {
-#if targetEnvironment(macCatalyst)
-                            Toggle("shuffle", isOn: .constant(true))
-#else
-                            Label("shuffle", systemImage: "checkmark")
-#endif
-                        } else {
-                            Label("shuffle", systemImage: "shuffle")
-                        }
-                    }
+                    Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { AudioPlayer.current.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
                     
                     Menu {
                         Button {
@@ -120,25 +98,26 @@ extension NowPlaying {
                     
                     Divider()
                     
-                    Button {
-                        AudioPlayer.current.stopPlayback()
-                    } label: {
-                        Label("playback.stop", systemImage: "stop.circle")
-                    }
-                    
                     if AudioPlayer.current.source == .jellyfinRemote {
                         Button {
-                            AudioPlayer.current.destroy()
+                            AudioPlayer.current.stopPlayback()
                         } label: {
                             Label("remote.disconnect", systemImage: "xmark")
                         }
+                    } else {
+                        Button {
+                            AudioPlayer.current.stopPlayback()
+                        } label: {
+                            Label("playback.stop", systemImage: "stop.circle")
+                        }
                     }
                 } preview: {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 0) {
                         ItemImage(cover: track.cover)
-                            .padding(.bottom, .innerSpacing)
                         
                         Text(track.name)
+                            .padding(.top, 16)
+                            .padding(.bottom, 2)
                         
                         if let artistName = track.artistName {
                             Text(artistName)
@@ -147,8 +126,7 @@ extension NowPlaying {
                         }
                     }
                     .frame(width: 250)
-                    .padding()
-                    .background(.ultraThickMaterial)
+                    .padding(20)
                 }
                 .sheet(isPresented: $addToPlaylistSheetPresented) {
                     PlaylistAddSheet(track: track)

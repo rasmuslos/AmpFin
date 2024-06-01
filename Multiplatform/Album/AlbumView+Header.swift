@@ -7,11 +7,12 @@
 
 import SwiftUI
 import UIImageColors
-import AFBase
+import AmpFinKit
 
-extension AlbumView {
+internal extension AlbumView {
     struct Header: View {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        
         let album: Album
         let imageColors: ImageColors
         
@@ -33,7 +34,7 @@ extension AlbumView {
                     
                     Color.clear
                         .onChange(of: offset) {
-                            withAnimation {
+                            withAnimation(.spring) {
                                 toolbarBackgroundVisible = offset < (horizontalSizeClass == .regular ? -120 : -350)
                             }
                         }
@@ -46,9 +47,9 @@ extension AlbumView {
                         CompactPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
                     }
                 }
-                .padding(.top, 110)
-                .padding(.bottom, .connectedSpacing)
-                .padding(.horizontal, .outerSpacing)
+                .padding(.top, 120)
+                .padding(.bottom, 12)
+                .padding(.horizontal, 20)
             }
             .background(imageColors.background)
             .listRowSeparator(.hidden)
@@ -57,157 +58,145 @@ extension AlbumView {
     }
 }
 
-// MARK: Common components
 
-extension AlbumView.Header {
-    struct AlbumTitle: View {
-        @Environment(\.libraryDataProvider) private var dataProvider
-        
-        let album: Album
-        let largeFont: Bool
-        let imageColors: ImageColors
-        let alignment: HorizontalAlignment
-        
-        var body: some View {
-            VStack(alignment: alignment, spacing: 5) {
-                Text(album.name)
+private struct AlbumTitle: View {
+    @Environment(\.libraryDataProvider) private var dataProvider
+    
+    let album: Album
+    let largeFont: Bool
+    let imageColors: ImageColors
+    let alignment: HorizontalAlignment
+    
+    var body: some View {
+        VStack(alignment: alignment, spacing: 4) {
+            Text(album.name)
+                .lineLimit(1)
+                .font(largeFont ? .title : .headline)
+                .foregroundStyle(imageColors.isLight ? .black : .white)
+            
+            if let artistName = album.artistName {
+                Text(artistName)
                     .lineLimit(1)
-                    .font(largeFont ? .title : .headline)
-                    .foregroundStyle(imageColors.isLight ? .black : .white)
-                
-                if album.artists.count > 0 {
-                    HStack {
-                        Text(album.artistName)
-                            .lineLimit(1)
-                            .font(largeFont ? .title2 : .callout)
-                            .foregroundStyle(imageColors.detail)
-                    }
+                    .font(largeFont ? .title2 : .callout)
+                    .foregroundStyle(imageColors.detail)
                     .onTapGesture {
                         if let artist = album.artists.first, dataProvider.supportsArtistLookup {
                             Navigation.navigate(artistId: artist.id)
                         }
                     }
-                }
-                
-                if album.releaseDate != nil || !album.genres.isEmpty {
-                    HStack(spacing: 0) {
-                        if let releaseDate = album.releaseDate {
-                            Text(releaseDate, format: Date.FormatStyle().year())
-                            
-                            if !album.genres.isEmpty {
-                                Text(verbatim: " • ")
-                            }
+            }
+            
+            if album.releaseDate != nil || !album.genres.isEmpty {
+                HStack(spacing: 0) {
+                    if let releaseDate = album.releaseDate {
+                        Text(releaseDate, format: Date.FormatStyle().year())
+                        
+                        if !album.genres.isEmpty {
+                            Text(verbatim: " • ")
                         }
-                        Text(album.genres.joined(separator: String(", ")))
-                            .lineLimit(1)
                     }
-                    .font(.caption)
-                    .foregroundStyle(imageColors.primary.opacity(0.75))
+                    
+                    Text(album.genres.joined(separator: String(", ")))
+                        .lineLimit(1)
                 }
+                .font(.caption)
+                .foregroundStyle(imageColors.primary.opacity(0.75))
             }
         }
     }
 }
 
-extension AlbumView.Header {
-    struct PlayButtons: View {
-        let imageColors: ImageColors
-        let startPlayback: (_ shuffle: Bool) -> ()
-        
-        var body: some View {
-            LazyVGrid(columns: [.init(spacing: .innerSpacing), .init()]) {
-                PlayButton(icon: "play.fill", label: "queue.play", imageColors: imageColors) {
-                    startPlayback(false)
-                }
-                
-                PlayButton(icon: "shuffle", label: "queue.shuffle", imageColors: imageColors) {
-                    startPlayback(true)
-                }
-            }
-        }
-    }
+
+private struct PlayButtons: View {
+    let imageColors: ImageColors
+    let startPlayback: (_ shuffle: Bool) -> ()
     
-    struct PlayButton: View {
-        let icon: String
-        let label: LocalizedStringKey
-        let imageColors: ImageColors
-        
-        let callback: () -> Void
-        
-        var body: some View {
-            ZStack {
-                // This horrible abomination ensures that both buttons have the same height
-                Label(String("TEXT"), systemImage: "shuffle")
-                    .opacity(0)
-                
-                Label(label, systemImage: icon)
+    var body: some View {
+        HStack(spacing: 12) {
+            PlayButton(icon: "play.fill", label: "queue.play", imageColors: imageColors) {
+                startPlayback(false)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 10)
-            .foregroundColor(imageColors.secondary)
-            .background(imageColors.primary.opacity(0.25))
-            .clipShape(RoundedRectangle(cornerRadius: 7))
-            .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 7))
-            .hoverEffect(.lift)
-            .foregroundColor(.accentColor)
-            .bold()
-            .onTapGesture {
-                callback()
+            
+            PlayButton(icon: "shuffle", label: "queue.shuffle", imageColors: imageColors) {
+                startPlayback(true)
             }
         }
     }
 }
 
-// MARK: Adaptive presentations
-
-extension AlbumView.Header {
-    struct CompactPresentation: View {
-        let album: Album
-        let imageColors: ImageColors
-        let toolbarBackgroundVisible: Bool
-        let startPlayback: (_ shuffle: Bool) -> ()
-        
-        var body: some View {
-            VStack(spacing: .innerSpacing) {
-                ItemImage(cover: album.cover)
-                    .shadow(color: .black.opacity(0.25), radius: 20)
-                    .frame(width: 275)
-                
-                AlbumTitle(album: album, largeFont: false, imageColors: imageColors, alignment: .center)
-                
-                PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
-            }
+private struct PlayButton: View {
+    let icon: String
+    let label: LocalizedStringKey
+    let imageColors: ImageColors
+    
+    let callback: () -> Void
+    
+    var body: some View {
+        ZStack {
+            // This horrible abomination ensures that both buttons have the same height
+            Label(String("TEXT"), systemImage: "shuffle")
+                .opacity(0)
+            
+            Label(label, systemImage: icon)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .bold()
+        .foregroundColor(imageColors.secondary)
+        .background(imageColors.primary.opacity(0.25))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 12))
+        .hoverEffect(.lift)
+        .onTapGesture {
+            callback()
         }
     }
 }
 
-extension AlbumView.Header {
-    struct RegularPresentation: View {
-        let album: Album
-        let imageColors: ImageColors
-        let toolbarBackgroundVisible: Bool
-        let startPlayback: (_ shuffle: Bool) -> ()
-        
-        var body: some View {
-            HStack(spacing: .innerSpacing) {
-                ItemImage(cover: album.cover)
-                    .shadow(color: .black.opacity(0.25), radius: 20)
-                    .frame(width: 275)
-                    .hoverEffect(.highlight)
-                    .padding(.trailing, .outerSpacing)
-                
-                Color.clear
-                    .frame(minWidth: 250)
-                    .overlay {
-                        VStack(alignment: .leading, spacing: .innerSpacing) {
-                            Spacer()
-                            AlbumTitle(album: album, largeFont: true, imageColors: imageColors, alignment: .leading)
-                            Spacer()
-                            PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
-                        }
+private struct CompactPresentation: View {
+    let album: Album
+    let imageColors: ImageColors
+    let toolbarBackgroundVisible: Bool
+    let startPlayback: (_ shuffle: Bool) -> ()
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            ItemImage(cover: album.cover)
+                .shadow(color: .black.opacity(0.25), radius: 20)
+                .frame(width: 280)
+            
+            AlbumTitle(album: album, largeFont: false, imageColors: imageColors, alignment: .center)
+            
+            PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
+        }
+    }
+}
+
+private struct RegularPresentation: View {
+    let album: Album
+    let imageColors: ImageColors
+    let toolbarBackgroundVisible: Bool
+    let startPlayback: (_ shuffle: Bool) -> ()
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            ItemImage(cover: album.cover)
+                .shadow(color: .black.opacity(0.25), radius: 20)
+                .frame(width: 280)
+                .padding(.trailing, 20)
+            
+            Color.clear
+                .frame(minWidth: 240)
+                .overlay {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Spacer()
+                        AlbumTitle(album: album, largeFont: true, imageColors: imageColors, alignment: .leading)
+                        Spacer()
+                        PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
                     }
-            }
-            .padding(.bottom, .outerSpacing)
+                }
         }
+        .padding(.bottom, 8)
     }
 }
+

@@ -10,7 +10,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Play artist instant mix</string>
+			<string>Play artist Instant-Mix instead of random tracks</string>
 			<key>Key</key>
 			<string>artistInstantMix</string>
 			<key>DefaultValue</key>
@@ -30,15 +30,15 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>Siri integration</string>
+			<string>Siri-Integration</string>
 			<key>FooterText</key>
-			<string>Enabling offline mode will prevent Siri from discovering items that are not downloaded.</string>
+			<string>Enabling Siri on-Device mode prevents it from discovering items that are not downloaded, ensuring uninterrupted access to your content even without an internet connection.</string>
 		</dict>
 		<dict>
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Siri offline mode</string>
+			<string>Enable Siri On-Device mode</string>
 			<key>Key</key>
 			<string>siriOfflineMode</string>
 			<key>DefaultValue</key>

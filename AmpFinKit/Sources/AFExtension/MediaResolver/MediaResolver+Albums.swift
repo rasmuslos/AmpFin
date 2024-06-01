@@ -6,30 +6,32 @@
 //
 
 import Foundation
-import AFBase
+import AFFoundation
+import AFNetwork
 #if canImport(AFOffline)
 import AFOffline
 #endif
 
+@available(macOS, unavailable)
 public extension MediaResolver {
-    func search(albumName: String?, artistName: String?) async throws -> [Album] {
-        guard let albumName = albumName else { throw ResolveError.missing }
+    func search(albumName name: String?, artistName artist: String?) async throws -> [Album] {
+        guard let name = name else { throw ResolveError.missing }
         
         var result = [Album]()
         
         #if canImport(AFOffline)
-        if let offlineAlbums = try? await OfflineManager.shared.getAlbums(query: albumName) {
+        if let offlineAlbums = try? await OfflineManager.shared.albums(search: name) {
             result += offlineAlbums
         }
         #endif
         
-        if !UserDefaults.standard.bool(forKey: "siriOfflineMode"), let fetchedAlbums = try? await JellyfinClient.shared.getAlbums(query: albumName) {
+        if !JellyfinClient.shared.siriOfflineMode, let fetchedAlbums = try? await JellyfinClient.shared.albums(limit: 0, startIndex: 0, sortOrder: .lastPlayed, ascending: false, search: name).0 {
             result += fetchedAlbums.filter { !result.contains($0) }
         }
         
         result = result.filter {
-            if let artistName = artistName {
-                if !$0.artists.reduce(false, { $0 || $1.name.localizedStandardContains(artistName) }) {
+            if let artist = artist {
+                if !$0.artists.reduce(false, { $0 || $1.name.localizedStandardContains(artist) }) {
                     return false
                 }
             }
@@ -44,13 +46,13 @@ public extension MediaResolver {
         return result
     }
     
-    func resolve(albumId: String) async throws -> [Track] {
+    func tracks(albumId identifier: String) async throws -> [Track] {
         #if canImport(AFOffline)
-        if let tracks = try? await OfflineManager.shared.getTracks(albumId: albumId) {
+        if let tracks = try? await OfflineManager.shared.tracks(albumId: identifier) {
             return tracks
         }
         #endif
         
-        return try await JellyfinClient.shared.getTracks(albumId: albumId)
+        return try await JellyfinClient.shared.tracks(albumId: identifier)
     }
 }

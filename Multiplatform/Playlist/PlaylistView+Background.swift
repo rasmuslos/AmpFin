@@ -6,31 +6,21 @@
 //
 
 import SwiftUI
-import AFBase
 import FluidGradient
+import AmpFinKit
 
-extension PlaylistView {
+internal extension PlaylistView {
     struct Background: View {
         let playlist: Playlist
-        @State var colors: ImageColors?
+        
+        @State private var imageColors = ImageColors()
         
         var body: some View {
-            if let colors = colors {
-                FluidGradient(blobs: [colors.background, colors.detail, colors.secondary, colors.primary], highlights: [], speed: 0.1, blur: 0.7)
-                    .background(.tertiary)
-            } else {
-                Rectangle()
-                    .foregroundStyle(.tertiary)
-                    .onAppear {
-                        Task.detached {
-                            if let colors = await ImageColors.getImageColors(cover: playlist.cover) {
-                                withAnimation {
-                                    self.colors = colors
-                                }
-                            }
-                        }
-                    }
-            }
+            FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.secondary, imageColors.primary], highlights: [], speed: 0.1, blur: 0.7)
+                .background(.tertiary)
+                .task {
+                    await imageColors.update(cover: playlist.cover)
+                }
         }
     }
 }
