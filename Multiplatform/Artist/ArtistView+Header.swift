@@ -50,11 +50,12 @@ internal extension ArtistView {
                 }
                 .frame(height: imageHeight)
                 .background(alignment: .top) {
+                    var offset = overscroll + parallax / 2
                     ItemImage(cover: artist.cover, cornerRadius: 0)
                         .scaledToFill()
-                        .frame(width: width, height: imageHeight - overscroll - parallax / 2)
+                        .frame(width: width, height: imageHeight > offset ? imageHeight - offset : 0)
                         .clipped()
-                        .offset(y: overscroll + parallax / 2)
+                        .offset(y: offset)
                 }
                 
                 VStack(spacing: 0) {

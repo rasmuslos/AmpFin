@@ -15,12 +15,12 @@ internal extension Sidebar {
         var provider: DataProvider?
         var panel: Panel
     }
-    
+
     enum DataProvider: Codable, CaseIterable {
         case online
         case offline
     }
-    
+
     enum Panel: Hashable, Equatable, Codable {
         case tracks
         case albums
@@ -28,7 +28,7 @@ internal extension Sidebar {
         case favorites
         case albumArtists
         case artists
-        
+
         // Special:
         case search
         case playlist(id: String)
@@ -117,7 +117,7 @@ internal extension Sidebar.Panel {
                 return nil
         }
     }
-    
+
     @ViewBuilder
     var content: some View {
         switch self {
@@ -133,10 +133,10 @@ internal extension Sidebar.Panel {
                 ArtistsView(albumOnly: true)
             case .artists:
                 ArtistsView(albumOnly: false)
-                
+
             case .search:
-                SearchView()
-                
+                SearchView(useNavigationNotification: true)
+
             case .playlist(let id):
                 PlaylistLoadView(playlistId: id)
             case .album(let id):
