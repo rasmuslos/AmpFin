@@ -11,7 +11,7 @@ import AmpFinKit
 import AFPlayback
 
 internal struct SearchView: View {
-    @Default(.searchTab) private var searchTab
+    @Binding var searchTab: Tab
     
     @State private var search = ""
     @State private var task: Task<(), Never>? = nil
@@ -22,76 +22,73 @@ internal struct SearchView: View {
     @State private var playlists = [Playlist]()
     
     var body: some View {
-        NavigationStack {
-            List {
-                Picker("search.library", selection: $searchTab) {
-                    Text("search.jellyfin")
-                        .tag(Tab.online)
-                    Text("search.downloaded")
-                        .tag(Tab.offline)
+        List {
+            Picker("search.library", selection: $searchTab) {
+                Text("search.jellyfin")
+                    .tag(Tab.online)
+                Text("search.downloaded")
+                    .tag(Tab.offline)
+            }
+            .pickerStyle(.segmented)
+            .listRowSeparator(.hidden)
+            .listRowInsets(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
+            
+            if !artists.isEmpty {
+                Section("section.artists") {
+                    ArtistList(artists: artists)
+                        .padding(.horizontal, 20)
                 }
-                .pickerStyle(.segmented)
-                .listRowSeparator(.hidden)
-                .listRowInsets(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
-                
-                if !artists.isEmpty {
-                    Section("section.artists") {
-                        ArtistList(artists: artists)
-                            .padding(.horizontal, 20)
-                    }
-                }
-                
-                if !albums.isEmpty {
-                    Section("section.albums") {
-                        ForEach(albums) { album in
-                            NavigationLink(destination: AlbumView(album: album)) {
-                                AlbumListRow(album: album)
-                            }
-                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+            }
+            
+            if !albums.isEmpty {
+                Section("section.albums") {
+                    ForEach(albums) { album in
+                        NavigationLink(destination: AlbumView(album: album)) {
+                            AlbumListRow(album: album)
                         }
+                        .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                     }
                 }
-                
-                if !playlists.isEmpty {
-                    Section("section.playlists") {
-                        ForEach(playlists) { playlist in
-                            NavigationLink(destination: PlaylistView(playlist: playlist)) {
-                                PlaylistListRow(playlist: playlist)
-                            }
-                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+            }
+            
+            if !playlists.isEmpty {
+                Section("section.playlists") {
+                    ForEach(playlists) { playlist in
+                        NavigationLink(destination: PlaylistView(playlist: playlist)) {
+                            PlaylistListRow(playlist: playlist)
                         }
+                        .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                     }
                 }
-                
-                if !tracks.isEmpty {
-                    Section("section.tracks") {
-                        ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
-                            TrackListRow(track: track) {
-                                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil, search: search))
-                            }
-                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+            }
+            
+            if !tracks.isEmpty {
+                Section("section.tracks") {
+                    ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
+                        TrackListRow(track: track) {
+                            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil, search: search))
                         }
+                        .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                     }
                 }
             }
-            .listStyle(.plain)
-            .navigationTitle("title.search")
-            .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "search.placeholder")
-            .autocorrectionDisabled()
-            .textInputAutocapitalization(.never)
-            .modifier(NowPlaying.SafeAreaModifier())
-            .task(id: searchTab) {
-                fetchSearchResults(shouldReset: true)
-            }
-            .refreshable {
-                fetchSearchResults(shouldReset: true)
-            }
-            .onChange(of: search) {
-                fetchSearchResults(shouldReset: false)
-            }
-            .modifier(AccountToolbarButtonModifier(requiredSize: .compact))
         }
-        .environment(\.libraryDataProvider, searchTab.dataProvider)
+        .listStyle(.plain)
+        .navigationTitle("title.search")
+        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "search.placeholder")
+        .autocorrectionDisabled()
+        .textInputAutocapitalization(.never)
+        .modifier(NowPlaying.SafeAreaModifier())
+        .task(id: searchTab) {
+            fetchSearchResults(shouldReset: true)
+        }
+        .refreshable {
+            fetchSearchResults(shouldReset: true)
+        }
+        .onChange(of: search) {
+            fetchSearchResults(shouldReset: false)
+        }
+        .modifier(AccountToolbarButtonModifier(requiredSize: .compact))
     }
     
     private func fetchSearchResults(shouldReset: Bool) {
@@ -131,7 +128,7 @@ internal extension SearchView {
         case offline
     }
 }
-private extension SearchView.Tab {
+internal extension SearchView.Tab {
     var dataProvider: LibraryDataProvider {
         switch self {
             case .online:
@@ -143,5 +140,5 @@ private extension SearchView.Tab {
 }
 
 #Preview {
-    SearchView()
+    SearchView(searchTab: .constant(.online))
 }

@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct XRTabs: View {
+    @Default(.searchTab) private var searchTab
+    
     var body: some View {
         TabView {
             Sidebar(provider: .online)
@@ -20,10 +23,12 @@ struct XRTabs: View {
                     Label("tab.downloads", systemImage: "arrow.down")
                 }
             
-            SearchView()
-                .tabItem {
-                    Label("tab.search", systemImage: "magnifyingglass")
-                }
+            NavigationStack {
+                SearchView(searchTab: $searchTab)
+            }
+            .tabItem {
+                Label("tab.search", systemImage: "magnifyingglass")
+            }
         }
     }
 }
