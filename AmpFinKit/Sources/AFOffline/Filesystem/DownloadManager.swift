@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftData
+import AFFoundation
 import OSLog
 
 public final class DownloadManager: NSObject {
@@ -15,6 +17,8 @@ public final class DownloadManager: NSObject {
     let covers: URL
     
     let documents: URL
+    
+    var downloadModelContainer: ModelContainer!
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "Download")
     
@@ -33,6 +37,13 @@ public final class DownloadManager: NSObject {
         config.sessionSendsLaunchEvents = true
         
         urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
+        
+        let schema = Schema([
+            OfflineFile.self
+        ])
+        
+        let modelConfiguration = ModelConfiguration("AmpFinDownload", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: AFKIT_ENABLE_ALL_FEATURES ? .identifier("group.io.rfk.ampfindownload") : .none)
+        downloadModelContainer = try! ModelContainer(for: schema, configurations: [modelConfiguration])
     }
     
     func createDirectories() {
