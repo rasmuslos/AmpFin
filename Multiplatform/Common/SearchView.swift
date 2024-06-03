@@ -12,17 +12,15 @@ import AFPlayback
 
 internal struct SearchView: View {
     @Default(.searchTab) private var searchTab
-
+    
     @State private var search = ""
-    let useNavigationNotification: Bool
-
     @State private var task: Task<(), Never>? = nil
-
+    
     @State private var tracks = [Track]()
     @State private var albums = [Album]()
     @State private var artists = [Artist]()
     @State private var playlists = [Playlist]()
-
+    
     var body: some View {
         NavigationStack {
             List {
@@ -35,66 +33,36 @@ internal struct SearchView: View {
                 .pickerStyle(.segmented)
                 .listRowSeparator(.hidden)
                 .listRowInsets(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
-
+                
                 if !artists.isEmpty {
                     Section("section.artists") {
-                        if (useNavigationNotification) {
-                        ForEach(artists) { artist in
-                                Button(action: {
-                                    Navigation.navigate(artistId: artist.id)
-                                }) {
-                                    ArtistListRowLabel(artist: artist)
-                                }
-                                .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
-                            }
-                        }
-                        else {
-                            ArtistList(artists: artists)
-                                .padding(.horizontal, 20)
-                        }
+                        ArtistList(artists: artists)
+                            .padding(.horizontal, 20)
                     }
                 }
-
+                
                 if !albums.isEmpty {
                     Section("section.albums") {
                         ForEach(albums) { album in
-                            if (useNavigationNotification) {
-                                Button(action: {
-                                    Navigation.navigate(albumId: album.id)
-                                }) {
-                                    AlbumListRow(album: album)
-                                }
-                                .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
-                            } else {
-                                NavigationLink(destination: AlbumView(album: album)) {
-                                    AlbumListRow(album: album)
-                                }
-                                .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+                            NavigationLink(destination: AlbumView(album: album)) {
+                                AlbumListRow(album: album)
                             }
+                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                         }
                     }
                 }
-
+                
                 if !playlists.isEmpty {
                     Section("section.playlists") {
                         ForEach(playlists) { playlist in
-                            if (useNavigationNotification) {
-                                Button(action: {
-                                    Navigation.navigate(playlistId: playlist.id)
-                                }) {
-                                    PlaylistListRow(playlist: playlist)
-                                }
-                                .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
-                            } else {
-                                NavigationLink(destination: PlaylistView(playlist: playlist)) {
-                                    PlaylistListRow(playlist: playlist)
-                                }
-                                .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
+                            NavigationLink(destination: PlaylistView(playlist: playlist)) {
+                                PlaylistListRow(playlist: playlist)
                             }
+                            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
                         }
                     }
                 }
-
+                
                 if !tracks.isEmpty {
                     Section("section.tracks") {
                         ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
@@ -125,29 +93,29 @@ internal struct SearchView: View {
         }
         .environment(\.libraryDataProvider, searchTab.dataProvider)
     }
-
+    
     private func fetchSearchResults(shouldReset: Bool) {
         let search = search.lowercased()
-
+        
         if shouldReset {
             tracks = []
             albums = []
             artists = []
             playlists = []
         }
-
+        
         task?.cancel()
         task = Task.detached(priority: .userInitiated) { [search] in
             async let tracks = searchTab.dataProvider.tracks(limit: 20, startIndex: 0, sortOrder: .lastPlayed, ascending: false, favoriteOnly: false, search: search).0
             async let albums = searchTab.dataProvider.albums(limit: 20, startIndex: 0, sortOrder: .lastPlayed, ascending: false, search: search).0
             async let artists = searchTab.dataProvider.artists(limit: 20, startIndex: 0, albumOnly: false, search: search).0
             async let playlists = searchTab.dataProvider.playlists(search: search)
-
+            
             try? await MainActor.run { [tracks, albums, artists, playlists] in
                 guard !Task.isCancelled else {
                     return
                 }
-
+                
                 self.tracks = Array(tracks.prefix(20))
                 self.albums = Array(albums.prefix(20))
                 self.artists = Array(artists.prefix(20))
@@ -175,5 +143,5 @@ private extension SearchView.Tab {
 }
 
 #Preview {
-    SearchView(useNavigationNotification: false)
+    SearchView()
 }

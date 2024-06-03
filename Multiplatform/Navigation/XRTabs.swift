@@ -20,7 +20,7 @@ struct XRTabs: View {
                     Label("tab.downloads", systemImage: "arrow.down")
                 }
             
-            SearchView(useNavigationNotification: false)
+            SearchView()
                 .tabItem {
                     Label("tab.search", systemImage: "magnifyingglass")
                 }

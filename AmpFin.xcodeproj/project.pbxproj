@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		37A2E5572C0B1D93009E7874 /* ArtistListRowLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A2E5562C0B1D93009E7874 /* ArtistListRowLabel.swift */; };
 		3A07CD932B4401BE00F9AB19 /* PlaylistAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */; };
 		3A0A49292B6C1EDC00AAA647 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A0A49282B6C1EDC00AAA647 /* InfoPlist.xcstrings */; };
 		3A0D2D112BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0D2D102BE6C8960001EC15 /* ContentShapeKinds+HoverMenuInteraction.swift */; };
@@ -146,7 +145,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		37A2E5562C0B1D93009E7874 /* ArtistListRowLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistListRowLabel.swift; sourceTree = "<group>"; };
 		3A03450A2B49613C007D6171 /* Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Entitlements.entitlements; sourceTree = "<group>"; };
 		3A0345122B49634F007D6171 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A07CD922B4401BD00F9AB19 /* PlaylistAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistAddSheet.swift; sourceTree = "<group>"; };
@@ -356,7 +354,6 @@
 			children = (
 				3A3DA6632AAB2BC10091211A /* ArtistList.swift */,
 				3A3DA6672AAB2CDA0091211A /* ArtistListRow.swift */,
-				37A2E5562C0B1D93009E7874 /* ArtistListRowLabel.swift */,
 			);
 			path = Artists;
 			sourceTree = "<group>";
@@ -808,7 +805,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37A2E5572C0B1D93009E7874 /* ArtistListRowLabel.swift in Sources */,
 				3ADE8E982AA92B47009826A3 /* Color+IsLight.swift in Sources */,
 				3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */,
 				3A36A5A22ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift in Sources */,

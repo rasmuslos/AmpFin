@@ -61,7 +61,7 @@ internal struct Tabs: View {
                 
                 // MARK: Search
                 
-                SearchView(useNavigationNotification: false)
+                SearchView()
                     .tag(Selection.search)
                     .tabItem {
                         Label("tab.search", systemImage: "magnifyingglass")
