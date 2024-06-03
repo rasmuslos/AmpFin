@@ -26,15 +26,23 @@ extension NowPlaying {
             horizontalSizeClass == .compact ? .top : .center
         }
         
+        private var lyricsKeys: [Double]? {
+            guard let lyrics else {
+                return nil
+            }
+            
+            return Array(lyrics.keys).sorted(by: <)
+        }
+        
         var body: some View {
             ScrollViewReader { proxy in
                 ScrollView(showsIndicators: false) {
-                    if let lyrics = lyrics {
-                        VStack(spacing: 0) {
-                            ForEach(Array(lyrics.keys.sorted(by: <).enumerated()), id: \.offset) { index, key in
+                    if let lyrics, let lyricsKeys {
+                        LazyVStack(spacing: 0) {
+                            ForEach(Array(lyricsKeys.enumerated()), id: \.offset) { index, key in
                                 Line(index: index, text: lyrics[key]!, scrolling: scrolling, activeLineIndex: activeLineIndex)
                                     .onTapGesture {
-                                        AudioPlayer.current.currentTime = Array(lyrics.keys.sorted(by: <))[index]
+                                        AudioPlayer.current.currentTime = lyricsKeys[index]
                                         setActiveLineIndex(index)
                                     }
                             }
@@ -128,13 +136,13 @@ extension NowPlaying {
 
 private extension NowPlaying.Lyrics {
     func updateLyricsIndex() {
-        guard let lyrics = lyrics, !lyrics.isEmpty else {
+        guard let lyricsKeys = lyricsKeys, !lyricsKeys.isEmpty else {
             setActiveLineIndex(0)
             return
         }
         
         let currentTime = AudioPlayer.current.currentTime
-        if let index = Array(lyrics.keys).sorted(by: <).lastIndex(where: { $0 <= currentTime }) {
+        if let index = lyricsKeys.lastIndex(where: { $0 <= currentTime }) {
             setActiveLineIndex(index)
         } else {
             setActiveLineIndex(0)
@@ -216,7 +224,5 @@ private struct Line: View {
         .blur(radius: active || scrolling ? 0 : 2)
         .opacity(active || scrolling ? 1 : 0.6)
         .padding(.vertical, active || text != nil ? padding : 0)
-        .animation(.spring, value: active)
-        .animation(.spring, value: scrolling)
     }
 }
