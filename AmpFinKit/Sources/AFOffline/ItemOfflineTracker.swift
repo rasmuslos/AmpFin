@@ -39,7 +39,13 @@ public extension ItemOfflineTracker {
                 token = NotificationCenter.default.addObserver(forName: OfflineManager.itemDownloadStatusChanged, object: nil, queue: nil) { [weak self] notification in
                     if notification.object as? String == self?.itemId {
                         Task { @MainActor [self] in
-                            self?._status = self?.checkOfflineStatus()
+                            guard let status = self?.checkOfflineStatus() else {
+                                return
+                            }
+                            
+                            if self?._status != status {
+                                self?._status = status
+                            }
                         }
                     }
                 }
