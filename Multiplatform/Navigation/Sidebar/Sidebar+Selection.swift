@@ -135,7 +135,7 @@ internal extension Sidebar.Panel {
                 ArtistsView(albumOnly: false)
                 
             case .search:
-                SearchView()
+                EmptyView()
                 
             case .playlist(let id):
                 PlaylistLoadView(playlistId: id)

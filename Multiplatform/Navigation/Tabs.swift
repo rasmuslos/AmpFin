@@ -11,6 +11,7 @@ import AmpFinKit
 
 internal struct Tabs: View {
     @Default(.activeTab) private var activeTab
+    @Default(.searchTab) private var searchTab
     
     @State private var libraryPath = NavigationPath()
     @State private var downloadsPath = NavigationPath()
@@ -61,11 +62,13 @@ internal struct Tabs: View {
                 
                 // MARK: Search
                 
-                SearchView()
-                    .tag(Selection.search)
-                    .tabItem {
-                        Label("tab.search", systemImage: "magnifyingglass")
-                    }
+                NavigationStack {
+                    SearchView(searchTab: $searchTab)
+                }
+                .tag(Selection.search)
+                .tabItem {
+                    Label("tab.search", systemImage: "magnifyingglass")
+                }
             }
             .modifier(NowPlaying.CompactBarModifier())
         }
