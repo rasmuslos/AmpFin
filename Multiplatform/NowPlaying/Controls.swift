@@ -127,7 +127,7 @@ extension NowPlaying {
                         Label("playback.back", systemImage: "backward.fill")
                             .labelStyle(.iconOnly)
                             .symbolEffect(.bounce.up, value: animateBackward)
-                            .font(.system(size: 30))
+                            .font(.system(size: 32))
                     }
                     .modifier(HoverEffectModifier())
                     .sensoryFeedback(.decrease, trigger: animateBackward)
@@ -139,8 +139,8 @@ extension NowPlaying {
                             .labelStyle(.iconOnly)
                             .contentTransition(.symbolEffect(.replace.byLayer.downUp))
                     }
-                    .frame(width: 50, height: 50)
-                    .font(.system(size: 47))
+                    .frame(width: 52, height: 52)
+                    .font(.system(size: 48))
                     .modifier(HoverEffectModifier())
                     .padding(.horizontal, 50)
                     .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
@@ -154,14 +154,14 @@ extension NowPlaying {
                         Label("playback.next", systemImage: "forward.fill")
                             .labelStyle(.iconOnly)
                             .symbolEffect(.bounce.up, value: animateForward)
-                            .font(.system(size: 30))
+                            .font(.system(size: 32))
                     }
                     .modifier(HoverEffectModifier())
                     .sensoryFeedback(.increase, trigger: animateForward)
                 }
                 .foregroundStyle(.primary)
-                .padding(.top, compact ? 20 : 36)
-                .padding(.bottom, compact ? 40 : 64)
+                .padding(.top, compact ? 20 : 44)
+                .padding(.bottom, compact ? 40 : 68)
                 
                 // The first view is the visible slider, the second one is there to hide the iOS indicator (10/10 hack)
                 VolumeSlider(dragging: .init(get: { volumeDragging }, set: {

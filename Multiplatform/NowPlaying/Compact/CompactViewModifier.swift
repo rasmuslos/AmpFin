@@ -100,7 +100,7 @@ extension NowPlaying {
                                             .modifier(GestureModifier(active: currentTab == .cover, controlsDragging: controlsDragging, dragOffset: $dragOffset))
                                         Buttons(currentTab: $currentTab)
                                             .padding(.top, 20)
-                                            .padding(.bottom, 32)
+                                            .padding(.bottom, 28)
                                             .padding(.horizontal, -28)
                                     }
                                     .transition(.modifier(

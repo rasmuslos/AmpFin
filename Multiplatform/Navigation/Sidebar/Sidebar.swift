@@ -36,7 +36,7 @@ internal struct Sidebar: View {
                     }
                 }
                 .id(sidebarSelection.panel)
-                .id(provider)
+                .id(sidebarSelection.provider)
             }
         } else {
             ProgressView()

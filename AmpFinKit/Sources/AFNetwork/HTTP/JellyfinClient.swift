@@ -49,7 +49,7 @@ public final class JellyfinClient {
         }
         
         if UserDefaults.standard.object(forKey: "siriOfflineMode") != nil {
-            JellyfinClient.defaults.set(UserDefaults.standard.bool(forKey: "siriOfflineMode"), forKey: "siriOfflineMode")
+            Self.defaults.set(UserDefaults.standard.bool(forKey: "siriOfflineMode"), forKey: "siriOfflineMode")
         }
     }
     
