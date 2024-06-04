@@ -26,6 +26,7 @@ struct XRTabs: View {
             NavigationStack {
                 SearchView(searchTab: $searchTab)
             }
+            .environment(\.libraryDataProvider, searchTab.dataProvider)
             .tabItem {
                 Label("tab.search", systemImage: "magnifyingglass")
             }

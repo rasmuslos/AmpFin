@@ -65,6 +65,7 @@ internal struct Tabs: View {
                 NavigationStack {
                     SearchView(searchTab: $searchTab)
                 }
+                .environment(\.libraryDataProvider, searchTab.dataProvider)
                 .tag(Selection.search)
                 .tabItem {
                     Label("tab.search", systemImage: "magnifyingglass")
