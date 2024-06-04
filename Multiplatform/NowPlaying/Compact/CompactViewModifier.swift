@@ -168,7 +168,7 @@ internal extension NowPlaying {
         private(set) var lastActive = Date()
         
         func setNowPlayingViewPresented(_ presented: Bool, completion: (() -> Void)? = nil) {
-            guard !active && lastActive.timeIntervalSince(Date()) <= -1 else {
+            guard !active || lastActive.timeIntervalSince(Date()) <= -1 else {
                 return
             }
             
