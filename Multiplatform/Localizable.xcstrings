@@ -27,6 +27,22 @@
         }
       }
     },
+    "account.app" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App"
+          }
+        }
+      }
+    },
     "account.deleteDownloads" : {
       "localizations" : {
         "de" : {
@@ -219,7 +235,7 @@
         }
       }
     },
-    "account.verson %@ %@" : {
+    "account.version.app %@ %@" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -231,6 +247,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "AmpFin %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "account.version.database %@ %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenbank: %1$@ (%2$@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database: %1$@ (%2$@)"
           }
         }
       }
@@ -897,7 +929,7 @@
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Wegen eines Bugs in SwiftData muss die Datenbank umgezogen werden... Bitte habe einige Sekunden Geduld und halte AmpFin im Vordergrund geöffnet."
           }
         },
@@ -972,6 +1004,9 @@
           }
         }
       }
+    },
+    "output" : {
+
     },
     "placeholder" : {
       "localizations" : {

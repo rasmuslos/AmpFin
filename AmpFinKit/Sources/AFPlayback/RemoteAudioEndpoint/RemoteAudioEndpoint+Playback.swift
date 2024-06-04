@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AVKit
 import AFFoundation
 import AFNetwork
 
@@ -129,6 +130,7 @@ extension RemoteAudioEndpoint: AudioEndpoint {
     var queue: [Track] { [] }
     var history: [Track] { [] }
     var buffering: Bool { false }
+    var outputPort: AVAudioSession.Port { .virtual }
     
     func skip(to: Int) {}
     func removeTrack(index: Int) -> Track? { nil }

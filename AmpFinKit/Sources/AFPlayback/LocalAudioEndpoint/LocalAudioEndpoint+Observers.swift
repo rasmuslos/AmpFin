@@ -79,6 +79,14 @@ internal extension LocalAudioEndpoint {
         }
         #endif
         
+        let _ = AVAudioSession.sharedInstance().publisher(for: \.outputVolume).sink {
+            self.volume = $0 * 100
+        }
+        
+        NotificationCenter.default.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: nil) { _ in
+            self.outputPort = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portType ?? .builtInSpeaker
+        }
+        
         #if os(iOS)
         NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { [self] _ in
             setNowPlaying(track: nil)

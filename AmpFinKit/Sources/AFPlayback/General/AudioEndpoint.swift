@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AVKit
 import AFFoundation
 
 protocol AudioEndpoint {
@@ -27,6 +28,7 @@ protocol AudioEndpoint {
     var repeatMode: RepeatMode { get set }
     
     var mediaInfo: Track.MediaInfo? { get async }
+    var outputPort: AVAudioSession.Port { get }
     
     // MARK: Functions
     

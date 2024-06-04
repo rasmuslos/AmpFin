@@ -121,8 +121,9 @@ internal struct AccountSheet: View {
                     .foregroundStyle(.secondary)
                 }
                 
-                Section {
-                    Text("account.verson \(JellyfinClient.shared.clientVersion) \(JellyfinClient.shared.clientBuild)")
+                Section("account.app") {
+                    Text("account.version.app \(JellyfinClient.shared.clientVersion) \(JellyfinClient.shared.clientBuild)")
+                    Text("account.version.database \(PersistenceManager.shared.modelContainer.schema.version.description) \(PersistenceManager.shared.modelContainer.configurations.map { $0.name }.joined(separator: ", "))")
                 }
                 .font(.footnote)
                 .foregroundStyle(.secondary)

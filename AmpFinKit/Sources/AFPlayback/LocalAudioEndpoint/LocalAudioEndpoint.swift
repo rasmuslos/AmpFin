@@ -35,6 +35,8 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     var buffering: Bool = false
     var duration: Double = 0
     
+    var outputPort = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portType ?? .builtInSpeaker
+    
     // MARK: Util
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")

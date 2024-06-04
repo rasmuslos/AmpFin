@@ -20,7 +20,33 @@ extension NowPlaying {
             horizontalSizeClass == .compact
         }
         
-        private var lyricsButton: some View {
+        private var routeIcon: String {
+            switch AudioPlayer.current.outputPort {
+                case .usbAudio:
+                    "cable.connector"
+                case .thunderbolt:
+                    "bolt"
+                case .lineOut:
+                    "cable.coaxial"
+                case .carAudio:
+                    "car"
+                case .airPlay:
+                    "airplayaudio"
+                case .HDMI, .displayPort:
+                    "tv"
+                case .bluetoothLE, .bluetoothHFP, .bluetoothA2DP:
+                    "hifispeaker"
+                case .headphones:
+                    "headphones"
+                default:
+                    "waveform"
+            }
+        }
+        private var showRouteLabel: Bool {
+            AudioPlayer.current.outputPort == .bluetoothLE || AudioPlayer.current.outputPort == .bluetoothHFP || AudioPlayer.current.outputPort == .bluetoothA2DP || AudioPlayer.current.outputPort == .carAudio || AudioPlayer.current.outputPort == .airPlay
+        }
+        
+        @ViewBuilder private var lyricsButton: some View {
             Button {
                 setActiveTab(.lyrics)
             } label: {
@@ -32,7 +58,29 @@ extension NowPlaying {
             .buttonStyle(.plain)
             .modifier(HoverEffectModifier(padding: 4))
         }
-        private var queueButton: some View {
+        @ViewBuilder private var audioRouteButton: some View {
+            Button {
+                AirPlay.shared.presentPicker()
+            } label: {
+                Label("output", systemImage: routeIcon)
+                    .labelStyle(.iconOnly)
+                    .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+            }
+            .buttonStyle(SymbolButtonStyle(active: false))
+            .modifier(HoverEffectModifier(padding: 4))
+            .overlay(alignment: .bottom) {
+                if showRouteLabel, let outputName = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portName {
+                    Text(outputName)
+                        .lineLimit(1)
+                        .font(.caption2)
+                        .foregroundStyle(.thinMaterial)
+                        .offset(y: 12)
+                        .fixedSize()
+                        .id(AudioPlayer.current.outputPort)
+                }
+            }
+        }
+        @ViewBuilder private var queueButton: some View {
             Menu {
                 Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { AudioPlayer.current.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
                 
@@ -68,28 +116,27 @@ extension NowPlaying {
         }
         
         var body: some View {
-            HStack {
+            HStack(alignment: .center) {
                 if AudioPlayer.current.source == .local {
                     if compactLayout {
                         Spacer()
                         
                         lyricsButton
-                            .frame(width: 44)
+                            .frame(width: 75)
                         
                         Spacer()
                         
-                        AirPlayPicker()
-                            .frame(width: 44)
+                        audioRouteButton
+                            .frame(width: 75)
                         
                         Spacer()
                         
                         queueButton
-                            .frame(width: 44)
+                            .frame(width: 75)
                         
                         Spacer()
                     } else if horizontalSizeClass == .regular {
-                        AirPlayPicker()
-                            .frame(width: 25)
+                        audioRouteButton
                         
                         Spacer()
                         
@@ -154,21 +201,21 @@ extension NowPlaying {
     }
 }
 
-extension NowPlaying {
-    #if os(visionOS)
-    typealias AirPlayPicker = EmptyView
-    #else
-    struct AirPlayPicker: UIViewRepresentable {
-        func makeUIView(context: Context) -> UIView {
-            let routePickerView = AVRoutePickerView()
-            routePickerView.backgroundColor = UIColor.clear
-            routePickerView.activeTintColor = UIColor(Color.accentColor)
-            routePickerView.tintColor = UIColor(Color.white.opacity(0.6))
+private struct AirPlay {
+    let routePickerView = AVRoutePickerView()
+    
+    private init() {}
+    
+    func presentPicker() {
+        for view in routePickerView.subviews {
+            guard let button = view as? UIButton else {
+                continue
+            }
             
-            return routePickerView
+            button.sendActions(for: .touchUpInside)
+            break
         }
-        
-        func updateUIView(_ uiView: UIView, context: Context) {}
     }
-    #endif
+    
+    static let shared = AirPlay()
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AVKit
 import AFFoundation
 import AFNetwork
 
@@ -123,6 +124,10 @@ extension AudioPlayer {
         get async {
             await endpoint?.mediaInfo
         }
+    }
+    
+    public var outputPort: AVAudioSession.Port {
+        endpoint?.outputPort ?? .builtInSpeaker
     }
     
     public func seek(seconds: Double) async {
