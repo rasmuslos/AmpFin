@@ -12,11 +12,11 @@ import AFFoundation
 extension OfflineManager {
     @MainActor
     func offlineTracks(parent: OfflineParent) throws -> [OfflineTrack] {
-        var tracks = try parent.childrenIds.map { try offlineTrack(trackId: $0) }
+        var tracks = try parent.childrenIdentifiers.map { try offlineTrack(trackId: $0) }
         
         tracks.sort {
-            let lhs = parent.childrenIds.firstIndex(of: $0.id)!
-            let rhs = parent.childrenIds.firstIndex(of: $1.id)!
+            let lhs = parent.childrenIdentifiers.firstIndex(of: $0.id)!
+            let rhs = parent.childrenIdentifiers.firstIndex(of: $1.id)!
             
             return lhs < rhs
         }
@@ -31,7 +31,7 @@ extension OfflineManager {
         parents += try offlineAlbums()
         parents += try offlinePlaylists()
         
-        return parents.filter { $0.childrenIds.contains(childId) }.map { $0.id }
+        return parents.filter { $0.childrenIdentifiers.contains(childId) }.map { $0.id }
     }
     
     @MainActor
@@ -43,7 +43,7 @@ extension OfflineManager {
         var result = Set<String>()
         
         for parent in parents {
-            for trackId in parent.childrenIds {
+            for trackId in parent.childrenIdentifiers {
                 result.insert(trackId)
             }
         }

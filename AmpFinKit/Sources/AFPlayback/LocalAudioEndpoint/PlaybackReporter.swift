@@ -64,18 +64,10 @@ extension PlaybackReporter {
             do {
                 try await JellyfinClient.shared.playbackStopped(identifier: trackId, positionSeconds: currentTime)
             } catch {
-                await cacheReport(trackId: trackId, positionSeconds: currentTime)
+                #if canImport(AFOffline)
+                await OfflineManager.shared.cache(position: currentTime, trackId: trackId)
+                #endif
             }
         }
-    }
-}
-
-extension PlaybackReporter {
-    @MainActor
-    static func cacheReport(trackId: String, positionSeconds: Double) {
-        #if canImport(AFOffline)
-        let play = OfflinePlay(trackId: trackId, positionSeconds: positionSeconds, time: Date())
-        PersistenceManager.shared.modelContainer.mainContext.insert(play)
-        #endif
     }
 }

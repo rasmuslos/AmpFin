@@ -24,9 +24,9 @@ extension OfflineManager {
         let offlineItem = OfflineTrack(
             id: track.id,
             name: track.name,
-            releaseDate: track.releaseDate,
-            album: track.album,
-            artists: track.artists,
+            released: track.releaseDate,
+            album: .init(albumIdentifier: track.album.id, albumName: track.album.name, albumArtists: track.album.artists.map { .init(artistIdentifier: $0.id, artistName: $0.name) }),
+            artists: track.artists.map { .init(artistIdentifier: $0.id, artistName: $0.name) },
             favorite: track._favorite,
             runtime: track.runtime,
             downloadId: downloadTask.taskIdentifier)
@@ -85,9 +85,9 @@ extension OfflineManager {
         
         await MainActor.run {
             try? PersistenceManager.shared.modelContainer.mainContext.delete(model: OfflineLyrics.self, where: #Predicate {
-                $0.trackId == trackId
+                $0.trackIdentifier == trackId
             })
-            let offlineLyrics = OfflineLyrics(trackId: trackId, lyrics: lyrics)
+            let offlineLyrics = OfflineLyrics(trackIdentifier: trackId, contents: lyrics)
             PersistenceManager.shared.modelContainer.mainContext.insert(offlineLyrics)
         }
     }
@@ -151,14 +151,14 @@ public extension OfflineManager {
             }
         }
         
-        var descriptor = FetchDescriptor<OfflineLyrics>(predicate: #Predicate { $0.trackId == trackId })
+        var descriptor = FetchDescriptor<OfflineLyrics>(predicate: #Predicate { $0.trackIdentifier == trackId })
         descriptor.fetchLimit = 1
         
         guard let entity = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first else {
             throw OfflineError.notFound
         }
         
-        return entity.lyrics
+        return entity.contents
     }
     
     @MainActor

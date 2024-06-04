@@ -13,7 +13,7 @@ public extension OfflineManager {
     @MainActor
     func tracks(artistId identifier: String) throws -> [Track] {
         let descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate {
-            $0.artists.contains(where: { $0.id == identifier })
+            $0.artists.contains(where: { $0.artistIdentifier == identifier })
         })
         let tracks = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor)
         

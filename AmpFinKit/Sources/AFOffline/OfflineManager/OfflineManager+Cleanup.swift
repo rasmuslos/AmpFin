@@ -38,7 +38,7 @@ public extension OfflineManager {
         
         Task.detached {
             for play in plays {
-                try await JellyfinClient.shared.playbackStopped(identifier: play.trackId, positionSeconds: play.positionSeconds)
+                try await JellyfinClient.shared.playbackStopped(identifier: play.trackIdentifier, positionSeconds: play.position)
                 
                 await MainActor.run {
                     PersistenceManager.shared.modelContainer.mainContext.delete(play)

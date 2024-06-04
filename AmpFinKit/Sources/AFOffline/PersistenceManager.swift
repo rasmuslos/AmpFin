@@ -21,9 +21,9 @@ public struct PersistenceManager {
             OfflineLyrics.self,
             OfflinePlay.self,
             OfflineFavorite.self,
-        ])
+        ], version: .init(2, 0, 0))
         
-        let modelConfiguration = ModelConfiguration("AmpFin", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: AFKIT_ENABLE_ALL_FEATURES ? .identifier("group.io.rfk.ampfin") : .none)
+        let modelConfiguration = ModelConfiguration("AmpFin_Migrated", schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: AFKIT_ENABLE_ALL_FEATURES ? .identifier("group.io.rfk.ampfin") : .none)
         modelContainer = try! ModelContainer(for: schema, configurations: [modelConfiguration])
     }
 }

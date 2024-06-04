@@ -10,11 +10,14 @@ import SwiftData
 import Intents
 import CoreSpotlight
 import Network
+import Defaults
 import AmpFinKit
 import AFPlayback
 
 internal struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    @Default(.migratedToNewDatastore) private var migratedToNewDatastore
     
     private var navigationController: some View {
         Group {
@@ -31,7 +34,13 @@ internal struct ContentView: View {
     }
     
     var body: some View {
-        if JellyfinClient.shared.authorized {
+        if !migratedToNewDatastore {
+            ContentUnavailableView("migrating", systemImage: "slider.horizontal.2.rectangle.and.arrow.triangle.2.circlepath", description: Text("migrating.description"))
+                .symbolEffect(.pulse)
+                .onAppear {
+                    PersistenceManager.shared.migrate()
+                }
+        } else if JellyfinClient.shared.authorized {
             navigationController
                 .onContinueUserActivity(CSSearchableItemActionType) { activity in
                     guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {

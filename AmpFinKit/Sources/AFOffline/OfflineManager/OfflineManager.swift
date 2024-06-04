@@ -15,6 +15,12 @@ public struct OfflineManager {
     public static let itemDownloadStatusChanged = Notification.Name.init("io.rfk.ampfin.download.updated")
     
     private init() {}
+    
+    @MainActor
+    public func cache(position: Double, trackId: String) {
+        let play = OfflinePlay(trackIdentifier: trackId, position: position, date: Date())
+        PersistenceManager.shared.modelContainer.mainContext.insert(play)
+    }
 }
 
 internal extension OfflineManager {

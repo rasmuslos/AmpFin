@@ -24,10 +24,10 @@ extension OfflineManager {
             name: album.name,
             overview: album.overview,
             genres: album.genres,
-            releaseDate: album.releaseDate,
-            artists: album.artists,
+            released: album.releaseDate,
+            artists: album.artists.map { .init(artistIdentifier: $0.id, artistName: $0.name) },
             favorite: album._favorite,
-            childrenIds: tracks.map { $0.id })
+            childrenIdentifiers: tracks.map { $0.id })
         
         PersistenceManager.shared.modelContainer.mainContext.insert(offlineAlbum)
         return offlineAlbum
@@ -70,7 +70,7 @@ public extension OfflineManager {
             offlineAlbum = existing
             
             await MainActor.run {
-                offlineAlbum.childrenIds = tracks.map { $0.id }
+                offlineAlbum.childrenIdentifiers = tracks.map { $0.id }
             }
         } else {
             offlineAlbum = try await create(album: album, tracks: tracks)

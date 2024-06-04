@@ -17,8 +17,8 @@ internal extension Album {
             favorite: from.favorite,
             overview: from.overview,
             genres: from.genres,
-            releaseDate: from.releaseDate,
-            artists: from.artists,
+            releaseDate: from.released,
+            artists: from.artists.map { .init(id: $0.artistIdentifier, name: $0.artistName) },
             playCount: -1,
             lastPlayed: nil)
     }

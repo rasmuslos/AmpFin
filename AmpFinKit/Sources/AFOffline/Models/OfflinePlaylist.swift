@@ -9,20 +9,25 @@ import Foundation
 import SwiftData
 
 @Model
-final class OfflinePlaylist: OfflineParent {
+final internal class OfflinePlaylistV2: OfflineParent {
+    @Attribute(.unique)
     let id: String
-    public let name: String
+    let name: String
     
-    public var favorite: Bool
-    public var duration: Double
+    var favorite: Bool
+    var duration: Double
     
-    var childrenIds: [String]
+    var childrenIdentifiers: [String]
     
-    init(id: String, name: String, favorite: Bool, duration: Double, childrenIds: [String]) {
+    var lastPlayed: Date?
+    
+    init(id: String, name: String, favorite: Bool, duration: Double, childrenIdentifiers: [String]) {
         self.id = id
         self.name = name
         self.favorite = favorite
         self.duration = duration
-        self.childrenIds = childrenIds
+        self.childrenIdentifiers = childrenIdentifiers
     }
 }
+
+internal typealias OfflinePlaylist = OfflinePlaylistV2

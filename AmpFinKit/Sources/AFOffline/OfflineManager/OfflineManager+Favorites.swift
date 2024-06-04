@@ -22,7 +22,7 @@ extension OfflineManager {
                     
                     Task {
                         for favorite in favorites {
-                            try await JellyfinClient.shared.favorite(favorite.favorite, identifier: favorite.itemId)
+                            try await JellyfinClient.shared.favorite(favorite.value, identifier: favorite.itemIdentifier)
                             
                             await MainActor.run {
                                 PersistenceManager.shared.modelContainer.mainContext.delete(favorite)
@@ -110,10 +110,10 @@ extension OfflineManager {
 public extension OfflineManager {
     @MainActor
     func cache(favorite: Bool, itemId: String) {
-        if let existing = try? PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineFavorite>(predicate: #Predicate { $0.itemId == itemId })).first {
-            existing.favorite = favorite
+        if let existing = try? PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflineFavorite>(predicate: #Predicate { $0.itemIdentifier == itemId })).first {
+            existing.value = favorite
         } else {
-            let offlineFavorite = OfflineFavorite(itemId: itemId, favorite: favorite)
+            let offlineFavorite = OfflineFavorite(itemIdentifier: itemId, value: favorite)
             PersistenceManager.shared.modelContainer.mainContext.insert(offlineFavorite)
         }
     }

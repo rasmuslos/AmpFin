@@ -877,6 +877,38 @@
         }
       }
     },
+    "migrating" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenbank umziehen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Migrating database"
+          }
+        }
+      }
+    },
+    "migrating.description" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Wegen eines Bugs in SwiftData muss die Datenbank umgezogen werden... Bitte habe einige Sekunden Geduld und halte AmpFin im Vordergrund geöffnet."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A database migration is necessary due to a bug in SwiftData. Please wait a few seconds and keep AmpFin in the foreground."
+          }
+        }
+      }
+    },
     "more" : {
       "localizations" : {
         "de" : {

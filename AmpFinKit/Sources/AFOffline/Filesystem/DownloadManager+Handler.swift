@@ -43,6 +43,7 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                 try? FileManager.default.removeItem(at: destination)
                 try FileManager.default.moveItem(at: tmpLocation, to: destination)
                 track.downloadId = nil
+                track.container = .flac
                 
                 NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
                 

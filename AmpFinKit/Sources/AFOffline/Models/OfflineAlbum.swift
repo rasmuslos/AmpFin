@@ -10,7 +10,7 @@ import SwiftData
 import AFFoundation
 
 @Model
-final class OfflineAlbum: OfflineParent {
+final class OfflineAlbumV2: OfflineParent {
     @Attribute(.unique)
     let id: String
     let name: String
@@ -18,21 +18,24 @@ final class OfflineAlbum: OfflineParent {
     let overview: String?
     let genres: [String]
     
-    let releaseDate: Date?
-    let artists: [Item.ReducedArtist]
+    let released: Date?
+    let artists: [Item.OfflineReducedArtist]
     
     var favorite: Bool
+    var lastPlayed: Date?
     
-    var childrenIds: [String]
+    var childrenIdentifiers: [String]
     
-    init(id: String, name: String, overview: String?, genres: [String], releaseDate: Date?, artists: [Item.ReducedArtist], favorite: Bool, childrenIds: [String]) {
+    init(id: String, name: String, overview: String?, genres: [String], released: Date?, artists: [Item.OfflineReducedArtist], favorite: Bool, childrenIdentifiers: [String]) {
         self.id = id
         self.name = name
         self.overview = overview
         self.genres = genres
-        self.releaseDate = releaseDate
+        self.released = released
         self.artists = artists
         self.favorite = favorite
-        self.childrenIds = childrenIds
+        self.childrenIdentifiers = childrenIdentifiers
     }
 }
+
+internal typealias OfflineAlbum = OfflineAlbumV2

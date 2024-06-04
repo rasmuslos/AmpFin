@@ -33,7 +33,7 @@ extension OfflineManager {
             name: playlist.name,
             favorite: playlist._favorite,
             duration: playlist.duration,
-            childrenIds: tracks.map { $0.id })
+            childrenIdentifiers: tracks.map { $0.id })
         
         PersistenceManager.shared.modelContainer.mainContext.insert(offlinePlaylist)
         return offlinePlaylist
@@ -74,7 +74,7 @@ public extension OfflineManager {
         
         if let existing = try? await self.offlinePlaylist(playlistId: playlist.id) {
             offlinePlaylist = existing
-            offlinePlaylist.childrenIds = tracks.map { $0.id }
+            offlinePlaylist.childrenIdentifiers = tracks.map { $0.id }
         } else {
             offlinePlaylist = try await create(playlist: playlist, tracks: tracks)
         }

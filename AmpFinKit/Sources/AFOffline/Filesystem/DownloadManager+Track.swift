@@ -32,13 +32,13 @@ extension DownloadManager {
         
         logger.fault("Error while downloading track \(track.id) (\(track.name))")
         
-        if let parents = try? OfflineManager.shared.parentIds(childId: track.id).filter({ $0 != track.album.id }) {
+        if let parents = try? OfflineManager.shared.parentIds(childId: track.id).filter({ $0 != track.album.albumIdentifier }) {
             for parent in parents {
                 try? OfflineManager.shared.delete(playlistId: parent)
             }
         }
         
-        try? OfflineManager.shared.delete(albumId: track.album.id)
+        try? OfflineManager.shared.delete(albumId: track.album.albumIdentifier)
     }
     func delete(trackId: String) {
         try? FileManager.default.removeItem(at: url(trackId: trackId))

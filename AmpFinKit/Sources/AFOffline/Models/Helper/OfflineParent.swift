@@ -8,13 +8,13 @@
 import Foundation
 import AFFoundation
 
-protocol OfflineParent {
+internal protocol OfflineParent {
     var id: String { get }
-    var childrenIds: [String] { get set }
+    var childrenIdentifiers: [String] { get set }
 }
 
-extension OfflineParent {
+internal extension OfflineParent {
     var trackCount: Int {
-        childrenIds.count
+        childrenIdentifiers.count
     }
 }

@@ -10,6 +10,8 @@ import Defaults
 import AmpFinKit
 
 internal extension Defaults.Keys {
+    static let migratedToNewDatastore = Key("migratedToNewDatastore_n1u3enjoieqgurfjciuqw0ayj", default: false)
+    
     // MARK: Sort
     static let sortAscending = Key("sortAscending", default: false)
     static let sortOrder = Key<ItemSortOrder>("sortOrder", default: .added)
