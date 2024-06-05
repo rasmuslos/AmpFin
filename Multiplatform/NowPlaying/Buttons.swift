@@ -58,28 +58,6 @@ extension NowPlaying {
             .buttonStyle(.plain)
             .modifier(HoverEffectModifier(padding: 4))
         }
-        @ViewBuilder private var audioRouteButton: some View {
-            Button {
-                AirPlay.shared.presentPicker()
-            } label: {
-                Label("output", systemImage: routeIcon)
-                    .labelStyle(.iconOnly)
-                    .contentTransition(.symbolEffect(.replace.byLayer.downUp))
-            }
-            .buttonStyle(SymbolButtonStyle(active: false))
-            .modifier(HoverEffectModifier(padding: 4))
-            .overlay(alignment: .bottom) {
-                if showRouteLabel, let outputName = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portName {
-                    Text(outputName)
-                        .lineLimit(1)
-                        .font(.caption2)
-                        .foregroundStyle(.thinMaterial)
-                        .offset(y: 12)
-                        .fixedSize()
-                        .id(AudioPlayer.current.outputPort)
-                }
-            }
-        }
         @ViewBuilder private var queueButton: some View {
             Menu {
                 Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { AudioPlayer.current.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
@@ -126,8 +104,28 @@ extension NowPlaying {
                         
                         Spacer()
                         
-                        audioRouteButton
-                            .frame(width: 75)
+                        
+                        Button {
+                            AirPlay.shared.presentPicker()
+                        } label: {
+                            Label("output", systemImage: routeIcon)
+                                .labelStyle(.iconOnly)
+                                .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+                        }
+                        .buttonStyle(SymbolButtonStyle(active: false))
+                        .modifier(HoverEffectModifier(padding: 4))
+                        .frame(width: 75)
+                        .overlay(alignment: .bottom) {
+                            if showRouteLabel, let outputName = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portName {
+                                Text(outputName)
+                                    .lineLimit(1)
+                                    .font(.caption2)
+                                    .foregroundStyle(.thinMaterial)
+                                    .offset(y: 12)
+                                    .fixedSize()
+                                    .id(AudioPlayer.current.outputPort)
+                            }
+                        }
                         
                         Spacer()
                         
@@ -136,7 +134,25 @@ extension NowPlaying {
                         
                         Spacer()
                     } else if horizontalSizeClass == .regular {
-                        audioRouteButton
+                        HStack(spacing: 4) {
+                            Button {
+                                AirPlay.shared.presentPicker()
+                            } label: {
+                                Label("output", systemImage: routeIcon)
+                                    .labelStyle(.iconOnly)
+                                    .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+                            }
+                            .buttonStyle(SymbolButtonStyle(active: false))
+                            .modifier(HoverEffectModifier(padding: 4))
+                            
+                            if showRouteLabel, let outputName = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portName {
+                                Text(outputName)
+                                    .lineLimit(1)
+                                    .font(.caption)
+                                    .foregroundStyle(.thinMaterial)
+                                    .id(AudioPlayer.current.outputPort)
+                            }
+                        }
                         
                         Spacer()
                         
