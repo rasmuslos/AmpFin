@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class Cover: Codable {
+public struct Cover: Codable, Hashable {
     public let type: CoverType
     public let size: CoverSize
     public let url: URL
@@ -19,6 +19,12 @@ public final class Cover: Codable {
     }
 }
 
+extension Cover: Equatable {
+    public static func == (lhs: Cover, rhs: Cover) -> Bool {
+        lhs.url == rhs.url
+    }
+}
+
 public extension Cover {
     enum CoverType: Codable, Hashable {
         case local
@@ -26,7 +32,7 @@ public extension Cover {
         case mock
     }
     
-    enum CoverSize: Codable {
+    enum CoverSize: Codable, Hashable {
         case small
         case normal
         case custom(size: Int)

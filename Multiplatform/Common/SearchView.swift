@@ -11,9 +11,10 @@ import AmpFinKit
 import AFPlayback
 
 internal struct SearchView: View {
+    @Binding var search: String
     @Binding var searchTab: Tab
+    @Binding var selected: Bool
     
-    @State private var search = ""
     @State private var task: Task<(), Never>? = nil
     
     @State private var tracks = [Track]()
@@ -43,7 +44,7 @@ internal struct SearchView: View {
             if !albums.isEmpty {
                 Section("section.albums") {
                     ForEach(albums) { album in
-                        NavigationLink(destination: AlbumView(album: album)) {
+                        NavigationLink(value: album) {
                             AlbumListRow(album: album)
                         }
                         .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
@@ -54,7 +55,7 @@ internal struct SearchView: View {
             if !playlists.isEmpty {
                 Section("section.playlists") {
                     ForEach(playlists) { playlist in
-                        NavigationLink(destination: PlaylistView(playlist: playlist)) {
+                        NavigationLink(value: playlist) {
                             PlaylistListRow(playlist: playlist)
                         }
                         .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
@@ -75,7 +76,7 @@ internal struct SearchView: View {
         }
         .listStyle(.plain)
         .navigationTitle("title.search")
-        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "search.placeholder")
+        .searchable(text: $search, isPresented: $selected, placement: .navigationBarDrawer(displayMode: .always), prompt: "search.placeholder")
         .autocorrectionDisabled()
         .textInputAutocapitalization(.never)
         .modifier(NowPlaying.SafeAreaModifier())
@@ -140,5 +141,5 @@ internal extension SearchView.Tab {
 }
 
 #Preview {
-    SearchView(searchTab: .constant(.online))
+    SearchView(search: .constant("Hello, World!"), searchTab: .constant(.online), selected: .constant(true))
 }

@@ -11,6 +11,8 @@ import Defaults
 struct XRTabs: View {
     @Default(.searchTab) private var searchTab
     
+    @State private var search = ""
+    
     var body: some View {
         TabView {
             Sidebar(provider: .online)
@@ -24,7 +26,8 @@ struct XRTabs: View {
                 }
             
             NavigationStack {
-                SearchView(searchTab: $searchTab)
+                SearchView(search: $search, searchTab: $searchTab, selected: .constant(true))
+                    .modifier(Navigation.DestinationModifier())
             }
             .environment(\.libraryDataProvider, searchTab.dataProvider)
             .tabItem {

@@ -383,10 +383,10 @@
 		3A5515F52BC4471600B922D7 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				3A1CBC182B0D284200855A70 /* Navigation.swift */,
-				3AEB32232AA7EC3C00853210 /* ContentView.swift */,
 				3AEB323A2AA7FF1100853210 /* Tabs.swift */,
 				3AA0AFAB2BE545CA0084B7A1 /* XRTabs.swift */,
+				3A1CBC182B0D284200855A70 /* Navigation.swift */,
+				3AEB32232AA7EC3C00853210 /* ContentView.swift */,
 				3A5515EB2BC3E0C100B922D7 /* Sidebar */,
 			);
 			path = Navigation;

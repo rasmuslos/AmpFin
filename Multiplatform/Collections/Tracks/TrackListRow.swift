@@ -220,7 +220,7 @@ internal extension TrackListRow {
             Divider()
             
             if album == nil {
-                NavigationLink(destination: AlbumLoadView(albumId: track.album.id)) {
+                NavigationLink(value: .albumLoadDestination(albumId: track.album.id)) {
                     Label("album.view", systemImage: "square.stack")
                     
                     if let name = track.album.name {
@@ -230,7 +230,7 @@ internal extension TrackListRow {
             }
             
             if let artist = track.artists.first {
-                NavigationLink(destination: ArtistLoadView(artistId: artist.id)) {
+                NavigationLink(value: .artistLoadDestination(artistId: artist.id)) {
                     Label("artist.view", systemImage: "music.mic")
                 }
                 .disabled(!dataProvider.supportsArtistLookup)

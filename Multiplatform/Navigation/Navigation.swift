@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AmpFinKit
 
 internal struct Navigation {
     static let navigateNotification = NSNotification.Name("io.rfk.ampfin.navigation")
@@ -78,14 +79,35 @@ internal extension Navigation {
     struct DestinationModifier: ViewModifier {
         func body(content: Content) -> some View {
             content
-                .navigationDestination(for: Navigation.AlbumLoadDestination.self) { data in
-                    AlbumLoadView(albumId: data.albumId)
+                .navigationDestination(for: Navigation.AlbumLoadDestination.self) {
+                    AlbumLoadView(albumId: $0.albumId)
                 }
-                .navigationDestination(for: Navigation.ArtistLoadDestination.self) { data in
-                    ArtistLoadView(artistId: data.artistId)
+                .navigationDestination(for: Navigation.ArtistLoadDestination.self) {
+                    ArtistLoadView(artistId: $0.artistId)
                 }
-                .navigationDestination(for: Navigation.PlaylistLoadDestination.self) { data in
-                    PlaylistLoadView(playlistId: data.playlistId)
+                .navigationDestination(for: Navigation.PlaylistLoadDestination.self) {
+                    PlaylistLoadView(playlistId: $0.playlistId)
+                }
+                .navigationDestination(for: TracksDestination.self) {
+                    TracksView(favoritesOnly: $0.favoriteOnly)
+                }
+                .navigationDestination(for: AlbumsDestination.self) { _ in
+                    AlbumsView()
+                }
+                .navigationDestination(for: PlaylistsDestination.self) { _ in
+                    PlaylistsView()
+                }
+                .navigationDestination(for: ArtistsDestination.self) {
+                    ArtistsView(albumOnly: $0.albumOnly)
+                }
+                .navigationDestination(for: Album.self) {
+                    AlbumView(album: $0)
+                }
+                .navigationDestination(for: Artist.self) {
+                    ArtistView(artist: $0)
+                }
+                .navigationDestination(for: Playlist.self) {
+                    PlaylistView(playlist: $0)
                 }
         }
     }
@@ -102,5 +124,41 @@ internal extension Navigation {
     
     struct PlaylistLoadDestination: Hashable {
         let playlistId: String
+    }
+    
+    struct TracksDestination: Hashable {
+        let favoriteOnly: Bool
+    }
+    struct AlbumsDestination: Hashable {
+    }
+    struct PlaylistsDestination: Hashable {
+    }
+    struct ArtistsDestination: Hashable {
+        let albumOnly: Bool
+    }
+}
+
+internal extension Hashable {
+    static func albumLoadDestination(albumId: String) -> Navigation.AlbumLoadDestination {
+        .init(albumId: albumId)
+    }
+    static func artistLoadDestination(artistId: String) -> Navigation.ArtistLoadDestination {
+        .init(artistId: artistId)
+    }
+    static func playlistLoadDestination(playlistId: String) -> Navigation.PlaylistLoadDestination {
+        .init(playlistId: playlistId)
+    }
+    
+    static func tracksDestination(favoriteOnly: Bool) -> Navigation.TracksDestination {
+        .init(favoriteOnly: favoriteOnly)
+    }
+    static var albumsDestination: Navigation.AlbumsDestination {
+        .init()
+    }
+    static var playlistsDestination: Navigation.PlaylistsDestination {
+        .init()
+    }
+    static func artistsDestination(albumOnly: Bool) -> Navigation.ArtistsDestination {
+        .init(albumOnly: albumOnly)
     }
 }

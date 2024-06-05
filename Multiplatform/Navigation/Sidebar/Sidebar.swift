@@ -16,6 +16,8 @@ internal struct Sidebar: View {
 
     var provider: DataProvider? = nil
 
+    @State private var search = ""
+    
     private var dataProvider: LibraryDataProvider {
         if sidebarSelection?.panel == .search {
             return searchTab.dataProvider
@@ -30,13 +32,14 @@ internal struct Sidebar: View {
             NavigationStack {
                 Group {
                     if sidebarSelection.panel == .search {
-                        SearchView(searchTab: $searchTab)
+                        SearchView(search: $search, searchTab: $searchTab, selected: .constant(true))
                     } else {
                         sidebarSelection.panel.content
                     }
                 }
                 .id(sidebarSelection.panel)
                 .id(sidebarSelection.provider)
+                .modifier(Navigation.DestinationModifier())
             }
         } else {
             ProgressView()

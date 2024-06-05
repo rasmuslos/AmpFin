@@ -9,7 +9,7 @@ import Foundation
 import AFFoundation
 
 extension Cover {
-    internal convenience init?(imageTags: ImageTags, id: String, size: CoverSize = .normal) {
+    internal init?(imageTags: ImageTags, id: String, size: CoverSize = .normal) {
         guard let primaryImageTag = imageTags.Primary else {
             return nil
         }

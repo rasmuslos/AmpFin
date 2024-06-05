@@ -25,9 +25,7 @@ struct AlbumGrid: View {
     var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: minimumWidth, maximum: 400), spacing: 12)], spacing: 16) {
             ForEach(albums) { album in
-                NavigationLink {
-                    AlbumView(album: album)
-                } label: {
+                NavigationLink(value: album) {
                     AlbumCover(album: album)
                 }
                 .buttonStyle(.plain)

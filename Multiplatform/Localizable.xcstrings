@@ -2071,6 +2071,9 @@
         }
       }
     },
+    "tab.library" : {
+
+    },
     "tab.search" : {
       "localizations" : {
         "de" : {

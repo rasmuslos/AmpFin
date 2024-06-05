@@ -61,6 +61,12 @@ extension Item: Equatable {
     }
 }
 
+extension Item: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
 public extension Item {
     struct ReducedArtist: Codable {
         public let id: String
@@ -72,7 +78,7 @@ public extension Item {
         }
     }
     
-    enum ItemType: Codable {
+    enum ItemType: Codable, Hashable {
         case album
         case artist
         case track

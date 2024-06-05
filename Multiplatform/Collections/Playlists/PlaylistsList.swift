@@ -13,7 +13,7 @@ struct PlaylistsList: View {
     
     var body: some View {
         ForEach(playlists) { playlist in
-            NavigationLink(destination: PlaylistView(playlist: playlist)) {
+            NavigationLink(value: playlist) {
                 PlaylistListRow(playlist: playlist)
             }
             .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))

@@ -21,26 +21,26 @@ struct LibraryView: View {
         ScrollView {
             List {
                 Group {
-                    NavigationLink(destination: TracksView(favoritesOnly: false)) {
+                    NavigationLink(value: .tracksDestination(favoriteOnly: false)) {
                         Label("title.tracks", systemImage: "music.note")
                     }
-                    NavigationLink(destination: AlbumsView()) {
+                    NavigationLink(value: .albumsDestination) {
                         Label("title.albums", systemImage: "square.stack")
                     }
                     
-                    NavigationLink(destination: PlaylistsView()) {
+                    NavigationLink(value: .playlistsDestination) {
                         Label("title.playlists", systemImage: "music.note.list")
                     }
                     
-                    NavigationLink(destination: TracksView(favoritesOnly: true)) {
+                    NavigationLink(value: .tracksDestination(favoriteOnly: true)) {
                         Label("title.favorites", systemImage: "star")
                     }
                     
-                    NavigationLink(destination: ArtistsView(albumOnly: true)) {
+                    NavigationLink(value: .artistsDestination(albumOnly: true)) {
                         Label("title.albumArtists", systemImage: "music.mic")
                     }
                     .disabled(!dataProvider.supportsArtistLookup)
-                    NavigationLink(destination: ArtistsView(albumOnly: false)) {
+                    NavigationLink(value: .artistsDestination(albumOnly: false)) {
                         Label("title.artists", systemImage: "mic.fill")
                     }
                     .disabled(!dataProvider.supportsArtistLookup)

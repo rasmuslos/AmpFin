@@ -12,9 +12,7 @@ internal struct ArtistListRow: View {
     let artist: Artist
 
     var body: some View {
-        NavigationLink {
-            ArtistView(artist: artist)
-        } label: {
+        NavigationLink(value: artist) {
             HStack(spacing: 0) {
                 ItemImage(cover: artist.cover)
                     .frame(width: 44)

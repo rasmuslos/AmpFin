@@ -43,7 +43,7 @@ struct AlbumRow: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0) {
                     ForEach(albums) { album in
-                        NavigationLink(destination: AlbumView(album: album)) {
+                        NavigationLink(value: album) {
                             AlbumCover(album: album)
                         }
                         .buttonStyle(.plain)
