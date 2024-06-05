@@ -35,11 +35,15 @@ internal struct TracksView: View {
         sortOrder.hashValue.description,
     ]}
     
+    private var compactLayout: Bool {
+        horizontalSizeClass == .compact
+    }
+    
     var body: some View {
         Group {
             if success {
                 Group {
-                    if horizontalSizeClass == .compact {
+                    if compactLayout {
                         List {
                             TrackListButtons(startPlayback: startPlayback)
                                 .listRowSeparator(.hidden)
@@ -52,20 +56,29 @@ internal struct TracksView: View {
                             .padding(.horizontal, 20)
                         }
                         .listStyle(.plain)
+                        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.tracks")
+                        .toolbar {
+                            SortSelector()
+                        }
                     } else {
-                        VStack {
-                            TrackListButtons(startPlayback: startPlayback)
-                                .padding(.horizontal, 20)
-                            
-                            TrackTable(tracks: tracks, container: nil, count: count) {
-                                loadTracks(reset: false)
+                        TrackTable(tracks: tracks, container: nil, count: count) {
+                            loadTracks(reset: false)
+                        }
+                        .searchable(text: $search, placement: .toolbar, prompt: "search.tracks")
+                        .toolbar {
+                            Button(action: { startPlayback(shuffled: true) }) {
+                                Label("queue.play", systemImage: "play")
+                                    .symbolVariant(.circle)
                             }
+                            
+                            Button(action: { startPlayback(shuffled: true) }) {
+                                Label("queue.shuffle", systemImage: "shuffle")
+                                    .symbolVariant(.circle)
+                            }
+                            
+                            SortSelector()
                         }
                     }
-                }
-                .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.tracks")
-                .toolbar {
-                    SortSelector()
                 }
             } else if failure {
                 ErrorView()

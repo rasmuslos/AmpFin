@@ -64,11 +64,13 @@ struct TrackTable: View {
             TableColumn("table.duration") {
                 Text($0.runtime.duration)
             }
+            .width(max: 50)
             .customizationID("duration")
             
             TableColumn("table.index") { track in
                 Text("table.index \(track.index.disk) \(track.index.index)")
             }
+            .width(ideal: 50)
             .defaultVisibility(.hidden)
             .customizationID("index")
             
@@ -77,12 +79,14 @@ struct TrackTable: View {
                     Text("table.lufs \(lufs)")
                 }
             }
+            .width(ideal: 50)
             .defaultVisibility(.hidden)
             .customizationID("lufs")
             
             TableColumn("table.plays") {
                 Text("table.plays \($0.playCount)")
             }
+            .width(ideal: 50)
             .defaultVisibility(.hidden)
             .customizationID("plays")
             
@@ -91,6 +95,7 @@ struct TrackTable: View {
                     Text(released, format: .dateTime)
                 }
             }
+            .width(ideal: 50)
             .defaultVisibility(.hidden)
             .customizationID("released")
             
@@ -107,8 +112,10 @@ struct TrackTable: View {
                     Label("more", systemImage: "ellipsis")
                         .labelStyle(.iconOnly)
                 }
+                .foregroundStyle(.primary)
+                .frame(alignment: .trailing)
             }
-            .width(min: 25, max: 40)
+            .width(min: 10, ideal: 10, max: 20)
             .disabledCustomizationBehavior([.reorder, .visibility])
             .customizationID("menu")
         } rows: {
