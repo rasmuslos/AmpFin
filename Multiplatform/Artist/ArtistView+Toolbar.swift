@@ -25,7 +25,7 @@ internal extension ArtistView {
                         Button {
                             artist.favorite.toggle()
                         } label: {
-                            Label("favorite", systemImage: artist.favorite ? "heart.fill" : "heart")
+                            Label("favorite", systemImage: artist.favorite ? "star.fill" : "star")
                                 .labelStyle(.iconOnly)
                                 .contentTransition(.symbolEffect(.replace))
                         }

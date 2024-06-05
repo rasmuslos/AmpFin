@@ -33,7 +33,7 @@ struct LibraryView: View {
                     }
                     
                     NavigationLink(destination: TracksView(favoritesOnly: true)) {
-                        Label("title.favorites", systemImage: "heart")
+                        Label("title.favorites", systemImage: "star")
                     }
                     
                     NavigationLink(destination: ArtistsView(albumOnly: true)) {

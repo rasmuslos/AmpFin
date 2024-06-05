@@ -108,7 +108,7 @@ internal extension Sidebar.Panel {
             case .playlists:
                 return "music.note.list"
             case .favorites:
-                return "heart"
+                return "star"
             case .albumArtists:
                 return "music.mic"
             case .artists:

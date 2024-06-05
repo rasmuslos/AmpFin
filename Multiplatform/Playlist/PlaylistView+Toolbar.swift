@@ -74,7 +74,7 @@ extension PlaylistView {
                                 Button {
                                     playlist.favorite.toggle()
                                 } label: {
-                                    Label("favorite", systemImage: playlist.favorite ? "heart.fill" : "heart")
+                                    Label("favorite", systemImage: playlist.favorite ? "star.fill" : "star")
                                 }
                                 
                                 Divider()

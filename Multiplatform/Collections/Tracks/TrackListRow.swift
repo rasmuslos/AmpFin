@@ -18,6 +18,7 @@ struct TrackListRow: View {
     var deleteCallback: TrackList.DeleteCallback = nil
     let startPlayback: () -> ()
     
+    @State private var playing: Bool? = nil
     @State private var addToPlaylistSheetPresented = false
     
     private var size: CGFloat {
@@ -29,10 +30,7 @@ struct TrackListRow: View {
     
     private var playbackIndicator: some View {
         Image(systemName: "waveform")
-            .symbolEffect(.variableColor.iterative, isActive: AudioPlayer.current.playing)
-    }
-    private var isPlaying: Bool {
-        AudioPlayer.current.nowPlaying == track
+            .symbolEffect(.variableColor.iterative, isActive: playing ?? false)
     }
     
     var body: some View {
@@ -43,7 +41,7 @@ struct TrackListRow: View {
                 HStack(spacing: 0) {
                     Group {
                         if album != nil {
-                            if isPlaying {
+                            if playing == true {
                                 playbackIndicator
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
@@ -57,7 +55,7 @@ struct TrackListRow: View {
                         } else {
                             ItemImage(cover: track.cover)
                                 .overlay {
-                                    if isPlaying {
+                                    if playing == true {
                                         ZStack {
                                             Color.black.opacity(0.2)
                                                 .clipShape(RoundedRectangle(cornerRadius: 7))
@@ -96,6 +94,14 @@ struct TrackListRow: View {
             }
             .buttonStyle(.plain)
             .hoverEffectDisabled()
+            .onChange(of: AudioPlayer.current.playing, initial: true) {
+                guard AudioPlayer.current.nowPlaying == track else {
+                    playing = nil
+                    return
+                }
+                
+                playing = AudioPlayer.current.playing
+            }
             
             DownloadIndicator(item: track)
             
@@ -289,7 +295,7 @@ private struct FavoriteButton: View {
         Button {
             track.favorite.toggle()
         } label: {
-            Label("favorite", systemImage: track.favorite ? "heart.slash" : "heart")
+            Label("favorite", systemImage: track.favorite ? "star.slash" : "star")
         }
         .tint(.orange)
     }

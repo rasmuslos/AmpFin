@@ -33,7 +33,7 @@ internal extension NowPlaying {
                     Button {
                         track.favorite.toggle()
                     } label: {
-                        Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
+                        Label("favorite", systemImage: track.favorite ? "star.fill" : "star")
                     }
                     
                     Button {

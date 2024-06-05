@@ -84,7 +84,7 @@ struct PlaylistListRow: View {
             Button {
                 playlist.favorite.toggle()
             } label: {
-                Label("favorite", systemImage: playlist.favorite ? "heart.slash" : "heart")
+                Label("favorite", systemImage: playlist.favorite ? "star.slash" : "star")
                     .tint(.orange)
             }
         }

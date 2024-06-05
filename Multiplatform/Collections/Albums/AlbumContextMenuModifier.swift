@@ -61,7 +61,7 @@ struct AlbumContextMenuModifier: ViewModifier {
                 Button {
                     album.favorite.toggle()
                 } label: {
-                    Label("favorite", systemImage: album.favorite ? "heart.fill" : "heart")
+                    Label("favorite", systemImage: album.favorite ? "star.fill" : "star")
                 }
                 
                 Divider()

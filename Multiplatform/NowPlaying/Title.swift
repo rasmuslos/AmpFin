@@ -60,6 +60,7 @@ internal extension NowPlaying {
         var body: some View {
             HStack(spacing: 8) {
                 ItemImage(cover: track.cover)
+                    .shadow(radius: 10)
                     .frame(width: 72, height: 72)
                     .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab != .cover)
                     .onTapGesture {
@@ -97,12 +98,15 @@ private extension NowPlaying {
         var body: some View {
             if AudioPlayer.current.source == .local {
                 Button {
-                    track.favorite = !track.favorite
+                    track.favorite.toggle()
                 } label: {
-                    Label("favorite", systemImage: track.favorite ? "heart.fill" : "heart")
+                    Label("favorite", systemImage: "star")
+                        .symbolVariant(.circle.fill)
+                        .symbolRenderingMode(.palette)
+                        .symbolEffect(track.favorite ? .bounce.byLayer.down : .bounce.byLayer.up, options: .speed(0.4), value: track.favorite)
                         .labelStyle(.iconOnly)
-                        .font(.system(size: 24))
-                        .foregroundStyle(.white)
+                        .font(.title)
+                        .foregroundStyle(.white.opacity(track.favorite ? 0.8 : 0.4), .white.opacity(track.favorite ? 0.4 : 0.2))
                         .symbolRenderingMode(.palette)
                         .contentTransition(.symbolEffect(.replace))
                 }
