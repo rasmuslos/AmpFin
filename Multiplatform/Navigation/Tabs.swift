@@ -57,7 +57,7 @@ internal struct Tabs: View {
                 }
                 .tag(Selection.downloads)
                 .tabItem {
-                    Label("tab.downloads", systemImage: "arrow.down")
+                    Label("tab.downloads", systemImage: "arroyw.down")
                 }
                 
                 // MARK: Search

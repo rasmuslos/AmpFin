@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Defaults
 
-public enum RepeatMode: Int, Equatable, Codable {
+public enum RepeatMode: Int, Equatable, Codable, _DefaultsSerializable {
     case none = 0
     case track = 1
     case queue = 2

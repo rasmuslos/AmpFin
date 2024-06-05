@@ -60,6 +60,8 @@ let package = Package(
             .targetItem(name: "AFExtension", condition: .none),
             
             .targetItem(name: "AFOffline", condition: offlineCondition),
+            
+            .byName(name: "Defaults"),
         ], resources: [.process("RemoteAudioEndpoint/silence.wav")]),
     ]
 )

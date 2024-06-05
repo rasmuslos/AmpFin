@@ -8,8 +8,8 @@
 import Foundation
 import AVKit
 import OSLog
+import Defaults
 import AFFoundation
-import MediaPlayer
 
 @Observable
 internal final class LocalAudioEndpoint: AudioEndpoint {
@@ -30,7 +30,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     var _currentTime: Double = 0
     
     var _shuffled: Bool = false
-    var _repeatMode: RepeatMode = .none
+    var _repeatMode: RepeatMode = Defaults[.repeatMode]
     
     var buffering: Bool = false
     var duration: Double = 0
