@@ -39,7 +39,7 @@ extension NowPlaying {
                 case .headphones:
                     "headphones"
                 default:
-                    "waveform"
+                    "airplayaudio"
             }
         }
         private var showRouteLabel: Bool {
