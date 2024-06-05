@@ -15,22 +15,14 @@ struct TrackListRow: View {
     
     var disableMenu: Bool = false
     
-    var deleteCallback: TrackList.DeleteCallback = nil
+    var deleteCallback: TrackCollection.DeleteCallback = nil
     let startPlayback: () -> ()
     
     @State private var playing: Bool? = nil
     @State private var addToPlaylistSheetPresented = false
     
-    private var size: CGFloat {
-        album == nil ? 48 : 24
-    }
     private var showArtist: Bool {
         album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
-    }
-    
-    private var playbackIndicator: some View {
-        Image(systemName: "waveform")
-            .symbolEffect(.variableColor.iterative, isActive: playing ?? false)
     }
     
     var body: some View {
@@ -39,39 +31,7 @@ struct TrackListRow: View {
                 startPlayback()
             } label: {
                 HStack(spacing: 0) {
-                    Group {
-                        if album != nil {
-                            if playing == true {
-                                playbackIndicator
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            } else {
-                                Text(String(track.index.index))
-                                    .bold(track.favorite)
-                                    .fontDesign(.rounded)
-                                    .foregroundStyle(.secondary)
-                                    .padding(.vertical, 4)
-                            }
-                        } else {
-                            ItemImage(cover: track.cover)
-                                .overlay {
-                                    if playing == true {
-                                        ZStack {
-                                            Color.black.opacity(0.2)
-                                                .clipShape(RoundedRectangle(cornerRadius: 7))
-                                            
-                                            playbackIndicator
-                                                .font(.body)
-                                                .foregroundStyle(.white)
-                                        }
-                                    }
-                                }
-                        }
-                    }
-                    .id(track.id)
-                    .frame(width: size, height: size)
-                    .padding(.trailing, 8)
-                    .transition(.blurReplace)
+                    TrackCollection.TrackIndexCover(track: track, album: album)
                     
                     VStack(alignment: .leading) {
                         Text(track.name)
@@ -94,14 +54,6 @@ struct TrackListRow: View {
             }
             .buttonStyle(.plain)
             .hoverEffectDisabled()
-            .onChange(of: AudioPlayer.current.playing, initial: true) {
-                guard AudioPlayer.current.nowPlaying == track else {
-                    playing = nil
-                    return
-                }
-                
-                playing = AudioPlayer.current.playing
-            }
             
             DownloadIndicator(item: track)
             
@@ -185,7 +137,7 @@ internal extension TrackListRow {
         let track: Track
         let album: Album?
         
-        let deleteCallback: TrackList.DeleteCallback
+        let deleteCallback: TrackCollection.DeleteCallback
         
         @Binding var addToPlaylistSheetPresented: Bool
         

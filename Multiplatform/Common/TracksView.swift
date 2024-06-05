@@ -12,6 +12,7 @@ import AFPlayback
 
 internal struct TracksView: View {
     @Environment(\.libraryDataProvider) private var dataProvider
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @Default(.sortOrder) private var sortOrder
     @Default(.sortAscending) private var sortAscending
@@ -37,18 +38,31 @@ internal struct TracksView: View {
     var body: some View {
         Group {
             if success {
-                List {
-                    TrackListButtons(startPlayback: startPlayback)
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
-                        .padding(.horizontal, 20)
-                    
-                    TrackList(tracks: tracks, container: nil, count: count) {
-                        loadTracks(reset: false)
+                Group {
+                    if horizontalSizeClass == .compact {
+                        List {
+                            TrackListButtons(startPlayback: startPlayback)
+                                .listRowSeparator(.hidden)
+                                .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
+                                .padding(.horizontal, 20)
+                            
+                            TrackTable(tracks: tracks, container: nil, count: count) {
+                                loadTracks(reset: false)
+                            }
+                            .padding(.horizontal, 20)
+                        }
+                        .listStyle(.plain)
+                    } else {
+                        VStack {
+                            TrackListButtons(startPlayback: startPlayback)
+                                .padding(.horizontal, 20)
+                            
+                            TrackTable(tracks: tracks, container: nil, count: count) {
+                                loadTracks(reset: false)
+                            }
+                        }
                     }
-                    .padding(.horizontal, 20)
                 }
-                .listStyle(.plain)
                 .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.tracks")
                 .toolbar {
                     SortSelector()

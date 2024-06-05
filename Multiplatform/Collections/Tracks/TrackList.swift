@@ -13,11 +13,11 @@ internal struct TrackList: View {
     let tracks: [Track]
     let container: Item?
     
-    var deleteCallback: DeleteCallback = nil
-    var moveCallback: MoveCallback = nil
+    var deleteCallback: TrackCollection.DeleteCallback = nil
+    var moveCallback: TrackCollection.MoveCallback = nil
     
     var count = 0
-    var loadMore: LoadCallback = nil
+    var loadMore: TrackCollection.LoadCallback = nil
     
     @State private var working = false
     
@@ -70,9 +70,6 @@ private extension TrackList {
         }
     }
     
-    func startPlayback(index: Int, shuffle: Bool) {
-        AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: shuffle, playbackInfo: .init(container: container))
-    }
     func startPlayback(track: Track) {
         if let index = tracks.firstIndex(where: { $0.id == track.id }) {
             AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
@@ -85,9 +82,9 @@ private struct TrackSection: View {
     let album: Album?
     
     let startPlayback: (Track) -> ()
-    let deleteCallback: TrackList.DeleteCallback
-    let moveCallback: TrackList.MoveCallback
-    let loadMore: TrackList.LoadCallback
+    let deleteCallback: TrackCollection.DeleteCallback
+    let moveCallback: TrackCollection.MoveCallback
+    let loadMore: TrackCollection.LoadCallback
     
     var body: some View {
         if let moveCallback = moveCallback {
@@ -115,9 +112,9 @@ private struct ModifiedTrackListRow: View {
     let album: Album?
     
     let startPlayback: (Track) -> ()
-    let deleteCallback: TrackList.DeleteCallback
+    let deleteCallback: TrackCollection.DeleteCallback
     
-    let loadMore: TrackList.LoadCallback
+    let loadMore: TrackCollection.LoadCallback
     
     var body: some View {
         TrackListRow(track: track, album: album, deleteCallback: deleteCallback) {
@@ -132,7 +129,7 @@ private struct ModifiedTrackListRow: View {
 
 private struct DeleteSwipeActionModifier: ViewModifier {
     let track: Track
-    let callback: TrackList.DeleteCallback
+    let callback: TrackCollection.DeleteCallback
     
     func body(content: Content) -> some View {
         if let callback = callback {
@@ -149,13 +146,6 @@ private struct DeleteSwipeActionModifier: ViewModifier {
             content
         }
     }
-}
-
-internal extension TrackList {
-    typealias LoadCallback = (() -> Void)?
-    
-    typealias DeleteCallback = ((_ track: Track) -> Void)?
-    typealias MoveCallback = ((_ track: Track, _ to: Int) -> Void)?
 }
 
 #Preview {

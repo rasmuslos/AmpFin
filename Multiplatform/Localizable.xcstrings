@@ -2090,6 +2090,18 @@
         }
       }
     },
+    "table.album" : {
+
+    },
+    "table.artist" : {
+
+    },
+    "table.duration" : {
+
+    },
+    "table.name" : {
+
+    },
     "tip.artistPlayback.message" : {
       "localizations" : {
         "de" : {
