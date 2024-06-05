@@ -299,6 +299,9 @@
         }
       }
     },
+    "album.unknown" : {
+
+    },
     "album.view" : {
       "localizations" : {
         "de" : {
@@ -2072,7 +2075,20 @@
       }
     },
     "tab.library" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bibliothek"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library"
+          }
+        }
+      }
     },
     "tab.search" : {
       "localizations" : {
@@ -2091,15 +2107,95 @@
       }
     },
     "table.album" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Album"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Album"
+          }
+        }
+      }
     },
     "table.artist" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Künstler"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Artist"
+          }
+        }
+      }
     },
     "table.duration" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Länge"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duration"
+          }
+        }
+      }
+    },
+    "table.index" : {
+
+    },
+    "table.index %lld %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "table.index %1$lld %2$lld"
+          }
+        }
+      }
+    },
+    "table.lufs" : {
+
+    },
+    "table.lufs %f" : {
 
     },
     "table.name" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "table.plays" : {
+
+    },
+    "table.plays %lld" : {
+
+    },
+    "table.released" : {
 
     },
     "tip.artistPlayback.message" : {
