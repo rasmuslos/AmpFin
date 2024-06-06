@@ -68,7 +68,7 @@ internal extension TrackCollection {
             .frame(width: size, height: size)
             .padding(.trailing, 8)
             .transition(.blurReplace)
-            .onChange(of: AudioPlayer.current.playing, initial: true) {
+            .onChange(of: AudioPlayer.current.nowPlaying, initial: true) {
                 guard AudioPlayer.current.nowPlaying == track else {
                     playing = nil
                     return
