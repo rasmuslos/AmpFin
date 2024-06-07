@@ -13,12 +13,13 @@ import AFFoundation
 
 @Observable
 internal final class LocalAudioEndpoint: AudioEndpoint {
-    let audioPlayer: AVPlayer
+    let audioPlayer: AVQueuePlayer
     
     var history: [Track]
     var nowPlaying: Track?
     var queue: [Track]
     
+    var avPlayerQueue: [String]
     var unalteredQueue: [Track]
     
     var nowPlayingInfo = [String: Any]()
@@ -43,6 +44,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     
     private init() {
         audioPlayer = .init()
+        audioPlayer.actionAtItemEnd = .pause
         audioPlayer.allowsExternalPlayback = false
         audioPlayer.usesExternalPlaybackWhileExternalScreenIsActive = true
         
@@ -50,6 +52,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
         nowPlaying = nil
         queue = []
         
+        avPlayerQueue = []
         unalteredQueue = []
         
         setupTimeObserver()

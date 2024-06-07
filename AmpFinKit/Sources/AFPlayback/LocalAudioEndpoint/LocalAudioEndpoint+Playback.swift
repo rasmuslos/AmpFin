@@ -31,7 +31,7 @@ internal extension LocalAudioEndpoint {
         queue = Array(tracks[startIndex + 1..<tracks.count])
         
         setNowPlaying(track: tracks[startIndex])
-        audioPlayer.replaceCurrentItem(with: avPlayerItem(track: nowPlaying!))
+        populateAVPlayerQueue()
         
         #if !os(macOS)
         AudioPlayer.setupAudioSession()
