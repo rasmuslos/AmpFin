@@ -85,17 +85,14 @@ extension NowPlaying {
                                 .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 16, style: .continuous))
                                 .modifier(NowPlaying.ContextMenuModifier(track: nowPlaying, animateForwards: $animateForwards))
                                 .foregroundStyle(.primary)
-                                .background {
-                                    Rectangle()
-                                        .foregroundStyle(.ultraThinMaterial)
-                                }
+                                .background(.regularMaterial)
                                 .transition(.move(edge: .bottom))
                                 .clipShape(.rect(cornerRadius: 16, style: .continuous))
                                 .draggable(nowPlaying) {
                                     TrackListRow.TrackPreview(track: nowPlaying)
                                         .padding()
                                 }
-                                .shadow(color: .black.opacity(0.25), radius: 20)
+                                .shadow(color: .black.opacity(0.4), radius: 20)
                                 .padding(.bottom, 10)
                                 .padding(.horizontal, 10)
                                 .zIndex(1)

@@ -22,6 +22,7 @@ internal extension NowPlaying {
             
             ItemImage(cover: track.cover)
                 .id(track.id)
+                .shadow(radius: 20)
                 .scaleEffect(AudioPlayer.current.playing ? 1 : 0.8)
                 .animation(.spring(duration: 0.3, bounce: 0.6), value: AudioPlayer.current.playing)
                 .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab == .cover)

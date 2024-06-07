@@ -210,7 +210,7 @@ private struct Line: View {
                     .task {
                         pulse = 1
                         
-                        withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                        withAnimation(.easeInOut(duration: 2.5).repeatForever(autoreverses: true)) {
                             pulse = 1.2
                         }
                     }
