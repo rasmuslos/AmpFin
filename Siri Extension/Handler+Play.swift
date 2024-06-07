@@ -45,7 +45,7 @@ extension IntentHandler: INPlayMediaIntentHandling {
         } catch SearchError.unsupportedMediaType {
             return [.unsupported(forReason: .unsupportedMediaType)]
         } catch SearchError.notFound {
-            return []
+            return [.unsupported()]
         } catch {
             return [.unsupported(forReason: .serviceUnavailable)]
         }

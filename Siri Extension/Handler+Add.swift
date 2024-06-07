@@ -39,7 +39,7 @@ extension IntentHandler: INAddMediaIntentHandling {
             
             return resolved
         } catch SearchError.notFound {
-            return []
+            return [.unsupported()]
         } catch SearchError.unsupportedMediaType {
             return [.unsupported(forReason: .unsupportedMediaType)]
         } catch {
