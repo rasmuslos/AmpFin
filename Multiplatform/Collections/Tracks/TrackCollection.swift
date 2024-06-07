@@ -23,59 +23,44 @@ internal extension TrackCollection {
         let track: Track
         let album: Album?
         
-        @State private var playing: Bool? = nil
-        
         private var size: CGFloat {
             album == nil ? 48 : 24
         }
         
-        private var playbackIndicator: some View {
-            Image(systemName: "waveform")
-                .symbolEffect(.variableColor.iterative, isActive: playing ?? false)
+        private var active: Bool {
+            AudioPlayer.current.nowPlaying == track
         }
         
         var body: some View {
             Group {
                 if album != nil {
-                    if playing == true {
-                        playbackIndicator
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    } else {
-                        Text(String(track.index.index))
-                            .bold(track.favorite)
-                            .fontDesign(.rounded)
-                            .foregroundStyle(.secondary)
-                            .padding(.vertical, 4)
-                    }
+                    Text(String(track.index.index))
+                        .bold(track.favorite)
+                        .fontDesign(.rounded)
+                        .foregroundStyle(.secondary)
+                        .padding(.vertical, 4)
+                        .opacity(active ? 0 : 1)
                 } else {
                     ItemImage(cover: track.cover)
-                        .overlay {
-                            if playing == true {
-                                ZStack {
-                                    Color.black.opacity(0.2)
-                                        .clipShape(RoundedRectangle(cornerRadius: 7))
-                                    
-                                    playbackIndicator
-                                        .font(.body)
-                                        .foregroundStyle(.white)
-                                }
-                            }
-                        }
                 }
             }
             .id(track.id)
             .frame(width: size, height: size)
-            .padding(.trailing, 8)
-            .transition(.blurReplace)
-            .onChange(of: AudioPlayer.current.nowPlaying, initial: true) {
-                guard AudioPlayer.current.nowPlaying == track else {
-                    playing = nil
-                    return
+            .overlay {
+                ZStack {
+                    if album == nil {
+                        Color.black.opacity(0.2)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+                    
+                    // apparently SwiftUI cannot cope with this symbol effect and enabling it causes all animations to have an abysmal frame-rate... I have no idea why though
+                    Image(systemName: "waveform")
+                        .font(album == nil ? .body : .caption)
+                        .foregroundStyle(album == nil ? .white : .secondary)
                 }
-                
-                playing = AudioPlayer.current.playing
+                .opacity(active ? 1 : 0)
             }
+            .padding(.trailing, 8)
         }
     }
 }

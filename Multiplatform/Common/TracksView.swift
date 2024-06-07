@@ -50,7 +50,7 @@ internal struct TracksView: View {
                                 .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
                                 .padding(.horizontal, 20)
                             
-                            TrackTable(tracks: tracks, container: nil, count: count) {
+                            TrackList(tracks: tracks, container: nil, count: count) {
                                 loadTracks(reset: false)
                             }
                             .padding(.horizontal, 20)
