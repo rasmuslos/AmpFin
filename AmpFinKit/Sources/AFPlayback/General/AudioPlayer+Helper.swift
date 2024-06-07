@@ -12,7 +12,7 @@ internal extension AudioPlayer {
     @available(macOS, unavailable)
     static func setupAudioSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback)
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: .longFormAudio)
         } catch {
             logger.fault("Failed to setup audio session")
         }

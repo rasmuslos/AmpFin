@@ -41,5 +41,7 @@
 	</array>
 	<key>CoreSpotlightContinuation</key>
 	<true/>
+	<key>AVInitialRouteSharingPolicy</key>
+	<string>LongFormAudio</string>
 </dict>
 </plist>

@@ -104,7 +104,6 @@ extension NowPlaying {
                         
                         Spacer()
                         
-                        
                         Button {
                             AirPlay.shared.presentPicker()
                         } label: {
