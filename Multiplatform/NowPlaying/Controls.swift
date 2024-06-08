@@ -28,9 +28,7 @@ extension NowPlaying {
         @State private var animateBackward = false
         @State private var animateForward = false
         
-        private var playedPercentage: Double {
-            (AudioPlayer.current.currentTime / AudioPlayer.current.duration) * 100
-        }
+        private var playedPercentage: Double { AudioPlayer.current.currentTime / AudioPlayer.current.duration }
         
         private var qualityText: String? {
             if let mediaInfo = mediaInfo {
@@ -73,7 +71,7 @@ extension NowPlaying {
                     Slider(
                         percentage: .init(get: { seekDragging ? draggedPercentage : playedPercentage }, set: {
                             draggedPercentage = $0
-                            AudioPlayer.current.currentTime = AudioPlayer.current.duration * ($0 / 100)
+                            AudioPlayer.current.currentTime = AudioPlayer.current.duration * $0
                         }),
                         dragging: .init(get: { seekDragging }, set: {
                             seekDragging = $0

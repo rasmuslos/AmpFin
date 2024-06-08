@@ -16,14 +16,16 @@ extension NowPlaying {
         
         var body: some View {
             GeometryReader { geometry in
-                let width = geometry.size.width * min(1, max(0, CGFloat(self.percentage / 100)))
+                let width = geometry.size.width * min(1, max(0, CGFloat(self.percentage)))
                 
                 ZStack(alignment: .leading) {
                     Rectangle()
                         .foregroundStyle(.ultraThinMaterial)
+                    
                     Rectangle()
-                        .foregroundStyle(dragging ? .ultraThickMaterial : .thickMaterial)
                         .frame(width: width)
+                        .animation(.spring, value: width)
+                        .foregroundStyle(dragging ? .ultraThickMaterial : .thickMaterial)
                 }
                 .clipShape(.rect(cornerRadius: 8))
                 .highPriorityGesture(DragGesture(minimumDistance: 0)
@@ -36,10 +38,10 @@ extension NowPlaying {
                         }
                         
                         let delta = value.location.x - lastLocation.x
-                        let offset = (delta / geometry.size.width) * 100
+                        let offset = (delta / geometry.size.width)
                         
                         self.lastLocation = value.location
-                        percentage = min(100, max(0, percentage + offset))
+                        percentage = min(1, max(0, percentage + offset))
                     }
                     .onEnded { _ in
                         dragging = false

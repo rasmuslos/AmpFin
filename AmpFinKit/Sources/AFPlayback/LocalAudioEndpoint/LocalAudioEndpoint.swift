@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import AVKit
 import OSLog
 import Defaults
@@ -41,6 +42,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     // MARK: Util
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
+    var volumeSubscription: AnyCancellable? = nil
     
     private init() {
         audioPlayer = .init()

@@ -13,7 +13,7 @@ extension NowPlaying {
     struct VolumeSlider: View {
         @Binding var dragging: Bool
         
-        @State private var volume = Double(AudioPlayer.current.volume) * 100
+        @State private var volume = Double(AudioPlayer.current.volume)
         
         var body: some View {
             HStack {
@@ -38,19 +38,14 @@ extension NowPlaying {
             .dynamicTypeSize(dragging ? .xLarge : .medium)
             .frame(height: 0)
             .animation(.easeInOut, value: dragging)
-            .onChange(of: volume) {
-                if dragging {
-                    AudioPlayer.current.volume = Float(volume / 100)
+            .onChange(of: AudioPlayer.current.volume) {
+                volume = Double($1)
+            }
+            .onChange(of: dragging) {
+                if $1 == false {
+                    AudioPlayer.current.volume = Float(volume)
                 }
             }
-            // because apple makes stupid software i guess
-            .onReceive(AVAudioSession.sharedInstance().publisher(for: \.outputVolume), perform: { value in
-                if !dragging && AudioPlayer.current.source == .local {
-                    withAnimation {
-                        volume = Double(value) * 100
-                    }
-                }
-            })
         }
     }
 }
