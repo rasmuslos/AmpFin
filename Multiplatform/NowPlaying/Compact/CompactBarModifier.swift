@@ -81,7 +81,7 @@ extension NowPlaying {
                                     .imageScale(.large)
                                 }
                                 .frame(height: 56)
-                                .padding(.horizontal, 10)
+                                .padding(.horizontal, 8)
                                 .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 16, style: .continuous))
                                 .modifier(NowPlaying.ContextMenuModifier(track: nowPlaying, animateForwards: $animateForwards))
                                 .foregroundStyle(.primary)
@@ -93,8 +93,8 @@ extension NowPlaying {
                                         .padding()
                                 }
                                 .shadow(color: .black.opacity(0.4), radius: 20)
-                                .padding(.bottom, 10)
-                                .padding(.horizontal, 10)
+                                .padding(.bottom, 12)
+                                .padding(.horizontal, 12)
                                 .zIndex(1)
                                 .onTapGesture {
                                     nowPlayingViewState.setNowPlayingViewPresented(true)

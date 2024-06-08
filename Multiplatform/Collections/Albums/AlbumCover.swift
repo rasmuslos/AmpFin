@@ -17,22 +17,33 @@ internal struct AlbumCover: View {
         VStack(alignment: .leading, spacing: 0) {
             ItemImage(cover: album.cover)
             
-            Text(album.name)
-                .font(.subheadline)
-                .lineLimit(1)
-                .padding(.top, 8)
-                .padding(.bottom, 2)
-            
-            Group {
-                if let artistName = album.artistName {
-                    Text(artistName)
-                } else {
-                    Text(verbatim: "")
+            HStack(alignment: .top, spacing: 0) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(album.name)
+                        .font(.subheadline)
+                        .lineLimit(1)
+                    
+                    Group {
+                        if let artistName = album.artistName {
+                            Text(artistName)
+                        } else {
+                            Text(verbatim: "")
+                        }
+                    }
+                    .font(.subheadline)
+                    .lineLimit(1)
+                    .foregroundStyle(.secondary)
+                }
+                
+                if album.favorite {
+                    Spacer(minLength: 4)
+                    
+                    Image(systemName: "star.fill")
+                        .font(.caption2)
+                        .foregroundStyle(.tint)
                 }
             }
-            .font(.subheadline)
-            .lineLimit(1)
-            .foregroundStyle(.secondary)
+            .padding(.top, 8)
         }
         .padding(8)
         .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 12))
@@ -54,6 +65,10 @@ internal extension AlbumCover {
         playCount: 0,
         lastPlayed: nil)
     ).redacted(reason: .placeholder)
+}
+
+#Preview {
+    AlbumCover(album: .fixture)
 }
 
 #Preview {

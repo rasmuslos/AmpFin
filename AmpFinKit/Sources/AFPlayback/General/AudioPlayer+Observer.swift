@@ -18,7 +18,9 @@ extension AudioPlayer {
         }
         
         NotificationCenter.default.addObserver(forName: Item.affinityChangedNotification, object: nil, queue: nil) { [self] event in
-            updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
+            if event.object as? String == nowPlaying?.id {
+                updateCommandCenter(favorite: event.userInfo?["favorite"] as? Bool ?? false)
+            }
         }
         
         // For some reason queue & repeat mode don't work

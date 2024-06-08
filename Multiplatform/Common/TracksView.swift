@@ -108,6 +108,18 @@ internal struct TracksView: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: Item.affinityChangedNotification)) {
+            guard let id = $0.object as? String else {
+                return
+            }
+            
+            guard let index = tracks.firstIndex(where: { $0.id == id }) else {
+                return
+            }
+            
+            tracks.remove(at: index)
+            count -= 1
+        }
     }
     
     private func loadTracks(reset: Bool) {
