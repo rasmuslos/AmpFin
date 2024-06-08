@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 import AFFoundation
 import AFNetwork
 
@@ -15,12 +16,47 @@ extension DownloadManager {
             URLQueryItem(name: "api_key", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
-            URLQueryItem(name: "container", value: "mp3,aac,flac,alac,webma,webm|webma,wav,aiff,aiff|aif"),
+            URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aif"),
             URLQueryItem(name: "startTimeTicks", value: "0"),
             URLQueryItem(name: "audioCodec", value: "aac"),
-            URLQueryItem(name: "transcodingContainer", value: "aac"),
+            URLQueryItem(name: "transcodingContainer", value: "m4a"),
             URLQueryItem(name: "transcodingProtocol", value: "http"),
         ])))
+    }
+    
+    func getTrackContainer(trackId: String) -> OfflineTrack.Container {
+        var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
+        descriptor.fetchLimit = 1
+        let ctx = ModelContext(PersistenceManager.shared.modelContainer)
+        if let track = try? ctx.fetch(descriptor).first {
+            return track.container ?? .flac
+        }
+        return .flac
+    }
+    
+    func setTrackFileType(track: OfflineTrack, mimeType: String?) {
+        switch mimeType {
+        case "audio/aac":
+            track.container = .aac
+            // Both alac and aac can be in this container
+        case "audio/mp4":
+            track.container = .m4a
+        case "audio/flac":
+            track.container = .flac
+        case "audio/x-flac":
+            track.container = .flac
+        case "audio/mpeg":
+            track.container = .mp3
+        case "audio/wav":
+            track.container = .wav
+        case "audio/x-aiff":
+            track.container = .aiff
+        case "audio/webm":
+            track.container = .webma
+            // Use flac if unsure
+        default:
+            track.container = .flac
+        }
     }
     
     @MainActor
@@ -44,8 +80,15 @@ extension DownloadManager {
         try? FileManager.default.removeItem(at: url(trackId: trackId))
     }
     
+    func url(track: OfflineTrack) -> URL {
+        let trackId = track.id
+        let container = track.container ?? .flac
+        return tracks.appending(path: "\(trackId).\(container)")
+    }
+    
     public func url(trackId: String) -> URL {
-        tracks.appending(path: "\(trackId).flac")
+        let container = getTrackContainer(trackId: trackId)
+        return tracks.appending(path: "\(trackId).\(container)")
     }
 }
 

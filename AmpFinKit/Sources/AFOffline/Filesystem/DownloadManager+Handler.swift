@@ -34,7 +34,9 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             }
             
             var values = URLResourceValues()
-            var destination = self.url(trackId: track.id)
+            let mimeType = downloadTask.response?.mimeType
+            setTrackFileType(track: track, mimeType: mimeType)
+            var destination = url(track: track)
             
             values.isExcludedFromBackup = true
             try? destination.setResourceValues(values)
