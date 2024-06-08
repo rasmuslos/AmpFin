@@ -39,9 +39,9 @@ extension DownloadManager {
     func setTrackFileType(track: OfflineTrack, mimeType: String?) {
         switch mimeType {
             case "audio/aac":
-                // Both alac and aac can be in this container
                 track.container = .aac
             case "audio/mp4":
+                // Both alac and aac can be in this container
                 track.container = .m4a
             case "audio/mpeg":
                 track.container = .mp3
@@ -51,8 +51,8 @@ extension DownloadManager {
                 track.container = .aiff
             case "audio/webm":
                 track.container = .webma
-                // Use flac if unsure
             default:
+                // Use flac if unsure
                 track.container = .flac
         }
     }
