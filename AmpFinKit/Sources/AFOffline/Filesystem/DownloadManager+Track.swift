@@ -36,6 +36,7 @@ extension DownloadManager {
         return container
     }
     
+    @MainActor
     func setTrackFileType(track: OfflineTrack, mimeType: String?) {
         switch mimeType {
             case "audio/aac":

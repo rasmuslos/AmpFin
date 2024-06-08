@@ -26,40 +26,48 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         }
         
         Task {
-            guard let track = try? await OfflineManager.shared.offlineTrack(taskId: downloadTask.taskIdentifier) else {
+            let result = try? await Task<(URL, String), Error> { @MainActor in
+                guard let track = try? OfflineManager.shared.offlineTrack(taskId: downloadTask.taskIdentifier) else {
+                    throw OfflineManager.OfflineError.notFound
+                }
+                
+                let mimeType = downloadTask.response?.mimeType
+                setTrackFileType(track: track, mimeType: mimeType)
+                
+                var values = URLResourceValues()
+                values.isExcludedFromBackup = true
+                
+                var destination = url(track: track)
+                try? destination.setResourceValues(values)
+                
+                track.downloadId = nil
+                
+                return (destination, track.id)
+            }.value
+            
+            guard let (destination, trackId) = result else {
                 self.logger.fault("Unknown download finished")
                 try? FileManager.default.removeItem(at: tmpLocation)
                 
                 return
             }
             
-            let mimeType = downloadTask.response?.mimeType
-            setTrackFileType(track: track, mimeType: mimeType)
-            
-            var values = URLResourceValues()
-            values.isExcludedFromBackup = true
-            
-            var destination = url(track: track)
-            try? destination.setResourceValues(values)
-            
             do {
                 try? FileManager.default.removeItem(at: destination)
                 try FileManager.default.moveItem(at: tmpLocation, to: destination)
-                track.downloadId = nil
-                track.container = .flac
                 
-                NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
+                NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: trackId)
                 
                 Self.parentNotifyTask?.cancel()
                 Self.parentNotifyTask = Task.detached {
                     try await Task.sleep(nanoseconds: UInt64(0.5) * NSEC_PER_SEC)
                     
-                    for parentId in try await OfflineManager.shared.parentIds(childId: track.id) {
+                    for parentId in try await OfflineManager.shared.parentIds(childId: trackId) {
                         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: parentId)
                     }
                 }
                 
-                self.logger.info("Download finished: \(track.id) (\(track.name))")
+                self.logger.info("Download finished: \(trackId)")
             } catch {
                 try? FileManager.default.removeItem(at: tmpLocation)
                 
