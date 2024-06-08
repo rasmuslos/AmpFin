@@ -59,7 +59,15 @@ internal extension LocalAudioEndpoint {
             }
         }
         
-        #if !os(macOS)
+        NotificationCenter.default.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: nil) { _ in
+            self.outputPort = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portType ?? .builtInSpeaker
+        }
+        
+        #if !os(macOS) && !targetEnvironment(macCatalyst)
+        volumeSubscription = AVAudioSession.sharedInstance().publisher(for: \.outputVolume).sink {
+            self.volume = $0
+        }
+        
         NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), queue: nil) { [self] notification in
             guard let userInfo = notification.userInfo, let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
                 return
@@ -79,15 +87,7 @@ internal extension LocalAudioEndpoint {
         }
         #endif
         
-        NotificationCenter.default.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: nil) { _ in
-            self.outputPort = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portType ?? .builtInSpeaker
-        }
-        
         #if os(iOS)
-        volumeSubscription = AVAudioSession.sharedInstance().publisher(for: \.outputVolume).sink {
-            self.volume = $0
-        }
-        
         NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { _ in
             self.setNowPlaying(track: nil)
         }
