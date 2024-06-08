@@ -129,7 +129,11 @@ internal extension LocalAudioEndpoint {
             #if os(iOS) && !targetEnvironment(macCatalyst)
             AVAudioSession.sharedInstance().outputVolume
             #else
-            audioPlayer.volume
+            // Why, Apple. The valid range is float from 0.0 to 1.0, and you will return 100
+            if (audioPlayer.volume > 1) {
+                audioPlayer.volume = 1.0
+            }
+            return audioPlayer.volume
             #endif
         }
         set {
