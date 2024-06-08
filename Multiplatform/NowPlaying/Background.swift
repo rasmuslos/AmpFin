@@ -27,9 +27,11 @@ extension NowPlaying {
                         .id(cover.url)
                         .blur(radius: 100)
                         .frame(maxWidth: .infinity)
-                    
+
+                    #if !targetEnvironment(macCatalyst)
                     FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.5), blur: 0.9)
                         .ignoresSafeArea(edges: .all)
+                    #endif
                 } else {
                     Color.black
                     Color.gray.opacity(0.8)
@@ -40,10 +42,12 @@ extension NowPlaying {
             #if !os(visionOS)
             .clipShape(.rect(cornerRadius: dragging ? UIScreen.main.displayCornerRadius : 0))
             #endif
+            #if !targetEnvironment(macCatalyst)
             .task(id: cover?.url) {
                 await imageColors.update(cover: cover)
                 imageColors.update(saturation: 0.7, luminance: 0.9)
             }
+            #endif
         }
     }
 }
