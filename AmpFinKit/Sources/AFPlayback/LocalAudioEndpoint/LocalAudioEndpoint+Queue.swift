@@ -11,8 +11,12 @@ import AFFoundation
 
 internal extension LocalAudioEndpoint {
     func trackDidFinish() {
-        if let nowPlaying = nowPlaying {
+        if let nowPlaying {
             history.append(nowPlaying)
+            
+            if avPlayerQueue.first == nowPlaying.id {
+                avPlayerQueue.removeFirst()
+            }
         }
         
         let queueWasEmpty: Bool
@@ -32,10 +36,6 @@ internal extension LocalAudioEndpoint {
         }
         
         setNowPlaying(track: queue.removeFirst())
-        
-        if !avPlayerQueue.isEmpty {
-            avPlayerQueue.removeFirst()
-        }
         
         if let nowPlaying {
             if avPlayerQueue.first == nowPlaying.id {

@@ -25,37 +25,35 @@ extension DownloadManager {
     }
     
     func getTrackContainer(trackId: String) -> OfflineTrack.Container {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
         var descriptor = FetchDescriptor<OfflineTrack>(predicate: #Predicate { $0.id == trackId })
         descriptor.fetchLimit = 1
-        let ctx = ModelContext(PersistenceManager.shared.modelContainer)
-        if let track = try? ctx.fetch(descriptor).first {
-            return track.container ?? .flac
+        
+        guard let container = try? context.fetch(descriptor).first?.container else {
+            return .flac
         }
-        return .flac
+        
+        return container
     }
     
     func setTrackFileType(track: OfflineTrack, mimeType: String?) {
         switch mimeType {
-        case "audio/aac":
-            track.container = .aac
-            // Both alac and aac can be in this container
-        case "audio/mp4":
-            track.container = .m4a
-        case "audio/flac":
-            track.container = .flac
-        case "audio/x-flac":
-            track.container = .flac
-        case "audio/mpeg":
-            track.container = .mp3
-        case "audio/wav":
-            track.container = .wav
-        case "audio/x-aiff":
-            track.container = .aiff
-        case "audio/webm":
-            track.container = .webma
-            // Use flac if unsure
-        default:
-            track.container = .flac
+            case "audio/aac":
+                // Both alac and aac can be in this container
+                track.container = .aac
+            case "audio/mp4":
+                track.container = .m4a
+            case "audio/mpeg":
+                track.container = .mp3
+            case "audio/wav":
+                track.container = .wav
+            case "audio/x-aiff":
+                track.container = .aiff
+            case "audio/webm":
+                track.container = .webma
+                // Use flac if unsure
+            default:
+                track.container = .flac
         }
     }
     
