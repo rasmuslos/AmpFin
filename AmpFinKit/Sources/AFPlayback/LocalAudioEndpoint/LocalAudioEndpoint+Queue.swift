@@ -77,17 +77,17 @@ internal extension LocalAudioEndpoint {
             break
         }
         
-        logger.info("AVQueuePlayer queue outdated after index \(startIndex) / \(self.avPlayerQueue.count)")
-        
         guard startIndex > -1 else {
             return
         }
+        
+        logger.info("AVQueuePlayer queue outdated after index \(startIndex) / \(self.avPlayerQueue.count)")
         
         for item in audioPlayer.items()[startIndex..<audioPlayer.items().count] {
             audioPlayer.remove(item)
         }
         
-        while startIndex + 1 < avPlayerQueue.count {
+        while startIndex < avPlayerQueue.count {
             avPlayerQueue.removeLast()
         }
         
@@ -135,14 +135,14 @@ internal extension LocalAudioEndpoint {
     }
     
     func skip(to: Int) {
-        if queue.count < to + 1 {
+        guard queue.count > to else {
             return
         }
         
-        let id = queue[to].id
-        while(nowPlaying?.id != id) {
-            advanceToNextTrack()
-        }
+        history.append(contentsOf: queue[0..<to])
+        queue.remove(atOffsets: IndexSet(0..<to))
+        
+        advanceToNextTrack()
     }
     
     // MARK: Updating
