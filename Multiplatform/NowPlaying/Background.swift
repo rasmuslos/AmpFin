@@ -28,7 +28,7 @@ extension NowPlaying {
                         .blur(radius: 100)
                         .frame(maxWidth: .infinity)
                     
-                    FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.4), blur: 0.8)
+                    FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.5), blur: 0.9)
                         .ignoresSafeArea(edges: .all)
                 } else {
                     Color.black
@@ -42,6 +42,7 @@ extension NowPlaying {
             #endif
             .task(id: cover?.url) {
                 await imageColors.update(cover: cover)
+                imageColors.update(saturation: 0.7, luminance: 0.9)
             }
         }
     }
