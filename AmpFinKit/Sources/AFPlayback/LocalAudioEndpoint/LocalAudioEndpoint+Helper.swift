@@ -81,4 +81,9 @@ internal extension LocalAudioEndpoint {
             playbackReporter = nil
         }
     }
+    
+    static func audioRoute() -> AudioPlayer.AudioRoute {
+        let output = AVAudioSession.sharedInstance().currentRoute.outputs.first
+        return .init(port: output?.portType ?? .builtInSpeaker, name: output?.portName ?? "-/-")
+    }
 }

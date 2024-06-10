@@ -49,6 +49,15 @@ public extension AudioPlayer {
         case local
         case jellyfinRemote
     }
+    
+    struct AudioRoute {
+        public let port: AVAudioSession.Port
+        public let name: String
+        
+        public var showLabel: Bool {
+            port == .bluetoothLE || port == .bluetoothHFP || port == .bluetoothA2DP || port == .carAudio || port == .airPlay
+        }
+    }
 }
 
 public extension AudioPlayer {

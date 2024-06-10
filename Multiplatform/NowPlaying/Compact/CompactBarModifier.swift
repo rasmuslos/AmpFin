@@ -43,9 +43,20 @@ extension NowPlaying {
                                         .frame(width: 40, height: 40)
                                         .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
                                     
-                                    Text(nowPlaying.name)
-                                        .lineLimit(1)
-                                        .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
+                                    VStack(alignment: .leading, spacing: 0) {
+                                        if AudioPlayer.current.outputRoute.showLabel {
+                                            Text(AudioPlayer.current.outputRoute.name)
+                                                .font(.caption2)
+                                                .fontDesign(.rounded)
+                                                .lineLimit(1)
+                                                .foregroundStyle(.secondary)
+                                        }
+                                        
+                                        Text(nowPlaying.name)
+                                            .fontWeight(AudioPlayer.current.outputRoute.showLabel ? .semibold : .regular)
+                                            .lineLimit(1)
+                                            .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
+                                    }
                                     
                                     Spacer()
                                     

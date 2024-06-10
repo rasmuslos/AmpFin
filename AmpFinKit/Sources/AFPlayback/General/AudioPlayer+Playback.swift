@@ -126,8 +126,8 @@ extension AudioPlayer {
         }
     }
     
-    public var outputPort: AVAudioSession.Port {
-        endpoint?.outputPort ?? .builtInSpeaker
+    public var outputRoute: AudioRoute {
+        endpoint?.outputRoute ?? .init(port: .builtInSpeaker, name: "-/-")
     }
     
     public func seek(seconds: Double) async {

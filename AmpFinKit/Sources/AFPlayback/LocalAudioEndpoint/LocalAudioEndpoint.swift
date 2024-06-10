@@ -37,7 +37,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     var buffering: Bool = false
     var duration: Double = 0
     
-    var outputPort = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portType ?? .builtInSpeaker
+    var outputRoute = LocalAudioEndpoint.audioRoute()
     
     // MARK: Util
     

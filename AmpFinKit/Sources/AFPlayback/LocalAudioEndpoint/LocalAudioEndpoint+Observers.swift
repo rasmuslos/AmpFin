@@ -60,7 +60,7 @@ internal extension LocalAudioEndpoint {
         }
         
         NotificationCenter.default.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: nil) { _ in
-            self.outputPort = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portType ?? .builtInSpeaker
+            self.outputRoute = Self.audioRoute()
         }
         
         #if !os(macOS) && !targetEnvironment(macCatalyst)

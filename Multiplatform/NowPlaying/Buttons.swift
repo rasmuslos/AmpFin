@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-import AVKit
 import AmpFinKit
 import AFPlayback
+import AVKit
 
 extension NowPlaying {
     struct Buttons: View {
@@ -21,7 +21,7 @@ extension NowPlaying {
         }
         
         private var routeIcon: String {
-            switch AudioPlayer.current.outputPort {
+            switch AudioPlayer.current.outputRoute.port {
                 case .usbAudio:
                     "cable.connector"
                 case .thunderbolt:
@@ -41,9 +41,6 @@ extension NowPlaying {
                 default:
                     "airplayaudio"
             }
-        }
-        private var showRouteLabel: Bool {
-            AudioPlayer.current.outputPort == .bluetoothLE || AudioPlayer.current.outputPort == .bluetoothHFP || AudioPlayer.current.outputPort == .bluetoothA2DP || AudioPlayer.current.outputPort == .carAudio || AudioPlayer.current.outputPort == .airPlay
         }
         
         @ViewBuilder private var lyricsButton: some View {
@@ -115,14 +112,13 @@ extension NowPlaying {
                         .modifier(HoverEffectModifier(padding: 4))
                         .frame(width: 75)
                         .overlay(alignment: .bottom) {
-                            if showRouteLabel, let outputName = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portName {
-                                Text(outputName)
+                            if AudioPlayer.current.outputRoute.showLabel {
+                                Text(AudioPlayer.current.outputRoute.name)
                                     .lineLimit(1)
                                     .font(.caption2)
                                     .foregroundStyle(.thinMaterial)
                                     .offset(y: 12)
                                     .fixedSize()
-                                    .id(AudioPlayer.current.outputPort)
                             }
                         }
                         
@@ -144,12 +140,11 @@ extension NowPlaying {
                             .buttonStyle(SymbolButtonStyle(active: false))
                             .modifier(HoverEffectModifier(padding: 4))
                             
-                            if showRouteLabel, let outputName = AVAudioSession.sharedInstance().currentRoute.outputs.first?.portName {
-                                Text(outputName)
+                            if AudioPlayer.current.outputRoute.showLabel {
+                                Text(AudioPlayer.current.outputRoute.name)
                                     .lineLimit(1)
                                     .font(.caption)
                                     .foregroundStyle(.thinMaterial)
-                                    .id(AudioPlayer.current.outputPort)
                             }
                         }
                         
