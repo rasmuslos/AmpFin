@@ -40,7 +40,13 @@ extension NowPlaying {
             .allowsHitTesting(false)
             .overlay(.black.opacity(0.25))
             #if !os(visionOS)
-            .clipShape(.rect(cornerRadius: dragging ? UIScreen.main.displayCornerRadius : 0))
+            .mask {
+                VStack(spacing: 0) {
+                    UnevenRoundedRectangle(topLeadingRadius: dragging ? UIScreen.main.displayCornerRadius : 0, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: dragging ? UIScreen.main.displayCornerRadius : 0, style: .continuous)
+                        .frame(height: 60)
+                    Rectangle()
+                }
+            }
             #endif
             #if !targetEnvironment(macCatalyst)
             .task(id: cover?.url) {
