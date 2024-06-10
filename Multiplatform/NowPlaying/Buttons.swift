@@ -115,7 +115,7 @@ extension NowPlaying {
                             if AudioPlayer.current.outputRoute.showLabel {
                                 Text(AudioPlayer.current.outputRoute.name)
                                     .lineLimit(1)
-                                    .font(.caption2)
+                                    .font(.caption2.smallCaps())
                                     .foregroundStyle(.thinMaterial)
                                     .offset(y: 12)
                                     .fixedSize()
@@ -143,7 +143,7 @@ extension NowPlaying {
                             if AudioPlayer.current.outputRoute.showLabel {
                                 Text(AudioPlayer.current.outputRoute.name)
                                     .lineLimit(1)
-                                    .font(.caption)
+                                    .font(.caption.smallCaps())
                                     .foregroundStyle(.thinMaterial)
                             }
                         }

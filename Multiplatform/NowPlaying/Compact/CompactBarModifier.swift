@@ -46,14 +46,13 @@ extension NowPlaying {
                                     VStack(alignment: .leading, spacing: 0) {
                                         if AudioPlayer.current.outputRoute.showLabel {
                                             Text(AudioPlayer.current.outputRoute.name)
-                                                .font(.caption2)
+                                                .font(.subheadline.smallCaps())
                                                 .fontDesign(.rounded)
                                                 .lineLimit(1)
                                                 .foregroundStyle(.secondary)
                                         }
                                         
                                         Text(nowPlaying.name)
-                                            .fontWeight(AudioPlayer.current.outputRoute.showLabel ? .semibold : .regular)
                                             .lineLimit(1)
                                             .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
                                     }

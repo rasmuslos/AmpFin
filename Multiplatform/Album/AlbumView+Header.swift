@@ -27,7 +27,7 @@ internal extension AlbumView {
                     
                     if offset > 0 {
                         Rectangle()
-                            .foregroundStyle(imageColors.background)
+                            .fill(imageColors.background.gradient.opacity(0.8))
                             .offset(y: -offset)
                             .frame(height: offset)
                     }
@@ -70,7 +70,7 @@ private struct AlbumTitle: View {
     var body: some View {
         VStack(alignment: alignment, spacing: 4) {
             Text(album.name)
-                .lineLimit(1)
+                .multilineTextAlignment(alignment == .leading ? .leading : .center)
                 .font(largeFont ? .title : .headline)
                 .foregroundStyle(imageColors.isLight ? .black : .white)
             
@@ -99,7 +99,7 @@ private struct AlbumTitle: View {
                     Text(album.genres.joined(separator: String(", ")))
                         .lineLimit(1)
                 }
-                .font(.caption)
+                .font(.caption.smallCaps())
                 .foregroundStyle(imageColors.primary.opacity(0.75))
             }
         }

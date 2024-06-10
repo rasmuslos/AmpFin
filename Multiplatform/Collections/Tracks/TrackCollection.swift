@@ -24,7 +24,11 @@ internal extension TrackCollection {
         let album: Album?
         
         private var size: CGFloat {
-            album == nil ? 48 : 24
+            if album == nil {
+                return 48
+            }
+            
+            return 20
         }
         
         private var active: Bool {
@@ -36,9 +40,9 @@ internal extension TrackCollection {
                 if album != nil {
                     Text(String(track.index.index))
                         .bold(track.favorite)
+                        .fixedSize()
                         .fontDesign(.rounded)
                         .foregroundStyle(.secondary)
-                        .padding(.vertical, 4)
                         .opacity(active ? 0 : 1)
                 } else {
                     ItemImage(cover: track.cover)

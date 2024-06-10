@@ -47,7 +47,7 @@ internal extension PlaylistView {
                         + Text(verbatim: " • ")
                         + Text(playlist.duration.duration)
                     }
-                    .font(.subheadline)
+                    .font(.subheadline.smallCaps())
                     .fontDesign(.rounded)
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 12)

@@ -222,7 +222,7 @@ private struct Line: View {
         .fontWeight(.heavy)
         .foregroundStyle(active ? .ultraThickMaterial : .ultraThinMaterial)
         .blur(radius: active || scrolling ? 0 : 2)
-        .opacity(active || scrolling ? 1 : 0.6)
+        .opacity(active || scrolling ? 1 : 0.4)
         .padding(.vertical, active || text != nil ? padding : 0)
     }
 }
