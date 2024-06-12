@@ -27,7 +27,7 @@ internal extension AlbumView {
                     
                     if offset > 0 {
                         Rectangle()
-                            .fill(imageColors.background.gradient.opacity(0.8))
+                            .fill(imageColors.background)
                             .offset(y: -offset)
                             .frame(height: offset)
                     }
@@ -51,7 +51,9 @@ internal extension AlbumView {
                 .padding(.bottom, 12)
                 .padding(.horizontal, 20)
             }
-            .background(imageColors.background)
+            .background {
+                LinearGradient(colors: [imageColors.background.opacity(0.8), imageColors.background], startPoint: .bottom, endPoint: .top)
+            }
             .listRowSeparator(.hidden)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
@@ -99,7 +101,7 @@ private struct AlbumTitle: View {
                     Text(album.genres.joined(separator: String(", ")))
                         .lineLimit(1)
                 }
-                .font(.caption.smallCaps())
+                .font(.caption)
                 .foregroundStyle(imageColors.primary.opacity(0.75))
             }
         }
