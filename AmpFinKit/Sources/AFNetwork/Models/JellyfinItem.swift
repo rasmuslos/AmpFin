@@ -18,7 +18,7 @@ internal struct JellyfinItem: Codable {
     let ChildCount: Int?
     let RunTimeTicks: UInt64?
     
-    let MediaType: String
+    let MediaType: String?
     
     let PremiereDate: String?
     let AlbumArtists: [JellyfinArtist]?
