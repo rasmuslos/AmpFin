@@ -249,6 +249,7 @@ private extension NowPlaying {
                     Rectangle()
                         .frame(maxHeight: active ? 0 : .infinity)
                         .padding(.horizontal, active ? 12 : 0)
+                        .animation(.spring(response: 0.7, dampingFraction: 0.8, blendDuration: 100), value: active)
                 }
                 .offset(y: active ? -146 : 0)
         }

@@ -107,7 +107,7 @@ private extension NowPlaying {
                         .symbolEffect(track.favorite ? .bounce.byLayer.down : .bounce.byLayer.up, options: .speed(0.4), value: track.favorite)
                         .labelStyle(.iconOnly)
                         .font(.title)
-                        .foregroundStyle(.white.opacity(track.favorite ? 0.8 : 0.4), .white.opacity(track.favorite ? 0.4 : 0.2))
+                        .foregroundStyle(.white.opacity(track.favorite ? 0.8 : 0.2), .white.opacity(track.favorite ? 0.4 : 0.2))
                         .symbolRenderingMode(.palette)
                         .contentTransition(.symbolEffect(.replace))
                 }

@@ -38,47 +38,51 @@ extension NowPlaying {
                                 .toolbarBackground(.hidden, for: .tabBar)
                             
                             if !nowPlayingViewState.presented {
-                                HStack(spacing: 8) {
-                                    ItemImage(cover: nowPlaying.cover)
-                                        .frame(width: 40, height: 40)
-                                        .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
-                                    
-                                    Text(nowPlaying.name)
-                                        .lineLimit(1)
-                                        .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
-                                    
-                                    Spacer()
-                                    
-                                    Group {
-                                        Group {
-                                            if AudioPlayer.current.buffering {
-                                                ProgressView()
-                                            } else {
-                                                Button {
-                                                    AudioPlayer.current.playing.toggle()
-                                                } label: {
-                                                    Label("playback.toggle", systemImage: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
-                                                        .labelStyle(.iconOnly)
-                                                        .contentTransition(.symbolEffect(.replace.byLayer.downUp))
-                                                        .animation(.spring(duration: 0.2, bounce: 0.7), value: AudioPlayer.current.playing)
-                                                }
-                                                .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
-                                            }
-                                        }
-                                        .transition(.blurReplace)
+                                Button {
+                                    nowPlayingViewState.setNowPlayingViewPresented(true)
+                                } label: {
+                                    HStack(spacing: 8) {
+                                        ItemImage(cover: nowPlaying.cover)
+                                            .frame(width: 40, height: 40)
+                                            .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
                                         
-                                        Button {
-                                            animateForwards.toggle()
-                                            AudioPlayer.current.advanceToNextTrack()
-                                        } label: {
-                                            Label("playback.next", systemImage: "forward.fill")
-                                                .labelStyle(.iconOnly)
-                                                .symbolEffect(.bounce.up, value: animateForwards)
+                                        Text(nowPlaying.name)
+                                            .lineLimit(1)
+                                            .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
+                                        
+                                        Spacer()
+                                        
+                                        Group {
+                                            Group {
+                                                if AudioPlayer.current.buffering {
+                                                    ProgressView()
+                                                } else {
+                                                    Button {
+                                                        AudioPlayer.current.playing.toggle()
+                                                    } label: {
+                                                        Label("playback.toggle", systemImage: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
+                                                            .labelStyle(.iconOnly)
+                                                            .contentTransition(.symbolEffect(.replace.byLayer.downUp))
+                                                            .animation(.spring(duration: 0.2, bounce: 0.7), value: AudioPlayer.current.playing)
+                                                    }
+                                                    .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
+                                                }
+                                            }
+                                            .transition(.blurReplace)
+                                            
+                                            Button {
+                                                animateForwards.toggle()
+                                                AudioPlayer.current.advanceToNextTrack()
+                                            } label: {
+                                                Label("playback.next", systemImage: "forward.fill")
+                                                    .labelStyle(.iconOnly)
+                                                    .symbolEffect(.bounce.up, value: animateForwards)
+                                            }
+                                            .padding(.horizontal, 8)
+                                            .sensoryFeedback(.increase, trigger: animateForwards)
                                         }
-                                        .padding(.horizontal, 8)
-                                        .sensoryFeedback(.increase, trigger: animateForwards)
+                                        .imageScale(.large)
                                     }
-                                    .imageScale(.large)
                                 }
                                 .frame(height: 56)
                                 .padding(.horizontal, 8)
@@ -96,9 +100,6 @@ extension NowPlaying {
                                 .padding(.bottom, 12)
                                 .padding(.horizontal, 12)
                                 .zIndex(1)
-                                .onTapGesture {
-                                    nowPlayingViewState.setNowPlayingViewPresented(true)
-                                }
                                 .dropDestination(for: Track.self) { tracks, _ in
                                     AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                                     return true

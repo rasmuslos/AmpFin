@@ -159,13 +159,11 @@ private struct FullscreenToolbarModifier: ViewModifier {
         } else if toolbarVisible {
             content
                 .symbolVariant(.circle)
-                .animation(.easeInOut, value: toolbarVisible)
         } else {
             content
                 .symbolVariant(.circle.fill)
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(.white, .black.opacity(0.25))
-                .animation(.easeInOut, value: toolbarVisible)
         }
     }
 }

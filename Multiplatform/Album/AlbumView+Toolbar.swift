@@ -178,7 +178,6 @@ private struct FullscreenToolbarModifier: ViewModifier {
         } else if toolbarBackgroundVisible {
             content
                 .symbolVariant(.circle)
-                .animation(.easeInOut, value: toolbarBackgroundVisible)
         } else {
             content
                 .symbolVariant(.circle.fill)
@@ -186,7 +185,6 @@ private struct FullscreenToolbarModifier: ViewModifier {
                 .foregroundStyle(
                     toolbarBackgroundVisible ? Color.accentColor : imageColors.isLight ? .black : .white,
                     toolbarBackgroundVisible ? .black.opacity(0.1) : .black.opacity(0.25))
-                .animation(.easeInOut, value: toolbarBackgroundVisible)
         }
     }
 }
