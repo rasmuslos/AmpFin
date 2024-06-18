@@ -102,15 +102,29 @@ struct AlbumContextMenuModifier: ViewModifier {
                 VStack(alignment: .leading, spacing: 0) {
                     ItemImage(cover: album.cover)
                     
-                    Text(album.name)
-                        .padding(.top, 16)
-                        .padding(.bottom, 2)
-                    
-                    if let artistName = album.artistName {
-                        Text(artistName)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                    HStack(alignment: .top, spacing: 0) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(album.name)
+                                .font(.subheadline)
+                                .lineLimit(1)
+                            
+                            if let artistName = album.artistName {
+                                Text(artistName)
+                                    .font(.subheadline)
+                                    .lineLimit(1)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        
+                        if album.favorite {
+                            Spacer(minLength: 4)
+                            
+                            Image(systemName: "star.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.tint)
+                        }
                     }
+                    .padding(.top, 8)
                 }
                 .frame(width: 250)
                 .padding(20)
