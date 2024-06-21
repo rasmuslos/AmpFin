@@ -18,7 +18,7 @@ public extension MediaResolver {
         guard let name = name else { throw ResolveError.missing }
         
         guard !JellyfinClient.shared.siriOfflineMode else {
-            return []
+            throw ResolveError.missing
         }
         
         let result = try await JellyfinClient.shared.artists(search: name)
