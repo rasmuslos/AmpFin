@@ -47,6 +47,14 @@ extension NowPlaying {
                 
                 Group {
                     Button {
+                        AudioPlayer.current.shuffled.toggle()
+                    } label: {
+                        Label("shuffle", systemImage: "shuffle")
+                            .labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
+                    
+                    Button {
                         if AudioPlayer.current.repeatMode == .none {
                             AudioPlayer.current.repeatMode = .queue
                         } else if AudioPlayer.current.repeatMode == .queue {
@@ -60,14 +68,6 @@ extension NowPlaying {
                     }
                     .id(AudioPlayer.current.repeatMode)
                     .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
-                    
-                    Button {
-                        AudioPlayer.current.shuffled.toggle()
-                    } label: {
-                        Label("shuffle", systemImage: "shuffle")
-                            .labelStyle(.iconOnly)
-                    }
-                    .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
                     
                     Button {
                         withAnimation(.easeInOut(duration: 0.25)) {
