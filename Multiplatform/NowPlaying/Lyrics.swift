@@ -141,7 +141,7 @@ private extension NowPlaying.Lyrics {
             return
         }
         
-        let currentTime = AudioPlayer.current.currentTime
+        let currentTime = AudioPlayer.current.currentTime  + 0.8 // 0.8 seconds offset to anticipate slightly the lyrics
         if let index = lyricsKeys.lastIndex(where: { $0 <= currentTime }) {
             setActiveLineIndex(index)
         } else {
