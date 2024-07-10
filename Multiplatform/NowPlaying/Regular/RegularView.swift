@@ -55,7 +55,7 @@ extension NowPlaying {
                                     }
                                     .transition(.asymmetric(
                                         insertion:
-                                                .push(from: .bottom).animation(.spring.delay(0.2))
+                                                .push(from: .bottom).animation(.spring.delay(0.1))
                                                 .combined(with: .opacity),
                                         removal:
                                                 .push(from: .top).animation(.spring.logicallyComplete(after: 0.1))

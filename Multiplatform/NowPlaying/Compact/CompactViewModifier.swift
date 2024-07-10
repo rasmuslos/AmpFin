@@ -54,18 +54,6 @@ extension NowPlaying {
                             SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                                 .modifier(GestureModifier(active: true, controlsDragging: controlsDragging, dragOffset: $viewState.dragOffset))
                                 .padding(.top, 40)
-                                .transition(.opacity)
-                                .transaction {
-                                    guard $0.nowPlayingOverlayToggled else {
-                                        return
-                                    }
-                                    
-                                    if viewState.presented {
-                                        $0.animation = .linear(duration: 1).delay(10)
-                                    } else {
-                                        $0.animation = .smooth
-                                    }
-                                }
                             
                             Group {
                                 if currentTab == .lyrics {
@@ -100,7 +88,7 @@ extension NowPlaying {
                                 if presentedTrack == nil {
                                     $0.animation = .smooth
                                 } else {
-                                    $0.animation = .smooth.delay(0.2)
+                                    $0.animation = .smooth.delay(0.1)
                                 }
                             }
                         }
@@ -190,7 +178,7 @@ internal extension NowPlaying {
             UIApplication.shared.isIdleTimerDisabled = presented
             
             withTransaction(\.nowPlayingOverlayToggled, true) {
-                withAnimation(presented ? .bouncy.delay(0.3) : .bouncy) {
+                withAnimation(presented ? .bouncy.delay(0.25) : .bouncy) {
                     self.presented = presented
                 }
             }
@@ -267,7 +255,7 @@ private extension NowPlaying {
                         .offset(y: active ? -92 : 0)
                 }
                 .opacity(active ? 0.5 : 1)
-                .animation(.timingCurve(0.4, 0, 0.8, 1, duration: 0.4), value: active)
+                .animation(.timingCurve(-0.1, 0, 0.8, 1, duration: 0.3), value: active)
         }
     }
     
