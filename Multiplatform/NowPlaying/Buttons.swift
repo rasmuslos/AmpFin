@@ -200,7 +200,7 @@ extension NowPlaying {
         }
         
         private func setActiveTab(_ tab: Tab) {
-            withAnimation(.spring(duration: 0.5, bounce: 0.2)) {
+            withAnimation(.bouncy) {
                 if currentTab == tab {
                     currentTab = .cover
                 } else {

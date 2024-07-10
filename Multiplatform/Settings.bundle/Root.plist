@@ -30,24 +30,6 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>Siri-Integration</string>
-			<key>FooterText</key>
-			<string>Enabling Siri on-Device mode prevents it from discovering items that are not downloaded, ensuring uninterrupted access to your content even without an internet connection.</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Enable Siri On-Device mode</string>
-			<key>Key</key>
-			<string>siriOfflineMode</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
 			<string>Audio-Quality</string>
 			<key>FooterText</key>
 			<string>Cellular, Hotspots and low data mode are possible reasons why a network would be considered constrained.
@@ -181,6 +163,24 @@ AmpFin will not automatically select a bitrate on unstable or slow networks. If 
 				<string>512 Kb/s</string>
 				<string>768 Kb/s</string>
 			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Siri-Integration</string>
+			<key>FooterText</key>
+			<string>Enabling Siri on-Device mode prevents it from discovering items that are not downloaded, ensuring uninterrupted access to your content even without an internet connection.</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Enable Siri On-Device mode</string>
+			<key>Key</key>
+			<string>siriOfflineMode</string>
+			<key>DefaultValue</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>Type</key>

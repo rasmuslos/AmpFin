@@ -17,15 +17,16 @@ internal extension NowPlaying {
         let currentTab: Tab
         let namespace: Namespace.ID
         
+        let presented: Bool
+        
         var body: some View {
             Spacer()
             
             ItemImage(cover: track.cover)
-                .id(track.id)
                 .shadow(radius: 20)
                 .scaleEffect(AudioPlayer.current.playing ? 1 : 0.8)
                 .animation(.spring(duration: 0.3, bounce: 0.6), value: AudioPlayer.current.playing)
-                .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab == .cover)
+                .matchedGeometryEffect(id: "image", in: namespace, anchor: .topLeading)
             
             Spacer()
             
@@ -35,18 +36,20 @@ internal extension NowPlaying {
                         .font(.headline)
                         .lineLimit(1)
                         .foregroundStyle(.primary)
-                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .top)
+                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topTrailing)
                     
                     ArtistsMenu(track: track)
                         .font(.body)
-                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .top)
+                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topTrailing)
                 }
                 
                 Spacer(minLength: 12)
                 
                 FavoriteButton(track: track)
-                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .top)
+                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topTrailing)
             }
+            .transition(.move(edge: .bottom))
+            .animation(.smooth(duration: 0.2), value: presented)
         }
     }
     
@@ -59,13 +62,14 @@ internal extension NowPlaying {
         @Binding var currentTab: Tab
         
         var body: some View {
-            HStack(spacing: 8) {
+            HStack(spacing: 12) {
                 ItemImage(cover: track.cover)
                     .shadow(radius: 10)
                     .frame(width: 72, height: 72)
-                    .matchedGeometryEffect(id: "image", in: namespace, properties: .frame, anchor: .topLeading, isSource: currentTab != .cover)
+                    .matchedGeometryEffect(id: "image", in: namespace, anchor: .bottomTrailing)
+                    .transition(.opacity)
                     .onTapGesture {
-                        withAnimation {
+                        withAnimation(.bouncy) {
                             currentTab = .cover
                         }
                     }
@@ -75,17 +79,17 @@ internal extension NowPlaying {
                         .lineLimit(1)
                         .font(.headline)
                         .foregroundStyle(.primary)
-                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .bottom)
+                        .matchedGeometryEffect(id: "title", in: namespace, properties: .frame, anchor: .topTrailing)
                     
                     ArtistsMenu(track: track)
                         .font(.body)
-                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .bottom)
+                        .matchedGeometryEffect(id: "artist", in: namespace, properties: .frame, anchor: .topTrailing)
                 }
                 
                 Spacer()
                 
                 FavoriteButton(track: track)
-                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .bottom)
+                    .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topTrailing)
             }
             .contentShape(.rect)
         }

@@ -41,7 +41,7 @@ extension NowPlaying {
                             VStack {
                                 // Single column layout
                                 if !singleColumnLayout || currentTab == .cover {
-                                    LargeTitle(track: track, currentTab: currentTab, namespace: namespace)
+                                    LargeTitle(track: track, currentTab: currentTab, namespace: namespace, presented: true)
                                 } else {
                                     SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                                         .padding(.top, 40)

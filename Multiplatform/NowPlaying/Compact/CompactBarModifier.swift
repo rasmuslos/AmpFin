@@ -44,11 +44,10 @@ extension NowPlaying {
                                     HStack(spacing: 8) {
                                         ItemImage(cover: nowPlaying.cover)
                                             .frame(width: 40, height: 40)
-                                            .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottomLeading, isSource: !nowPlayingViewState.presented)
+                                            .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, anchor: .topTrailing)
                                         
                                         Text(nowPlaying.name)
                                             .lineLimit(1)
-                                            .matchedGeometryEffect(id: "title", in: nowPlayingViewState.namespace, properties: .frame, anchor: .bottom, isSource: !nowPlayingViewState.presented)
                                         
                                         Spacer()
                                         
@@ -91,6 +90,7 @@ extension NowPlaying {
                                 .foregroundStyle(.primary)
                                 .background(.regularMaterial)
                                 .transition(.move(edge: .bottom))
+                                .animation(.smooth, value: nowPlayingViewState.presented)
                                 .clipShape(.rect(cornerRadius: 16, style: .continuous))
                                 .draggable(nowPlaying) {
                                     TrackListRow.TrackPreview(track: nowPlaying)
