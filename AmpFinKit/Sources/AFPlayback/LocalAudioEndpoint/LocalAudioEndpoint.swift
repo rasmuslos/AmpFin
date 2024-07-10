@@ -37,6 +37,8 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     var buffering: Bool = false
     var duration: Double = 0
     
+    /// Max bitrate in Kb/s
+    var maxBitrate: Int?
     var outputRoute = LocalAudioEndpoint.audioRoute()
     
     // MARK: Util
@@ -46,7 +48,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     
     private init() {
         audioPlayer = .init()
-        audioPlayer.actionAtItemEnd = .pause
+        audioPlayer.actionAtItemEnd = Defaults[.repeatMode] == .track ? .pause : .advance
         audioPlayer.allowsExternalPlayback = false
         audioPlayer.usesExternalPlaybackWhileExternalScreenIsActive = true
         
@@ -59,6 +61,8 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
         
         setupTimeObserver()
         setupObservers()
+        
+        determineBitrate()
         
         #if !os(macOS)
         AudioPlayer.updateAudioSession(active: false)

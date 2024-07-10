@@ -120,7 +120,9 @@ internal extension LocalAudioEndpoint {
         }
         set {
             _repeatMode = newValue
+            
             Defaults[.repeatMode] = newValue
+            audioPlayer.actionAtItemEnd = newValue == .track ? .pause : .advance
         }
     }
     

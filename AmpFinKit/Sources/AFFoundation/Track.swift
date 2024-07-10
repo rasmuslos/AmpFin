@@ -114,7 +114,7 @@ public extension Track {
         public let codec: String?
         public let lossless: Bool?
         
-        public let bitrate: Int?
+        public var bitrate: Int?
         public let bitDepth: Int?
         public let sampleRate: Int?
         

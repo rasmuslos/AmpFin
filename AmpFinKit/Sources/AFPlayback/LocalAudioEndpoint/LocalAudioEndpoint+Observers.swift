@@ -7,6 +7,7 @@
 
 import Foundation
 import MediaPlayer
+import Defaults
 
 internal extension LocalAudioEndpoint {
     func setupTimeObserver() {
@@ -55,6 +56,10 @@ internal extension LocalAudioEndpoint {
                 currentTime = 0
                 playing = true
             } else {
+                if !avPlayerQueue.isEmpty {
+                    avPlayerQueue.removeFirst()
+                }
+                
                 trackDidFinish()
             }
         }
@@ -92,5 +97,18 @@ internal extension LocalAudioEndpoint {
             self.setNowPlaying(track: nil)
         }
         #endif
+        
+        Task {
+            for await bitrate in Defaults.updates(.maxStreamingBitrate) {
+                logger.info("Maximum streaming bitrate changed to \(bitrate) Kb/s")
+                await bitrateDidChange()
+            }
+        }
+        Task {
+            for await bitrate in Defaults.updates(.maxConstrainedBitrate) {
+                logger.info("Maximum constrained bitrate changed to \(bitrate) Kb/s")
+                await bitrateDidChange()
+            }
+        }
     }
 }

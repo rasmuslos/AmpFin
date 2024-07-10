@@ -169,17 +169,22 @@ extension NowPlaying {
                 VolumePicker()
                     .frame(width: 0, height: 0)
             }
-            .task(id: AudioPlayer.current.nowPlaying) {
-                await fetchQuality()
+            .onChange(of: AudioPlayer.current.nowPlaying, initial: true) {
+                fetchQuality()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.bitrateChangedNotification)) { _ in
+                fetchQuality()
             }
         }
         
-        private func fetchQuality() async {
-            if let mediaInfo = await AudioPlayer.current.mediaInfo {
-                self.mediaInfo = mediaInfo
-                mediaInfoToggled = mediaInfo.lossless ?? false
-            } else {
-                mediaInfo = nil
+        private func fetchQuality() {
+            Task {
+                if let mediaInfo = await AudioPlayer.current.mediaInfo {
+                    self.mediaInfo = mediaInfo
+                    mediaInfoToggled = mediaInfo.lossless ?? false
+                } else {
+                    mediaInfo = nil
+                }
             }
         }
     }

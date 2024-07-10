@@ -11,4 +11,8 @@ import AFFoundation
 
 extension Defaults.Keys {
     static let repeatMode = Key("repeatMode", default: RepeatMode.none)
+    
+    static let maxDownloadBitrate = Key("bitrate_downloads", default: -1)
+    static let maxStreamingBitrate = Key("bitrate_streaming", default: -1)
+    static let maxConstrainedBitrate = Key("bitrate_constrained", default: -1)
 }

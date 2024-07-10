@@ -48,6 +48,175 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
+			<string>Audio-Quality</string>
+			<key>FooterText</key>
+			<string>Cellular, Hotspots and low data mode are possible reasons why a network would be considered constrained.
+
+A four minute audio file would require:
+- 0.07 MB using 128 Kb/s
+- 0.1 MB using 192 Kb/s
+- 0.13 MB using 256 Kb/s
+- 0.16 MB using 320 Kb/s
+- 0.3 MB using 512 Kb/s
+- 0.4 MB using 768 Kb/s
+
+- 1 MB using 8000 Kb/s
+- 2 MB using 16000 Kb/s
+- 3 MB using 24000 Kb/s
+
+AmpFin will not automatically select a bitrate on unstable or slow networks. If you select unlimited AmpFin will try to play the audio file without any modifications. Existing downloads are not affected.</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Streaming</string>
+			<key>Key</key>
+			<string>bitrate_streaming</string>
+			<key>DefaultValue</key>
+			<string>-1</string>
+			<key>Values</key>
+			<array>
+				<string>-1</string>
+				<string>128</string>
+				<string>192</string>
+				<string>256</string>
+				<string>320</string>
+				<string>512</string>
+				<string>768</string>
+				<string>8000</string>
+				<string>16000</string>
+				<string>24000</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Unlimited</string>
+				<string>Low quality (128 Kb/s)</string>
+				<string>Low quality (192 Kb/s)</string>
+				<string>Medium quality (256 Kb/s)</string>
+				<string>Medium quality (320 Kb/s)</string>
+				<string>High quality (512 Kb/s)</string>
+				<string>High quality (768 Kb/s)</string>
+				<string>Ultra quality (8000 Kb/s)</string>
+				<string>Ultra quality (16000 Kb/s)</string>
+				<string>Ultra quality (24000 Kb/s)</string>
+			</array>
+			<key>ShortTitles</key>
+			<array>
+				<string>∞</string>
+				<string>128 Kb/s</string>
+				<string>192 Kb/s</string>
+				<string>256 Kb/s</string>
+				<string>320 Kb/s</string>
+				<string>512 Kb/s</string>
+				<string>768 Kb/s</string>
+				<string>8000 Kb/s</string>
+				<string>16000 Kb/s</string>
+				<string>24000 Kb/s</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Constrained Networks</string>
+			<key>Key</key>
+			<string>bitrate_constrained</string>
+			<key>DefaultValue</key>
+			<string>-1</string>
+			<key>Values</key>
+			<array>
+				<string>-1</string>
+				<string>128</string>
+				<string>192</string>
+				<string>256</string>
+				<string>320</string>
+				<string>512</string>
+				<string>768</string>
+				<string>8000</string>
+				<string>16000</string>
+				<string>24000</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Unlimited</string>
+				<string>Low quality (128 Kb/s)</string>
+				<string>Low quality (192 Kb/s)</string>
+				<string>Medium quality (256 Kb/s)</string>
+				<string>Medium quality (320 Kb/s)</string>
+				<string>High quality (512 Kb/s)</string>
+				<string>High quality (768 Kb/s)</string>
+				<string>Ultra quality (8000 Kb/s)</string>
+				<string>Ultra quality (16000 Kb/s)</string>
+				<string>Ultra quality (24000 Kb/s)</string>
+			</array>
+			<key>ShortTitles</key>
+			<array>
+				<string>∞</string>
+				<string>128 Kb/s</string>
+				<string>192 Kb/s</string>
+				<string>256 Kb/s</string>
+				<string>320 Kb/s</string>
+				<string>512 Kb/s</string>
+				<string>768 Kb/s</string>
+				<string>8000 Kb/s</string>
+				<string>16000 Kb/s</string>
+				<string>24000 Kb/s</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Downloads</string>
+			<key>Key</key>
+			<string>bitrate_downloads</string>
+			<key>DefaultValue</key>
+			<string>-1</string>
+			<key>Values</key>
+			<array>
+				<string>-1</string>
+				<string>128</string>
+				<string>192</string>
+				<string>256</string>
+				<string>320</string>
+				<string>512</string>
+				<string>768</string>
+				<string>8000</string>
+				<string>16000</string>
+				<string>24000</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Unlimited</string>
+				<string>Low quality (128 Kb/s)</string>
+				<string>Low quality (192 Kb/s)</string>
+				<string>Medium quality (256 Kb/s)</string>
+				<string>Medium quality (320 Kb/s)</string>
+				<string>High quality (512 Kb/s)</string>
+				<string>High quality (768 Kb/s)</string>
+				<string>Ultra quality (8000 Kb/s)</string>
+				<string>Ultra quality (16000 Kb/s)</string>
+				<string>Ultra quality (24000 Kb/s)</string>
+			</array>
+			<key>ShortTitles</key>
+			<array>
+				<string>∞</string>
+				<string>128 Kb/s</string>
+				<string>192 Kb/s</string>
+				<string>256 Kb/s</string>
+				<string>320 Kb/s</string>
+				<string>512 Kb/s</string>
+				<string>768 Kb/s</string>
+				<string>8000 Kb/s</string>
+				<string>16000 Kb/s</string>
+				<string>24000 Kb/s</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
 			<string></string>
 		</dict>
 		<dict>

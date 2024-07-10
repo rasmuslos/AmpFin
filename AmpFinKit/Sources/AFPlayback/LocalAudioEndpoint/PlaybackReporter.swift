@@ -32,9 +32,11 @@ public final class PlaybackReporter {
     }
     
     func update(positionSeconds: Double, paused: Bool, repeatMode: RepeatMode, shuffled: Bool, volume: Float, scheduled: Bool) {
-        if positionSeconds.isFinite && positionSeconds > 0 {
-            currentTime = positionSeconds
+        guard positionSeconds.isFinite && !positionSeconds.isNaN && positionSeconds > 0 else {
+            return
         }
+        
+        currentTime = positionSeconds
         
         if scheduled {
             if paused {

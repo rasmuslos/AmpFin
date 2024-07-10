@@ -6,7 +6,10 @@
 //
 
 import Foundation
+import Network
 import AVKit
+import Defaults
+
 import AFFoundation
 import AFNetwork
 #if canImport(AFOffline)
@@ -18,8 +21,19 @@ import AFOffline
 internal extension LocalAudioEndpoint {
     var mediaInfo: Track.MediaInfo? {
         get async {
-            if let itemId = nowPlaying?.id, let mediaInfo = try? await JellyfinClient.shared.mediaInfo(trackId: itemId) {
-                return mediaInfo
+            if let itemId = nowPlaying?.id {
+                let serverBitrateLikelyToBeFalse = DownloadManager.shared.downloaded(trackId: itemId) && Defaults[.maxDownloadBitrate] > 0
+                
+                if !serverBitrateLikelyToBeFalse, var mediaInfo = try? await JellyfinClient.shared.mediaInfo(trackId: itemId) {
+                    guard let maxBitrate, let bitrate = mediaInfo.bitrate else {
+                        return mediaInfo
+                    }
+                    
+                    let maxBitrateBits = maxBitrate * 1000
+                    
+                    mediaInfo.bitrate = min(bitrate, maxBitrateBits)
+                    return mediaInfo
+                }
             }
             
             let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
@@ -47,7 +61,7 @@ internal extension LocalAudioEndpoint {
         }
         #endif
         
-        let url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
+        var url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
             URLQueryItem(name: "api_key", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
@@ -58,7 +72,45 @@ internal extension LocalAudioEndpoint {
             URLQueryItem(name: "transcodingProtocol", value: "hls"),
         ])
         
+        determineBitrate()
+        
+        if let bitrate = maxBitrate {
+            url = url.appending(queryItems: [
+                URLQueryItem(name: "maxStreamingBitrate", value: "\(UInt64(bitrate) * 1000)")
+            ])
+        }
+        
+        print(url)
+        
         return AVPlayerItem(url: url)
+    }
+    
+    func determineBitrate() {
+        let currentPath = NWPathMonitor().currentPath
+        let bitrate: Int
+        
+        if currentPath.isExpensive || currentPath.isConstrained {
+            bitrate = Defaults[.maxConstrainedBitrate]
+        } else {
+            bitrate = Defaults[.maxStreamingBitrate]
+        }
+        
+        if bitrate <= 0 {
+            maxBitrate = nil
+        } else {
+            maxBitrate = bitrate
+        }
+    }
+    func bitrateDidChange() async {
+        let currentTime = currentTime
+        
+        avPlayerQueue = []
+        populateAVPlayerQueue()
+        
+        await seek(seconds: currentTime)
+        await MainActor.run {
+            NotificationCenter.default.post(name: AudioPlayer.bitrateChangedNotification, object: nil)
+        }
     }
     
     func updatePlaybackReporter(scheduled: Bool) {
