@@ -54,6 +54,18 @@ extension NowPlaying {
                             SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
                                 .modifier(GestureModifier(active: true, controlsDragging: controlsDragging, dragOffset: $viewState.dragOffset))
                                 .padding(.top, 40)
+                                .transition(.opacity)
+                                .transaction {
+                                    guard $0.nowPlayingOverlayToggled else {
+                                        return
+                                    }
+                                    
+                                    if viewState.presented {
+                                        $0.animation = .linear(duration: 1).delay(10)
+                                    } else {
+                                        $0.animation = .smooth
+                                    }
+                                }
                             
                             Group {
                                 if currentTab == .lyrics {
@@ -79,6 +91,7 @@ extension NowPlaying {
                             .padding(.top, 16)
                             .padding(.bottom, 28)
                             .transition(.modifier(active: CollapseTransitionModifier(active: true), identity: CollapseTransitionModifier(active: false)))
+                            .animation(.timingCurve(0.13, 1.21, 0.46, 0.79, duration: 0.5), value: controlsVisible)
                             .transaction {
                                 guard $0.nowPlayingOverlayToggled else {
                                     return
@@ -87,7 +100,7 @@ extension NowPlaying {
                                 if presentedTrack == nil {
                                     $0.animation = .smooth
                                 } else {
-                                    $0.animation = .smooth.delay(0.3)
+                                    $0.animation = .smooth.delay(0.2)
                                 }
                             }
                         }
@@ -264,7 +277,7 @@ private extension NowPlaying {
         func body(content: Content) -> some View {
             content
                 .frame(height: active ? 0 : nil)
-                .animation(.timingCurve(0.13, 1.21, 0.46, 0.79, duration: 0.5), value: active)
+                .clipped()
         }
     }
 }

@@ -48,8 +48,6 @@ internal extension NowPlaying {
                 FavoriteButton(track: track)
                     .matchedGeometryEffect(id: "menu", in: namespace, properties: .frame, anchor: .topTrailing)
             }
-            .transition(.move(edge: .bottom))
-            .animation(.smooth(duration: 0.2), value: presented)
         }
     }
     
