@@ -128,7 +128,7 @@ extension NowPlaying {
                 .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
                 .offset(y: viewState.dragOffset)
                 .allowsHitTesting(presentedTrack != nil)
-                .persistentSystemOverlays(.hidden)
+                .persistentSystemOverlays(AudioPlayer.current.outputRoute.showLabel ? .hidden : .automatic)
                 .onChange(of: currentTab) {
                     if currentTab == .cover {
                         controlsVisible = true

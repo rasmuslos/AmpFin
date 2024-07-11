@@ -21,6 +21,13 @@ internal struct TrackList: View {
     
     @State private var working = false
     
+    private var album: Album? {
+        container as? Album
+    }
+    private var useDiskSections: Bool {
+        album != nil && disks.count > 1
+    }
+    
     private var disks: [Int] {
         tracks.reduce([Int]()) {
             if !$0.contains($1.index.disk) {
@@ -29,13 +36,6 @@ internal struct TrackList: View {
             
             return $0
         }
-    }
-    
-    private var album: Album? {
-        container as? Album
-    }
-    private var useDiskSections: Bool {
-        album != nil && disks.count > 1
     }
     
     var body: some View {
@@ -57,22 +57,6 @@ internal struct TrackList: View {
             TrackListRow.placeholder
                 .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
                 .onAppear { loadMore?() }
-        }
-    }
-}
-
-private extension TrackList {
-    func sort(tracks: [Track]) -> [Track] {
-        if album != nil {
-            return tracks.sorted { $0.index < $1.index }
-        } else {
-            return tracks
-        }
-    }
-    
-    func startPlayback(track: Track) {
-        if let index = tracks.firstIndex(where: { $0.id == track.id }) {
-            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
         }
     }
 }
@@ -144,6 +128,22 @@ private struct DeleteSwipeActionModifier: ViewModifier {
                 }
         } else {
             content
+        }
+    }
+}
+
+private extension TrackList {
+    func sort(tracks: [Track]) -> [Track] {
+        if album != nil {
+            return tracks.sorted { $0.index < $1.index }
+        } else {
+            return tracks
+        }
+    }
+    
+    func startPlayback(track: Track) {
+        if let index = tracks.firstIndex(where: { $0.id == track.id }) {
+            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
         }
     }
 }
