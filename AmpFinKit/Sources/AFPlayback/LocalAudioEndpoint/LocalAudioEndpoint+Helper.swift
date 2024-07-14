@@ -32,6 +32,10 @@ internal extension LocalAudioEndpoint {
                     let maxBitrateBits = maxBitrate * 1000
                     
                     mediaInfo.bitrate = min(bitrate, maxBitrateBits)
+                    if (bitrate > maxBitrateBits) {
+                        mediaInfo.codec = "AAC"
+                        mediaInfo.lossless = false
+                    }
                     return mediaInfo
                 }
             }
