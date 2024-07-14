@@ -36,13 +36,9 @@
 
 A four minute audio file would require:
 - 4 MB using 128 Kb/s
-- 6 MB using 192 Kb/s
 - 8  MB using 256 Kb/s
-- 10 MB using 320 Kb/s
-- 15 MB using 512 Kb/s
-- 23 MB using 768 Kb/s
 
-AmpFin will not automatically select a bitrate on unstable or slow networks. If you select unlimited AmpFin will try to play the audio file without any modifications. Existing downloads are not affected.</string>
+AmpFin will not automatically select a bitrate on unstable or slow networks. If you select Lossless AmpFin will try to play the audio file without any modifications. Existing downloads are not affected.</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -57,31 +53,19 @@ AmpFin will not automatically select a bitrate on unstable or slow networks. If 
 			<array>
 				<string>-1</string>
 				<string>128</string>
-				<string>192</string>
 				<string>256</string>
-				<string>320</string>
-				<string>512</string>
-				<string>768</string>
 			</array>
 			<key>Titles</key>
 			<array>
-				<string>Unlimited</string>
-				<string>Low quality (128 Kb/s)</string>
-				<string>Low quality (192 Kb/s)</string>
-				<string>Medium quality (256 Kb/s)</string>
-				<string>Medium quality (320 Kb/s)</string>
-				<string>High quality (512 Kb/s)</string>
-				<string>High quality (768 Kb/s)</string>
+				<string>Lossless (No modification if possible)</string>
+				<string>High Efficiency (AAC 128 Kb/s)</string>
+				<string>High Quality (AAC 256 Kb/s)</string>
 			</array>
 			<key>ShortTitles</key>
 			<array>
-				<string>∞</string>
+				<string>Lossless</string>
 				<string>128 Kb/s</string>
-				<string>192 Kb/s</string>
 				<string>256 Kb/s</string>
-				<string>320 Kb/s</string>
-				<string>512 Kb/s</string>
-				<string>768 Kb/s</string>
 			</array>
 		</dict>
 		<dict>
@@ -97,31 +81,19 @@ AmpFin will not automatically select a bitrate on unstable or slow networks. If 
 			<array>
 				<string>-1</string>
 				<string>128</string>
-				<string>192</string>
 				<string>256</string>
-				<string>320</string>
-				<string>512</string>
-				<string>768</string>
 			</array>
 			<key>Titles</key>
 			<array>
-				<string>Unlimited</string>
-				<string>Low quality (128 Kb/s)</string>
-				<string>Low quality (192 Kb/s)</string>
-				<string>Medium quality (256 Kb/s)</string>
-				<string>Medium quality (320 Kb/s)</string>
-				<string>High quality (512 Kb/s)</string>
-				<string>High quality (768 Kb/s)</string>
+				<string>Lossless (No modification if possible)</string>
+				<string>High Efficiency (AAC 128 Kb/s)</string>
+				<string>High Quality (AAC 256 Kb/s)</string>
 			</array>
 			<key>ShortTitles</key>
 			<array>
-				<string>∞</string>
+				<string>Lossless</string>
 				<string>128 Kb/s</string>
-				<string>192 Kb/s</string>
 				<string>256 Kb/s</string>
-				<string>320 Kb/s</string>
-				<string>512 Kb/s</string>
-				<string>768 Kb/s</string>
 			</array>
 		</dict>
 		<dict>
@@ -137,31 +109,19 @@ AmpFin will not automatically select a bitrate on unstable or slow networks. If 
 			<array>
 				<string>-1</string>
 				<string>128</string>
-				<string>192</string>
 				<string>256</string>
-				<string>320</string>
-				<string>512</string>
-				<string>768</string>
 			</array>
 			<key>Titles</key>
 			<array>
-				<string>Unlimited</string>
-				<string>Low quality (128 Kb/s)</string>
-				<string>Low quality (192 Kb/s)</string>
-				<string>Medium quality (256 Kb/s)</string>
-				<string>Medium quality (320 Kb/s)</string>
-				<string>High quality (512 Kb/s)</string>
-				<string>High quality (768 Kb/s)</string>
+				<string>Lossless (No modification if possible)</string>
+				<string>High Efficiency (AAC 128 Kb/s)</string>
+				<string>High Quality (AAC 256 Kb/s)</string>
 			</array>
 			<key>ShortTitles</key>
 			<array>
-				<string>∞</string>
+				<string>Lossless</string>
 				<string>128 Kb/s</string>
-				<string>192 Kb/s</string>
 				<string>256 Kb/s</string>
-				<string>320 Kb/s</string>
-				<string>512 Kb/s</string>
-				<string>768 Kb/s</string>
 			</array>
 		</dict>
 		<dict>
