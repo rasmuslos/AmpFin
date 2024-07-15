@@ -31,11 +31,12 @@ internal extension LocalAudioEndpoint {
                     
                     let maxBitrateBits = maxBitrate * 1000
                     
-                    mediaInfo.bitrate = min(bitrate, maxBitrateBits)
                     if (bitrate > maxBitrateBits) {
+                        mediaInfo.bitrate = maxBitrateBits
                         mediaInfo.codec = "AAC"
                         mediaInfo.lossless = false
                     }
+                    
                     return mediaInfo
                 }
             }
@@ -81,8 +82,6 @@ internal extension LocalAudioEndpoint {
                 URLQueryItem(name: "maxStreamingBitrate", value: "\(UInt64(bitrate) * 1000)")
             ])
         }
-        
-        print(url)
         
         return AVPlayerItem(url: url)
     }

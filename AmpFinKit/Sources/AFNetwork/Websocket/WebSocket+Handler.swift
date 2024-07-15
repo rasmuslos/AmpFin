@@ -29,7 +29,7 @@ extension JellyfinWebSocket: WebSocketDelegate {
                 reconnect(resetTimer: false)
                 
                 if let error = error {
-                    print(error)
+                    logger.fault("\(error.localizedDescription)")
                 }
                 break
             case .cancelled:

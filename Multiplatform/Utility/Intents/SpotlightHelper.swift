@@ -119,8 +119,7 @@ struct SpotlightHelper {
                 Defaults[.lastSpotlightDonationCompletion] = Date.timeIntervalSinceReferenceDate
                 Self.logger.info("Updated spotlight index")
             } catch {
-                logger.fault("Failed to update spotlight index")
-                print(error)
+                logger.fault("Failed to update spotlight index: \(error.localizedDescription)")
             }
         }
     }

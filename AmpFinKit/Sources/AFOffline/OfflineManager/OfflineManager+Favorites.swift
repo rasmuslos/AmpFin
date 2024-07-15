@@ -100,8 +100,7 @@ extension OfflineManager {
                     }
                 }
             } catch {
-                Self.logger.fault("Failed to sync favorites")
-                print(error)
+                Self.logger.fault("Failed to sync favorites: \(error.localizedDescription)")
             }
         }
     }

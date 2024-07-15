@@ -40,8 +40,8 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     
     /// Max bitrate in Kb/s
     var maxBitrate: Int?
+    var networkMonitor = NWPathMonitor()
     var outputRoute = LocalAudioEndpoint.audioRoute()
-    var networkMonitor = NWPathMonitor();
     
     // MARK: Util
     

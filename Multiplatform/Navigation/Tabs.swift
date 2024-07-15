@@ -36,8 +36,6 @@ internal struct Tabs: View {
                         search = ""
                         searchSelected = true
                         
-                        print(searchPath)
-                        
                         while !searchPath.isEmpty {
                             searchPath.removeLast()
                         }
