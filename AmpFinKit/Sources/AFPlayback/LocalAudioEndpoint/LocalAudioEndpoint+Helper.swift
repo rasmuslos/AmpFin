@@ -32,6 +32,10 @@ internal extension LocalAudioEndpoint {
                     let maxBitrateBits = maxBitrate * 1000
                     
                     mediaInfo.bitrate = min(bitrate, maxBitrateBits)
+                    if (bitrate > maxBitrateBits) {
+                        mediaInfo.codec = "AAC"
+                        mediaInfo.lossless = false
+                    }
                     return mediaInfo
                 }
             }
@@ -71,9 +75,7 @@ internal extension LocalAudioEndpoint {
             URLQueryItem(name: "transcodingContainer", value: "mp4"),
             URLQueryItem(name: "transcodingProtocol", value: "hls"),
         ])
-        
-        determineBitrate()
-        
+
         if let bitrate = maxBitrate {
             url = url.appending(queryItems: [
                 URLQueryItem(name: "maxStreamingBitrate", value: "\(UInt64(bitrate) * 1000)")
@@ -85,8 +87,23 @@ internal extension LocalAudioEndpoint {
         return AVPlayerItem(url: url)
     }
     
+    func setupNetworkPathMonitor() {
+        networkMonitor.pathUpdateHandler = { [weak self] networkPath in
+            guard let self = self else { return }
+            switch networkPath.status {
+                case .satisfied:
+                    determineBitrate()
+                default:
+                    maxBitrate = nil
+            }
+        }
+        networkMonitor.start(
+            queue: DispatchQueue.global(qos: .userInitiated)
+        )
+    }
+
     func determineBitrate() {
-        let currentPath = NWPathMonitor().currentPath
+        let currentPath = networkMonitor.currentPath
         let bitrate: Int
         
         if currentPath.isExpensive || currentPath.isConstrained {
@@ -101,6 +118,7 @@ internal extension LocalAudioEndpoint {
             maxBitrate = bitrate
         }
     }
+    
     func bitrateDidChange() async {
         let currentTime = currentTime
         

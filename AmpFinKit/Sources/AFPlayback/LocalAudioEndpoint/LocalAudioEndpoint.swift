@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Network
 import AVKit
 import OSLog
 import Defaults
@@ -40,6 +41,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     /// Max bitrate in Kb/s
     var maxBitrate: Int?
     var outputRoute = LocalAudioEndpoint.audioRoute()
+    var networkMonitor = NWPathMonitor();
     
     // MARK: Util
     
@@ -61,9 +63,8 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
         
         setupTimeObserver()
         setupObservers()
-        
-        determineBitrate()
-        
+        setupNetworkPathMonitor()
+
         #if !os(macOS)
         AudioPlayer.updateAudioSession(active: false)
         #endif

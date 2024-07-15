@@ -111,8 +111,8 @@ public extension Track {
     }
     
     struct MediaInfo {
-        public let codec: String?
-        public let lossless: Bool?
+        public var codec: String?
+        public var lossless: Bool?
         
         public var bitrate: Int?
         public let bitDepth: Int?
