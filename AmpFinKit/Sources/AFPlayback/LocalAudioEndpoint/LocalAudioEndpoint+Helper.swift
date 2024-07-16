@@ -44,18 +44,20 @@ internal extension LocalAudioEndpoint {
             let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
             
             var format = await track?.mediaFormat()
-            var bitrate = try? await track?.load(.estimatedDataRate)
+            let bitrate = try? await track?.load(.estimatedDataRate)
             
             if format != nil {
                 while format!.starts(with: ".") {
                     format!.removeFirst()
                 }
             }
-            if bitrate != nil {
-                bitrate = (bitrate! / 1000).rounded()
+            
+            var bitrateInt: Int?
+            if let bitrate, bitrate > 0 {
+                bitrateInt = Int(bitrate)
             }
             
-            return .init(codec: format, lossless: false, bitrate: bitrate != nil && bitrate! > 0 ? Int(bitrate!) : nil, bitDepth: nil, sampleRate: nil)
+            return .init(codec: format, lossless: false, bitrate: bitrateInt, bitDepth: nil, sampleRate: nil)
         }
     }
     
