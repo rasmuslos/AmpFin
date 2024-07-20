@@ -28,6 +28,9 @@ extension DownloadManager {
             url = url.appending(queryItems: [
                 URLQueryItem(name: "maxStreamingBitrate", value: "\(UInt64(bitrate) * 1000)")
             ])
+            url = url.appending(queryItems: [
+                URLQueryItem(name: "PlaySessionId", value: Session.getSessionId(profileString: "\(trackId)\(bitrate)")),
+            ])
         }
         
         return urlSession.downloadTask(with: URLRequest(url: url))

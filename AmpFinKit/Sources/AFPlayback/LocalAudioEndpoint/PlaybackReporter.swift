@@ -17,7 +17,7 @@ import AFOffline
 
 public final class PlaybackReporter {
     let trackId: String
-    let playSessionId: String
+    var playSessionId: String
     
     var currentTime: Double = 0
     

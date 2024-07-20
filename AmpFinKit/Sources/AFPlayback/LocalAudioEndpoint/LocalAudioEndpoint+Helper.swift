@@ -8,7 +8,6 @@
 import Foundation
 import Network
 import AVKit
-import CryptoKit
 import Defaults
 
 import AFFoundation
@@ -73,8 +72,8 @@ internal extension LocalAudioEndpoint {
             URLQueryItem(name: "ApiKey", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
-            URLQueryItem(name: "PlaySessionId", value: LocalAudioEndpoint.getSessionId(profileString: "\(track.id)\(maxBitrate ?? 0)")),
             URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aiff|aif"),
+            URLQueryItem(name: "PlaySessionId", value: Session.getSessionId(profileString: "\(track.id)\(maxBitrate ?? 0)")),
             URLQueryItem(name: "startTimeTicks", value: "0"),
             URLQueryItem(name: "audioCodec", value: "aac"),
             URLQueryItem(name: "transcodingContainer", value: "mp4"),
@@ -133,6 +132,9 @@ internal extension LocalAudioEndpoint {
         await MainActor.run {
             NotificationCenter.default.post(name: AudioPlayer.bitrateChangedNotification, object: nil)
         }
+        if let playbackReporter = playbackReporter {
+            playbackReporter.playSessionId = Session.getSessionId(profileString: "\(playbackReporter.trackId)\(maxBitrate ?? 0)")
+        }
     }
 
     func updatePlaybackReporter(scheduled: Bool) {
@@ -150,7 +152,7 @@ internal extension LocalAudioEndpoint {
 
         if let track = track {
             AudioPlayer.current.updateCommandCenter(favorite: track.favorite)
-            playbackReporter = PlaybackReporter(trackId: track.id, playSessionId: LocalAudioEndpoint.getSessionId(profileString: "\(track.id)\(maxBitrate ?? 0)"), queue: queue)
+            playbackReporter = PlaybackReporter(trackId: track.id, playSessionId: Session.getSessionId(profileString: "\(track.id)\(maxBitrate ?? 0)"), queue: queue)
         } else {
             playbackReporter = nil
         }
@@ -159,13 +161,5 @@ internal extension LocalAudioEndpoint {
     static func audioRoute() -> AudioPlayer.AudioRoute {
         let output = AVAudioSession.sharedInstance().currentRoute.outputs.first
         return .init(port: output?.portType ?? .builtInSpeaker, name: output?.portName ?? "-/-")
-    }
-
-    static func getSessionId(profileString: String) -> String {
-        let digest = Insecure.MD5.hash(data: Data(profileString.utf8))
-
-        return digest.map {
-            String(format: "%02hhx", $0)
-        }.joined()
     }
 }
