@@ -28,7 +28,7 @@ internal extension TrackCollection {
                 return 48
             }
             
-            return 20
+            return 24
         }
         
         private var active: Bool {
@@ -39,11 +39,12 @@ internal extension TrackCollection {
             Group {
                 if album != nil {
                     Text(String(track.index.index))
+                        .font(.callout)
                         .bold(track.favorite)
-                        .fixedSize()
                         .fontDesign(.rounded)
                         .foregroundStyle(.secondary)
                         .opacity(active ? 0 : 1)
+                        .alignmentGuide(.listRowSeparatorLeading) { _ in 24 }
                 } else {
                     ItemImage(cover: track.cover)
                 }

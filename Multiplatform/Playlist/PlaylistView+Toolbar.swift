@@ -79,15 +79,12 @@ extension PlaylistView {
                                 
                                 Divider()
                                 
-                                Button {
-                                    AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
-                                } label: {
-                                    Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
-                                }
-                                Button {
-                                    AudioPlayer.current.queueTracks(tracks, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
-                                } label: {
-                                    Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
+                                QueueButtons {
+                                    if $0 {
+                                        AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
+                                    } else {
+                                        AudioPlayer.current.queueTracks(tracks, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
+                                    }
                                 }
                                 
                                 Divider()

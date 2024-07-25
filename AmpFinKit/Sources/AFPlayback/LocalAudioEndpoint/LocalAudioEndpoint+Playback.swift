@@ -142,4 +142,8 @@ internal extension LocalAudioEndpoint {
             #endif
         }
     }
+    
+    var allowQueueLater: Bool {
+        queue.count > 1
+    }
 }

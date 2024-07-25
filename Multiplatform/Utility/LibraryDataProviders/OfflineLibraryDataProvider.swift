@@ -24,7 +24,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
             count = tracks.count
         } else {
             tracks = try OfflineManager.shared.tracks(favoriteOnly: favoriteOnly, limit: limit, offset: startIndex)
-            count = // try OfflineManager.shared.trackCount()
+            count = try OfflineManager.shared.trackCount()
         }
         
         tracks = filterSort(tracks: tracks, sortOrder: sortOrder, ascending: ascending)

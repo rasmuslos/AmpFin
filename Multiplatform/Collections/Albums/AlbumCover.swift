@@ -18,9 +18,10 @@ internal struct AlbumCover: View {
             ItemImage(cover: album.cover)
             
             HStack(alignment: .top, spacing: 0) {
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 1) {
                     Text(album.name)
-                        .font(.subheadline)
+                        .bold()
+                        .font(.footnote)
                         .lineLimit(1)
                     
                     Group {
@@ -30,7 +31,7 @@ internal struct AlbumCover: View {
                             Text(verbatim: "")
                         }
                     }
-                    .font(.subheadline)
+                    .font(.caption)
                     .lineLimit(1)
                     .foregroundStyle(.secondary)
                 }
@@ -38,7 +39,8 @@ internal struct AlbumCover: View {
                 if album.favorite {
                     Spacer(minLength: 4)
                     
-                    Image(systemName: "star.fill")
+                    Image(systemName: "star")
+                        .symbolVariant(.fill)
                         .font(.caption2)
                         .foregroundStyle(.tint)
                 }

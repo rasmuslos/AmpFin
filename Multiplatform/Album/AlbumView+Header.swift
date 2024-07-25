@@ -12,47 +12,36 @@ import AmpFinKit
 internal extension AlbumView {
     struct Header: View {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-        
-        let album: Album
-        let imageColors: ImageColors
-        
-        @Binding var toolbarBackgroundVisible: Bool
-        
-        let startPlayback: (_ shuffle: Bool) -> ()
+        @Environment(AlbumViewModel.self) private var viewModel
         
         var body: some View {
             ZStack(alignment: .top) {
-                GeometryReader { reader in
-                    let offset = reader.frame(in: .global).minY
-                    
-                    if offset > 0 {
-                        Rectangle()
-                            .fill(imageColors.background)
-                            .offset(y: -offset)
-                            .frame(height: offset)
-                    }
+                GeometryReader { proxy in
+                    let minY = proxy.frame(in: .global).minY
                     
                     Color.clear
-                        .onChange(of: offset) {
+                        .onChange(of: minY, initial: true) {
                             withAnimation(.spring) {
-                                toolbarBackgroundVisible = offset < (horizontalSizeClass == .regular ? -120 : -350)
+                                viewModel.toolbarBackgroundVisible = minY < (horizontalSizeClass == .regular ? -120 : -350)
                             }
                         }
                 }
                 .frame(height: 0)
                 
-                Group {
-                    ViewThatFits {
-                        RegularPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
-                        CompactPresentation(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible, startPlayback: startPlayback)
+                VStack(spacing: 0) {
+                    Group {
+                        ViewThatFits {
+                            RegularPresentation()
+                            CompactPresentation()
+                        }
                     }
+                    .padding(.horizontal, 20)
+                    
+                    Divider()
+                        .padding(.top, 16)
+                        .padding(.leading, 20)
                 }
                 .padding(.top, 120)
-                .padding(.bottom, 12)
-                .padding(.horizontal, 20)
-            }
-            .background {
-                LinearGradient(colors: [imageColors.background.opacity(0.8), imageColors.background], startPoint: .bottom, endPoint: .top)
             }
             .listRowSeparator(.hidden)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -60,76 +49,73 @@ internal extension AlbumView {
     }
 }
 
-
 private struct AlbumTitle: View {
     @Environment(\.libraryDataProvider) private var dataProvider
+    @Environment(AlbumViewModel.self) private var viewModel
     
-    let album: Album
     let largeFont: Bool
-    let imageColors: ImageColors
     let alignment: HorizontalAlignment
     
     var body: some View {
         VStack(alignment: alignment, spacing: 4) {
-            Text(album.name)
+            Text(viewModel.album.name)
                 .multilineTextAlignment(alignment == .leading ? .leading : .center)
                 .font(largeFont ? .title : .headline)
-                .foregroundStyle(imageColors.isLight ? .black : .white)
             
-            if let artistName = album.artistName {
+            if let artistName = viewModel.album.artistName {
                 Text(artistName)
                     .lineLimit(1)
                     .font(largeFont ? .title2 : .callout)
-                    .foregroundStyle(imageColors.detail)
+                    .foregroundStyle(.secondary)
                     .onTapGesture {
-                        if let artist = album.artists.first, dataProvider.supportsArtistLookup {
+                        if let artist = viewModel.album.artists.first, dataProvider.supportsArtistLookup {
                             Navigation.navigate(artistId: artist.id)
                         }
                     }
             }
             
-            if album.releaseDate != nil || !album.genres.isEmpty {
+            if viewModel.album.releaseDate != nil || !viewModel.album.genres.isEmpty {
                 HStack(spacing: 0) {
-                    if let releaseDate = album.releaseDate {
+                    if let releaseDate = viewModel.album.releaseDate {
                         Text(releaseDate, format: Date.FormatStyle().year())
                         
-                        if !album.genres.isEmpty {
+                        if !viewModel.album.genres.isEmpty {
                             Text(verbatim: " • ")
                         }
                     }
                     
-                    Text(album.genres.joined(separator: String(", ")))
+                    Text(viewModel.album.genres.joined(separator: String(", ")))
                         .lineLimit(1)
                 }
-                .font(.caption)
-                .foregroundStyle(imageColors.primary.opacity(0.75))
+                .font(.caption2)
+                .bold()
+                .foregroundStyle(.tertiary)
             }
         }
     }
 }
 
-
 private struct PlayButtons: View {
-    let imageColors: ImageColors
-    let startPlayback: (_ shuffle: Bool) -> ()
+    @Environment(AlbumViewModel.self) private var viewModel
     
     var body: some View {
         HStack(spacing: 12) {
-            PlayButton(icon: "play.fill", label: "queue.play", imageColors: imageColors) {
-                startPlayback(false)
+            PlayButton(icon: "play.fill", label: "queue.play") {
+                viewModel.play(shuffled: false)
             }
             
-            PlayButton(icon: "shuffle", label: "queue.shuffle", imageColors: imageColors) {
-                startPlayback(true)
+            PlayButton(icon: "shuffle", label: "queue.shuffle") {
+                viewModel.play(shuffled: true)
             }
         }
     }
 }
 
 private struct PlayButton: View {
+    @Environment(AlbumViewModel.self) private var viewModel
+    
     let icon: String
     let label: LocalizedStringKey
-    let imageColors: ImageColors
     
     let callback: () -> Void
     
@@ -137,15 +123,15 @@ private struct PlayButton: View {
         ZStack {
             // This horrible abomination ensures that both buttons have the same height
             Label(String("TEXT"), systemImage: "shuffle")
-                .opacity(0)
+                .hidden()
             
             Label(label, systemImage: icon)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
         .bold()
-        .foregroundColor(imageColors.secondary)
-        .background(imageColors.primary.opacity(0.25))
+        .foregroundColor(.accentColor)
+        .background(.secondary.opacity(0.25))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 12))
         .hoverEffect(.lift)
@@ -156,33 +142,27 @@ private struct PlayButton: View {
 }
 
 private struct CompactPresentation: View {
-    let album: Album
-    let imageColors: ImageColors
-    let toolbarBackgroundVisible: Bool
-    let startPlayback: (_ shuffle: Bool) -> ()
+    @Environment(AlbumViewModel.self) private var viewModel
     
     var body: some View {
         VStack(spacing: 16) {
-            ItemImage(cover: album.cover)
+            ItemImage(cover: viewModel.album.cover)
                 .shadow(color: .black.opacity(0.25), radius: 20)
                 .frame(width: 280)
             
-            AlbumTitle(album: album, largeFont: false, imageColors: imageColors, alignment: .center)
+            AlbumTitle(largeFont: false, alignment: .center)
             
-            PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
+            PlayButtons()
         }
     }
 }
 
 private struct RegularPresentation: View {
-    let album: Album
-    let imageColors: ImageColors
-    let toolbarBackgroundVisible: Bool
-    let startPlayback: (_ shuffle: Bool) -> ()
+    @Environment(AlbumViewModel.self) private var viewModel
     
     var body: some View {
         HStack(spacing: 0) {
-            ItemImage(cover: album.cover)
+            ItemImage(cover: viewModel.album.cover)
                 .shadow(color: .black.opacity(0.25), radius: 20)
                 .frame(width: 280)
                 .padding(.trailing, 20)
@@ -192,9 +172,9 @@ private struct RegularPresentation: View {
                 .overlay {
                     VStack(alignment: .leading, spacing: 0) {
                         Spacer()
-                        AlbumTitle(album: album, largeFont: true, imageColors: imageColors, alignment: .leading)
+                        AlbumTitle(largeFont: true, alignment: .leading)
                         Spacer()
-                        PlayButtons(imageColors: imageColors, startPlayback: startPlayback)
+                        PlayButtons()
                     }
                 }
         }

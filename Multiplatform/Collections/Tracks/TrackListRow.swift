@@ -33,17 +33,16 @@ struct TrackListRow: View {
                 HStack(spacing: 0) {
                     TrackCollection.TrackIndexCover(track: track, album: album)
                     
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: showArtist ? 0 : 2) {
                         Text(track.name)
                             .lineLimit(1)
-                            .font(.body)
-                            .bold(track.favorite && album == nil)
-                            .padding(.vertical, showArtist ? 0 : 6)
+                            .font(album == nil ? .subheadline : .callout)
+                            .bold(album == nil && track.favorite)
                         
                         if showArtist, let artistName = track.artistName {
                             Text(artistName)
                                 .lineLimit(1)
-                                .font(.callout)
+                                .font(.footnote)
                                 .foregroundStyle(.secondary)
                         }
                     }
@@ -63,7 +62,7 @@ struct TrackListRow: View {
                 } label: {
                     Label("more", systemImage: "ellipsis")
                         .labelStyle(.iconOnly)
-                        .font(.caption)
+                        .font(.subheadline)
                         .imageScale(.large)
                         .foregroundStyle(Color(UIColor.label))
                         .padding(.vertical, 10)
@@ -219,10 +218,8 @@ private struct PlayNextButton: View {
     let track: Track
     
     var body: some View {
-        Button {
+        QueueNextButton {
             AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
-        } label: {
-            Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
         }
         .tint(.orange)
     }
@@ -231,10 +228,8 @@ private struct PlayLastButton: View {
     let track: Track
     
     var body: some View {
-        Button {
+        QueueLaterButton {
             AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
-        } label: {
-            Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
         }
         .tint(.blue)
     }

@@ -10,22 +10,15 @@ import AmpFinKit
 
 extension AlbumView {
     struct ToolbarModifier: ViewModifier {
-        @Environment(\.dismiss) private var dismiss
-        @Environment(\.isPresented) private var isPresented
-        @Environment(\.libraryDataProvider) private var dataProvider
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        @Environment(\.isPresented) private var isPresented
+        @Environment(\.dismiss) private var dismiss
         
-        let album: Album
+        @Environment(\.libraryDataProvider) private var dataProvider
+        @Environment(AlbumViewModel.self) private var viewModel
         
-        let imageColors: ImageColors
-        var toolbarBackgroundVisible: Bool
-        
-        let queueTracks: (_ next: Bool) -> ()
-        
-        @State private var offlineTracker: ItemOfflineTracker?
-        
-        private var regularPresentation: Bool {
-            horizontalSizeClass == .regular
+        private var isCompact: Bool {
+            horizontalSizeClass == .compact
         }
         private var alignment: HorizontalAlignment {
             #if os(visionOS)
@@ -35,33 +28,44 @@ extension AlbumView {
             #endif
         }
         
+        private var toolbarBackgroundVisibility: Visibility {
+            if !isCompact {
+                return .automatic
+            }
+            
+            return viewModel.toolbarBackgroundVisible ? .visible : .hidden
+        }
+        private var isCustomBackButtonVisible: Bool {
+            return isCompact && isPresented && !viewModel.toolbarBackgroundVisible
+        }
+        
         func body(content: Content) -> some View {
             content
-                .navigationTitle(album.name)
+                .navigationTitle(viewModel.album.name)
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarBackButtonHidden(!toolbarBackgroundVisible && !regularPresentation)
-                .toolbarBackground(regularPresentation ? .automatic : toolbarBackgroundVisible ? .visible : .hidden, for: .navigationBar)
+                .navigationBarBackButtonHidden(!viewModel.toolbarBackgroundVisible && isCompact)
+                .toolbarBackground(toolbarBackgroundVisibility, for: .navigationBar)
                 .toolbar {
                     ToolbarItem(placement: .navigation) {
-                        if !toolbarBackgroundVisible && isPresented && !regularPresentation {
+                        if isCustomBackButtonVisible {
                             Button {
                                 dismiss()
                             } label: {
                                 Label("back", systemImage: "chevron.left")
-                                    .modifier(FullscreenToolbarModifier(imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible))
+                                    .modifier(FullscreenToolbarModifier())
                             }
                             .transition(.move(edge: .leading))
                         }
                     }
                     
                     ToolbarItem(placement: .principal) {
-                        if toolbarBackgroundVisible {
+                        if viewModel.toolbarBackgroundVisible {
                             VStack(alignment: alignment) {
-                                Text(album.name)
+                                Text(viewModel.album.name)
                                     .font(.headline)
                                     .lineLimit(1)
                                 
-                                if let releaseDate = album.releaseDate {
+                                if let releaseDate = viewModel.album.releaseDate {
                                     Text(releaseDate, style: .date)
                                         .font(.caption2)
                                         .lineLimit(1)
@@ -72,119 +76,107 @@ extension AlbumView {
                         }
                     }
                     
-                    ToolbarItem(placement: .topBarTrailing) {
-                        if let offlineTracker {
-                            Button {
-                                if offlineTracker.status == .none {
-                                    Task {
-                                        try! await OfflineManager.shared.download(album: album)
-                                    }
-                                } else if offlineTracker.status == .downloaded {
-                                    try! OfflineManager.shared.delete(albumId: album.id)
-                                }
-                            } label: {
-                                switch offlineTracker.status {
-                                    case .none:
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Group {
+                            switch viewModel.downloadStatus {
+                                case .none:
+                                    Button {
+                                        viewModel.download()
+                                    } label: {
                                         Label("download", systemImage: "arrow.down")
                                             .labelStyle(.iconOnly)
-                                    case .working:
-                                        ProgressView()
-                                    case .downloaded:
+                                    }
+                                case .downloaded:
+                                    Button {
+                                        viewModel.evict()
+                                    } label: {
                                         Label("download.remove", systemImage: "xmark")
                                             .labelStyle(.iconOnly)
-                                }
+                                    }
+                                default:
+                                    ProgressView()
                             }
-                            .modifier(FullscreenToolbarModifier(imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible))
-                        } else {
-                            ProgressView()
-                                .onAppear {
-                                    offlineTracker = album.offlineTracker
-                                }
                         }
-                    }
+                        .modifier(FullscreenToolbarModifier())
                     
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Menu {
-                            Button {
-                                album.favorite.toggle()
-                            } label: {
-                                Label("favorite", systemImage: album.favorite ? "star.fill" : "star")
-                            }
-                            
-                            Button {
-                                Task {
-                                    try? await album.startInstantMix()
-                                }
-                            } label: {
-                                Label("queue.mix", systemImage: "compass.drawing")
-                            }
-                            .disabled(!JellyfinClient.shared.online)
-                            
-                            Divider()
-                            
-                            Button {
-                                queueTracks(true)
-                            } label: {
-                                Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
-                            }
-                            Button {
-                                queueTracks(false)
-                            } label: {
-                                Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
-                            }
-                            
-                            if let first = album.artists.first {
-                                Divider()
-                                
-                                NavigationLink(value: .artistLoadDestination(artistId: first.id)) {
-                                    Label("artist.view", systemImage: "music.mic")
-                                    Text(first.name)
-                                }
-                                .disabled(!dataProvider.supportsArtistLookup)
-                            }
-                            
-                            Divider()
-                            
-                            if let offlineTracker, offlineTracker.status != .none {
-                                Button(role: .destructive) {
-                                    try? OfflineManager.shared.delete(albumId: album.id)
-                                } label: {
-                                    Label(offlineTracker.status == .working ? "download.remove.force" : "download.remove", systemImage: "trash")
-                                        .foregroundStyle(.red)
-                                }
-                            }
-                        } label: {
-                            // Label("more", systemImage: "ellipsis")
-                            Image(systemName: "ellipsis")
-                                .labelStyle(.iconOnly)
-                                .modifier(FullscreenToolbarModifier(imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible))
-                        }
+                        ToolbarMenu()
                     }
                 }
         }
     }
 }
 
+private struct ToolbarMenu: View {
+    @Environment(\.libraryDataProvider) private var dataProvider
+    @Environment(AlbumViewModel.self) private var viewModel
+    
+    var body: some View {
+        Menu {
+            Button {
+                viewModel.toggleFavorite()
+            } label: {
+                Label("favorite", systemImage: viewModel.album.favorite ? "star.fill" : "star")
+            }
+            
+            Button {
+                viewModel.instantMix()
+            } label: {
+                Label("queue.mix", systemImage: "compass.drawing")
+            }
+            .disabled(!JellyfinClient.shared.online)
+            
+            Divider()
+            
+            QueueButtons {
+                viewModel.queue(now: $0)
+            }
+            
+            ForEach(viewModel.album.artists) { artist in
+                Divider()
+                
+                NavigationLink(value: .artistLoadDestination(artistId: artist.id)) {
+                    Label("artist.view", systemImage: "music.mic")
+                    Text(artist.name)
+                }
+                .disabled(!dataProvider.supportsArtistLookup)
+            }
+            
+            Divider()
+            
+            if viewModel.downloadStatus != .none {
+                Button(role: .destructive) {
+                    try? OfflineManager.shared.delete(albumId: viewModel.album.id)
+                } label: {
+                    Label(viewModel.downloadStatus == .working ? "download.remove.force" : "download.remove", systemImage: "trash")
+                        .foregroundStyle(.red)
+                }
+            }
+        } label: {
+            // Label("more", systemImage: "ellipsis")
+            Image(systemName: "ellipsis")
+                .labelStyle(.iconOnly)
+                .modifier(FullscreenToolbarModifier())
+        }
+    }
+}
+
 private struct FullscreenToolbarModifier: ViewModifier {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.colorScheme) private var colorScheme
     
-    let imageColors: ImageColors
-    let toolbarBackgroundVisible: Bool
+    @Environment(AlbumViewModel.self) private var viewModel
     
     func body(content: Content) -> some View {
-        if horizontalSizeClass == .regular {
-            content
-                .symbolVariant(.circle)
-        } else if toolbarBackgroundVisible {
-            content
-                .symbolVariant(.circle)
+        if horizontalSizeClass == .compact && !viewModel.toolbarBackgroundVisible {content
+            .symbolVariant(.circle.fill)
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(
+                colorScheme == .dark ? .black : .white,
+                (colorScheme == .dark ? Color.white : .black).opacity(0.4)
+            )
         } else {
             content
-                .symbolVariant(.circle.fill)
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(
-                    toolbarBackgroundVisible ? Color.accentColor : imageColors.isLight ? .black : .white,
-                    toolbarBackgroundVisible ? .black.opacity(0.1) : .black.opacity(0.25))
+                .symbolVariant(.circle)
         }
     }
 }

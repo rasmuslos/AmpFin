@@ -118,6 +118,9 @@
 		3AEB32312AA7EC3C00853210 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32232AA7EC3C00853210 /* ContentView.swift */; };
 		3AEB32332AA7EC3C00853210 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB32292AA7EC3C00853210 /* LoginView.swift */; };
 		3AEB323B2AA7FF1100853210 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB323A2AA7FF1100853210 /* Tabs.swift */; };
+		3AF3BA922C52358800C96E1F /* DisplayContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF3BA912C52358800C96E1F /* DisplayContext.swift */; };
+		3AF3BA942C5252A800C96E1F /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF3BA932C5252A800C96E1F /* AlbumViewModel.swift */; };
+		3AF3BA982C525E2900C96E1F /* QueueButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF3BA972C525E2900C96E1F /* QueueButtons.swift */; };
 		3AF815DD2AAA1A80004BA444 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF815DC2AAA1A80004BA444 /* Lyrics.swift */; };
 		3AFCD1212BC5CB6A00589301 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFCD1202BC5CB6A00589301 /* Buttons.swift */; };
 /* End PBXBuildFile section */
@@ -265,6 +268,9 @@
 		3AEB32232AA7EC3C00853210 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3AEB32292AA7EC3C00853210 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3AEB323A2AA7FF1100853210 /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
+		3AF3BA912C52358800C96E1F /* DisplayContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayContext.swift; sourceTree = "<group>"; };
+		3AF3BA932C5252A800C96E1F /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
+		3AF3BA972C525E2900C96E1F /* QueueButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueButtons.swift; sourceTree = "<group>"; };
 		3AF815DC2AAA1A80004BA444 /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
 		3AFCD1202BC5CB6A00589301 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -457,6 +463,8 @@
 				3AAC768C2B02C68600E337C1 /* ItemImage.swift */,
 				3A234E142AA8DBC900197AA7 /* SortSelector.swift */,
 				3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */,
+				3AF3BA972C525E2900C96E1F /* QueueButtons.swift */,
+				3AF3BA912C52358800C96E1F /* DisplayContext.swift */,
 				3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */,
 				3A0D2D122BE6C8B00001EC15 /* HoverEffectModifier.swift */,
 				3A6FC1F52ACC0BE30070301B /* Intents */,
@@ -574,6 +582,7 @@
 				3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */,
 				3ADE8E9F2AA93D39009826A3 /* AlbumView+Toolbar.swift */,
 				3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */,
+				3AF3BA932C5252A800C96E1F /* AlbumViewModel.swift */,
 				3A6F50AC2AACAFDF00FC8A29 /* AlbumLoadView.swift */,
 			);
 			path = Album;
@@ -816,6 +825,7 @@
 				3A36A5A22ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift in Sources */,
 				3AEB323B2AA7FF1100853210 /* Tabs.swift in Sources */,
 				3A98A0322AABA3DF00EA84CF /* ArtistLoadView.swift in Sources */,
+				3AF3BA982C525E2900C96E1F /* QueueButtons.swift in Sources */,
 				3A840BC92C10CFF2002CE4BD /* TrackCollection.swift in Sources */,
 				3A3E25BE2BDBD02400006310 /* PlayMediaHandler.swift in Sources */,
 				3A840BC52C10C549002CE4BD /* TrackTable.swift in Sources */,
@@ -829,6 +839,7 @@
 				3A0F99F02BE8BF4600F6B7B4 /* UIScreen+Radius.swift in Sources */,
 				3A2B28E52B433C8A00DF9731 /* PlaylistsView.swift in Sources */,
 				3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */,
+				3AF3BA922C52358800C96E1F /* DisplayContext.swift in Sources */,
 				3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */,
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,
 				3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */,
@@ -855,6 +866,7 @@
 				3AAE1B482BC57FE900FD0200 /* PlaylistLoadView.swift in Sources */,
 				3A98A0302AABA37B00EA84CF /* ErrorView.swift in Sources */,
 				3ADE8EA42AA94142009826A3 /* UINavigationController+Gesture.swift in Sources */,
+				3AF3BA942C5252A800C96E1F /* AlbumViewModel.swift in Sources */,
 				3A234E052AA88D6000197AA7 /* TracksView.swift in Sources */,
 				3AEB32312AA7EC3C00853210 /* ContentView.swift in Sources */,
 				3AAE1B4F2BC585CC00FD0200 /* RegularBarModifier.swift in Sources */,

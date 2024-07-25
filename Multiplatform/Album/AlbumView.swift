@@ -12,82 +12,64 @@ import AFPlayback
 struct AlbumView: View {
     @Environment(\.libraryDataProvider) private var dataProvider
     
-    let album: Album
+    @State private var viewModel: AlbumViewModel
     
-    @State private var tracks = [Track]()
-    
-    @State private var imageColors = ImageColors()
-    @State private var toolbarBackgroundVisible = false
+    init(album: Album) {
+        viewModel = .init(album)
+    }
     
     var body: some View {
         List {
-            Header(album: album, imageColors: imageColors, toolbarBackgroundVisible: $toolbarBackgroundVisible) { shuffle in
-                AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: album))
-            }
+            Header()
             .padding(.bottom, 4)
             
-            TrackList(tracks: tracks, container: album)
+            TrackList(tracks: viewModel.tracks, container: viewModel.album)
                 .padding(.horizontal, 20)
             
-            if let overview = album.overview, overview.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+            if let overview = viewModel.album.overview, overview.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                 Text(overview)
             }
             
             VStack(alignment: .leading) {
-                if let releaseDate = album.releaseDate {
+                if let releaseDate = viewModel.album.releaseDate {
                     Text(releaseDate, style: .date)
                 }
                 
-                Text(tracks.reduce(0, { $0 + $1.runtime }).duration)
+                Text(viewModel.runtime.duration)
             }
             .font(.subheadline)
             .listRowSeparator(.hidden, edges: .top)
             .foregroundStyle(.secondary)
             
-            AdditionalAlbums(album: album)
+            AdditionalAlbums(album: viewModel.album)
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .ignoresSafeArea(edges: .top)
-        .modifier(
-            ToolbarModifier(album: album, imageColors: imageColors, toolbarBackgroundVisible: toolbarBackgroundVisible) {
-                AudioPlayer.current.queueTracks(
-                    tracks.sorted { $0.index < $1.index },
-                    index: $0 ? 0 : AudioPlayer.current.queue.count,
-                    playbackInfo: .init(container: album, queueLocation: $0 ? .now : .later))
-            }
-        )
+        .modifier(ToolbarModifier())
+        .environment(viewModel)
         .modifier(NowPlaying.SafeAreaModifier())
+        .sensoryFeedback(.error, trigger: viewModel.errorFeedback)
         .task {
-            await imageColors.update(cover: album.cover)
-        }
-        .task {
-            await loadTracks()
+            viewModel.dataProvider = dataProvider
+            await viewModel.load()
         }
         .refreshable {
-            await loadTracks()
+            await viewModel.load()
         }
         .userActivity("io.rfk.ampfin.album") {
-            $0.title = album.name
+            $0.title = viewModel.album.name
             $0.isEligibleForHandoff = true
-            $0.persistentIdentifier = album.id
-            $0.targetContentIdentifier = "album:\(album.id)"
+            $0.persistentIdentifier = viewModel.album.id
+            $0.targetContentIdentifier = "album:\(viewModel.album.id)"
             $0.userInfo = [
-                "albumId": album.id
+                "albumId": viewModel.album.id
             ]
             $0.webpageURL = URL(string: JellyfinClient.shared.serverUrl.appending(path: "web").absoluteString + "#")!.appending(path: "details").appending(queryItems: [
-                .init(name: "id", value: album.id),
+                .init(name: "id", value: viewModel.album.id),
             ])
         }
-    }
-    
-    private func loadTracks() async {
-        guard let tracks = try? await dataProvider.tracks(albumId: album.id) else {
-            return
-        }
-        
-        self.tracks = tracks
     }
 }
 

@@ -92,20 +92,16 @@ extension NowPlaying {
                                 AudioPlayer.current.restoreHistory(index: index)
                             }
                             .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                Button {
+                                QueueNextButton {
                                     AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                                     AudioPlayer.current.removeHistoryTrack(index: index)
-                                } label: {
-                                    Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
                                 }
                                 .tint(.orange)
                             }
                             .swipeActions(edge: .leading) {
-                                Button {
+                                QueueLaterButton {
                                     AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
                                     AudioPlayer.current.removeHistoryTrack(index: index)
-                                } label: {
-                                    Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                                 }
                                 .tint(.blue)
                             }

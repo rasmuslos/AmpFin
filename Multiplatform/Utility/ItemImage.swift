@@ -13,9 +13,9 @@ internal struct ItemImage: View {
     @Environment(\.redactionReasons) private var redactionReasons
     
     let cover: Cover?
-    var cornerRadius: CGFloat = 8
+    var cornerRadius: CGFloat? = nil
     
-    private var placeholder: some View {
+    private func placeholder(cornerRadius: CGFloat) -> some View {
         ZStack {
             if !redactionReasons.contains(.placeholder) {
                 Image(systemName: "music.note")
@@ -35,22 +35,28 @@ internal struct ItemImage: View {
     }
     
     var body: some View {
-        if let cover {
-            LazyImage(url: cover.url) { phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .clipped()
-                } else {
-                    placeholder
+        GeometryReader { proxy in
+            let cornerRadius: CGFloat = cornerRadius ?? proxy.size.width > 140 ? 8 : 6
+            
+            if let cover {
+                LazyImage(url: cover.url) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .clipped()
+                    } else {
+                        placeholder(cornerRadius: cornerRadius)
+                    }
                 }
+                .aspectRatio(1, contentMode: .fit)
+                .clipShape(.rect(cornerRadius: cornerRadius))
+                .contentShape(.hoverMenuInteraction, .rect(cornerRadius: cornerRadius))
+            } else {
+                placeholder(cornerRadius: cornerRadius)
             }
-            .aspectRatio(1, contentMode: .fit)
-            .clipShape(.rect(cornerRadius: cornerRadius))
-            .contentShape(.hoverMenuInteraction, .rect(cornerRadius: cornerRadius))
-        } else {
-            placeholder
         }
+        .aspectRatio(contentMode: .fit)
+        .frame(maxWidth: .infinity, maxHeight: .infinity).aspectRatio(contentMode: .fit)
     }
 }
 

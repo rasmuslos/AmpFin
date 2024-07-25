@@ -131,6 +131,7 @@ extension RemoteAudioEndpoint: AudioEndpoint {
     var history: [Track] { [] }
     var buffering: Bool { false }
     var outputRoute: AudioPlayer.AudioRoute { .init(port: .virtual, name: clientId) }
+    var allowQueueLater: Bool { true }
     
     func skip(to: Int) {}
     func removeTrack(index: Int) -> Track? { nil }

@@ -130,6 +130,10 @@ extension AudioPlayer {
         endpoint?.outputRoute ?? .init(port: .builtInSpeaker, name: "-/-")
     }
     
+    public var allowQueueLater: Bool {
+        endpoint?.allowQueueLater ?? false
+    }
+    
     public func seek(seconds: Double) async {
         await endpoint?.seek(seconds: seconds)
     }

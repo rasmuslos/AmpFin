@@ -1446,6 +1446,7 @@
       }
     },
     "queue.last" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

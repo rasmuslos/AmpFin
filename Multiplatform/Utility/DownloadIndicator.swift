@@ -18,11 +18,11 @@ internal struct DownloadIndicator: View {
             if offlineTracker?.status == .downloaded {
                 Label("downloaded", systemImage: "arrow.down.circle.fill")
                     .labelStyle(.iconOnly)
-                    .font(.caption)
+                    .font(.caption2)
                     .foregroundStyle(.secondary)
-            } else if offlineTracker?.status == .working {
+            } else if offlineTracker?.status == .working || true {
                 ProgressView()
-                    .scaleEffect(0.75)
+                    .scaleEffect(0.5)
             }
         }
         .padding(.horizontal, 4)

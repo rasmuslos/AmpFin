@@ -29,6 +29,8 @@ protocol AudioEndpoint {
     var mediaInfo: Track.MediaInfo? { get async }
     var outputRoute: AudioPlayer.AudioRoute { get }
     
+    var allowQueueLater: Bool { get }
+    
     // MARK: Functions
     
     func seek(seconds: Double) async
