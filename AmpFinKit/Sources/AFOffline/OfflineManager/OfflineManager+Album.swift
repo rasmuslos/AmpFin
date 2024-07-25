@@ -10,15 +10,17 @@ import SwiftData
 import AFFoundation
 import AFNetwork
 
-extension OfflineManager {
-    @MainActor
-    func create(album: Album, tracks: [Track]) throws -> OfflineAlbum {
+// MARK: Internal (Helper)
+
+internal extension OfflineManager {
+    func create(album: Album, tracks: [Track], context: ModelContext) throws -> OfflineAlbum {
         if let cover = album.cover {
             Task.detached {
                 try await DownloadManager.shared.downloadCover(parentId: album.id, cover: cover)
             }
         }
         
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
         let offlineAlbum = OfflineAlbum(
             id: album.id,
             name: album.name,
@@ -29,92 +31,89 @@ extension OfflineManager {
             favorite: album._favorite,
             childrenIdentifiers: tracks.map { $0.id })
         
-        PersistenceManager.shared.modelContainer.mainContext.insert(offlineAlbum)
+        context.insert(offlineAlbum)
         return offlineAlbum
     }
     
-    @MainActor
-    func delete(offlineAlbum: OfflineAlbum) throws {
-        PersistenceManager.shared.modelContainer.mainContext.delete(offlineAlbum)
+    func delete(offlineAlbum: OfflineAlbum, context: ModelContext) throws {
+        context.delete(offlineAlbum)
         
         try? DownloadManager.shared.deleteCover(parentId: offlineAlbum.id)
-        try removeOrphans()
+        try removeOrphans(context: context)
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: offlineAlbum.id)
     }
     
-    @MainActor
-    func offlineAlbum(albumId identifier: String) throws -> OfflineAlbum {
+    func offlineAlbum(albumId identifier: String, context: ModelContext) throws -> OfflineAlbum {
         var descriptor = FetchDescriptor(predicate: #Predicate<OfflineAlbum> { $0.id == identifier })
         descriptor.fetchLimit = 1
         
-        guard let album = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first else {
+        guard let album = try context.fetch(descriptor).first else {
             throw OfflineError.notFound
         }
         
         return album
     }
     
-    @MainActor
-    func offlineAlbums() throws -> [OfflineAlbum] {
-        return try PersistenceManager.shared.modelContainer.mainContext.fetch(.init())
+    func offlineAlbums(context: ModelContext) throws -> [OfflineAlbum] {
+        return try context.fetch(.init())
     }
 }
 
+// MARK: Public (Higher Order)
+
 public extension OfflineManager {
     func download(album: Album) async throws {
-        let offlineAlbum: OfflineAlbum
         let tracks = try await JellyfinClient.shared.tracks(albumId: album.id)
         
-        if let existing = try? await self.offlineAlbum(albumId: album.id) {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        
+        let offlineAlbum: OfflineAlbum
+        
+        if let existing = try? self.offlineAlbum(albumId: album.id, context: context) {
             offlineAlbum = existing
-            
-            await MainActor.run {
-                offlineAlbum.childrenIdentifiers = tracks.map { $0.id }
-            }
+            offlineAlbum.childrenIdentifiers = tracks.map { $0.id }
         } else {
-            offlineAlbum = try await create(album: album, tracks: tracks)
+            offlineAlbum = try create(album: album, tracks: tracks, context: context)
         }
         
         for track in tracks {
-            Task {
-                await download(track: track)
-            }
+            download(track: track, context: context)
         }
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: album.id)
     }
     
-    @MainActor
     func delete(albumId identifier: String) throws {
-        let album = try OfflineManager.shared.offlineAlbum(albumId: identifier)
-        try delete(offlineAlbum: album)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let album = try OfflineManager.shared.offlineAlbum(albumId: identifier, context: context)
+        
+        try delete(offlineAlbum: album, context: context)
     }
     
-    @MainActor
     func albums() throws -> [Album] {
-        return try offlineAlbums().map(Album.init)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        return try offlineAlbums(context: context).map(Album.init)
     }
     
-    @MainActor
     func albums(search: String) throws -> [Album] {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
         var descriptor = FetchDescriptor<OfflineAlbum>(predicate: #Predicate {
             $0.name.localizedStandardContains(search)
         })
         descriptor.fetchLimit = 20
         
-        return try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).map(Album.init)
+        return try context.fetch(descriptor).map(Album.init)
     }
     
-    @MainActor
     func recentAlbums() throws -> [Album] {
         let albums = try albums()
         return albums.suffix(20).reversed()
     }
     
-    @MainActor
     func randomAlbums() throws -> [Album] {
-        let albumCount = try PersistenceManager.shared.modelContainer.mainContext.fetchCount(FetchDescriptor<OfflineAlbum>())
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let albumCount = try context.fetchCount(FetchDescriptor<OfflineAlbum>())
         let amount = min(20, albumCount)
         
         var albums = [Album]()
@@ -123,7 +122,7 @@ public extension OfflineManager {
             descriptor.fetchLimit = 1
             descriptor.fetchOffset = Int.random(in: 0..<amount)
             
-            if let album = try? PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first {
+            if let album = try? context.fetch(descriptor).first {
                 if albums.contains(where: { $0.id == album.id }) {
                     continue
                 }
@@ -137,25 +136,28 @@ public extension OfflineManager {
         return albums
     }
     
-    @MainActor
     func tracks(albumId identifier: String) throws -> [Track] {
-        let album = try offlineAlbum(albumId: identifier)
-        let tracks = try offlineTracks(parent: album)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        
+        let album = try offlineAlbum(albumId: identifier, context: context)
+        let tracks = try offlineTracks(parent: album, context: context)
         
         return tracks.map { Track($0, parent: album) }
     }
     
-    @MainActor
     func album(identifier: String) throws -> Album {
-        let album = try offlineAlbum(albumId: identifier)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let album = try offlineAlbum(albumId: identifier, context: context)
+        
         return Album(album)
     }
     
-    @MainActor
     func offlineStatus(albumId identifier: String) -> ItemOfflineTracker.OfflineStatus {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        
         do {
-            let album = try offlineAlbum(albumId: identifier)
-            let inProgress = try downloadInProgress(parent: album)
+            let album = try offlineAlbum(albumId: identifier, context: context)
+            let inProgress = try downloadInProgress(parent: album, context: context)
             
             return inProgress ? .working : .downloaded
         } catch {

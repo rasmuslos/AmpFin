@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
     static var parentNotifyTask: Task<Void, Error>? = nil
@@ -18,39 +19,29 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             try? FileManager.default.removeItem(at: tmpLocation)
             try FileManager.default.moveItem(at: location, to: tmpLocation)
         } catch {
-            Task {
-                await self.failed(taskIdentifier: downloadTask.taskIdentifier)
-            }
-            
+            failed(taskIdentifier: downloadTask.taskIdentifier)
             return
         }
         
         Task {
-            let result = try? await Task<(URL, String), Error> { @MainActor in
-                guard let track = try? OfflineManager.shared.offlineTrack(taskId: downloadTask.taskIdentifier) else {
-                    throw OfflineManager.OfflineError.notFound
-                }
-                
-                let mimeType = downloadTask.response?.mimeType
-                setTrackFileType(track: track, mimeType: mimeType)
-                
-                var values = URLResourceValues()
-                values.isExcludedFromBackup = true
-                
-                var destination = url(track: track)
-                try? destination.setResourceValues(values)
-                
-                track.downloadId = nil
-                
-                return (destination, track.id)
-            }.value
-            
-            guard let (destination, trackId) = result else {
-                self.logger.fault("Unknown download finished")
-                try? FileManager.default.removeItem(at: tmpLocation)
-                
-                return
+            let context = ModelContext(PersistenceManager.shared.modelContainer)
+            guard let track = try? OfflineManager.shared.offlineTrack(taskId: downloadTask.taskIdentifier, context: context) else {
+                throw OfflineManager.OfflineError.notFound
             }
+            
+            let mimeType = downloadTask.response?.mimeType
+            setTrackFileType(track: track, mimeType: mimeType)
+            
+            var values = URLResourceValues()
+            values.isExcludedFromBackup = true
+            
+            var destination = url(track: track)
+            try? destination.setResourceValues(values)
+            
+            track.downloadId = nil
+            let trackId = track.id
+            
+            // At this point there are no references to the SwiftData object, so we can call `Task.yield()` safely
             
             do {
                 try? FileManager.default.removeItem(at: destination)
@@ -62,18 +53,18 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
                 Self.parentNotifyTask = Task.detached {
                     try await Task.sleep(nanoseconds: UInt64(0.5) * NSEC_PER_SEC)
                     
-                    for parentId in try await OfflineManager.shared.parentIds(childId: trackId) {
-                        NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: parentId)
+                    let context = ModelContext(PersistenceManager.shared.modelContainer)
+                    let parentIDs = try OfflineManager.shared.parentIds(childId: trackId, context: context)
+                    
+                    for parentID in parentIDs {
+                        NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: parentID)
                     }
                 }
                 
                 self.logger.info("Download finished: \(trackId)")
             } catch {
                 try? FileManager.default.removeItem(at: tmpLocation)
-                
-                Task.detached {
-                    await self.failed(taskIdentifier: downloadTask.taskIdentifier)
-                }
+                failed(taskIdentifier: downloadTask.taskIdentifier)
                 
                 return
             }
@@ -85,8 +76,6 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             return
         }
         
-        Task {
-            await self.failed(taskIdentifier: task.taskIdentifier)
-        }
+        failed(taskIdentifier: task.taskIdentifier)
     }
 }

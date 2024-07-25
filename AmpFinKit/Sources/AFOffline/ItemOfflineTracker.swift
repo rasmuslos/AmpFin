@@ -14,7 +14,7 @@ public final class ItemOfflineTracker {
     let itemId: String
     let itemType: Item.ItemType
     
-    @MainActor var _status: OfflineStatus? = nil
+    var _status: OfflineStatus? = nil
     var token: Any? = nil
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "Item")
@@ -32,20 +32,17 @@ public final class ItemOfflineTracker {
 }
 
 public extension ItemOfflineTracker {
-    @MainActor
     var status: OfflineStatus {
         get {
             if _status == nil {
                 token = NotificationCenter.default.addObserver(forName: OfflineManager.itemDownloadStatusChanged, object: nil, queue: nil) { [weak self] notification in
                     if notification.object as? String == self?.itemId {
-                        Task { @MainActor [self] in
-                            guard let status = self?.checkOfflineStatus() else {
-                                return
-                            }
-                            
-                            if self?._status != status {
-                                self?._status = status
-                            }
+                        guard let status = self?.checkOfflineStatus() else {
+                            return
+                        }
+                        
+                        if self?._status != status {
+                            self?._status = status
                         }
                     }
                 }
@@ -66,8 +63,7 @@ public extension ItemOfflineTracker {
     }
 }
 
-extension ItemOfflineTracker {
-    @MainActor
+internal extension ItemOfflineTracker {
     func checkOfflineStatus() -> OfflineStatus {
         if itemType == .track {
             return OfflineManager.shared.offlineStatus(trackId: itemId)

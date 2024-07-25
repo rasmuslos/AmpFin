@@ -88,6 +88,8 @@ public extension Item {
     static let affinityChangedNotification = NSNotification.Name("io.rfk.ampfin.item.affinity")
 }
 
+extension Item.ReducedArtist: Identifiable, Hashable, Equatable {}
+
 public extension Item {
     var sortName: String {
         var sortName = name.lowercased()

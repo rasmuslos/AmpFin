@@ -48,7 +48,6 @@ extension DownloadManager {
         return container
     }
     
-    @MainActor
     func setTrackFileType(track: OfflineTrack, mimeType: String?) {
         switch mimeType {
             case "audio/aac":
@@ -70,16 +69,17 @@ extension DownloadManager {
         }
     }
     
-    @MainActor
     func failed(taskIdentifier: Int) {
-        guard let track = try? OfflineManager.shared.offlineTrack(taskId: taskIdentifier) else {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        
+        guard let track = try? OfflineManager.shared.offlineTrack(taskId: taskIdentifier, context: context) else {
             logger.fault("Could not resolve track from task identifier \(taskIdentifier)")
             return
         }
         
         logger.fault("Error while downloading track \(track.id) (\(track.name))")
         
-        if let parents = try? OfflineManager.shared.parentIds(childId: track.id).filter({ $0 != track.album.albumIdentifier }) {
+        if let parents = try? OfflineManager.shared.parentIds(childId: track.id, context: context).filter({ $0 != track.album.albumIdentifier }) {
             for parent in parents {
                 try? OfflineManager.shared.delete(playlistId: parent)
             }

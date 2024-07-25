@@ -9,10 +9,11 @@ import Foundation
 import SwiftData
 import AFFoundation
 
-extension OfflineManager {
-    @MainActor
-    func offlineTracks(parent: OfflineParent) throws -> [OfflineTrack] {
-        var tracks = try parent.childrenIdentifiers.map { try offlineTrack(trackId: $0) }
+// MARK: Internal (Helper)
+
+internal extension OfflineManager {
+    func offlineTracks(parent: OfflineParent, context: ModelContext) throws -> [OfflineTrack] {
+        var tracks = try parent.childrenIdentifiers.map { try offlineTrack(trackId: $0, context: context) }
         
         tracks.sort {
             let lhs = parent.childrenIdentifiers.firstIndex(of: $0.id)!
@@ -24,19 +25,17 @@ extension OfflineManager {
         return tracks
     }
     
-    @MainActor
-    func parentIds(childId: String) throws -> [String] {
+    func parentIds(childId: String, context: ModelContext) throws -> [String] {
         var parents = [OfflineParent]()
         
-        parents += try offlineAlbums()
-        parents += try offlinePlaylists()
+        parents += try offlineAlbums(context: context)
+        parents += try offlinePlaylists(context: context)
         
         return parents.filter { $0.childrenIdentifiers.contains(childId) }.map { $0.id }
     }
     
-    @MainActor
-    func downloadInProgress(parent: OfflineParent) throws -> Bool {
-        try offlineTracks(parent: parent).reduce(false) { $1.downloadId == nil ? $0 : true }
+    func downloadInProgress(parent: OfflineParent, context: ModelContext) throws -> Bool {
+        try offlineTracks(parent: parent, context: context).reduce(false) { $1.downloadId == nil ? $0 : true }
     }
     
     func reduceToChildrenIdentifiers(parents: [OfflineParent]) -> Set<String> {

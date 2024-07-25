@@ -10,27 +10,49 @@ import SwiftData
 import AFFoundation
 import AFNetwork
 
+// MARK: Public (Helper)
+
 public extension OfflineManager {
-    @MainActor
+    func removeOrphans(context: ModelContext) throws {
+        let albums = try offlineAlbums(context: context)
+        let playlists = try offlinePlaylists(context: context)
+        
+        let albumTrackIds = reduceToChildrenIdentifiers(parents: albums)
+        let playlistTrackIds = reduceToChildrenIdentifiers(parents: playlists)
+        
+        let tracks = try offlineTracks(context: context)
+        let orphaned = tracks.filter { !albumTrackIds.contains($0.id) && !playlistTrackIds.contains($0.id) }
+        
+        for orphan in orphaned {
+            delete(track: orphan, context: context)
+        }
+    }
+}
+
+// MARK: Public (Higher Order)
+
+public extension OfflineManager {
     func delete() throws {
-        for album in try offlineAlbums() {
-            try delete(offlineAlbum: album)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        
+        for album in try offlineAlbums(context: context) {
+            try delete(offlineAlbum: album, context: context)
         }
         
-        for playlist in try offlinePlaylists() {
-            try delete(playlist: playlist)
+        for playlist in try offlinePlaylists(context: context) {
+            try delete(playlist: playlist, context: context)
         }
         
-        for track in try offlineTracks() {
-            delete(track: track)
+        for track in try offlineTracks(context: context) {
+            delete(track: track, context: context)
         }
         
         try DownloadManager.shared.cleanupDirectory()
     }
     
-    @MainActor
     func syncPlaysToJellyfinServer() {
-        guard let plays = try? PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor<OfflinePlay>()) else {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        guard let plays = try? context.fetch(FetchDescriptor<OfflinePlay>()) else {
             return
         }
         
@@ -38,11 +60,8 @@ public extension OfflineManager {
         
         Task.detached {
             for play in plays {
-                try await JellyfinClient.shared.playbackStopped(identifier: play.trackIdentifier, positionSeconds: play.position, playSessionId: nil)
-                
-                await MainActor.run {
-                    PersistenceManager.shared.modelContainer.mainContext.delete(play)
-                }
+                try await JellyfinClient.shared.playbackStopped(identifier: play.trackIdentifier, positionSeconds: play.position)
+                ModelContext(PersistenceManager.shared.modelContainer).delete(play)
             }
         }
     }
@@ -51,38 +70,30 @@ public extension OfflineManager {
         let waitTime: Double = 60 * 60 * 12
         let lastUpdate = UserDefaults.standard.double(forKey: "lastOfflineItemUpdate")
         
-        if lastUpdate + waitTime > Date.timeIntervalSinceReferenceDate {
-            updateFavorites()
-        } else {
+        Task {
+            try await syncLocalFavorites()
+            
+            await withThrowingTaskGroup(of: Void.self) {
+                $0.addTask { try await self.updateTrackFavorites() }
+                $0.addTask { try await self.updateAlbumFavorites() }
+                $0.addTask { try await self.updatePlaylistFavorites() }
+            }
+        }
+        
+        if lastUpdate + waitTime < Date.timeIntervalSinceReferenceDate {
             UserDefaults.standard.set(Date.timeIntervalSinceReferenceDate, forKey: "lastOfflineItemUpdate")
             
             Task {
-                for album in try await albums() {
+                for album in try albums() {
                     try await download(album: album)
                 }
                 
-                for playlist in try await playlists() {
+                for playlist in try playlists() {
                     try await download(playlist: playlist)
                 }
                 
-                try? await removeOrphans()
+                try? removeOrphans(context: ModelContext(PersistenceManager.shared.modelContainer))
             }
-        }
-    }
-    
-    @MainActor
-    func removeOrphans() throws {
-        let albums = try offlineAlbums()
-        let playlists = try offlinePlaylists()
-        
-        let albumTrackIds = reduceToChildrenIdentifiers(parents: albums)
-        let playlistTrackIds = reduceToChildrenIdentifiers(parents: playlists)
-        
-        let tracks = try offlineTracks()
-        let orphaned = tracks.filter { !albumTrackIds.contains($0.id) && !playlistTrackIds.contains($0.id) }
-        
-        for orphan in orphaned {
-            delete(track: orphan)
         }
     }
 }

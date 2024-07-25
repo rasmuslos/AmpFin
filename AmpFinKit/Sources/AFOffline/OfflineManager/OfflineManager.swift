@@ -16,10 +16,11 @@ public struct OfflineManager {
     
     private init() {}
     
-    @MainActor
     public func cache(position: Double, trackId: String) {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
         let play = OfflinePlay(trackIdentifier: trackId, position: position, date: Date())
-        PersistenceManager.shared.modelContainer.mainContext.insert(play)
+        
+        context.insert(play)
     }
 }
 

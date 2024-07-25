@@ -10,9 +10,10 @@ import SwiftData
 import AFFoundation
 import AFNetwork
 
-extension OfflineManager {
-    @MainActor
-    func create(playlist: Playlist, tracks: [Track]) throws -> OfflinePlaylist {
+// MARK: Internal (Helper)
+
+internal extension OfflineManager {
+    func create(playlist: Playlist, tracks: [Track], context: ModelContext) throws -> OfflinePlaylist {
         if let cover = playlist.cover {
             Task.detached {
                 try await DownloadManager.shared.downloadCover(parentId: playlist.id, cover: cover)
@@ -35,89 +36,95 @@ extension OfflineManager {
             duration: playlist.duration,
             childrenIdentifiers: tracks.map { $0.id })
         
-        PersistenceManager.shared.modelContainer.mainContext.insert(offlinePlaylist)
+        context.insert(offlinePlaylist)
         return offlinePlaylist
     }
     
-    @MainActor
-    func delete(playlist: OfflinePlaylist) throws {
-        PersistenceManager.shared.modelContainer.mainContext.delete(playlist)
+    func delete(playlist: OfflinePlaylist, context: ModelContext) throws {
+        context.delete(playlist)
         
         try? DownloadManager.shared.deleteCover(parentId: playlist.id)
-        try removeOrphans()
+        try removeOrphans(context: context)
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: playlist.id)
     }
     
-    @MainActor
-    func offlinePlaylist(playlistId identifier: String) throws -> OfflinePlaylist {
+    func offlinePlaylist(playlistId identifier: String, context: ModelContext) throws -> OfflinePlaylist {
         var descriptor = FetchDescriptor(predicate: #Predicate<OfflinePlaylist> { $0.id == identifier })
         descriptor.fetchLimit = 1
         
-        guard let playlist = try PersistenceManager.shared.modelContainer.mainContext.fetch(descriptor).first else {
+        guard let playlist = try context.fetch(descriptor).first else {
             throw OfflineError.notFound
         }
         
         return playlist
     }
     
-    @MainActor
-    func offlinePlaylists() throws -> [OfflinePlaylist] {
-        try PersistenceManager.shared.modelContainer.mainContext.fetch(FetchDescriptor())
+    func offlinePlaylists(context: ModelContext) throws -> [OfflinePlaylist] {
+        try context.fetch(FetchDescriptor())
     }
 }
 
+// MARK: Public (Higher Order)
+
 public extension OfflineManager {
     func download(playlist: Playlist) async throws {
-        let offlinePlaylist: OfflinePlaylist
         let tracks = try await JellyfinClient.shared.tracks(playlistId: playlist.id)
         
-        if let existing = try? await self.offlinePlaylist(playlistId: playlist.id) {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let offlinePlaylist: OfflinePlaylist
+        
+        if let existing = try? self.offlinePlaylist(playlistId: playlist.id, context: context) {
             offlinePlaylist = existing
             offlinePlaylist.childrenIdentifiers = tracks.map { $0.id }
         } else {
-            offlinePlaylist = try await create(playlist: playlist, tracks: tracks)
+            offlinePlaylist = try create(playlist: playlist, tracks: tracks, context: context)
         }
         
         for track in tracks {
-            Task {
-                await download(track: track)
-            }
+            download(track: track, context: context)
+            await Task.yield()
         }
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: offlinePlaylist.id)
     }
     
-    @MainActor
     func delete(playlistId identifier: String) throws {
-        let playlist = try OfflineManager.shared.offlinePlaylist(playlistId: identifier)
-        try delete(playlist: playlist)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let playlist = try OfflineManager.shared.offlinePlaylist(playlistId: identifier, context: context)
+        
+        try delete(playlist: playlist, context: context)
     }
     
-    @MainActor
     func playlist(playlistId identifier: String) throws -> Playlist {
-        let playlist = try offlinePlaylist(playlistId: identifier)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let playlist = try offlinePlaylist(playlistId: identifier, context: context)
+        
         return Playlist(playlist)
     }
     
-    @MainActor
     func playlists() throws -> [Playlist] {
-        try offlinePlaylists().map(Playlist.init)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let playlists = try offlinePlaylists(context: context)
+            
+        return playlists.map(Playlist.init)
     }
     
-    @MainActor
     func tracks(playlistId identifier: String) throws -> [Track] {
-        let playlist = try offlinePlaylist(playlistId: identifier)
-        let tracks = try offlineTracks(parent: playlist)
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        
+        let playlist = try offlinePlaylist(playlistId: identifier, context: context)
+        let tracks = try offlineTracks(parent: playlist, context: context)
         
         return tracks.map { Track($0, parent: playlist) }
     }
     
-    @MainActor
     func offlineStatus(playlistId identifier: String) -> ItemOfflineTracker.OfflineStatus {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        
         do {
-            let playlist = try offlinePlaylist(playlistId: identifier)
-            let inProgress = try downloadInProgress(parent: playlist)
+            let playlist = try offlinePlaylist(playlistId: identifier, context: context)
+            let inProgress = try downloadInProgress(parent: playlist, context: context)
             
             return inProgress ? .working : .downloaded
         } catch {
