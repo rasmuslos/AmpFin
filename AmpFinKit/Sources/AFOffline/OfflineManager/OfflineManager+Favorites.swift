@@ -22,7 +22,9 @@ internal extension OfflineManager {
             try await JellyfinClient.shared.favorite(favorite.value, identifier: favorite.itemIdentifier)
             
             let context = ModelContext(PersistenceManager.shared.modelContainer)
+            
             context.delete(favorite)
+            try context.save()
         }
     }
     
@@ -47,6 +49,8 @@ internal extension OfflineManager {
         for track in tracks {
             track.favorite = false
         }
+        
+        try context.save()
     }
     
     func updateAlbumFavorites() async throws {
@@ -69,6 +73,8 @@ internal extension OfflineManager {
             for album in albums {
                 album.favorite = false
             }
+            
+            try context.save()
         }
     }
     
@@ -92,6 +98,8 @@ internal extension OfflineManager {
             for playlist in playlists {
                 playlist.favorite = false
             }
+            
+            try context.save()
         }
     }
 }
@@ -106,7 +114,9 @@ public extension OfflineManager {
             existing.value = favorite
         } else {
             let offlineFavorite = OfflineFavorite(itemIdentifier: itemId, value: favorite)
+            
             context.insert(offlineFavorite)
+            try? context.save()
         }
     }
     

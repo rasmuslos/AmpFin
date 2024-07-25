@@ -24,26 +24,28 @@ extension DownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
         }
         
         Task {
-            let context = ModelContext(PersistenceManager.shared.modelContainer)
-            guard let track = try? OfflineManager.shared.offlineTrack(taskId: downloadTask.taskIdentifier, context: context) else {
-                throw OfflineManager.OfflineError.notFound
-            }
-            
-            let mimeType = downloadTask.response?.mimeType
-            setTrackFileType(track: track, mimeType: mimeType)
-            
-            var values = URLResourceValues()
-            values.isExcludedFromBackup = true
-            
-            var destination = url(track: track)
-            try? destination.setResourceValues(values)
-            
-            track.downloadId = nil
-            let trackId = track.id
-            
-            // At this point there are no references to the SwiftData object, so we can call `Task.yield()` safely
-            
             do {
+                let context = ModelContext(PersistenceManager.shared.modelContainer)
+                guard let track = try? OfflineManager.shared.offlineTrack(taskId: downloadTask.taskIdentifier, context: context) else {
+                    throw OfflineManager.OfflineError.notFound
+                }
+                
+                let mimeType = downloadTask.response?.mimeType
+                setTrackFileType(track: track, mimeType: mimeType)
+                
+                var values = URLResourceValues()
+                values.isExcludedFromBackup = true
+                
+                var destination = url(track: track)
+                try? destination.setResourceValues(values)
+                
+                track.downloadId = nil
+                let trackId = track.id
+                
+                try context.save()
+                
+                // At this point there are no references to the SwiftData object, so we can call `Task.yield()` safely
+                
                 try? FileManager.default.removeItem(at: destination)
                 try FileManager.default.moveItem(at: tmpLocation, to: destination)
                 

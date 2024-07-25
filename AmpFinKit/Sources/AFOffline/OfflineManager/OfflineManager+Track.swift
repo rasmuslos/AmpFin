@@ -26,7 +26,9 @@ internal extension OfflineManager {
         try? context.delete(model: OfflineLyrics.self, where: #Predicate {
             $0.trackIdentifier == trackId
         })
+        
         context.insert(offlineLyrics)
+        try? context.save()
     }
 }
 
@@ -51,6 +53,8 @@ internal extension OfflineManager {
             downloadId: downloadTask.taskIdentifier)
         
         context.insert(offlineItem)
+        try? context.save()
+        
         downloadTask.resume()
         
         Task.detached {
@@ -63,6 +67,7 @@ internal extension OfflineManager {
     func delete(track: OfflineTrack, context: ModelContext) {
         DownloadManager.shared.delete(trackId: track.id)
         context.delete(track)
+        try? context.save()
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
     }

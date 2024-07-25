@@ -37,13 +37,16 @@ internal extension OfflineManager {
             childrenIdentifiers: tracks.map { $0.id })
         
         context.insert(offlinePlaylist)
+        try context.save()
+        
         return offlinePlaylist
     }
     
     func delete(playlist: OfflinePlaylist, context: ModelContext) throws {
         context.delete(playlist)
+        try context.save()
         
-        try? DownloadManager.shared.deleteCover(parentId: playlist.id)
+        try DownloadManager.shared.deleteCover(parentId: playlist.id)
         try removeOrphans(context: context)
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: playlist.id)
@@ -83,7 +86,6 @@ public extension OfflineManager {
         
         for track in tracks {
             download(track: track, context: context)
-            await Task.yield()
         }
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: offlinePlaylist.id)

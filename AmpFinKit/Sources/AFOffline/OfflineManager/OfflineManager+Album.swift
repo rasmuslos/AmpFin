@@ -32,6 +32,8 @@ internal extension OfflineManager {
             childrenIdentifiers: tracks.map { $0.id })
         
         context.insert(offlineAlbum)
+        try context.save()
+        
         return offlineAlbum
     }
     
@@ -41,6 +43,8 @@ internal extension OfflineManager {
         try? DownloadManager.shared.deleteCover(parentId: offlineAlbum.id)
         try removeOrphans(context: context)
         
+        
+        try context.save()
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: offlineAlbum.id)
     }
     
@@ -67,7 +71,6 @@ public extension OfflineManager {
         let tracks = try await JellyfinClient.shared.tracks(albumId: album.id)
         
         let context = ModelContext(PersistenceManager.shared.modelContainer)
-        
         let offlineAlbum: OfflineAlbum
         
         if let existing = try? self.offlineAlbum(albumId: album.id, context: context) {

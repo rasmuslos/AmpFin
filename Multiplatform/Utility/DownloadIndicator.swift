@@ -20,7 +20,7 @@ internal struct DownloadIndicator: View {
                     .labelStyle(.iconOnly)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
-            } else if offlineTracker?.status == .working || true {
+            } else if offlineTracker?.status == .working {
                 ProgressView()
                     .scaleEffect(0.5)
             }
