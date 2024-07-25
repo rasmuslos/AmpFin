@@ -69,11 +69,11 @@ internal extension LocalAudioEndpoint {
         #endif
 
         var url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
-            URLQueryItem(name: "ApiKey", value: JellyfinClient.shared.token),
+            URLQueryItem(name: "apiKey", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
             URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aiff|aif"),
-            URLQueryItem(name: "PlaySessionId", value: Session.getSessionId(profileString: "\(track.id)\(maxBitrate ?? 0)")),
+            URLQueryItem(name: "playSessionId", value: JellyfinClient.sessionID(itemId: track.id, bitrate: maxBitrate)),
             URLQueryItem(name: "startTimeTicks", value: "0"),
             URLQueryItem(name: "audioCodec", value: "aac"),
             URLQueryItem(name: "transcodingContainer", value: "mp4"),
@@ -122,9 +122,9 @@ internal extension LocalAudioEndpoint {
     }
 
     func bitrateDidChange() async {
-        determineBitrate()
         let currentTime = currentTime
 
+        determineBitrate()
         avPlayerQueue = []
         populateAVPlayerQueue()
 
@@ -132,8 +132,9 @@ internal extension LocalAudioEndpoint {
         await MainActor.run {
             NotificationCenter.default.post(name: AudioPlayer.bitrateChangedNotification, object: nil)
         }
-        if let playbackReporter = playbackReporter {
-            playbackReporter.playSessionId = Session.getSessionId(profileString: "\(playbackReporter.trackId)\(maxBitrate ?? 0)")
+        
+        if let nowPlaying {
+            playbackReporter?.playSessionId = JellyfinClient.sessionID(itemId: nowPlaying.id, bitrate: maxBitrate)
         }
     }
 
@@ -152,7 +153,7 @@ internal extension LocalAudioEndpoint {
 
         if let track = track {
             AudioPlayer.current.updateCommandCenter(favorite: track.favorite)
-            playbackReporter = PlaybackReporter(trackId: track.id, playSessionId: Session.getSessionId(profileString: "\(track.id)\(maxBitrate ?? 0)"), queue: queue)
+            playbackReporter = PlaybackReporter(trackId: track.id, playSessionId: JellyfinClient.sessionID(itemId: track.id, bitrate: maxBitrate), queue: queue)
         } else {
             playbackReporter = nil
         }

@@ -32,7 +32,7 @@ public extension MediaResolver {
     
     func tracks(artistId identifier: String) async throws -> [Track] {
         #if canImport(AFOffline)
-        if let tracks = try? await OfflineManager.shared.tracks(artistId: identifier) {
+        if let tracks = try? OfflineManager.shared.tracks(artistId: identifier) {
             return tracks.shuffled()
         }
         #endif

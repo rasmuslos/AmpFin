@@ -7,35 +7,31 @@
 
 import Foundation
 import SwiftUI
-import AFFoundation
-import AFOffline
+import AmpFinKit
 import AFPlayback
 
 @Observable
 internal final class AlbumViewModel {
     let album: Album
+    private(set) var tracks: [Track]
     
     var dataProvider: LibraryDataProvider!
-    private let offlineTracker: ItemOfflineTracker
     
-    let imageColors: ImageColors
+    private(set) var buttonColor: Color
     var toolbarBackgroundVisible: Bool
     
-    var tracks: [Track]
-    
-    var errorFeedback: Bool
+    private(set) var errorFeedback: Bool
+    private let offlineTracker: ItemOfflineTracker
     
     init(_ album: Album) {
         self.album = album
-        
-        offlineTracker = album.offlineTracker
-        
-        imageColors = ImageColors()
-        toolbarBackgroundVisible = false
-        
         tracks = []
         
+        buttonColor = .accentColor
+        toolbarBackgroundVisible = false
+        
         errorFeedback = false
+        offlineTracker = album.offlineTracker
     }
     
     func toggleFavorite() {
@@ -96,6 +92,7 @@ extension AlbumViewModel {
     internal func load() async {
         await withTaskGroup(of: Void.self) {
             $0.addTask { await self.fetchTracks() }
+            $0.addTask { await self.determineButtonColor() }
         }
     }
     
@@ -110,6 +107,17 @@ extension AlbumViewModel {
             }
         } catch {
             errorFeedback.toggle()
+        }
+    }
+    private func determineButtonColor() async {
+        if let cover = album.cover,
+           let colors = try? await AFVisuals.extractDominantColors(4, cover: cover),
+           let result = AFVisuals.determineSaturated(colors.map { $0.color }) {
+            await MainActor.run {
+                withAnimation {
+                    buttonColor = result
+                }
+            }
         }
     }
 }

@@ -9,6 +9,7 @@
 @_exported import AFExtension
 
 @_exported import AFNetwork
+@_exported import AFVisuals
 
 #if canImport(AFOffline)
 @_exported import AFOffline

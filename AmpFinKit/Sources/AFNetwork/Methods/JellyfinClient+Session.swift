@@ -7,6 +7,7 @@
 
 import Foundation
 import AFFoundation
+import CryptoKit
 
 public extension JellyfinClient {
     func update(allowRemoteControl: Bool) async throws {
@@ -96,5 +97,12 @@ public extension JellyfinClient {
             URLQueryItem(name: "ItemIds", value: tracks.map { $0.id }.joined(separator: ",")),
             URLQueryItem(name: "PlayCommand", value: queuePosition.rawValue),
         ]))
+    }
+}
+
+public extension JellyfinClient {
+    static func sessionID(itemId: String, bitrate: Int?) -> String {
+        let digest = Insecure.MD5.hash(data: Data("\(itemId)::\(bitrate ?? -1)".utf8))
+        return digest.map { String(format: "%02hhx", $0) }.joined()
     }
 }

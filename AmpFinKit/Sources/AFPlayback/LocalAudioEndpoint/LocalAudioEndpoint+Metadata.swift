@@ -84,7 +84,7 @@ internal extension LocalAudioEndpoint {
             let lyrics: Track.Lyrics?
             
             #if canImport(AFOffline)
-            lyrics = try? await OfflineManager.shared.lyrics(trackId: nowPlaying.id)
+            lyrics = try? OfflineManager.shared.lyrics(trackId: nowPlaying.id)
             #else
             lyrics = try? await JellyfinClient.shared.lyrics(trackId: nowPlaying.id)
             #endif

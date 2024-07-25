@@ -13,7 +13,7 @@ import AFNetwork
 extension DownloadManager {
     func download(trackId: String) -> URLSessionDownloadTask {
         var url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: trackId).appending(path: "universal").appending(queryItems: [
-            URLQueryItem(name: "ApiKey", value: JellyfinClient.shared.token),
+            URLQueryItem(name: "apiKey", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
             URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aif"),
@@ -26,10 +26,8 @@ extension DownloadManager {
         let bitrate = UserDefaults.standard.integer(forKey: "bitrate_downloads")
         if bitrate > 0 {
             url = url.appending(queryItems: [
-                URLQueryItem(name: "maxStreamingBitrate", value: "\(UInt64(bitrate) * 1000)")
-            ])
-            url = url.appending(queryItems: [
-                URLQueryItem(name: "PlaySessionId", value: Session.getSessionId(profileString: "\(trackId)\(bitrate)")),
+                URLQueryItem(name: "maxStreamingBitrate", value: "\(UInt64(bitrate) * 1000)"),
+                URLQueryItem(name: "PlaySessionId", value: JellyfinClient.sessionID(itemId: trackId, bitrate: bitrate)),
             ])
         }
         

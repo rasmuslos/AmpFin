@@ -27,6 +27,7 @@ let package = Package(
             .targetItem(name: "AFFoundation", condition: .none),
             .targetItem(name: "AFExtension", condition: .none),
             .targetItem(name: "AFNetwork", condition: .none),
+            .targetItem(name: "AFVisuals", condition: .none),
             
             .targetItem(name: "AFOffline", condition: offlineCondition),
         ]),
@@ -45,6 +46,11 @@ let package = Package(
         
         // Network
         .target(name: "AFNetwork", dependencies: [
+            .targetItem(name: "AFFoundation", condition: .none),
+        ]),
+        
+        // Visuals
+        .target(name: "AFVisuals", dependencies: [
             .targetItem(name: "AFFoundation", condition: .none),
         ]),
         

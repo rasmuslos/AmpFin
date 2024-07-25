@@ -10,6 +10,7 @@ import AmpFinKit
 import AFPlayback
 
 struct AlbumView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.libraryDataProvider) private var dataProvider
     
     @State private var viewModel: AlbumViewModel

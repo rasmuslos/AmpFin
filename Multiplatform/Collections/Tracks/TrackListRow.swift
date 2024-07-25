@@ -84,7 +84,8 @@ struct TrackListRow: View {
         } preview: {
             TrackPreview(track: track)
         }
-        .padding(-8)
+        .padding(.vertical, album == nil ? 0 : -4)
+        .padding(.horizontal, -8)
         .sheet(isPresented: $addToPlaylistSheetPresented) {
             PlaylistAddSheet(track: track)
         }

@@ -130,7 +130,7 @@ private struct PlayButton: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
         .bold()
-        .foregroundColor(.accentColor)
+        .foregroundColor(viewModel.buttonColor)
         .background(.secondary.opacity(0.25))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .contentShape(.hoverMenuInteraction, RoundedRectangle(cornerRadius: 12))

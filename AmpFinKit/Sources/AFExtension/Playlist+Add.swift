@@ -17,7 +17,7 @@ public extension Playlist {
         try await JellyfinClient.shared.add(trackIds: trackIds, playlistId: id)
         
         #if canImport(AFOffline)
-        if await OfflineManager.shared.offlineStatus(playlistId: id) != .none {
+        if OfflineManager.shared.offlineStatus(playlistId: id) != .none {
             try await OfflineManager.shared.download(playlist: self)
         }
         #endif

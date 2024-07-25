@@ -128,7 +128,7 @@ struct SpotlightHelper {
         Task.detached(priority: .high) {
             let albumId: String?
             
-            if let track = try? await OfflineManager.shared.track(identifier: identifier) {
+            if let track = try? OfflineManager.shared.track(identifier: identifier) {
                 albumId = track.album.id
             } else if let track = try? await JellyfinClient.shared.track(identifier: identifier) {
                 albumId = track.album.id

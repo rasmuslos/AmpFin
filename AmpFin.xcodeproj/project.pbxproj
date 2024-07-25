@@ -31,7 +31,6 @@
 		3A2B28ED2B43739100DF9731 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28EC2B43739100DF9731 /* PlaylistView.swift */; };
 		3A2B28EF2B43798600DF9731 /* PlaylistView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28EE2B43798600DF9731 /* PlaylistView+Header.swift */; };
 		3A2B28F12B4379C500DF9731 /* PlaylistView+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28F02B4379C500DF9731 /* PlaylistView+Background.swift */; };
-		3A2B28FE2B437EFD00DF9731 /* ImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */; };
 		3A2B29002B43819400DF9731 /* PlaylistView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28FF2B43819400DF9731 /* PlaylistView+Toolbar.swift */; };
 		3A2B93312B00C9DA00638AE9 /* DownloadTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */; };
 		3A2B93332B00D28700638AE9 /* InstantMixTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B93322B00D28700638AE9 /* InstantMixTip.swift */; };
@@ -106,7 +105,6 @@
 		3AD351CC2BAF29FE005DF243 /* ArtistPlaybackTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD351CB2BAF29FE005DF243 /* ArtistPlaybackTip.swift */; };
 		3AD351CE2BAF2A70005DF243 /* RemoteTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD351CD2BAF2A70005DF243 /* RemoteTip.swift */; };
 		3ADE8E912AA924E8009826A3 /* AlbumView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */; };
-		3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 3ADE8E932AA9275C009826A3 /* UIImageColors */; };
 		3ADE8E982AA92B47009826A3 /* Color+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */; };
 		3ADE8EA02AA93D39009826A3 /* AlbumView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E9F2AA93D39009826A3 /* AlbumView+Toolbar.swift */; };
 		3ADE8EA42AA94142009826A3 /* UINavigationController+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */; };
@@ -176,7 +174,6 @@
 		3A2B28EC2B43739100DF9731 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
 		3A2B28EE2B43798600DF9731 /* PlaylistView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistView+Header.swift"; sourceTree = "<group>"; };
 		3A2B28F02B4379C500DF9731 /* PlaylistView+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistView+Background.swift"; sourceTree = "<group>"; };
-		3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageColors.swift; sourceTree = "<group>"; };
 		3A2B28FF2B43819400DF9731 /* PlaylistView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistView+Toolbar.swift"; sourceTree = "<group>"; };
 		3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTip.swift; sourceTree = "<group>"; };
 		3A2B93322B00D28700638AE9 /* InstantMixTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantMixTip.swift; sourceTree = "<group>"; };
@@ -291,7 +288,6 @@
 			files = (
 				3A2146E32BF4D015001DA9E2 /* AmpFinKit in Frameworks */,
 				3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */,
-				3ADE8E942AA9275C009826A3 /* UIImageColors in Frameworks */,
 				3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */,
 				3A2146E52BF4D019001DA9E2 /* AFPlayback in Frameworks */,
 				3A5515F22BC435A200B922D7 /* Defaults in Frameworks */,
@@ -462,7 +458,6 @@
 			children = (
 				3AAC768C2B02C68600E337C1 /* ItemImage.swift */,
 				3A234E142AA8DBC900197AA7 /* SortSelector.swift */,
-				3A2B28FD2B437EFD00DF9731 /* ImageColors.swift */,
 				3AF3BA972C525E2900C96E1F /* QueueButtons.swift */,
 				3AF3BA912C52358800C96E1F /* DisplayContext.swift */,
 				3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */,
@@ -684,7 +679,6 @@
 			);
 			name = Multiplatform;
 			packageProductDependencies = (
-				3ADE8E932AA9275C009826A3 /* UIImageColors */,
 				3AE1B0E22ABCDCE80052C8AA /* NukeUI */,
 				3A58F8352B5EB7F900421D08 /* FluidGradient */,
 				3A5515F12BC435A200B922D7 /* Defaults */,
@@ -724,7 +718,6 @@
 			);
 			mainGroup = 3ABAFCA12AA7D6C40011BFD6;
 			packageReferences = (
-				3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */,
 				3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */,
 				3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 				3A5515F02BC435A200B922D7 /* XCRemoteSwiftPackageReference "Defaults" */,
@@ -844,7 +837,6 @@
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,
 				3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */,
 				3ADE8EA72AA9464D009826A3 /* CompactBarModifier.swift in Sources */,
-				3A2B28FE2B437EFD00DF9731 /* ImageColors.swift in Sources */,
 				3A1CBC192B0D284200855A70 /* Navigation.swift in Sources */,
 				3A88505C2AA909CE00456DDD /* AlbumCover.swift in Sources */,
 				3A5515EE2BC3E1CA00B922D7 /* Sidebar.swift in Sources */,
@@ -1278,14 +1270,6 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/FelixHerrmann/UIImageColors.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
-			};
-		};
 		3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke.git";
@@ -1318,11 +1302,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */;
 			productName = FluidGradient;
-		};
-		3ADE8E932AA9275C009826A3 /* UIImageColors */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3ADE8E922AA9275C009826A3 /* XCRemoteSwiftPackageReference "UIImageColors" */;
-			productName = UIImageColors;
 		};
 		3AE1B0E22ABCDCE80052C8AA /* NukeUI */ = {
 			isa = XCSwiftPackageProductDependency;

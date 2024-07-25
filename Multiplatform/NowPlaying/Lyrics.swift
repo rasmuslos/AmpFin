@@ -157,7 +157,7 @@ private extension NowPlaying.Lyrics {
         
         failed = false
         
-        if let lyrics = try? await OfflineManager.shared.lyrics(trackId: trackId, allowUpdate: true) {
+        if let lyrics = try? OfflineManager.shared.lyrics(trackId: trackId, allowUpdate: true) {
             self.lyrics = lyrics
         } else if let lyrics = try? await JellyfinClient.shared.lyrics(trackId: trackId) {
             self.lyrics = lyrics

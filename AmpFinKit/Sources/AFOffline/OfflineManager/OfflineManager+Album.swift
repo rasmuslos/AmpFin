@@ -123,7 +123,7 @@ public extension OfflineManager {
         var descriptor = FetchDescriptor<OfflineAlbum>()
         
         descriptor.fetchLimit = 20
-        descriptor.fetchOffset = try albumCount() - 20
+        descriptor.fetchOffset = max(0, try albumCount() - 20)
         
         return try context.fetch(descriptor).map(Album.init)
     }

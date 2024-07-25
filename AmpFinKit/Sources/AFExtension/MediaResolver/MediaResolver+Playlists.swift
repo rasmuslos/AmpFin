@@ -20,7 +20,7 @@ public extension MediaResolver {
         var result = [Playlist]()
         
         #if canImport(AFOffline)
-        if let offlinePlaylists = try? await OfflineManager.shared.playlists().filter({ $0.name.localizedStandardContains(name) }) {
+        if let offlinePlaylists = try? OfflineManager.shared.playlists().filter({ $0.name.localizedStandardContains(name) }) {
             result += offlinePlaylists
         }
         #endif
@@ -38,7 +38,7 @@ public extension MediaResolver {
     
     func tracks(playlistId identifier: String) async throws -> [Track] {
         #if canImport(AFOffline)
-        if let tracks = try? await OfflineManager.shared.tracks(playlistId: identifier) {
+        if let tracks = try? OfflineManager.shared.tracks(playlistId: identifier) {
             return tracks
         }
         #endif

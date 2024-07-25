@@ -22,13 +22,13 @@ public extension Item {
             #if canImport(AFOffline)
             _favorite = newValue
             
-            Task {
-                await OfflineManager.shared.update(favorite: newValue, itemId: self.id)
+            OfflineManager.shared.update(favorite: newValue, itemId: self.id)
                 
+            Task {
                 do {
                     try await JellyfinClient.shared.favorite(newValue, identifier: self.id)
                 } catch {
-                    await OfflineManager.shared.cache(favorite: newValue, itemId: self.id)
+                    OfflineManager.shared.cache(favorite: newValue, itemId: self.id)
                 }
             }
             #else

@@ -20,7 +20,7 @@ public extension MediaResolver {
         var result = [Album]()
         
         #if canImport(AFOffline)
-        if let offlineAlbums = try? await OfflineManager.shared.albums(search: name) {
+        if let offlineAlbums = try? OfflineManager.shared.albums(search: name) {
             result += offlineAlbums
         }
         #endif
@@ -48,7 +48,7 @@ public extension MediaResolver {
     
     func tracks(albumId identifier: String) async throws -> [Track] {
         #if canImport(AFOffline)
-        if let tracks = try? await OfflineManager.shared.tracks(albumId: identifier) {
+        if let tracks = try? OfflineManager.shared.tracks(albumId: identifier) {
             return tracks
         }
         #endif

@@ -105,7 +105,7 @@ private struct ModifiedTrackListRow: View {
             startPlayback(track)
         }
         .id(track.id)
-        .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         .modifier(DeleteSwipeActionModifier(track: track, callback: deleteCallback))
         .onAppear { loadMore?() }
     }

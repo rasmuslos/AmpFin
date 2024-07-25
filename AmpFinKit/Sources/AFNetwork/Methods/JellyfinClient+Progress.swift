@@ -35,13 +35,15 @@ public extension JellyfinClient {
     }
     
     func playbackStopped(identifier: String, positionSeconds: Double, playSessionId: String?) async throws {
-        var requstBody = [
+        var requestBody: [String : Any] = [
             "ItemId": identifier,
             "PositionTicks": Int64(positionSeconds * 10_000_000),
-        ] as [String : Any]
-        if let sessionId = playSessionId {
-            requstBody["PlaySessionId"] = sessionId
+        ]
+        
+        if let playSessionId {
+            requestBody["PlaySessionId"] = playSessionId
         }
-        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/Playing/Stopped", method: "POST", body: requstBody))
+        
+        let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/Playing/Stopped", method: "POST", body: requestBody))
     }
 }

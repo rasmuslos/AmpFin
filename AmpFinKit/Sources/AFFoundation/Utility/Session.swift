@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CryptoKit
 
 @Observable
 public final class Session: Identifiable, Codable {
@@ -95,15 +94,5 @@ public final class Session: Identifiable, Codable {
         try container.encode(self.shuffled, forKey: .shuffled)
     }
     
-}
-
-public extension Session {
-    static func getSessionId(profileString: String) -> String {
-        let digest = Insecure.MD5.hash(data: Data(profileString.utf8))
-
-        return digest.map {
-            String(format: "%02hhx", $0)
-        }.joined()
-    }
 }
 

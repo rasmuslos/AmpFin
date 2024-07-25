@@ -16,7 +16,16 @@ extension NowPlaying {
         let cover: Cover?
         let dragging: Bool
         
-        @State private var imageColors = ImageColors()
+        @State private var colors = [Color]()
+        @State private var highlighted: Color?
+        
+        private var highlights: [Color] {
+            guard let highlighted else {
+                return []
+            }
+            
+            return [highlighted]
+        }
         
         var body: some View {
             ZStack {
@@ -29,7 +38,7 @@ extension NowPlaying {
                         .frame(maxWidth: .infinity)
 
                     #if !targetEnvironment(macCatalyst)
-                    FluidGradient(blobs: [imageColors.background, imageColors.detail, imageColors.primary, imageColors.secondary], speed: CGFloat.random(in: 0.2...0.5), blur: 0.9)
+                    FluidGradient(blobs: colors, highlights: highlights, speed: CGFloat.random(in: 0.2...0.5), blur: 0.9)
                         .ignoresSafeArea(edges: .all)
                     #endif
                 } else {
@@ -50,10 +59,30 @@ extension NowPlaying {
             #endif
             #if !targetEnvironment(macCatalyst)
             .task(id: cover?.url) {
-                await imageColors.update(cover: cover)
-                imageColors.update(saturation: 0.7, luminance: 0.9)
+                await update(cover: cover)
             }
             #endif
+        }
+        
+        private nonisolated func update(cover: Cover?) async {
+            if let cover {
+                guard let dominantColors = try? await AFVisuals.extractDominantColors(10, cover: cover) else {
+                    await MainActor.run {
+                        self.colors = []
+                        self.highlighted = nil
+                    }
+                    
+                    return
+                }
+                
+                let colors = dominantColors.map { $0.color }
+                let mostSaturated = AFVisuals.determineSaturated(colors)
+                
+                await MainActor.run { [colors, mostSaturated] in
+                    self.colors = colors.filter { $0 != highlighted }
+                    self.highlighted = mostSaturated
+                }
+            }
         }
     }
 }

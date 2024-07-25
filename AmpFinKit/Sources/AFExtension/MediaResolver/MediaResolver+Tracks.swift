@@ -50,7 +50,7 @@ public extension MediaResolver {
     
     func track(id trackId: String) async throws -> Track {
         #if canImport(AFOffline)
-        if let track = try? await OfflineManager.shared.track(identifier: trackId) {
+        if let track = try? OfflineManager.shared.track(identifier: trackId) {
             return track
         }
         #endif

@@ -69,7 +69,7 @@ extension PlaybackReporter {
                 try await JellyfinClient.shared.playbackStopped(identifier: trackId, positionSeconds: currentTime, playSessionId: playSessionId)
             } catch {
                 #if canImport(AFOffline)
-                await OfflineManager.shared.cache(position: currentTime, trackId: trackId)
+                OfflineManager.shared.cache(position: currentTime, trackId: trackId)
                 #endif
             }
         }
