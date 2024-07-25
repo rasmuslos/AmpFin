@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIImageColors
 import AmpFinKit
 
 internal extension AlbumView {

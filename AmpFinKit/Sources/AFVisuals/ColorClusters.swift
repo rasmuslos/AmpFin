@@ -129,6 +129,8 @@ public extension AFVisuals {
             
             converged = pixelCounts.elementsEqual(centroids.map { return $0.pixelCount }) { a, b in abs(a - b) < tolerance }
             iterationCount += 1
+            
+            await Task.yield()
         }
         
         // MARK: Deallocate memory
