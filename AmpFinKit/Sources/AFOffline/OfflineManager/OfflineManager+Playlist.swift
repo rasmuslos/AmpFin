@@ -91,6 +91,14 @@ public extension OfflineManager {
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: offlinePlaylist.id)
     }
     
+    func updateLastPlayed(playlistId: String, date: Date = .now) throws {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let playlist = try offlinePlaylist(playlistId: playlistId, context: context)
+        
+        playlist.lastPlayed = date
+        try context.save()
+    }
+    
     func delete(playlistId identifier: String) throws {
         let context = ModelContext(PersistenceManager.shared.modelContainer)
         let playlist = try OfflineManager.shared.offlinePlaylist(playlistId: identifier, context: context)

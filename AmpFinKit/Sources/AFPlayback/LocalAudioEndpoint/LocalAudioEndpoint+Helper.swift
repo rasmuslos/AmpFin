@@ -157,6 +157,12 @@ internal extension LocalAudioEndpoint {
         } else {
             playbackReporter = nil
         }
+        
+        #if canImport(AFOffline)
+        if let nowPlaying {
+            try? OfflineManager.shared.updateLastPlayed(trackId: nowPlaying.id)
+        }
+        #endif
     }
 
     static func audioRoute() -> AudioPlayer.AudioRoute {

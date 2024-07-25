@@ -10,6 +10,10 @@ import AFFoundation
 import AFExtension
 import Intents
 
+#if canImport(AFOffline)
+import AFOffline
+#endif
+
 public struct PlaybackInfo {
     public var tracks: [Track]!
     public let container: Item?
@@ -40,6 +44,14 @@ public enum INPlaybackQueueLocation {
 @available(macOS, unavailable)
 extension PlaybackInfo {
     internal func donate() {
+        #if canImport(AFOffline)
+        if let album = container as? Album {
+            try? OfflineManager.shared.updateLastPlayed(albumId: album.id)
+        } else if let playlist = container as? Playlist {
+            try? OfflineManager.shared.updateLastPlayed(playlistId: playlist.id)
+        }
+        #endif
+        
         Task {
             if preventDonation { return }
             

@@ -190,4 +190,12 @@ public extension OfflineManager {
         
         NotificationCenter.default.post(name: OfflineManager.itemDownloadStatusChanged, object: track.id)
     }
+    
+    func updateLastPlayed(trackId: String, date: Date = .now) throws {
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        let track = try offlineTrack(trackId: trackId, context: context)
+        
+        track.lastPlayed = date
+        try context.save()
+    }
 }
