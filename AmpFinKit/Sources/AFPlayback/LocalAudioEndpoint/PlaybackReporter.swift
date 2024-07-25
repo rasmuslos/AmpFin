@@ -17,18 +17,20 @@ import AFOffline
 
 public final class PlaybackReporter {
     let trackId: String
+    var playSessionId: String
     
     var currentTime: Double = 0
     
-    init(trackId: String, queue: [Track]) {
+    init(trackId: String, playSessionId: String, queue: [Track]) {
         self.trackId = trackId
+        self.playSessionId = playSessionId
         
         Task {
             try? await JellyfinClient.shared.playbackStarted(identifier: trackId, queueIds: queue.map { $0.id })
         }
     }
     deinit {
-        PlaybackReporter.playbackStopped(trackId: trackId, currentTime: currentTime)
+        PlaybackReporter.playbackStopped(trackId: trackId, currentTime: currentTime, playSessionId: playSessionId)
     }
     
     func update(positionSeconds: Double, paused: Bool, repeatMode: RepeatMode, shuffled: Bool, volume: Float, scheduled: Bool) {
@@ -61,10 +63,10 @@ public final class PlaybackReporter {
 }
 
 extension PlaybackReporter {
-    static func playbackStopped(trackId: String, currentTime: Double) {
+    static func playbackStopped(trackId: String, currentTime: Double, playSessionId: String?) {
         Task {
             do {
-                try await JellyfinClient.shared.playbackStopped(identifier: trackId, positionSeconds: currentTime)
+                try await JellyfinClient.shared.playbackStopped(identifier: trackId, positionSeconds: currentTime, playSessionId: playSessionId)
             } catch {
                 #if canImport(AFOffline)
                 await OfflineManager.shared.cache(position: currentTime, trackId: trackId)

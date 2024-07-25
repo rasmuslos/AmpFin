@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Rasmus Krämer on 19.03.24.
 //
@@ -23,56 +23,57 @@ internal extension LocalAudioEndpoint {
         get async {
             if let itemId = nowPlaying?.id {
                 let serverBitrateLikelyToBeFalse = DownloadManager.shared.downloaded(trackId: itemId) && Defaults[.maxDownloadBitrate] > 0
-                
+
                 if !serverBitrateLikelyToBeFalse, var mediaInfo = try? await JellyfinClient.shared.mediaInfo(trackId: itemId) {
                     guard let maxBitrate, let bitrate = mediaInfo.bitrate else {
                         return mediaInfo
                     }
-                    
+
                     let maxBitrateBits = maxBitrate * 1000
-                    
+
                     if (bitrate > maxBitrateBits) {
                         mediaInfo.bitrate = maxBitrateBits
                         mediaInfo.codec = "AAC"
                         mediaInfo.lossless = false
                     }
-                    
+
                     return mediaInfo
                 }
             }
-            
+
             let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
-            
+
             var format = await track?.mediaFormat()
             let bitrate = try? await track?.load(.estimatedDataRate)
-            
+
             if format != nil {
                 while format!.starts(with: ".") {
                     format!.removeFirst()
                 }
             }
-            
+
             var bitrateInt: Int?
             if let bitrate, bitrate > 0 {
                 bitrateInt = Int(bitrate)
             }
-            
+
             return .init(codec: format, lossless: false, bitrate: bitrateInt, bitDepth: nil, sampleRate: nil)
         }
     }
-    
+
     func avPlayerItem(track: Track) -> AVPlayerItem {
         #if canImport(AFOffline)
         if DownloadManager.shared.downloaded(trackId: track.id) {
             return AVPlayerItem(url: DownloadManager.shared.url(trackId: track.id))
         }
         #endif
-        
+
         var url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
-            URLQueryItem(name: "api_key", value: JellyfinClient.shared.token),
+            URLQueryItem(name: "ApiKey", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
             URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aiff|aif"),
+            URLQueryItem(name: "PlaySessionId", value: Session.getSessionId(profileString: "\(track.id)\(maxBitrate ?? 0)")),
             URLQueryItem(name: "startTimeTicks", value: "0"),
             URLQueryItem(name: "audioCodec", value: "aac"),
             URLQueryItem(name: "transcodingContainer", value: "mp4"),
@@ -84,10 +85,10 @@ internal extension LocalAudioEndpoint {
                 URLQueryItem(name: "maxStreamingBitrate", value: "\(UInt64(bitrate) * 1000)")
             ])
         }
-        
+
         return AVPlayerItem(url: url)
     }
-    
+
     func setupNetworkPathMonitor() {
         networkMonitor.pathUpdateHandler = { [weak self] networkPath in
             guard let self = self else { return }
@@ -106,32 +107,36 @@ internal extension LocalAudioEndpoint {
     func determineBitrate() {
         let currentPath = networkMonitor.currentPath
         let bitrate: Int
-        
+
         if currentPath.isExpensive || currentPath.isConstrained {
             bitrate = Defaults[.maxConstrainedBitrate]
         } else {
             bitrate = Defaults[.maxStreamingBitrate]
         }
-        
+
         if bitrate <= 0 {
             maxBitrate = nil
         } else {
             maxBitrate = bitrate
         }
     }
-    
+
     func bitrateDidChange() async {
+        determineBitrate()
         let currentTime = currentTime
-        
+
         avPlayerQueue = []
         populateAVPlayerQueue()
-        
+
         await seek(seconds: currentTime)
         await MainActor.run {
             NotificationCenter.default.post(name: AudioPlayer.bitrateChangedNotification, object: nil)
         }
+        if let playbackReporter = playbackReporter {
+            playbackReporter.playSessionId = Session.getSessionId(profileString: "\(playbackReporter.trackId)\(maxBitrate ?? 0)")
+        }
     }
-    
+
     func updatePlaybackReporter(scheduled: Bool) {
         playbackReporter?.update(
             positionSeconds: currentTime,
@@ -141,18 +146,18 @@ internal extension LocalAudioEndpoint {
             volume: volume,
             scheduled: scheduled)
     }
-    
+
     func setNowPlaying(track: Track?) {
         nowPlaying = track
-        
+
         if let track = track {
             AudioPlayer.current.updateCommandCenter(favorite: track.favorite)
-            playbackReporter = PlaybackReporter(trackId: track.id, queue: queue)
+            playbackReporter = PlaybackReporter(trackId: track.id, playSessionId: Session.getSessionId(profileString: "\(track.id)\(maxBitrate ?? 0)"), queue: queue)
         } else {
             playbackReporter = nil
         }
     }
-    
+
     static func audioRoute() -> AudioPlayer.AudioRoute {
         let output = AVAudioSession.sharedInstance().currentRoute.outputs.first
         return .init(port: output?.portType ?? .builtInSpeaker, name: output?.portName ?? "-/-")

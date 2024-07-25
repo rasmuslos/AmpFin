@@ -15,7 +15,7 @@ public extension JellyfinWebSocket {
         }
         
         var request = URLRequest(url: serverUrl.appending(path: "socket").appending(queryItems: [
-            URLQueryItem(name: "api_key", value: token),
+            URLQueryItem(name: "ApiKey", value: token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
         ]))
         request.timeoutInterval = 5
