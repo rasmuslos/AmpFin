@@ -84,7 +84,7 @@ public extension OfflineManager {
             UserDefaults.standard.set(Date.timeIntervalSinceReferenceDate, forKey: "lastOfflineItemUpdate")
             
             Task {
-                for album in try albums() {
+                for album in try offlineAlbums(context: ModelContext(PersistenceManager.shared.modelContainer)).map(Album.init) {
                     try await download(album: album)
                 }
                 

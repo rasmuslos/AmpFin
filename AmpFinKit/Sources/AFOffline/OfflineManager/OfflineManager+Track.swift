@@ -104,9 +104,13 @@ public extension OfflineManager {
         return Track(track)
     }
     
-    func tracks(favoriteOnly: Bool = false) throws -> [Track] {
+    func trackCount() throws -> Int {
+        try ModelContext(PersistenceManager.shared.modelContainer).fetchCount(FetchDescriptor<OfflineTrack>())
+    }
+    
+    func tracks(favoriteOnly: Bool, limit: Int, offset: Int) throws -> [Track] {
         let context = ModelContext(PersistenceManager.shared.modelContainer)
-        let descriptor: FetchDescriptor<OfflineTrack>
+        var descriptor: FetchDescriptor<OfflineTrack>
         
         if favoriteOnly {
             descriptor = FetchDescriptor(predicate: #Predicate { $0.favorite == true })
@@ -114,8 +118,10 @@ public extension OfflineManager {
             descriptor = FetchDescriptor()
         }
         
-        let tracks = try context.fetch(descriptor)
-        return tracks.map(Track.init)
+        descriptor.fetchLimit = limit
+        descriptor.fetchOffset = offset
+        
+        return try context.fetch(descriptor).map(Track.init)
     }
     func tracks(search: String) throws -> [Track] {
         let context = ModelContext(PersistenceManager.shared.modelContainer)

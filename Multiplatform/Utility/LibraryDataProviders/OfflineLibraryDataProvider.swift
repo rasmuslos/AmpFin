@@ -17,44 +17,50 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     
     public func tracks(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, favoriteOnly: Bool, search: String?) async throws -> ([Track], Int) {
         var tracks: [Track]
+        let count: Int
         
         if let search = search, !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            tracks = try await OfflineManager.shared.tracks(search: search)
+            tracks = try OfflineManager.shared.tracks(search: search)
+            count = tracks.count
         } else {
-            tracks = try await OfflineManager.shared.tracks(favoriteOnly: favoriteOnly)
+            tracks = try OfflineManager.shared.tracks(favoriteOnly: favoriteOnly, limit: limit, offset: startIndex)
+            count = // try OfflineManager.shared.trackCount()
         }
-        tracks = filterSort(tracks: tracks, sortOrder: sortOrder, ascending: ascending)
         
-        return (tracks, tracks.count)
+        tracks = filterSort(tracks: tracks, sortOrder: sortOrder, ascending: ascending)
+        return (tracks, count)
     }
     
     // MARK: Album
     
     public func recentAlbums() async throws -> [Album] {
-        try await OfflineManager.shared.recentAlbums()
+        try OfflineManager.shared.recentAlbums()
     }
     public func randomAlbums() async throws -> [Album] {
-        try await OfflineManager.shared.randomAlbums()
+        try OfflineManager.shared.randomAlbums()
     }
     
     public func album(identifier: String) async throws -> Album {
-        try await OfflineManager.shared.album(identifier: identifier)
+        try OfflineManager.shared.album(identifier: identifier)
     }
     public func albums(limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool, search: String?) async throws -> ([Album], Int) {
         var albums: [Album]
+        let count: Int
         
         if let search = search, !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            albums = try await OfflineManager.shared.albums(search: search)
+            albums = try OfflineManager.shared.albums(search: search)
+            count = albums.count
         } else {
-            albums = try await OfflineManager.shared.albums()
+            albums = try OfflineManager.shared.albums(limit: limit, offset: startIndex)
+            count = try OfflineManager.shared.albumCount()
         }
         
         albums = filterSort(albums: albums, sortOrder: sortOrder, ascending: ascending, artistId: nil)
-        return (albums, albums.count)
+        return (albums, count)
     }
     
     public func tracks(albumId: String) async throws -> [Track] {
-        try await OfflineManager.shared.tracks(albumId: albumId)
+        try OfflineManager.shared.tracks(albumId: albumId)
     }
     
     // MARK: Artist
@@ -67,25 +73,22 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
     }
     
     public func tracks(artistId: String, sortOrder: ItemSortOrder, ascending: Bool) async throws -> [Track] {
-        var tracks = try await OfflineManager.shared.tracks(artistId: artistId)
+        var tracks = try OfflineManager.shared.tracks(artistId: artistId)
         tracks = filterSort(tracks: tracks, sortOrder: sortOrder, ascending: ascending)
         
         return tracks
     }
     public func albums(artistId: String, limit: Int, startIndex: Int, sortOrder: ItemSortOrder, ascending: Bool) async throws -> ([Album], Int) {
-        var albums = try await OfflineManager.shared.albums()
-        albums = filterSort(albums: albums, sortOrder: sortOrder, ascending: ascending, artistId: artistId)
-        
-        return (albums, albums.count)
+        throw JellyfinClient.ClientError.unknownMessage
     }
     
     // MARK: Playlist
     
     public func playlist(identifier: String) async throws -> Playlist {
-        try await OfflineManager.shared.playlist(playlistId: identifier)
+        try OfflineManager.shared.playlist(playlistId: identifier)
     }
     public func playlists(search: String?) async throws -> [Playlist] {
-        var playlists = try await OfflineManager.shared.playlists()
+        var playlists = try OfflineManager.shared.playlists()
         
         if let search, !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             playlists = playlists.filter { $0.name.localizedStandardContains(search) }
@@ -94,7 +97,7 @@ public struct OfflineLibraryDataProvider: LibraryDataProvider {
         return playlists
     }
     public func tracks(playlistId: String) async throws -> [Track] {
-        try await OfflineManager.shared.tracks(playlistId: playlistId)
+        try OfflineManager.shared.tracks(playlistId: playlistId)
     }
 }
 

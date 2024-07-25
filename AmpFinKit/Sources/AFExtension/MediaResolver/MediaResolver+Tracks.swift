@@ -20,7 +20,7 @@ public extension MediaResolver {
         var result = [Track]()
         
         #if canImport(AFOffline)
-        if let offlineTracks = try? await OfflineManager.shared.tracks().filter({ $0.name.localizedStandardContains(name) || $0.artists.map { $0.name }.reduce(false, { $0 || $1.localizedStandardContains(name) })}) {
+        if let offlineTracks = try? OfflineManager.shared.tracks(search: name) {
             result += offlineTracks
         }
         #endif

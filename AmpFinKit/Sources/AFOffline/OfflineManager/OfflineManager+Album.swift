@@ -91,9 +91,18 @@ public extension OfflineManager {
         try delete(offlineAlbum: album, context: context)
     }
     
-    func albums() throws -> [Album] {
+    func albumCount() throws -> Int {
+        try ModelContext(PersistenceManager.shared.modelContainer).fetchCount(FetchDescriptor<OfflineAlbum>())
+    }
+    
+    func albums(limit: Int, offset: Int) throws -> [Album] {
         let context = ModelContext(PersistenceManager.shared.modelContainer)
-        return try offlineAlbums(context: context).map(Album.init)
+        var descriptor = FetchDescriptor<OfflineAlbum>()
+        
+        descriptor.fetchLimit = limit
+        descriptor.fetchOffset = offset
+        
+        return try context.fetch(descriptor).map(Album.init)
     }
     
     func albums(search: String) throws -> [Album] {
@@ -107,8 +116,13 @@ public extension OfflineManager {
     }
     
     func recentAlbums() throws -> [Album] {
-        let albums = try albums()
-        return albums.suffix(20).reversed()
+        let context = ModelContext(PersistenceManager.shared.modelContainer)
+        var descriptor = FetchDescriptor<OfflineAlbum>()
+        
+        descriptor.fetchLimit = 20
+        descriptor.fetchOffset = try albumCount() - 20
+        
+        return try context.fetch(descriptor).map(Album.init)
     }
     
     func randomAlbums() throws -> [Album] {
