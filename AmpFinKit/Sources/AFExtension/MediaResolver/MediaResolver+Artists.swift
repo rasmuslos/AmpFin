@@ -14,10 +14,10 @@ import AFOffline
 
 @available(macOS, unavailable)
 public extension MediaResolver {
-    func search(artistName name: String?) async throws -> [Artist] {
+    func search(artistName name: String?, runOffline: Bool) async throws -> [Artist] {
         guard let name = name else { throw ResolveError.missing }
         
-        guard !JellyfinClient.shared.siriOfflineMode else {
+        guard !runOffline else {
             throw ResolveError.missing
         }
         

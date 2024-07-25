@@ -45,13 +45,6 @@ public protocol LibraryDataProvider {
 
 // MARK: Environment
 
-struct LibraryDataProviderDefault: EnvironmentKey {
-    static var defaultValue: LibraryDataProvider = MockLibraryDataProvider()
-}
-
 public extension EnvironmentValues {
-    var libraryDataProvider: LibraryDataProvider {
-        get { self[LibraryDataProviderDefault.self] }
-        set { self[LibraryDataProviderDefault.self] = newValue }
-    }
+    @Entry var libraryDataProvider: LibraryDataProvider = MockLibraryDataProvider()
 }

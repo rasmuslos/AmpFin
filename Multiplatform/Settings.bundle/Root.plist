@@ -130,24 +130,6 @@ Due to Jellyfin&apos;s current caching system, changes you make to the bitrate m
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>Siri-Integration</string>
-			<key>FooterText</key>
-			<string>Enabling Siri on-Device mode prevents it from discovering items that are not downloaded, ensuring uninterrupted access to your content even without an internet connection.</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Enable Siri On-Device mode</string>
-			<key>Key</key>
-			<string>siriOfflineMode</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
 			<string></string>
 		</dict>
 		<dict>

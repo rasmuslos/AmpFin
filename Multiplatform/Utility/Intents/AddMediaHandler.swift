@@ -26,7 +26,7 @@ final class AddMediaHandler: NSObject, INAddMediaIntentHandling {
             return .init(code: .failure, userActivity: nil)
         }
         
-        guard let playlist = try? await MediaResolver.shared.search(playlistName: playlistName).first else {
+        guard let playlist = try? await MediaResolver.shared.search(playlistName: playlistName, runOffline: intent.mediaSearch?.reference == .my).first else {
             return .init(code: .failure, userActivity: nil)
         }
         

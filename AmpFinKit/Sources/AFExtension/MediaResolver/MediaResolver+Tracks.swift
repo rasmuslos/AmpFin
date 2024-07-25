@@ -14,7 +14,7 @@ import AFOffline
 
 @available(macOS, unavailable)
 public extension MediaResolver {
-    func search(trackName name: String?, albumName album: String?, artistName artist: String?) async throws -> [Track] {
+    func search(trackName name: String?, albumName album: String?, artistName artist: String?, runOffline: Bool) async throws -> [Track] {
         guard let name = name else { throw ResolveError.missing }
         
         var result = [Track]()
@@ -25,7 +25,7 @@ public extension MediaResolver {
         }
         #endif
         
-        if !JellyfinClient.shared.siriOfflineMode, let fetchedTracks = try? await JellyfinClient.shared.tracks(limit: 0, startIndex: 0, sortOrder: .lastPlayed, ascending: false, search: name).0 {
+        if !runOffline, let fetchedTracks = try? await JellyfinClient.shared.tracks(limit: 0, startIndex: 0, sortOrder: .lastPlayed, ascending: false, search: name).0 {
             result += fetchedTracks.filter { !result.contains($0) }
         }
         

@@ -54,7 +54,7 @@ extension IntentHandler: INAddMediaIntentHandling {
         }
         
         do {
-            var playlists = try await MediaResolver.shared.search(playlistName: playlistName)
+            var playlists = try await MediaResolver.shared.search(playlistName: playlistName, runOffline: intent.mediaSearch?.reference == .my)
             playlists.sort { $0.name.levenshteinDistanceScore(to: playlistName) > $1.name.levenshteinDistanceScore(to: playlistName) }
             
             guard let playlist = playlists.first else {
