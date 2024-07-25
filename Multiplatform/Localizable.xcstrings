@@ -291,6 +291,12 @@
     },
     "album.unknown" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Album"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -909,6 +915,22 @@
         }
       }
     },
+    "lyrics.view" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyrics"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View lyrics"
+          }
+        }
+      }
+    },
     "migrating" : {
       "localizations" : {
         "de" : {
@@ -1446,7 +1468,6 @@
       }
     },
     "queue.last" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1458,6 +1479,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Play last"
+          }
+        }
+      }
+    },
+    "queue.last.name %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After %@"
           }
         }
       }
@@ -2170,6 +2207,12 @@
     },
     "table.index %lld %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CD: %1$lld Nummer: %1$lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",

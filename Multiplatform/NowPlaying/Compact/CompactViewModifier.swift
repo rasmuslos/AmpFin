@@ -94,7 +94,6 @@ extension NowPlaying {
                     }
                 }
                 .zIndex(2)
-                .environment(\.colorScheme, .light)
                 .foregroundStyle(.white)
                 .overlay(alignment: .top) {
                     if presentedTrack != nil {
@@ -135,6 +134,7 @@ extension NowPlaying {
                 }
             }
             .ignoresSafeArea(edges: .all)
+            .environment(\.colorScheme, .light)
             .environment(viewState)
             .modifier(Navigation.NavigationModifier() {
                 viewState.setNowPlayingViewPresented(false)

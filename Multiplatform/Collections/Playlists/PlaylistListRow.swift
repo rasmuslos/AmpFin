@@ -45,7 +45,7 @@ struct PlaylistListRow: View {
             .tint(.orange)
         }
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
-            QueueLaterButton {
+            QueueLaterButton(forceDisplay: true) {
                 Task {
                     AudioPlayer.current.queueTracks(try await JellyfinClient.shared.tracks(playlistId: playlist.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
                 }

@@ -19,6 +19,7 @@ struct TrackListRow: View {
     let startPlayback: () -> ()
     
     @State private var playing: Bool? = nil
+    @State private var lyricsSheetPresented = false
     @State private var addToPlaylistSheetPresented = false
     
     private var showArtist: Bool {
@@ -58,7 +59,7 @@ struct TrackListRow: View {
             
             if !disableMenu {
                 Menu {
-                    TrackMenu(track: track, album: album, deleteCallback: deleteCallback, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
+                    TrackMenu(track: track, album: album, deleteCallback: deleteCallback, lyricsSheetPresented: $lyricsSheetPresented, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
                 } label: {
                     Label("more", systemImage: "ellipsis")
                         .labelStyle(.iconOnly)
@@ -80,12 +81,15 @@ struct TrackListRow: View {
             TrackPreview(track: track)
         }
         .contextMenu {
-            TrackMenu(track: track, album: album, deleteCallback: deleteCallback, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
+            TrackMenu(track: track, album: album, deleteCallback: deleteCallback, lyricsSheetPresented: $lyricsSheetPresented, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
         } preview: {
             TrackPreview(track: track)
         }
         .padding(.vertical, album == nil ? 0 : -4)
         .padding(.horizontal, -8)
+        .sheet(isPresented: $lyricsSheetPresented) {
+            LyricsSheet(track: track)
+        }
         .sheet(isPresented: $addToPlaylistSheetPresented) {
             PlaylistAddSheet(track: track)
         }
@@ -93,7 +97,7 @@ struct TrackListRow: View {
             PlayNextButton(track: track)
         }
         .swipeActions(edge: .leading) {
-            PlayLastButton(track: track)
+            PlayLastButton(track: track, forceDisplay: true)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             FavoriteButton(track: track)
@@ -139,6 +143,7 @@ internal extension TrackListRow {
         
         let deleteCallback: TrackCollection.DeleteCallback
         
+        @Binding var lyricsSheetPresented: Bool
         @Binding var addToPlaylistSheetPresented: Bool
         
         @State private var offlineTracker: ItemOfflineTracker?
@@ -162,7 +167,7 @@ internal extension TrackListRow {
             Divider()
             
             PlayNextButton(track: track)
-            PlayLastButton(track: track)
+            PlayLastButton(track: track, forceDisplay: false)
             
             Divider()
             
@@ -188,20 +193,16 @@ internal extension TrackListRow {
                 .disabled(!dataProvider.supportsArtistLookup)
             }
             
-            if let deleteCallback = deleteCallback {
-                Divider()
-                
-                Button(role: .destructive) {
-                    deleteCallback(track)
-                } label: {
-                    Label("playlist.remove", systemImage: "trash.fill")
-                }
-            }
-            
             Divider()
                 .onAppear {
                     offlineTracker = track.offlineTracker
                 }
+            
+            Button {
+                lyricsSheetPresented.toggle()
+            } label: {
+                Label("lyrics.view", systemImage: "text.bubble")
+            }
             
             if let offlineTracker = offlineTracker, offlineTracker.status == .downloaded {
                 Button {
@@ -210,6 +211,16 @@ internal extension TrackListRow {
                     Label("download.update", systemImage: "arrow.triangle.2.circlepath")
                 }
                 .disabled(!JellyfinClient.shared.online)
+            }
+            
+            if let deleteCallback = deleteCallback {
+                Divider()
+                
+                Button(role: .destructive) {
+                    deleteCallback(track)
+                } label: {
+                    Label("playlist.remove", systemImage: "trash.fill")
+                }
             }
         }
     }
@@ -227,9 +238,10 @@ private struct PlayNextButton: View {
 }
 private struct PlayLastButton: View {
     let track: Track
+    let forceDisplay: Bool
     
     var body: some View {
-        QueueLaterButton {
+        QueueLaterButton(forceDisplay: forceDisplay) {
             AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
         }
         .tint(.blue)

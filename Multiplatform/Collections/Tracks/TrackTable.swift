@@ -21,6 +21,7 @@ struct TrackTable: View {
     var loadMore: TrackCollection.LoadCallback = nil
     
     @State private var selection: Track.ID? = nil
+    @State private var lyricsTrack: Track? = nil
     @State private var addToPlaylistTrack: Track? = nil
     
     private var album: Album? {
@@ -101,13 +102,24 @@ struct TrackTable: View {
             
             TableColumn(String()) { track in
                 Menu {
-                    TrackListRow.TrackMenu(track: track, album: album, deleteCallback: deleteCallback, addToPlaylistSheetPresented: .init(get: { addToPlaylistTrack == track }, set: {
-                        if $0 {
-                            addToPlaylistTrack = track
-                        } else {
-                            addToPlaylistTrack = nil
-                        }
-                    }))
+                    TrackListRow.TrackMenu(
+                        track: track,
+                        album: album,
+                        deleteCallback: deleteCallback,
+                        lyricsSheetPresented: .init(get: { lyricsTrack == track }, set: {
+                            if $0 {
+                                lyricsTrack = track
+                            } else {
+                                lyricsTrack = nil
+                            }
+                        }),
+                        addToPlaylistSheetPresented: .init(get: { addToPlaylistTrack == track }, set: {
+                            if $0 {
+                                addToPlaylistTrack = track
+                            } else {
+                                addToPlaylistTrack = nil
+                            }
+                        }))
                 } label: {
                     Label("more", systemImage: "ellipsis")
                         .labelStyle(.iconOnly)
@@ -122,17 +134,31 @@ struct TrackTable: View {
             ForEach(tracks) { track in
                 TableRow(track)
                     .contextMenu {
-                        TrackListRow.TrackMenu(track: track, album: album, deleteCallback: deleteCallback, addToPlaylistSheetPresented: .init(get: { addToPlaylistTrack == track }, set: {
-                            if $0 {
-                                addToPlaylistTrack = track
-                            } else {
-                                addToPlaylistTrack = nil
-                            }
-                        }))
+                        TrackListRow.TrackMenu(
+                            track: track,
+                            album: album,
+                            deleteCallback: deleteCallback,
+                            lyricsSheetPresented: .init(get: { lyricsTrack == track }, set: {
+                                if $0 {
+                                    lyricsTrack = track
+                                } else {
+                                    lyricsTrack = nil
+                                }
+                            }),
+                            addToPlaylistSheetPresented: .init(get: { addToPlaylistTrack == track }, set: {
+                                if $0 {
+                                    addToPlaylistTrack = track
+                                } else {
+                                    addToPlaylistTrack = nil
+                                }
+                            }))
                     } preview: {
                         TrackListRow.TrackPreview(track: track)
                     }
             }
+        }
+        .sheet(item: $lyricsTrack) {
+            LyricsSheet(track: $0)
         }
         .sheet(item: $addToPlaylistTrack) {
             PlaylistAddSheet(track: $0)

@@ -99,7 +99,7 @@ extension NowPlaying {
                                 .tint(.orange)
                             }
                             .swipeActions(edge: .leading) {
-                                QueueLaterButton {
+                                QueueLaterButton(forceDisplay: true) {
                                     AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
                                     AudioPlayer.current.removeHistoryTrack(index: index)
                                 }

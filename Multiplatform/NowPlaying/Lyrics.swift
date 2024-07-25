@@ -40,13 +40,14 @@ extension NowPlaying {
                     if let lyrics, let lyricsKeys {
                         LazyVStack(spacing: 0) {
                             ForEach(Array(lyricsKeys.enumerated()), id: \.offset) { index, key in
-                                Line(index: index, text: lyrics[key]!, scrolling: scrolling, activeLineIndex: activeLineIndex)
+                                Line(index: index, lyrics: lyrics, text: lyrics[key]!, scrolling: scrolling, activeLineIndex: activeLineIndex)
                                     .onTapGesture {
                                         AudioPlayer.current.currentTime = lyricsKeys[index]
                                         setActiveLineIndex(index)
                                     }
                             }
                         }
+                        .padding(.horizontal, 28)
                     } else {
                         Group {
                             if failed {
@@ -78,23 +79,37 @@ extension NowPlaying {
                             .frame(height: 60)
                     }
                 )
+                .padding(.horizontal, -28)
+                .onAppear {
+                    scrollTimeout = Task {
+                        try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
+                        try Task.checkCancellation()
+                        
+                        controlsVisible = false
+                    }
+                }
                 .simultaneousGesture(
                     DragGesture()
                         .onChanged({ gesture in
-                            if 0 < gesture.translation.height {
-                                controlsVisible = true
+                            if 0 < gesture.velocity.height {
+                                withAnimation {
+                                    controlsVisible = true
+                                }
                             } else {
-                                controlsVisible = false
+                                withAnimation {
+                                    controlsVisible = false
+                                }
                             }
                             
                             scrolling = true
                             
                             scrollTimeout?.cancel()
-                            scrollTimeout = Task.detached {
-                                try await Task.sleep(nanoseconds: UInt64(5) * NSEC_PER_SEC)
+                            scrollTimeout = Task {
+                                try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
                                 try Task.checkCancellation()
                                 
                                 scrolling = false
+                                controlsVisible = false
                             }
                         })
                 )
@@ -125,6 +140,8 @@ extension NowPlaying {
                 .task(id: AudioPlayer.current.nowPlaying) {
                     lyrics = nil
                     await fetchLyrics()
+                    
+                    // TODO: scroll to top when iOS 18 releases (what a stupid thing to write)
                     
                     setActiveLineIndex(0)
                     updateLyricsIndex()
@@ -180,11 +197,16 @@ private struct Line: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     let index: Int
+    let lyrics: Track.Lyrics
     let text: String?
     var scrolling: Bool
     let activeLineIndex: Int
     
     @State private var pulse: CGFloat = .zero
+    
+    private var delta: CGFloat {
+        CGFloat(index - activeLineIndex)
+    }
     
     private var active: Bool {
         index == activeLineIndex
@@ -197,13 +219,21 @@ private struct Line: View {
         HStack {
             if let text = text {
                 Text(text)
-                    .font(.system(size: horizontalSizeClass == .compact ? 33 : 50))
+                    .font(horizontalSizeClass == .compact ? .largeTitle : .system(size: 50))
             } else {
                 if index == activeLineIndex {
+                    let duration = index == lyrics.count - 1 ? AudioPlayer.current.duration : Array(lyrics)[index + 1].key
+                    let done = duration - AudioPlayer.current.currentTime
+                    let percentage = 1 - done / duration
+                    
                     HStack(spacing: 10) {
-                        ForEach(1...3, id: \.hashValue) { _ in
+                        ForEach(1...3, id: \.hashValue) { i in
+                            let dotOffset = 0.33 * Double(i - 1)
+                            let visible = min(1, max(0, percentage - dotOffset) * 3)
+                            
                             Circle()
                                 .frame(width: 15 * pulse)
+                                .opacity(0.2 + 0.8 * visible)
                         }
                     }
                     .frame(height: 20)
@@ -219,10 +249,9 @@ private struct Line: View {
             
             Spacer()
         }
-        .fontWeight(.heavy)
-        .foregroundStyle(active ? .ultraThickMaterial : .ultraThinMaterial)
-        .blur(radius: active || scrolling ? 0 : 2)
-        .opacity(active || scrolling ? 1 : 0.4)
+        .bold()
+        .foregroundStyle(active ? .white.opacity(0.8) : .gray.opacity(0.4))
+        .blur(radius: active || scrolling ? 0 : min(4, abs(delta) * 0.75 + 1.75))
         .padding(.vertical, active || text != nil ? padding : 0)
     }
 }

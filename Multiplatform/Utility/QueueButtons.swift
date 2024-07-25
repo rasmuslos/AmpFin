@@ -9,7 +9,7 @@ import SwiftUI
 import AFPlayback
 
 internal struct QueueButtons: View {
-    var action: (Bool) -> Void
+    let action: (Bool) -> Void
     
     @State private var feedback = false
     
@@ -26,7 +26,7 @@ internal struct QueueButtons: View {
 internal struct QueueNextButton: View {
     @State private var feedback = false
     
-    var action: () -> Void
+    let action: () -> Void
     
     var body: some View {
         Button {
@@ -41,7 +41,8 @@ internal struct QueueNextButton: View {
 internal struct QueueLaterButton: View {
     @State private var feedback = false
     
-    var action: () -> Void
+    var forceDisplay = false
+    let action: () -> Void
     
     var body: some View {
         if AudioPlayer.current.allowQueueLater {
@@ -49,10 +50,10 @@ internal struct QueueLaterButton: View {
                 feedback.toggle()
                 action()
             } label: {
-                Label("queue.next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                 
                 if let lastName = AudioPlayer.current.queue.last?.name {
-                    Text(lastName)
+                    Text("queue.last.name \(lastName)")
                 }
             }
         }
