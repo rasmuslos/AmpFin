@@ -158,8 +158,8 @@ extension NowPlaying {
                     .sensoryFeedback(.increase, trigger: animateForward)
                 }
                 .foregroundStyle(.primary)
-                .padding(.top, compact ? 20 : 44)
-                .padding(.bottom, compact ? 40 : 68)
+                .padding(.top, compact ? 28 : 44)
+                .padding(.bottom, compact ? 48 : 68)
                 
                 // The first view is the visible slider, the second one is there to hide the iOS indicator (10/10 hack)
                 VolumeSlider(dragging: .init(get: { volumeDragging }, set: {

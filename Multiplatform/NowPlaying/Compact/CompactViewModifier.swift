@@ -75,7 +75,7 @@ extension NowPlaying {
                                     .padding(.top, 28)
                                     .padding(.horizontal, -28)
                             }
-                            .padding(.top, 16)
+                            .padding(.top, 20)
                             .padding(.bottom, 28)
                             .transition(.modifier(active: CollapseTransitionModifier(active: true), identity: CollapseTransitionModifier(active: false)))
                             .animation(.timingCurve(0.13, 1.21, 0.46, 0.79, duration: 0.5), value: controlsVisible)

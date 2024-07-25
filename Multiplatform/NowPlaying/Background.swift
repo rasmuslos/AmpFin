@@ -10,11 +10,14 @@ import SwiftUI
 import UIKit
 import FluidGradient
 import AmpFinKit
+import AFPlayback
 
 extension NowPlaying {
     struct Background: View {
         let cover: Cover?
         let dragging: Bool
+        
+        let speed = CGFloat.random(in: 0.2...0.5)
         
         @State private var colors = [Color]()
         @State private var highlighted: Color?
@@ -38,7 +41,7 @@ extension NowPlaying {
                         .frame(maxWidth: .infinity)
 
                     #if !targetEnvironment(macCatalyst)
-                    FluidGradient(blobs: colors, highlights: highlights, speed: CGFloat.random(in: 0.2...0.5), blur: 0.9)
+                    FluidGradient(blobs: colors, highlights: highlights, speed: AudioPlayer.current.playing ? speed : 0, blur: 0.9)
                         .ignoresSafeArea(edges: .all)
                     #endif
                 } else {
