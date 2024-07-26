@@ -12,6 +12,7 @@ extension NowPlaying {
         @Binding var percentage: Double
         @Binding var dragging: Bool
         
+        @State private var blocked = false
         @State private var lastLocation: CGPoint? = nil
         
         var body: some View {
@@ -30,10 +31,17 @@ extension NowPlaying {
                 .clipShape(.rect(cornerRadius: 8))
                 .highPriorityGesture(DragGesture(minimumDistance: 0)
                     .onChanged { value in
+                        if blocked {
+                            return
+                        }
+                        
                         dragging = true
+                        blocked = true
                         
                         guard let lastLocation else {
                             lastLocation = value.location
+                            blocked = false
+                            
                             return
                         }
                         
@@ -41,7 +49,9 @@ extension NowPlaying {
                         let offset = (delta / geometry.size.width)
                         
                         self.lastLocation = value.location
+                        
                         percentage = min(1, max(0, percentage + offset))
+                        blocked = false
                     }
                     .onEnded { _ in
                         dragging = false
