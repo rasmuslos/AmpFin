@@ -212,6 +212,8 @@ private extension LyricsViewModel {
             scrolling = true
             controlsVisible = up
         }
+        
+        startScrollTimer()
     }
     
     func scroll(_ proxy: ScrollViewProxy, anchor: UnitPoint) {
