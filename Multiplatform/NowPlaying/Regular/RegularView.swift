@@ -34,21 +34,21 @@ extension NowPlaying {
                 .frame(height: 0)
                 
                 if let track = AudioPlayer.current.nowPlaying {
-                    Background(cover: track.cover, dragging: false)
+                    Background()
                     
                     VStack {
                         HStack {
                             VStack {
                                 // Single column layout
                                 if !singleColumnLayout || currentTab == .cover {
-                                    LargeTitle(track: track, currentTab: currentTab, namespace: namespace, presented: true)
+                                    LargeTitle(track: track)
                                 } else {
-                                    SmallTitle(track: track, namespace: namespace, currentTab: $currentTab)
+                                    SmallTitle(track: track)
                                         .padding(.top, 40)
                                     
                                     Group {
                                         if currentTab == .lyrics {
-                                            Lyrics(controlsVisible: .constant(false))
+                                            Lyrics(track: track)
                                         } else if currentTab == .queue {
                                             Queue()
                                         }
@@ -63,7 +63,7 @@ extension NowPlaying {
                                     ))
                                 }
                                 
-                                Controls(compact: !singleColumnLayout, controlsDragging: $controlsDragging)
+                                Controls(compact: !singleColumnLayout)
                                     .padding(.top, 12)
                                     .padding(.bottom, 32)
                             }
@@ -76,7 +76,7 @@ extension NowPlaying {
                                         if currentTab == .queue {
                                             Queue()
                                         } else if currentTab == .lyrics {
-                                            Lyrics(controlsVisible: .constant(false))
+                                            Lyrics(track: track)
                                         }
                                     }
                                     .transition(.blurReplace)
@@ -87,7 +87,7 @@ extension NowPlaying {
                             }
                         }
                         
-                        Buttons(currentTab: $currentTab)
+                        Buttons()
                     }
                     .foregroundStyle(.white)
                     .simultaneousGesture(

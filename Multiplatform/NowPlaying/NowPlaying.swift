@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import AmpFinKit
+import AFPlayback
 
 internal struct NowPlaying {
     private init() {}

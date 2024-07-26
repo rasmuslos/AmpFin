@@ -9,12 +9,10 @@ import SwiftUI
 import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct CompactBarModifier: ViewModifier {
-        @Environment(CompactViewState.self) private var nowPlayingViewState
+        @Environment(ViewModel.self) private var viewModel
         @Environment(\.libraryDataProvider) private var dataProvider
-        
-        @State private var animateForwards = false
         
         func body(content: Content) -> some View {
             content
@@ -37,14 +35,14 @@ extension NowPlaying {
                                 .allowsHitTesting(false)
                                 .toolbarBackground(.hidden, for: .tabBar)
                             
-                            if !nowPlayingViewState.presented {
+                            if !viewModel.presented {
                                 Button {
-                                    nowPlayingViewState.setNowPlayingViewPresented(true)
+                                    viewModel.setNowPlayingViewPresented(true)
                                 } label: {
                                     HStack(spacing: 8) {
                                         ItemImage(cover: nowPlaying.cover)
                                             .frame(width: 40, height: 40)
-                                            .matchedGeometryEffect(id: "image", in: nowPlayingViewState.namespace, anchor: .topTrailing)
+                                            .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topTrailing)
                                         
                                         Text(nowPlaying.name)
                                             .lineLimit(1)
@@ -70,15 +68,15 @@ extension NowPlaying {
                                             .transition(.blurReplace)
                                             
                                             Button {
-                                                animateForwards.toggle()
+                                                viewModel.animateForward.toggle()
                                                 AudioPlayer.current.advanceToNextTrack()
                                             } label: {
                                                 Label("playback.next", systemImage: "forward.fill")
                                                     .labelStyle(.iconOnly)
-                                                    .symbolEffect(.bounce.up, value: animateForwards)
+                                                    .symbolEffect(.bounce.up, value: viewModel.animateForward)
                                             }
                                             .padding(.horizontal, 8)
-                                            .sensoryFeedback(.increase, trigger: animateForwards)
+                                            .sensoryFeedback(.increase, trigger: viewModel.animateForward)
                                         }
                                         .imageScale(.large)
                                     }
@@ -86,11 +84,11 @@ extension NowPlaying {
                                 .frame(height: 56)
                                 .padding(.horizontal, 8)
                                 .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 16, style: .continuous))
-                                .modifier(NowPlaying.ContextMenuModifier(track: nowPlaying, animateForwards: $animateForwards))
+                                .modifier(NowPlaying.ContextMenuModifier(track: nowPlaying, animateForwards: .init(get: { viewModel.animateForward }, set: { viewModel.animateForward = $0 })))
                                 .foregroundStyle(.primary)
                                 .background(.regularMaterial)
                                 .transition(.move(edge: .bottom))
-                                .animation(.smooth, value: nowPlayingViewState.presented)
+                                .animation(.smooth, value: viewModel.presented)
                                 .clipShape(.rect(cornerRadius: 16, style: .continuous))
                                 .draggable(nowPlaying) {
                                     TrackListRow.TrackPreview(track: nowPlaying)

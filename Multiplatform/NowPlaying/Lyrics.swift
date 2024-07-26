@@ -9,48 +9,34 @@ import SwiftUI
 import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct Lyrics: View {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        @Environment(ViewModel.self) private var viewModel
         
-        @Binding var controlsVisible: Bool
+        @State private var lyricsViewModel: LyricsViewModel
         
-        @State private var failed = false
-        @State private var lyrics: Track.Lyrics?
-        @State private var activeLineIndex: Int = 0
-        
-        @State private var scrolling: Bool = false
-        @State private var scrollTimeout: Task<(), Error>? = nil
+        init(track: Track) {
+            _lyricsViewModel = .init(initialValue: .init(track: track))
+        }
         
         private var anchor: UnitPoint {
             horizontalSizeClass == .compact ? .top : .center
         }
         
-        private var lyricsKeys: [Double]? {
-            guard let lyrics else {
-                return nil
-            }
-            
-            return Array(lyrics.keys).sorted(by: <)
-        }
-        
         var body: some View {
             ScrollViewReader { proxy in
                 ScrollView(showsIndicators: false) {
-                    if let lyrics, let lyricsKeys {
+                    if lyricsViewModel.loaded {
                         LazyVStack(spacing: 0) {
-                            ForEach(Array(lyricsKeys.enumerated()), id: \.offset) { index, key in
-                                Line(index: index, lyrics: lyrics, text: lyrics[key]!, scrolling: scrolling, activeLineIndex: activeLineIndex)
-                                    .onTapGesture {
-                                        AudioPlayer.current.currentTime = lyricsKeys[index]
-                                        setActiveLineIndex(index)
-                                    }
+                            ForEach(Array(lyricsViewModel.lyricsKeys.enumerated()), id: \.offset) { index, key in
+                                Line(index: index)
                             }
                         }
                         .padding(.horizontal, 28)
                     } else {
                         Group {
-                            if failed {
+                            if lyricsViewModel.failed {
                                 Text("lyrics.failed")
                                     .font(.caption.smallCaps())
                                     .foregroundStyle(.regularMaterial)
@@ -80,136 +66,54 @@ extension NowPlaying {
                     }
                 )
                 .padding(.horizontal, -28)
-                .onAppear {
-                    scrollTimeout = Task {
-                        try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
-                        try Task.checkCancellation()
-                        
-                        controlsVisible = false
-                    }
-                }
                 .simultaneousGesture(
                     DragGesture()
-                        .onChanged({ gesture in
-                            if 0 < gesture.velocity.height {
-                                withAnimation {
-                                    controlsVisible = true
-                                }
-                            } else {
-                                withAnimation {
-                                    controlsVisible = false
-                                }
-                            }
-                            
-                            scrolling = true
-                            
-                            scrollTimeout?.cancel()
-                            scrollTimeout = Task {
-                                try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
-                                try Task.checkCancellation()
-                                
-                                scrolling = false
-                                controlsVisible = false
-                            }
-                        })
+                        .onChanged({ gesture in lyricsViewModel.didScroll(up: 0 < gesture.velocity.height) })
                 )
-                .onDisappear {
-                    scrollTimeout?.cancel()
+                .environment(lyricsViewModel)
+                .onChange(of: lyricsViewModel.activeLineIndex) {
+                    lyricsViewModel.scroll(proxy, anchor: anchor)
                 }
-                .onChange(of: activeLineIndex) {
-                    if scrolling {
-                        return
-                    }
-                    
-                    withAnimation(.spring) {
-                        proxy.scrollTo(activeLineIndex, anchor: anchor)
-                    }
+                .onChange(of: lyricsViewModel.scrolling) {
+                    lyricsViewModel.scroll(proxy, anchor: anchor)
                 }
-                .onChange(of: scrolling) {
-                    if scrolling {
-                        return
-                    }
-                    
-                    withAnimation(.spring) {
-                        proxy.scrollTo(activeLineIndex, anchor: anchor)
+                .onChange(of: lyricsViewModel.controlsVisible) {
+                    withAnimation {
+                        viewModel.controlsVisible = lyricsViewModel.controlsVisible
                     }
                 }
                 .onChange(of: AudioPlayer.current.currentTime) {
-                    updateLyricsIndex()
+                    lyricsViewModel.updateLyricsIndex()
                 }
                 .task(id: AudioPlayer.current.nowPlaying) {
-                    lyrics = nil
-                    await fetchLyrics()
-                    
-                    // TODO: scroll to top when iOS 18 releases (what a stupid thing to write)
-                    
-                    setActiveLineIndex(0)
-                    updateLyricsIndex()
+                    await lyricsViewModel.trackDidChange()
                 }
             }
         }
     }
 }
 
-private extension NowPlaying.Lyrics {
-    func updateLyricsIndex() {
-        guard let lyricsKeys = lyricsKeys, !lyricsKeys.isEmpty else {
-            setActiveLineIndex(0)
-            return
-        }
-        
-        let currentTime = AudioPlayer.current.currentTime
-        if let index = lyricsKeys.lastIndex(where: { $0 <= currentTime }) {
-            setActiveLineIndex(index)
-        } else {
-            setActiveLineIndex(0)
-        }
-    }
-    
-    func fetchLyrics() async {
-        guard let trackId = AudioPlayer.current.nowPlaying?.id else {
-            failed = true
-            return
-        }
-        
-        failed = false
-        
-        if let lyrics = try? OfflineManager.shared.lyrics(trackId: trackId, allowUpdate: true) {
-            self.lyrics = lyrics
-        } else if let lyrics = try? await JellyfinClient.shared.lyrics(trackId: trackId) {
-            self.lyrics = lyrics
-        } else {
-            failed = true
-        }
-    }
-    
-    func setActiveLineIndex(_ index: Int) {
-        withAnimation(.spring) {
-            activeLineIndex = index
-        }
-    }
-}
-
-// MARK: Line
-
-
 private struct Line: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(LyricsViewModel.self) private var lyricsViewModel
     
     let index: Int
-    let lyrics: Track.Lyrics
-    let text: String?
-    var scrolling: Bool
-    let activeLineIndex: Int
     
     @State private var pulse: CGFloat = .zero
     
+    private var active: Bool {
+        index == lyricsViewModel.activeLineIndex
+    }
     private var delta: CGFloat {
-        CGFloat(index - activeLineIndex)
+        CGFloat(index - lyricsViewModel.activeLineIndex)
     }
     
-    private var active: Bool {
-        index == activeLineIndex
+    private var text: String? {
+        Array(lyricsViewModel.lyrics.values)[index]
+    }
+    
+    private var isCompact: Bool {
+        horizontalSizeClass == .compact
     }
     private var padding: CGFloat {
         horizontalSizeClass == .compact ? 16 : 32
@@ -218,11 +122,17 @@ private struct Line: View {
     var body: some View {
         HStack {
             if let text = text {
-                Text(text)
-                    .font(horizontalSizeClass == .compact ? .largeTitle : .system(size: 50))
+                Button {
+                    AudioPlayer.current.currentTime = lyricsViewModel.lyricsKeys[index]
+                    lyricsViewModel.setActiveLine(index)
+                } label: {
+                    Text(text)
+                        .font(isCompact ? .largeTitle : .system(size: 50))
+                }
+                .buttonStyle(.plain)
             } else {
-                if index == activeLineIndex {
-                    let duration = index == lyrics.count - 1 ? AudioPlayer.current.duration : Array(lyrics)[index + 1].key
+                if index == lyricsViewModel.activeLineIndex {
+                    let duration = index == lyricsViewModel.lyrics.count - 1 ? AudioPlayer.current.duration : lyricsViewModel.lyricsKeys[index + 1]
                     let done = duration - AudioPlayer.current.currentTime
                     let percentage = 1 - done / duration
                     
@@ -251,7 +161,118 @@ private struct Line: View {
         }
         .bold()
         .foregroundStyle(active ? .white.opacity(0.8) : .gray.opacity(0.4))
-        .blur(radius: active || scrolling ? 0 : min(4, abs(delta) * 0.75 + 1.75))
+        .blur(radius: active || lyricsViewModel.scrolling ? 0 : min(4, abs(delta) * 0.75 + 1.25))
         .padding(.vertical, active || text != nil ? padding : 0)
+    }
+}
+
+@Observable
+private class LyricsViewModel {
+    let track: Track
+    
+    var failed: Bool
+    var lyrics: Track.Lyrics
+    
+    var activeLineIndex: Int
+    
+    var scrolling: Bool
+    var controlsVisible: Bool
+    
+    var scrollTimeout: Task<Void, Error>?
+    
+    init(track: Track) {
+        self.track = track
+        
+        failed = false
+        lyrics = [:]
+        
+        activeLineIndex = 0
+        
+        scrolling = true
+        controlsVisible = true
+        
+        scrollTimeout = nil
+        startScrollTimer()
+    }
+}
+private extension LyricsViewModel {
+    func startScrollTimer() {
+        scrollTimeout?.cancel()
+        scrollTimeout = Task {
+            try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
+            try Task.checkCancellation()
+            
+            scrolling = false
+            controlsVisible = false
+        }
+    }
+    func didScroll(up: Bool) {
+        withAnimation {
+            scrolling = true
+            controlsVisible = up
+        }
+    }
+    
+    func scroll(_ proxy: ScrollViewProxy, anchor: UnitPoint) {
+        if scrolling {
+            return
+        }
+        
+        withAnimation(.spring) {
+            proxy.scrollTo(activeLineIndex, anchor: anchor)
+        }
+    }
+    
+    func trackDidChange() async {
+        lyrics = [:]
+        setActiveLine(0)
+        
+        // TODO: scroll to top when iOS 18 releases (what a stupid thing to write)
+        
+        guard let trackId = AudioPlayer.current.nowPlaying?.id else {
+            failed = true
+            return
+        }
+        
+        failed = false
+        
+        if let lyrics = try? OfflineManager.shared.lyrics(trackId: trackId, allowUpdate: true) {
+            self.lyrics = lyrics
+        } else if let lyrics = try? await JellyfinClient.shared.lyrics(trackId: trackId) {
+            self.lyrics = lyrics
+        } else {
+            failed = true
+        }
+        
+        updateLyricsIndex()
+    }
+    
+    func updateLyricsIndex() {
+        guard !lyricsKeys.isEmpty else {
+            setActiveLine(0)
+            return
+        }
+        
+        let currentTime = AudioPlayer.current.currentTime
+        
+        if let index = lyricsKeys.lastIndex(where: { $0 <= currentTime }) {
+            setActiveLine(index)
+        } else {
+            setActiveLine(0)
+        }
+    }
+    func setActiveLine(_ index: Int) {
+        withAnimation(.spring) {
+            activeLineIndex = index
+        }
+    }
+}
+private extension LyricsViewModel {
+    var lyricsKeys: [Double] {
+        Array(lyrics.keys).sorted(by: <)
+    }
+    
+    var loaded: Bool {
+        !lyrics.isEmpty && !lyricsKeys.isEmpty
     }
 }

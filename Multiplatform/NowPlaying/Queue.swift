@@ -10,7 +10,7 @@ import TipKit
 import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct Queue: View {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         

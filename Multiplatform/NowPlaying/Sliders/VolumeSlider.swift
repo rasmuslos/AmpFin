@@ -39,10 +39,12 @@ extension NowPlaying {
             .frame(height: 0)
             .animation(.easeInOut, value: dragging)
             .onChange(of: AudioPlayer.current.volume) {
-                volume = Double($1)
+                if !dragging {
+                    volume = Double($1)
+                }
             }
-            .onChange(of: dragging) {
-                if $1 == false {
+            .onChange(of: volume) {
+                if dragging {
                     AudioPlayer.current.volume = Float(volume)
                 }
             }

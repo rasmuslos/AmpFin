@@ -13,10 +13,9 @@ import AVKit
 extension NowPlaying {
     struct Buttons: View {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        @Environment(ViewModel.self) private var viewModel
         
-        @Binding var currentTab: Tab
-        
-        private var compactLayout: Bool {
+        private var isCompact: Bool {
             horizontalSizeClass == .compact
         }
         
@@ -45,13 +44,13 @@ extension NowPlaying {
         
         @ViewBuilder private var lyricsButton: some View {
             Button {
-                setActiveTab(.lyrics)
+                viewModel.select(tab: .lyrics)
             } label: {
-                Label("lyrics", systemImage: currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
+                Label("lyrics", systemImage: viewModel.currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
                     .labelStyle(.iconOnly)
             }
-            .foregroundStyle(currentTab == .lyrics ? .thickMaterial : .thinMaterial)
-            .animation(.none, value: currentTab)
+            .foregroundStyle(viewModel.currentTab == .lyrics ? .thickMaterial : .thinMaterial)
+            .animation(.none, value: viewModel.currentTab)
             .buttonStyle(.plain)
             .modifier(HoverEffectModifier(padding: 4))
         }
@@ -84,16 +83,16 @@ extension NowPlaying {
                 Label("queue", systemImage: "list.dash")
                     .labelStyle(.iconOnly)
             } primaryAction: {
-                setActiveTab(.queue)
+                viewModel.select(tab: .queue)
             }
-            .buttonStyle(SymbolButtonStyle(active: currentTab == .queue))
+            .buttonStyle(SymbolButtonStyle(active: viewModel.currentTab == .queue))
             .modifier(HoverEffectModifier(padding: 4))
         }
         
         var body: some View {
             HStack(alignment: .center) {
                 if AudioPlayer.current.source == .local {
-                    if compactLayout {
+                    if isCompact {
                         Spacer()
                         
                         lyricsButton
@@ -197,16 +196,6 @@ extension NowPlaying {
             .bold()
             .font(.system(size: 20))
             .frame(height: 44)
-        }
-        
-        private func setActiveTab(_ tab: Tab) {
-            withAnimation(.bouncy) {
-                if currentTab == tab {
-                    currentTab = .cover
-                } else {
-                    currentTab = tab
-                }
-            }
         }
     }
 }
