@@ -9,15 +9,12 @@ import SwiftUI
 import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct RegularView: View {
-        @Namespace private var namespace
+        @Environment(ViewModel.self) private var viewModel
         @Environment(\.dismiss) private var dismiss
         
         @State private var availableWidth: CGFloat = .zero
-        
-        @State private var controlsDragging = false
-        @State private var currentTab = Tab.cover
         
         private var singleColumnLayout: Bool {
             availableWidth < 1050
@@ -40,16 +37,16 @@ extension NowPlaying {
                         HStack {
                             VStack {
                                 // Single column layout
-                                if !singleColumnLayout || currentTab == .cover {
+                                if !singleColumnLayout || viewModel.currentTab == .cover {
                                     LargeTitle(track: track)
                                 } else {
                                     SmallTitle(track: track)
                                         .padding(.top, 40)
                                     
                                     Group {
-                                        if currentTab == .lyrics {
+                                        if viewModel.currentTab == .lyrics {
                                             Lyrics(track: track)
-                                        } else if currentTab == .queue {
+                                        } else if viewModel.currentTab == .queue {
                                             Queue()
                                         }
                                     }
@@ -70,19 +67,19 @@ extension NowPlaying {
                             .frame(maxWidth: singleColumnLayout ? .infinity : 475)
                             
                             // Two column layout
-                            if !singleColumnLayout && currentTab != .cover {
+                            if !singleColumnLayout && viewModel.currentTab != .cover {
                                 VStack {
                                     Group {
-                                        if currentTab == .queue {
+                                        if viewModel.currentTab == .queue {
                                             Queue()
-                                        } else if currentTab == .lyrics {
+                                        } else if viewModel.currentTab == .lyrics {
                                             Lyrics(track: track)
                                         }
                                     }
                                     .transition(.blurReplace)
                                 }
                                 .padding(.leading, 80)
-                                .padding(.top, currentTab == .queue ? 62 : 0)
+                                .padding(.top, viewModel.currentTab == .queue ? 62 : 0)
                                 .transition(.move(edge: .trailing))
                             }
                         }

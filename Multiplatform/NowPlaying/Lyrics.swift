@@ -144,6 +144,7 @@ private struct Line: View {
                             Circle()
                                 .frame(width: 15 * pulse)
                                 .opacity(0.2 + 0.8 * visible)
+                                .animation(.linear, value: visible)
                         }
                     }
                     .frame(height: 20)

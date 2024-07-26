@@ -11,14 +11,14 @@ import AFPlayback
 
 extension NowPlaying {
     struct RegularBarModifier: ViewModifier {
+        @Namespace private var namespace
         @Environment(\.libraryDataProvider) private var dataProvider
         
         @State private var width: CGFloat = .zero
         @State private var adjust: CGFloat = .zero
         @State private var sheetPresented = false
         
-        @State private var animateForwards = false
-        @State private var animateBackwards = false
+        @State private var viewModel = ViewModel()
         
         func body(content: Content) -> some View {
             content
@@ -45,16 +45,16 @@ extension NowPlaying {
                             .modifier(HoverEffectModifier(padding: 4))
                             
                             Button {
-                                animateBackwards.toggle()
+                                viewModel.animateBackward.toggle()
                                 AudioPlayer.current.backToPreviousItem()
                             } label: {
                                 Label("playback.back", systemImage: "backward.fill")
                                     .labelStyle(.iconOnly)
-                                    .symbolEffect(.bounce.up, value: animateBackwards)
+                                    .symbolEffect(.bounce.up, value: viewModel.animateBackward)
                             }
                             .font(.title3)
                             .modifier(HoverEffectModifier())
-                            .sensoryFeedback(.decrease, trigger: animateBackwards)
+                            .sensoryFeedback(.decrease, trigger: viewModel.animateBackward)
                             
                             Group {
                                 if AudioPlayer.current.buffering {
@@ -76,16 +76,16 @@ extension NowPlaying {
                             .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
                             
                             Button {
-                                animateForwards.toggle()
+                                viewModel.animateForward.toggle()
                                 AudioPlayer.current.advanceToNextTrack()
                             } label: {
                                 Label("playback.next", systemImage: "forward.fill")
                                     .labelStyle(.iconOnly)
-                                    .symbolEffect(.bounce.up, value: animateForwards)
+                                    .symbolEffect(.bounce.up, value: viewModel.animateForward)
                             }
                             .font(.title3)
                             .modifier(HoverEffectModifier())
-                            .sensoryFeedback(.increase, trigger: animateForwards)
+                            .sensoryFeedback(.increase, trigger: viewModel.animateForward)
                             
                             Button {
                                 if AudioPlayer.current.repeatMode == .none {
@@ -113,7 +113,7 @@ extension NowPlaying {
                             Rectangle()
                                 .foregroundStyle(.regularMaterial)
                         }
-                        .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $animateForwards))
+                        .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $viewModel.animateForward))
                         .draggable(currentTrack) {
                             TrackListRow.TrackPreview(track: currentTrack)
                                 .padding()
@@ -154,6 +154,10 @@ extension NowPlaying {
                     if let offset = notification.object as? CGFloat {
                         adjust = offset
                     }
+                }
+                .environment(viewModel)
+                .onAppear {
+                    viewModel.namespace = namespace
                 }
         }
     }

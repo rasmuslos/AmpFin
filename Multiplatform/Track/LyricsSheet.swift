@@ -55,12 +55,12 @@ struct LyricsSheet: View {
                     }
                 }
             }
-            .navigationTitle(track.name)
-            .navigationBarTitleDisplayMode(.inline)
             .refreshable {
                 await fetchLyrics(track: track)
             }
         }
+        .presentationDragIndicator(.visible)
+        .presentationDetents([.medium, .large])
     }
     
     private nonisolated func fetchLyrics(track: Track) async {
