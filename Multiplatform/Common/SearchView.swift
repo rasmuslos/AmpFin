@@ -24,16 +24,6 @@ internal struct SearchView: View {
     
     var body: some View {
         List {
-            Picker("search.library", selection: $searchTab) {
-                Text("search.jellyfin")
-                    .tag(Tab.online)
-                Text("search.downloaded")
-                    .tag(Tab.offline)
-            }
-            .pickerStyle(.segmented)
-            .listRowSeparator(.hidden)
-            .listRowInsets(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
-            
             if !artists.isEmpty {
                 Section("section.artists") {
                     ArtistList(artists: artists)
@@ -77,6 +67,12 @@ internal struct SearchView: View {
         .listStyle(.plain)
         .navigationTitle("title.search")
         .searchable(text: $search, isPresented: $selected, placement: .navigationBarDrawer(displayMode: .always), prompt: "search.placeholder")
+        .searchScopes($searchTab, activation: .onSearchPresentation) {
+            Text("search.jellyfin")
+                .tag(Tab.online)
+            Text("search.downloaded")
+                .tag(Tab.offline)
+        }
         .autocorrectionDisabled()
         .textInputAutocapitalization(.never)
         .modifier(NowPlaying.SafeAreaModifier())
@@ -141,5 +137,7 @@ internal extension SearchView.Tab {
 }
 
 #Preview {
-    SearchView(search: .constant("Hello, World!"), searchTab: .constant(.online), selected: .constant(true))
+    NavigationStack {
+        SearchView(search: .constant("Hello, World!"), searchTab: .constant(.online), selected: .constant(true))
+    }
 }
