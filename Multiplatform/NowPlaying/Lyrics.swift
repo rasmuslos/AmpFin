@@ -108,8 +108,9 @@ private struct Line: View {
         CGFloat(index - lyricsViewModel.activeLineIndex)
     }
     
+    // this is cursed
     private var text: String? {
-        Array(lyricsViewModel.lyrics.values)[index]
+        lyricsViewModel.lyrics[lyricsViewModel.lyricsKeys[index]] ?? nil
     }
     
     private var isCompact: Bool {
