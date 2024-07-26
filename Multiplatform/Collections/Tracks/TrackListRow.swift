@@ -11,19 +11,25 @@ import AFPlayback
 
 struct TrackListRow: View {
     let track: Track
-    var album: Album? = nil
+    var container: Item? = nil
     
-    var disableMenu: Bool = false
-    
+    var preview: Bool = false
     var deleteCallback: TrackCollection.DeleteCallback = nil
-    let startPlayback: () -> ()
     
-    @State private var playing: Bool? = nil
+    let startPlayback: () -> Void
+    
     @State private var lyricsSheetPresented = false
     @State private var addToPlaylistSheetPresented = false
     
+    private var album: Album? {
+        container as? Album
+    }
     private var showArtist: Bool {
-        album == nil || !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
+        if album == nil {
+            return true
+        }
+        
+        return !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
     }
     
     var body: some View {
@@ -57,16 +63,19 @@ struct TrackListRow: View {
             
             DownloadIndicator(item: track)
             
-            if !disableMenu {
+            if !preview {
                 Menu {
-                    TrackMenu(track: track, album: album, deleteCallback: deleteCallback, lyricsSheetPresented: $lyricsSheetPresented, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
+                    TrackCollection.TrackMenu(track: track,
+                              album: album,
+                              deleteCallback: deleteCallback,
+                              lyricsSheetPresented: $lyricsSheetPresented,
+                              addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
                 } label: {
                     Label("more", systemImage: "ellipsis")
                         .labelStyle(.iconOnly)
                         .font(.subheadline)
                         .imageScale(.large)
                         .foregroundStyle(Color(UIColor.label))
-                        .padding(.vertical, 10)
                         .padding(.leading, 0)
                 }
                 .buttonStyle(.plain)
@@ -74,205 +83,82 @@ struct TrackListRow: View {
                 .popoverTip(InstantMixTip())
             }
         }
-        .padding(8)
-        .contentShape([.hoverMenuInteraction, .dragPreview], .rect(cornerRadius: 12))
-        .hoverEffect(.highlight)
-        .draggable(track) {
-            TrackPreview(track: track)
-        }
-        .contextMenu {
-            TrackMenu(track: track, album: album, deleteCallback: deleteCallback, lyricsSheetPresented: $lyricsSheetPresented, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
-        } preview: {
-            TrackPreview(track: track)
-        }
-        .padding(.vertical, album == nil ? 0 : -4)
-        .padding(.horizontal, -8)
-        .sheet(isPresented: $lyricsSheetPresented) {
-            LyricsSheet(track: track)
-        }
-        .sheet(isPresented: $addToPlaylistSheetPresented) {
-            PlaylistAddSheet(track: track)
-        }
-        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-            PlayNextButton(track: track)
-        }
-        .swipeActions(edge: .leading) {
-            PlayLastButton(track: track, forceDisplay: true)
-        }
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            FavoriteButton(track: track)
-        }
-        .swipeActions(edge: .trailing) {
-            AddToPlaylistButton(track: track, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
-        }
+        .id(track.id)
+        .modifier(ActionsModifier(track: track, preview: preview, deleteCallback: deleteCallback, lyricsSheetPresented: $lyricsSheetPresented, addToPlaylistSheetPresented: $addToPlaylistSheetPresented))
     }
 }
 
-internal extension TrackListRow {
-    struct TrackPreview: View {
-        let track: Track
-        
-        var body: some View {
-            HStack(spacing: 8) {
-                ItemImage(cover: track.cover)
-                    .frame(width: 44)
-                
-                VStack(alignment: .leading) {
-                    Text(track.name)
-                    
-                    if let artistName = track.artistName {
-                        Text(artistName)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                
-                Spacer()
-            }
-            .padding(12)
-            .background()
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-        }
-    }
-    
-    struct TrackMenu: View {
-        @Environment(\.libraryDataProvider) private var dataProvider
-        
-        let track: Track
-        let album: Album?
-        
-        let deleteCallback: TrackCollection.DeleteCallback
-        
-        @Binding var lyricsSheetPresented: Bool
-        @Binding var addToPlaylistSheetPresented: Bool
-        
-        @State private var offlineTracker: ItemOfflineTracker?
-        
-        var body: some View {
-            Button {
-                AudioPlayer.current.startPlayback(tracks: [track], startIndex: 0, shuffle: false, playbackInfo: .init(container: nil))
-            } label: {
-                Label("play", systemImage: "play")
-            }
-            
-            Button {
-                Task {
-                    try? await track.startInstantMix()
-                }
-            } label: {
-                Label("queue.mix", systemImage: "compass.drawing")
-            }
-            .disabled(!JellyfinClient.shared.online)
-            
-            Divider()
-            
-            PlayNextButton(track: track)
-            PlayLastButton(track: track, forceDisplay: false)
-            
-            Divider()
-            
-            FavoriteButton(track: track)
-            AddToPlaylistButton(track: track, addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
-            
-            Divider()
-            
-            if album == nil {
-                NavigationLink(value: .albumLoadDestination(albumId: track.album.id)) {
-                    Label("album.view", systemImage: "square.stack")
-                    
-                    if let name = track.album.name {
-                        Text(verbatim: name)
-                    }
-                }
-            }
-            
-            if let artist = track.artists.first {
-                NavigationLink(value: .artistLoadDestination(artistId: artist.id)) {
-                    Label("artist.view", systemImage: "music.mic")
-                }
-                .disabled(!dataProvider.supportsArtistLookup)
-            }
-            
-            Divider()
-                .onAppear {
-                    offlineTracker = track.offlineTracker
-                }
-            
-            Button {
-                lyricsSheetPresented.toggle()
-            } label: {
-                Label("lyrics.view", systemImage: "text.bubble")
-            }
-            
-            if let offlineTracker = offlineTracker, offlineTracker.status == .downloaded {
-                Button {
-                    try? OfflineManager.shared.update(trackId: track.id)
-                } label: {
-                    Label("download.update", systemImage: "arrow.triangle.2.circlepath")
-                }
-                .disabled(!JellyfinClient.shared.online)
-            }
-            
-            if let deleteCallback = deleteCallback {
-                Divider()
-                
-                Button(role: .destructive) {
-                    deleteCallback(track)
-                } label: {
-                    Label("playlist.remove", systemImage: "trash.fill")
-                }
-            }
-        }
-    }
-}
-
-private struct PlayNextButton: View {
+private struct ActionsModifier: ViewModifier {
     let track: Track
+    var container: Item?
     
-    var body: some View {
-        QueueNextButton {
-            AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
-        }
-        .tint(.orange)
-    }
-}
-private struct PlayLastButton: View {
-    let track: Track
-    let forceDisplay: Bool
+    var preview: Bool
+    var deleteCallback: TrackCollection.DeleteCallback
     
-    var body: some View {
-        QueueLaterButton(forceDisplay: forceDisplay) {
-            AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
-        }
-        .tint(.blue)
-    }
-}
-
-private struct FavoriteButton: View {
-    let track: Track
-    
-    var body: some View {
-        Button {
-            track.favorite.toggle()
-        } label: {
-            Label("favorite", systemImage: track.favorite ? "star.slash" : "star")
-        }
-        .tint(.orange)
-    }
-}
-
-private struct AddToPlaylistButton: View {
-    let track: Track
+    @Binding var lyricsSheetPresented: Bool
     @Binding var addToPlaylistSheetPresented: Bool
     
-    var body: some View {
-        Button {
-            addToPlaylistSheetPresented.toggle()
-        } label: {
-            Label("playlist.add", systemImage: "plus")
+    private var album: Album? {
+        container as? Album
+    }
+    
+    func body(content: Content) -> some View {
+        if preview {
+            content
+        } else {
+            content
+                .padding(8)
+                .contentShape([.hoverMenuInteraction, .dragPreview], .rect(cornerRadius: 12))
+                .hoverEffect(.highlight)
+                .draggable(track) {
+                    TrackCollection.TrackPreview(track: track)
+                }
+                .contextMenu {
+                    TrackCollection.TrackMenu(track: track,
+                                              album: album,
+                                              deleteCallback: deleteCallback,
+                                              lyricsSheetPresented: $lyricsSheetPresented,
+                                              addToPlaylistSheetPresented: $addToPlaylistSheetPresented)
+                } preview: {
+                    TrackCollection.TrackPreview(track: track)
+                }
+                .padding(-8)
+                .sheet(isPresented: $lyricsSheetPresented) {
+                    LyricsSheet(track: track)
+                }
+                .sheet(isPresented: $addToPlaylistSheetPresented) {
+                    PlaylistAddSheet(track: track)
+                }
+                .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                    QueueNextButton {
+                        AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
+                    }
+                    .tint(.orange)
+                }
+                .swipeActions(edge: .leading) {
+                    QueueLaterButton(hideName: true) {
+                        AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
+                    }
+                    .tint(.blue)
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button {
+                        track.favorite.toggle()
+                    } label: {
+                        Label("favorite", systemImage: track.favorite ? "star.slash" : "star")
+                    }
+                    .tint(.orange)
+                }
+                .swipeActions(edge: .trailing) {
+                    Button {
+                        addToPlaylistSheetPresented.toggle()
+                    } label: {
+                        Label("playlist.add", systemImage: "plus")
+                    }
+                    .disabled(!JellyfinClient.shared.online)
+                    .tint(.green)
+                }
         }
-        .disabled(!JellyfinClient.shared.online)
-        .tint(.green)
     }
 }
 
@@ -289,11 +175,7 @@ internal extension TrackListRow {
             index: .init(index: 0, disk: 0),
             runtime: 0,
             playCount: 0,
-            releaseDate: nil),
-        album: nil,
-        disableMenu: true,
-        deleteCallback: nil,
-        startPlayback: {})
+            releaseDate: nil)) { }
     .redacted(reason: .placeholder)
 }
 

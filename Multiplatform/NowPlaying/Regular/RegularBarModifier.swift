@@ -115,7 +115,7 @@ extension NowPlaying {
                         }
                         .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $viewModel.animateForward))
                         .draggable(currentTrack) {
-                            TrackListRow.TrackPreview(track: currentTrack)
+                            TrackCollection.TrackPreview(track: currentTrack)
                                 .padding()
                         }
                         .clipShape(.rect(cornerRadius: 16, style: .continuous))

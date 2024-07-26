@@ -28,7 +28,7 @@ struct PlaylistAddSheet: View {
                 if JellyfinClient.shared.online {
                     List {
                         Section {
-                            TrackListRow(track: track, disableMenu: true, startPlayback: {})
+                            TrackListRow(track: track, preview: true) {}
                             
                             if failed {
                                 Label("playlist.add.error", systemImage: "xmark.circle")

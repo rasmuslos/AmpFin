@@ -91,7 +91,7 @@ internal extension NowPlaying {
                                 .animation(.smooth, value: viewModel.presented)
                                 .clipShape(.rect(cornerRadius: 16, style: .continuous))
                                 .draggable(nowPlaying) {
-                                    TrackListRow.TrackPreview(track: nowPlaying)
+                                    TrackCollection.TrackPreview(track: nowPlaying)
                                         .padding()
                                 }
                                 .shadow(color: .black.opacity(0.4), radius: 20)

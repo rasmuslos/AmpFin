@@ -25,20 +25,16 @@ struct TrackGrid: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHGrid(rows: [GridItem(.flexible(), spacing: 16)].repeated(count: min(tracks.count, amount)), spacing: 0) {
                 ForEach(tracks) { track in
-                    TrackListRow(track: track) {
-                        if let index = tracks.firstIndex(where: { $0.id == track.id }) {
-                            AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
+                    TrackListRow(track: track, preview: true) {}
+                        .containerRelativeFrame(.horizontal) { length, _ in
+                            let minimum = horizontalSizeClass == .compact ? 300 : 450.0
+                            
+                            let amount = CGFloat(Int(length / minimum))
+                            let available = length - 12 * (amount - 1)
+                            
+                            return max(minimum, available / amount)
                         }
-                    }
-                    .containerRelativeFrame(.horizontal) { length, _ in
-                        let minimum = horizontalSizeClass == .compact ? 300 : 450.0
-                        
-                        let amount = CGFloat(Int(length / minimum))
-                        let available = length - 12 * (amount - 1)
-                        
-                        return max(minimum, available / amount)
-                    }
-                    .padding(.trailing, 12)
+                        .padding(.trailing, 12)
                 }
             }
             .scrollTargetLayout()

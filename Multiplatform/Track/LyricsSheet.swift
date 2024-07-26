@@ -47,7 +47,7 @@ struct LyricsSheet: View {
                     }
                     .safeAreaInset(edge: .top) {
                         ZStack {
-                            TrackListRow(track: track, disableMenu: true, startPlayback: {})
+                            TrackListRow(track: track, preview: true) {}
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 20)
                         }

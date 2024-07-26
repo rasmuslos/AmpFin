@@ -61,7 +61,7 @@ internal struct AccountSheet: View {
                                 .foregroundStyle(.secondary)
                         } else {
                             ForEach(downloads) {
-                                TrackListRow(track: $0, disableMenu: true, startPlayback: {})
+                                TrackListRow(track: $0, preview: true) {}
                             }
                         }
                     } else {

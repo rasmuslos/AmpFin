@@ -41,7 +41,7 @@ internal struct QueueNextButton: View {
 internal struct QueueLaterButton: View {
     @State private var feedback = false
     
-    var forceDisplay = false
+    var hideName = false
     let action: () -> Void
     
     var body: some View {
@@ -52,7 +52,7 @@ internal struct QueueLaterButton: View {
             } label: {
                 Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                 
-                if let lastName = AudioPlayer.current.queue.last?.name {
+                if !hideName, let lastName = AudioPlayer.current.queue.last?.name {
                     Text("queue.last.name \(lastName)")
                 }
             }

@@ -13,11 +13,12 @@ struct TrackTable: View {
     @SceneStorage("TracksTableCustomisation") private var columnCustomization: TableColumnCustomization<Track>
     
     let tracks: [Track]
-    let container: Item?
+    var count: Int = 0
+    
+    var container: Item? = nil
     
     var deleteCallback: TrackCollection.DeleteCallback = nil
-    
-    var count = 0
+    var moveCallback: TrackCollection.MoveCallback = nil
     var loadMore: TrackCollection.LoadCallback = nil
     
     @State private var selection: Track.ID? = nil
@@ -102,7 +103,7 @@ struct TrackTable: View {
             
             TableColumn(String()) { track in
                 Menu {
-                    TrackListRow.TrackMenu(
+                    TrackCollection.TrackMenu(
                         track: track,
                         album: album,
                         deleteCallback: deleteCallback,
@@ -134,7 +135,7 @@ struct TrackTable: View {
             ForEach(tracks) { track in
                 TableRow(track)
                     .contextMenu {
-                        TrackListRow.TrackMenu(
+                        TrackCollection.TrackMenu(
                             track: track,
                             album: album,
                             deleteCallback: deleteCallback,
@@ -153,7 +154,7 @@ struct TrackTable: View {
                                 }
                             }))
                     } preview: {
-                        TrackListRow.TrackPreview(track: track)
+                        TrackCollection.TrackPreview(track: track)
                     }
             }
         }
@@ -166,7 +167,6 @@ struct TrackTable: View {
         .onChange(of: selection) {
             if let index = tracks.firstIndex(where: { $0.id == selection }) {
                 AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
-                selection = nil
             }
         }
     }

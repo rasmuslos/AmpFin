@@ -42,7 +42,6 @@ internal struct TracksView: View {
     var body: some View {
         Group {
             if success {
-                Group {
                     if compactLayout {
                         List {
                             TrackListButtons(startPlayback: startPlayback)
@@ -50,9 +49,9 @@ internal struct TracksView: View {
                                 .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
                                 .padding(.horizontal, 20)
                             
-                            TrackList(tracks: tracks, container: nil, count: count) {
+                            TrackList(tracks: tracks, count: count, loadMore: {
                                 loadTracks(reset: false)
-                            }
+                            })
                             .padding(.horizontal, 20)
                         }
                         .listStyle(.plain)
@@ -61,9 +60,9 @@ internal struct TracksView: View {
                             SortSelector()
                         }
                     } else {
-                        TrackTable(tracks: tracks, container: nil, count: count) {
+                        TrackTable(tracks: tracks, count: count, loadMore:  {
                             loadTracks(reset: false)
-                        }
+                        })
                         .searchable(text: $search, placement: .toolbar, prompt: "search.tracks")
                         .toolbar {
                             Button(action: { startPlayback(shuffled: true) }) {
@@ -79,7 +78,6 @@ internal struct TracksView: View {
                             SortSelector()
                         }
                     }
-                }
             } else if failure {
                 ErrorView()
             } else {
