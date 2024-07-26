@@ -37,7 +37,6 @@ internal extension TrackCollection {
                         .fontDesign(.rounded)
                         .foregroundStyle(.secondary)
                         .opacity(active ? 0 : 1)
-                        .alignmentGuide(.listRowSeparatorLeading) { _ in 24 }
                 } else {
                     ItemImage(cover: track.cover)
                 }

@@ -53,6 +53,7 @@ struct TrackListRow: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
+                    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
                     
                     Spacer(minLength: 8)
                 }

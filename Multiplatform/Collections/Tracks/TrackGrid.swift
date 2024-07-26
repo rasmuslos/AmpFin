@@ -23,7 +23,7 @@ struct TrackGrid: View {
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHGrid(rows: [GridItem(.flexible(), spacing: 16)].repeated(count: min(tracks.count, amount)), spacing: 0) {
+            LazyHGrid(rows: [GridItem(.flexible(), spacing: 8)].repeated(count: min(tracks.count, amount)), spacing: 0) {
                 ForEach(tracks) { track in
                     TrackListRow(track: track, preview: true) {}
                         .containerRelativeFrame(.horizontal) { length, _ in
