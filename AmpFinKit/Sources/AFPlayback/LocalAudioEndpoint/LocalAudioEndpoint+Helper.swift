@@ -133,7 +133,7 @@ internal extension LocalAudioEndpoint {
             NotificationCenter.default.post(name: AudioPlayer.bitrateChangedNotification, object: nil)
         }
         
-        if let nowPlaying {
+        if playbackReporter != nil, let nowPlaying {
             playbackReporter?.playSessionId = JellyfinClient.sessionID(itemId: nowPlaying.id, bitrate: maxBitrate)
         }
     }
@@ -163,6 +163,11 @@ internal extension LocalAudioEndpoint {
             try? OfflineManager.shared.updateLastPlayed(trackId: nowPlaying.id)
         }
         #endif
+        
+        // Make sure SwiftUI views are updated
+        Task { @MainActor in
+            nowPlaying = track
+        }
     }
 
     static func audioRoute() -> AudioPlayer.AudioRoute {

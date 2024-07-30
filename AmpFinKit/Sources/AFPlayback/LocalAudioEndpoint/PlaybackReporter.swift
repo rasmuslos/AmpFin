@@ -53,7 +53,7 @@ public final class PlaybackReporter {
         Task {
             try? await JellyfinClient.shared.progress(
                 identifier: trackId,
-                position: positionSeconds,
+                position: currentTime,
                 paused: paused,
                 repeatMode: repeatMode,
                 shuffled: shuffled,

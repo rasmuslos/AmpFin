@@ -84,6 +84,11 @@ internal extension LocalAudioEndpoint {
             
             updateNowPlayingStatus()
             updatePlaybackReporter(scheduled: false)
+            
+            // Make sure SwiftUI views are updated
+            Task { @MainActor in
+                _playing = newValue
+            }
         }
     }
     
@@ -136,7 +141,9 @@ internal extension LocalAudioEndpoint {
         }
         set {
             #if os(iOS) && !targetEnvironment(macCatalyst)
-            MPVolumeView.setVolume(newValue)
+            Task { @MainActor in
+                MPVolumeView.setVolume(newValue)
+            }
             #else
             audioPlayer.volume = newValue
             #endif

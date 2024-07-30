@@ -30,7 +30,7 @@ public extension JellyfinClient {
             "RepeatMode": repeatMode == .none ? "RepeatNone" : repeatMode == .track ? "RepeatOne" : "RepeatAll",
             "ShuffleMode": shuffled ? "Shuffle" : "Sorted",
             "PlaybackRate": 1,
-            "PositionTicks": Int64(position * 10_000_000),
+            "PositionTicks": UInt64(position * 10_000_000),
         ]))
     }
     
