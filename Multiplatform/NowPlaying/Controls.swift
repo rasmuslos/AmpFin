@@ -132,8 +132,8 @@ private struct ControlButtons: View {
             .sensoryFeedback(.increase, trigger: viewModel.animateForward)
         }
         .foregroundStyle(.primary)
-        .padding(.top, compact ? 28 : 44)
-        .padding(.bottom, compact ? 48 : 68)
+        .padding(.top, compact ? 40 : 44)
+        .padding(.bottom, compact ? 60 : 68)
     }
 }
 

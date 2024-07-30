@@ -12,11 +12,14 @@ import FluidGradient
 import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct Background: View {
         @Environment(ViewModel.self) private var viewModel
         
-        private let speed = CGFloat.random(in: 0.2...0.5)
+        private let speed = CGFloat.random(in: 0.3...0.6)
+        
+        @State private var size: CGFloat = .zero
+        @State private var offset = CGFloat.random(in: 0...1)
         
         var body: some View {
             ZStack {
@@ -24,16 +27,21 @@ extension NowPlaying {
                     Color.black
                     
                     GeometryReader { proxy in
-                        let size = max(proxy.size.width, proxy.size.height) + 400
-                        
-                        let offsetX = max(0, size - proxy.size.width) * CGFloat.random(in: 0...1)
-                        let offsetY = max(0, size - proxy.size.height) * CGFloat.random(in: 0...1)
-                        
-                        ItemImage(cover: cover)
-                            .id(cover.url)
-                            .frame(width: size, height: size)
-                            .offset(x: -offsetX, y: offsetY)
-                            .blur(radius: 100)
+                        Color.clear
+                            .fixedSize()
+                            .overlay {
+                                let offsetX = max(0, size - proxy.size.width) * offset
+                                let offsetY = max(0, size - proxy.size.height) * offset
+                                
+                                ItemImage(cover: cover)
+                                    .id(cover.url)
+                                    .frame(width: size, height: size)
+                                    .offset(x: -offsetX, y: offsetY)
+                                    .blur(radius: 100)
+                            }
+                            .onChange(of: proxy.size, initial: true) {
+                                size = max(size, max(proxy.size.width, proxy.size.height) + 400)
+                            }
                     }
                     
                     FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: AudioPlayer.current.playing ? speed : 0, blur: 0.9)

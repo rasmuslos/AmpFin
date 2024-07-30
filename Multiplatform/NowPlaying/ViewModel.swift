@@ -167,11 +167,13 @@ internal extension NowPlaying.ViewModel {
     func select(tab: NowPlaying.Tab) {
         controlsVisible = true
         
-        withAnimation(.bouncy) {
-            if currentTab == tab {
-                currentTab = .cover
-            } else {
-                currentTab = tab
+        Task { @MainActor in
+            withAnimation(.bouncy) {
+                if currentTab == tab {
+                    currentTab = .cover
+                } else {
+                    currentTab = tab
+                }
             }
         }
     }

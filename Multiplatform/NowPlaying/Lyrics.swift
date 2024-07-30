@@ -79,7 +79,9 @@ internal extension NowPlaying {
                 }
                 .onChange(of: lyricsViewModel.controlsVisible) {
                     withAnimation {
-                        viewModel.controlsVisible = lyricsViewModel.controlsVisible
+                        if viewModel.currentTab == .lyrics {
+                            viewModel.controlsVisible = lyricsViewModel.controlsVisible
+                        }
                     }
                 }
                 .onChange(of: AudioPlayer.current.currentTime) {
