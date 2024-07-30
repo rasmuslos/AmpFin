@@ -52,4 +52,12 @@ public extension AFVisuals {
         
         return colors.first
     }
+    static func determineSaturated(_ colors: [Color], threshold: CGFloat) -> [Color] {
+        colors.filter { color in
+            var saturation: CGFloat = .zero
+            UIColor(color).getHue(nil, saturation: &saturation, brightness: nil, alpha: nil)
+            
+            return saturation > threshold
+        }
+    }
 }

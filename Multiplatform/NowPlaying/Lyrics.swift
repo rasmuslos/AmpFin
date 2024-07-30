@@ -87,6 +87,7 @@ internal extension NowPlaying {
                 }
                 .task(id: AudioPlayer.current.nowPlaying) {
                     await lyricsViewModel.trackDidChange()
+                    lyricsViewModel.scroll(proxy, anchor: anchor)
                 }
             }
         }

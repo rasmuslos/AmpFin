@@ -25,7 +25,7 @@ internal extension NowPlaying {
         var addToPlaylistSheetPresented: Bool
         
         private(set) var colors: [Color]
-        private(set) var highlighted: Color?
+        private(set) var highlights: [Color]
         
         var mediaInfoToggled = false
         var mediaInfo: Track.MediaInfo? = nil
@@ -50,7 +50,7 @@ internal extension NowPlaying {
             addToPlaylistSheetPresented = false
             
             colors = []
-            highlighted = nil
+            highlights = []
             
             mediaInfoToggled = false
             mediaInfo = nil
@@ -140,18 +140,18 @@ internal extension NowPlaying.ViewModel {
             guard let dominantColors = try? await AFVisuals.extractDominantColors(10, cover: cover) else {
                 await MainActor.run {
                     self.colors = []
-                    self.highlighted = nil
+                    self.highlights = []
                 }
                 
                 return
             }
             
             let colors = dominantColors.map { $0.color }
-            let mostSaturated = AFVisuals.determineSaturated(colors)
+            let highlights = AFVisuals.determineSaturated(colors, threshold: 0.3)
             
-            await MainActor.run { [colors, mostSaturated] in
-                self.colors = colors.filter { $0 != highlighted }
-                self.highlighted = mostSaturated
+            await MainActor.run { [colors, highlights] in
+                self.highlights = highlights
+                self.colors = colors.filter { !highlights.contains($0) }
             }
         }
     }

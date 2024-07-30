@@ -17,25 +17,26 @@ extension NowPlaying {
         @Environment(ViewModel.self) private var viewModel
         
         private let speed = CGFloat.random(in: 0.2...0.5)
-        private var highlights: [Color] {
-            guard let highlighted = viewModel.highlighted else {
-                return []
-            }
-            
-            return [highlighted]
-        }
         
         var body: some View {
             ZStack {
                 if let cover = viewModel.track?.cover {
                     Color.black
                     
-                    ItemImage(cover: cover)
-                        .id(cover.url)
-                        .blur(radius: 100)
-                        .frame(maxWidth: .infinity)
+                    GeometryReader { proxy in
+                        let size = max(proxy.size.width, proxy.size.height) + 400
+                        
+                        let offsetX = max(0, size - proxy.size.width) * CGFloat.random(in: 0...1)
+                        let offsetY = max(0, size - proxy.size.height) * CGFloat.random(in: 0...1)
+                        
+                        ItemImage(cover: cover)
+                            .id(cover.url)
+                            .frame(width: size, height: size)
+                            .offset(x: -offsetX, y: offsetY)
+                            .blur(radius: 100)
+                    }
                     
-                    FluidGradient(blobs: viewModel.colors, highlights: highlights, speed: AudioPlayer.current.playing ? speed : 0, blur: 0.9)
+                    FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: AudioPlayer.current.playing ? speed : 0, blur: 0.9)
                         .ignoresSafeArea(edges: .all)
                 } else {
                     Color.black
