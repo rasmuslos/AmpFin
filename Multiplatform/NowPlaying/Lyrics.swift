@@ -113,7 +113,11 @@ private struct Line: View {
     
     // this is cursed
     private var text: String? {
-        lyricsViewModel.lyrics[lyricsViewModel.lyricsKeys[index]] ?? nil
+        if index < lyricsViewModel.lyricsKeys.count, let text = lyricsViewModel.lyrics[lyricsViewModel.lyricsKeys[index]] {
+            return text
+        }
+        
+        return nil
     }
     
     private var isCompact: Bool {
@@ -136,7 +140,7 @@ private struct Line: View {
                 .buttonStyle(.plain)
             } else {
                 if index == lyricsViewModel.activeLineIndex {
-                    let duration = index == lyricsViewModel.lyrics.count - 1 ? AudioPlayer.current.duration : lyricsViewModel.lyricsKeys[index + 1]
+                    let duration = index + 1 >= lyricsViewModel.lyrics.count ? AudioPlayer.current.duration : lyricsViewModel.lyricsKeys[index + 1]
                     let done = duration - AudioPlayer.current.currentTime
                     let percentage = 1 - done / duration
                     
