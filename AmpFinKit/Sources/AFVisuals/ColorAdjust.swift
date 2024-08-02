@@ -60,4 +60,13 @@ public extension AFVisuals {
             return saturation > threshold
         }
     }
+    
+    static func highPassFilter(_ colors: [Color], threshold: CGFloat) -> [Color] {
+        colors.filter { color in
+            var brightness: CGFloat = .zero
+            UIColor(color).getHue(nil, saturation: nil, brightness: &brightness, alpha: nil)
+            
+            return brightness > threshold
+        }
+    }
 }

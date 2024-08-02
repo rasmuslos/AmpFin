@@ -147,7 +147,9 @@ internal extension NowPlaying.ViewModel {
             }
             
             let colors = dominantColors.map { $0.color }
-            let highlights = AFVisuals.determineSaturated(colors, threshold: 0.3)
+            let highlights = AFVisuals.determineSaturated(AFVisuals.highPassFilter(colors, threshold: 0.5), threshold: 0.3)
+            
+            print(highlights)
             
             await MainActor.run { [colors, highlights] in
                 self.highlights = highlights
