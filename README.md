@@ -15,6 +15,7 @@ This app goes beyond just playing music. Dive deep into your library, explore by
 - **Always Up-to-Date Playlists**: Added a track to a downloaded playlist? AmpFin automatically downloads it for you, keeping your music collection seamlessly synchronized.
 - **Remote Control Flexibility**: Control AmpFin using another supported Jellyfin client or take control of one, offering flexibility for multi-device music management.
 - **Track Your Listens**: AmpFin meticulously tracks your playback activity, accurately reporting start, progress, and stop times to your Jellyfin server. This ensures your listening habits are properly reflected and works seamlessly with plugins like the Listenbrainz integration.
+- **Bitrate Settings**: Configure maximum bitrates for cellular and Wi-Fi streaming, as well as downloads.
 
 ## Download
 
@@ -24,10 +25,10 @@ The macOS app is still in "alpha". It is more or less a slightly tweaked iPadOS 
 
 ## Screenshots
 
-| Library | Album | Player | Queue |
+| Library | Album | Player | Lyrics |
 | ------------- | ------------- | ------------- | ------------- |
-| <img src="/Screenshots/Library.png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Album.png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player.png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Queue.png?raw=true" alt="Queue" width="200"/> 
-| <img src="/Screenshots/Tracks%20(iPad).png?raw=true" alt="Tracks" width="200"/> | <img src="/Screenshots/Album%20(iPad).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player%20(iPad).png?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Artists%20(iPad).png?raw=true" alt="Artists" width="200"/> 
+| <img src="/Screenshots/Library%20(iOS).png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Album%20(iOS).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player.png%20(iOS)?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Lyrics%20(iOS).png?raw=true" alt="Lyrics" width="200"/> 
+| <img src="/Screenshots/Tracks%20(iPad).png?raw=true" alt="Tracks" width="200"/> | <img src="/Screenshots/Album%20(iPad).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Queue%20(iPad).png?raw=true" alt="Queue" width="200"/>  | <img src="/Screenshots/Lyrics%20(iPad).png?raw=true" alt="Lyrics" width="200"/> 
 
 ## Sideload
 
