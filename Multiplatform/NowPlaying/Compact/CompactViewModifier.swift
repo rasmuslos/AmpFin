@@ -116,7 +116,6 @@ extension NowPlaying {
                 .persistentSystemOverlays(AudioPlayer.current.outputRoute.showLabel ? .hidden : .automatic)
             }
             .ignoresSafeArea(edges: .all)
-            .environment(\.colorScheme, .light)
             .environment(viewModel)
             .modifier(Navigation.NavigationModifier() {
                 viewModel.setNowPlayingViewPresented(false)
