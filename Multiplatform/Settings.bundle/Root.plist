@@ -38,9 +38,7 @@ A four minute audio file would require:
 - 4 MB using 128 Kb/s
 - 8  MB using 256 Kb/s
 
-AmpFin will not automatically select a bitrate on unstable or slow networks. If you select Lossless AmpFin will try to play the audio file without any modifications. Existing downloads are not affected.
-
-Due to Jellyfin&apos;s current caching system, changes you make to the bitrate might take up to 24 hours to reflect when played. This is because Jellyfin caches transcoded versions of audio, regardless of their quality. This behavior is expected to be addressed in future Jellyfin releases.</string>
+AmpFin will not automatically select a bitrate on unstable or slow networks. If you select Lossless AmpFin will try to play the audio file without any modifications. Existing downloads are not affected.</string>
 		</dict>
 		<dict>
 			<key>Type</key>

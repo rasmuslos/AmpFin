@@ -134,13 +134,15 @@ internal extension LocalAudioEndpoint {
     var volume: Float {
         get {
             #if os(iOS) && !targetEnvironment(macCatalyst)
-            AVAudioSession.sharedInstance().outputVolume
+            _volume
             #else
             audioPlayer.volume
             #endif
         }
         set {
             #if os(iOS) && !targetEnvironment(macCatalyst)
+            _volume = newValue
+            
             Task { @MainActor in
                 MPVolumeView.setVolume(newValue)
             }

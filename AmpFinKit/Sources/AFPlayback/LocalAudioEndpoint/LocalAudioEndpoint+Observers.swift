@@ -65,12 +65,16 @@ internal extension LocalAudioEndpoint {
         }
         
         NotificationCenter.default.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: nil) { _ in
-            self.outputRoute = Self.audioRoute()
+            Task { @MainActor in
+                self.outputRoute = Self.audioRoute()
+            }
         }
         
         #if !os(macOS) && !targetEnvironment(macCatalyst)
-        volumeSubscription = AVAudioSession.sharedInstance().publisher(for: \.outputVolume).sink {
-            self.volume = $0
+        volumeSubscription = AVAudioSession.sharedInstance().publisher(for: \.outputVolume).sink { volume in
+            Task { @MainActor [volume] in
+                self._volume = volume
+            }
         }
         
         NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), queue: nil) { [self] notification in

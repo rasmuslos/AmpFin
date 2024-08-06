@@ -90,7 +90,6 @@ extension NowPlaying {
                                 .foregroundStyle(.thinMaterial)
                                 .frame(width: 32, height: 4)
                                 .clipShape(.rect(cornerRadius: .infinity))
-                                .environment(\.colorScheme, .light)
                         }
                         .padding(40)
                         .modifier(GestureModifier(active: true))
@@ -112,6 +111,7 @@ extension NowPlaying {
                 .padding(.horizontal, 28)
                 .padding(.top, UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top)
                 .offset(y: viewModel.dragOffset)
+                .environment(\.colorScheme, .light)
                 .allowsHitTesting(viewModel.track != nil)
                 .persistentSystemOverlays(AudioPlayer.current.outputRoute.showLabel ? .hidden : .automatic)
             }

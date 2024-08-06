@@ -35,6 +35,8 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     var _shuffled: Bool = false
     var _repeatMode: RepeatMode = Defaults[.repeatMode]
     
+    var _volume: Float = 0
+    
     var buffering: Bool = false
     var duration: Double = 0
     
