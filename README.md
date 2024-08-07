@@ -27,8 +27,8 @@ The macOS app is still in "alpha". It is more or less a slightly tweaked iPadOS 
 
 | Library | Album | Player | Lyrics |
 | ------------- | ------------- | ------------- | ------------- |
-| <img src="/Screenshots/Library%20(iOS).png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Album%20(iOS).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player.png%20(iOS)?raw=true" alt="Player" width="200"/>  | <img src="/Screenshots/Lyrics%20(iOS).png?raw=true" alt="Lyrics" width="200"/> 
-| <img src="/Screenshots/Tracks%20(iPad).png?raw=true" alt="Tracks" width="200"/> | <img src="/Screenshots/Album%20(iPad).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Queue%20(iPad).png?raw=true" alt="Queue" width="200"/>  | <img src="/Screenshots/Lyrics%20(iPad).png?raw=true" alt="Lyrics" width="200"/> 
+| <img src="/Screenshots/Library%20(iOS).png?raw=true" alt="Library" width="200"/> | <img src="/Screenshots/Album%20(iOS).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Player%20(iOS).png" alt="Player" width="200"/>  | <img src="/Screenshots/Lyrics%20(iOS).png?raw=true" alt="Lyrics" width="200"/> 
+| <img src="/Screenshots/Tracks%20(iPadOS).png?raw=true" alt="Tracks" width="200"/> | <img src="/Screenshots/Album%20(iPadOS).png?raw=true" alt="Album" width="200"/> | <img src="/Screenshots/Queue%20(iPadOS).png?raw=true" alt="Queue" width="200"/>  | <img src="/Screenshots/Lyrics%20(iPadOS).png?raw=true" alt="Lyrics" width="200"/> 
 
 ## Sideload
 
