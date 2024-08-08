@@ -7,16 +7,17 @@
 
 import Foundation
 import SwiftUI
-import UIKit
 import FluidGradient
+import Defaults
 import AmpFinKit
 import AFPlayback
 
 internal extension NowPlaying {
     struct Background: View {
+        @Default(.haltNowPlayingBackground) private var haltNowPlayingBackground
         @Environment(ViewModel.self) private var viewModel
         
-        private let speed = CGFloat.random(in: 0.3...0.6)
+        private let speed = CGFloat.random(in: 0.2...0.5)
         
         @State private var size: CGFloat = .zero
         @State private var offset = CGFloat.random(in: 0...1)
@@ -44,7 +45,7 @@ internal extension NowPlaying {
                             }
                     }
                     
-                    FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: AudioPlayer.current.playing ? speed : 0, blur: 0.9)
+                    FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: AudioPlayer.current.playing && !haltNowPlayingBackground ? speed : 0, blur: 0.9)
                         .ignoresSafeArea(edges: .all)
                 } else {
                     Color.black

@@ -66,7 +66,7 @@ AmpFin is licensed under the Mozilla Public License Version 2 with the "Common C
 
 Contributions are welcome! Just fork the repository and open a pull request with your changes. 
 
-* To translate AmpFin, edit `Localizable.xcstrings` in the `iOS` directory and `Localizable.xcstrings` within `Widget Extension` using Xcode.
+* To translate AmpFin, edit `Localizable.xcstrings` & `InfoPlist.xcstrings` in the `iOS` using Xcode.
 * To add a new language, include it in the project settings.
 
 ### Coding Style:
