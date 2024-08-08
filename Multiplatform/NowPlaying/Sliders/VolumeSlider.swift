@@ -13,7 +13,6 @@ extension NowPlaying {
     struct VolumeSlider: View {
         @Binding var dragging: Bool
         
-        @State private var counter = 0
         @State private var volume = Double(AudioPlayer.current.volume)
         
         var body: some View {
@@ -46,12 +45,7 @@ extension NowPlaying {
             }
             .onChange(of: volume) {
                 if dragging {
-                    counter += 1
-                    
-                    if counter == 7 {
-                        AudioPlayer.current.volume = Float(volume)
-                        counter = 0
-                    }
+                    AudioPlayer.current.volume = Float(volume)
                 }
             }
         }

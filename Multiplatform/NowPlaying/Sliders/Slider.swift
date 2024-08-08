@@ -12,7 +12,9 @@ extension NowPlaying {
         @Binding var percentage: Double
         @Binding var dragging: Bool
         
+        @State private var counter = 0
         @State private var blocked = false
+        
         @State private var lastLocation: CGPoint? = nil
         
         var body: some View {
@@ -34,6 +36,13 @@ extension NowPlaying {
                         if blocked {
                             return
                         }
+                        
+                        counter += 1
+                        
+                        if counter < 7 {
+                            return
+                        }
+                        counter = 0
                         
                         dragging = true
                         blocked = true
@@ -60,6 +69,7 @@ extension NowPlaying {
                 )
             }
             .frame(height: dragging ? 12 : 8)
+            .shadow(radius: dragging ? 12 : 0)
             .padding(20)
             .contentShape(.hoverMenuInteraction, .rect)
             .padding(-20)
