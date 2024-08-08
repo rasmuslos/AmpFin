@@ -13,30 +13,31 @@ import AFPlayback
 internal extension NowPlaying {
     @Observable
     class ViewModel {
-        var namespace: Namespace.ID!
-        var dragOffset: CGFloat
+        @MainActor var namespace: Namespace.ID!
+        @MainActor var dragOffset: CGFloat
         
-        private(set) var presented: Bool
+        @MainActor private(set) var presented: Bool
         
-        var controlsVisible: Bool
-        private(set) var currentTab: NowPlaying.Tab
+        @MainActor var controlsVisible: Bool
+        @MainActor private(set) var currentTab: NowPlaying.Tab
         
-        var controlsDragging: Bool
-        var addToPlaylistSheetPresented: Bool
+        @MainActor var controlsDragging: Bool
+        @MainActor var addToPlaylistSheetPresented: Bool
         
-        private(set) var colors: [Color]
-        private(set) var highlights: [Color]
+        @MainActor private(set) var colors: [Color]
+        @MainActor private(set) var highlights: [Color]
         
-        var mediaInfoToggled = false
-        var mediaInfo: Track.MediaInfo? = nil
+        @MainActor var mediaInfoToggled = false
+        @MainActor var mediaInfo: Track.MediaInfo? = nil
         
-        var seekDragging: Bool
-        var volumeDragging: Bool
-        var draggedPercentage = 0.0
+        @MainActor var seekDragging: Bool
+        @MainActor var volumeDragging: Bool
+        @MainActor var draggedPercentage = 0.0
         
-        var animateBackward: Bool
-        var animateForward: Bool
+        @MainActor var animateBackward: Bool
+        @MainActor var animateForward: Bool
         
+        @MainActor
         init() {
             namespace = nil
             dragOffset = .zero
@@ -66,6 +67,7 @@ internal extension NowPlaying {
 }
 
 internal extension NowPlaying.ViewModel {
+    @MainActor
     var track: Track? {
         if presented, let track = AudioPlayer.current.nowPlaying {
             return track
@@ -73,6 +75,7 @@ internal extension NowPlaying.ViewModel {
         
         return nil
     }
+    @MainActor
     var addToPlaylistTrack: Track? {
         guard addToPlaylistSheetPresented else {
             return nil
@@ -81,17 +84,21 @@ internal extension NowPlaying.ViewModel {
         return track
     }
     
+    @MainActor
     var showRoundedCorners: Bool {
         dragOffset != 0
     }
     
+    @MainActor
     var displayedProgress: Double {
         seekDragging ? draggedPercentage : playedPercentage
     }
+    @MainActor
     var playedPercentage: Double {
         AudioPlayer.current.currentTime / AudioPlayer.current.duration
     }
     
+    @MainActor
     var qualityText: String? {
         if let mediaInfo = mediaInfo {
             var result = [String]()
@@ -136,7 +143,7 @@ internal extension NowPlaying.ViewModel {
         }
     }
     func determineColors() async {
-        if let cover = track?.cover {
+        if let cover = await track?.cover {
             guard let dominantColors = try? await AFVisuals.extractDominantColors(10, cover: cover) else {
                 await MainActor.run {
                     self.colors = []
@@ -156,18 +163,20 @@ internal extension NowPlaying.ViewModel {
         }
     }
     func determineQuality() async {
-        if let mediaInfo = await AudioPlayer.current.mediaInfo {
-            self.mediaInfo = mediaInfo
-            mediaInfoToggled = mediaInfo.lossless ?? false
-        } else {
-            mediaInfo = nil
+        let mediaInfo = await AudioPlayer.current.mediaInfo
+        
+        await MainActor.run {
+            withAnimation {
+                self.mediaInfo = mediaInfo
+                mediaInfoToggled = mediaInfo?.lossless ?? false
+            }
         }
     }
     
     func select(tab: NowPlaying.Tab) {
-        controlsVisible = true
-        
         Task { @MainActor in
+            controlsVisible = true
+            
             withAnimation(.bouncy) {
                 if currentTab == tab {
                     currentTab = .cover
@@ -178,26 +187,31 @@ internal extension NowPlaying.ViewModel {
         }
     }
     func setNowPlayingViewPresented(_ presented: Bool) {
-        if presented {
-            dragOffset = 0
-        }
-        if currentTab != .lyrics || presented {
-            controlsVisible = true
-        }
-        
-        addToPlaylistSheetPresented = false
-        
-        UIApplication.shared.isIdleTimerDisabled = presented
-        
-        withTransaction(\.nowPlayingOverlayToggled, true) {
-            withAnimation(presented ? .bouncy.delay(0.25) : .bouncy) {
-                self.presented = presented
+        Task { @MainActor in
+            if presented {
+                dragOffset = 0
+            }
+            if currentTab != .lyrics || presented {
+                controlsVisible = true
+            }
+            
+            addToPlaylistSheetPresented = false
+            
+            UIApplication.shared.isIdleTimerDisabled = presented
+            
+            withTransaction(\.nowPlayingOverlayToggled, true) {
+                withAnimation(presented ? .bouncy.delay(0.25) : .bouncy) {
+                    self.presented = presented
+                }
             }
         }
     }
     
-    func updateProgress(_ to: Double) {
-        draggedPercentage = to
-        AudioPlayer.current.currentTime = AudioPlayer.current.duration * to
+    func updateProgress(_ position: Double) {
+        Task { @MainActor in
+            draggedPercentage = position
+        }
+        
+        AudioPlayer.current.currentTime = AudioPlayer.current.duration * position
     }
 }

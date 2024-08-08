@@ -177,18 +177,18 @@ private struct Line: View {
 
 @Observable
 private class LyricsViewModel {
-    let track: Track
+    @MainActor let track: Track
     
-    var failed: Bool
-    var lyrics: Track.Lyrics
+    @MainActor var failed: Bool
+    @MainActor var lyrics: Track.Lyrics
+    @MainActor var activeLineIndex: Int
     
-    var activeLineIndex: Int
-    
-    var scrolling: Bool
-    var controlsVisible: Bool
+    @MainActor var scrolling: Bool
+    @MainActor var controlsVisible: Bool
     
     var scrollTimeout: Task<Void, Error>?
     
+    @MainActor
     init(track: Track) {
         self.track = track
         
@@ -211,19 +211,24 @@ private extension LyricsViewModel {
             try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
             try Task.checkCancellation()
             
-            scrolling = false
-            controlsVisible = false
+            await MainActor.run {
+                scrolling = false
+                controlsVisible = false
+            }
         }
     }
     func didScroll(up: Bool) {
-        withAnimation {
-            scrolling = true
-            controlsVisible = up
+        Task { @MainActor in
+            withAnimation {
+                scrolling = true
+                controlsVisible = up
+            }
         }
         
         startScrollTimer()
     }
     
+    @MainActor
     func scroll(_ proxy: ScrollViewProxy, anchor: UnitPoint) {
         if scrolling {
             return
@@ -235,54 +240,73 @@ private extension LyricsViewModel {
     }
     
     func trackDidChange() async {
-        lyrics = [:]
-        setActiveLine(0)
+        await MainActor.run {
+            withAnimation {
+                self.lyrics = [:]
+            }
+            
+            setActiveLine(0)
+        }
         
-        // TODO: scroll to top when iOS 18 releases (what a stupid thing to write)
+        // TODO: scroll to top when iOS 18 releases
         
-        guard let trackId = AudioPlayer.current.nowPlaying?.id else {
-            failed = true
+        let trackId = AudioPlayer.current.nowPlaying?.id
+        
+        await MainActor.run {
+            failed = trackId == nil
+        }
+        
+        guard let trackId else {
             return
         }
         
-        failed = false
+        var lyrics = try? OfflineManager.shared.lyrics(trackId: trackId, allowUpdate: true)
         
-        if let lyrics = try? OfflineManager.shared.lyrics(trackId: trackId, allowUpdate: true) {
-            self.lyrics = lyrics
-        } else if let lyrics = try? await JellyfinClient.shared.lyrics(trackId: trackId) {
-            self.lyrics = lyrics
-        } else {
-            failed = true
+        if lyrics == nil {
+            lyrics = try? await JellyfinClient.shared.lyrics(trackId: trackId)
+        }
+        
+        await MainActor.run { [lyrics] in
+            withAnimation {
+                failed = lyrics == nil
+                self.lyrics = lyrics ?? [:]
+            }
         }
         
         updateLyricsIndex()
     }
     
     func updateLyricsIndex() {
-        guard !lyricsKeys.isEmpty else {
-            setActiveLine(0)
-            return
-        }
-        
-        let currentTime = AudioPlayer.current.currentTime
-        
-        if let index = lyricsKeys.lastIndex(where: { $0 <= currentTime }) {
-            setActiveLine(index)
-        } else {
-            setActiveLine(0)
+        Task { @MainActor in
+            guard !lyricsKeys.isEmpty else {
+                setActiveLine(0)
+                return
+            }
+            
+            let currentTime = AudioPlayer.current.currentTime
+            
+            if let index = lyricsKeys.lastIndex(where: { $0 <= currentTime }) {
+                setActiveLine(index)
+            } else {
+                setActiveLine(0)
+            }
         }
     }
     func setActiveLine(_ index: Int) {
-        withAnimation(.spring) {
-            activeLineIndex = index
+        Task { @MainActor in
+            withAnimation(.spring) {
+                activeLineIndex = index
+            }
         }
     }
 }
 private extension LyricsViewModel {
+    @MainActor
     var lyricsKeys: [Double] {
         Array(lyrics.keys).sorted(by: <)
     }
     
+    @MainActor
     var loaded: Bool {
         !lyrics.isEmpty && !lyricsKeys.isEmpty
     }
