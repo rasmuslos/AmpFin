@@ -81,9 +81,9 @@ extension PlaylistView {
                                 
                                 QueueButtons {
                                     if $0 {
-                                        AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
+                                        AudioPlayer.current.queue(tracks, after: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
                                     } else {
-                                        AudioPlayer.current.queueTracks(tracks, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
+                                        AudioPlayer.current.queue(tracks, after: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
                                     }
                                 }
                                 

@@ -11,19 +11,36 @@ import SwiftUI
 import AFFoundation
 import AFNetwork
 
-@Observable
 internal final class RemoteAudioEndpoint {
     let clientId: String
     let sessionId: String
     
-    var nowPlaying: Track?
+    var nowPlaying: Track? {
+        didSet {
+            if oldValue != nowPlaying {
+                NotificationCenter.default.post(name: AudioPlayer.trackDidChangeNotification, object: nil)
+            }
+        }
+    }
     
-    var _playing: Bool
+    var _playing: Bool {
+        didSet {
+            if oldValue != _playing {
+                NotificationCenter.default.post(name: AudioPlayer.playingDidChangeNotification, object: nil)
+            }
+        }
+    }
     var canSeek: Bool
     var canSetVolume: Bool
     
     var _currentTime: Double
-    var _volume: Float
+    var _volume: Float {
+        didSet {
+            if oldValue != _volume {
+                NotificationCenter.default.post(name: AudioPlayer.volumeDidChangeNotification, object: nil)
+            }
+        }
+    }
     
     var _shuffled: Bool
     var _repeatMode: RepeatMode
@@ -34,23 +51,25 @@ internal final class RemoteAudioEndpoint {
     var nowPlayingInfo = [String: Any]()
     var queuePlayer: AVQueuePlayer!
     
-    var lastTrackId: String?
-    
     init(session: Session) {
-        clientId = session.clientId
-        sessionId = session.id
         active = false
         
+        clientId = session.clientId
+        sessionId = session.id
+        
         nowPlaying = session.nowPlaying
+        
         _playing = !session.isPaused
-        canSeek = session.canSeek
-        canSetVolume = session.canSetVolume
         _currentTime = session.position
         _volume = session.volumeLevel
         _shuffled = session.shuffled
         _repeatMode = .none
         
+        canSeek = session.canSeek
+        canSetVolume = session.canSetVolume
+        
         setupObserver()
+        
         #if !os(macOS)
         AudioPlayer.setupAudioSession()
         #endif
@@ -87,9 +106,7 @@ internal extension RemoteAudioEndpoint {
             
             self?.updateNowPlayingWidget()
             
-            if self?.lastTrackId != session.nowPlaying?.id {
-                self?.lastTrackId = session.nowPlaying?.id
-            }
+            NotificationCenter.default.post(name: AudioPlayer.timeDidChangeNotification, object: nil)
         }
     }
 }

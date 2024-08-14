@@ -10,41 +10,7 @@ import AVKit
 import AFFoundation
 import AFNetwork
 
-internal extension AudioPlayer {
-    func checkRemoteControlAvailability() {
-        var remoteControlAvailable = true
-        
-        if source != .local {
-            remoteControlAvailable = false
-            return
-        }
-        
-        Task { [remoteControlAvailable] in
-            try? await JellyfinClient.shared.update(allowRemoteControl: remoteControlAvailable)
-        }
-    }
-    
-    func setupLocalPlayback() {
-        stopPlayback()
-        
-        source = .local
-        endpoint = LocalAudioEndpoint.shared
-    }
-}
-
-public extension AudioPlayer {
-    func startRemoteControl(session: Session) {
-        Self.logger.info("Setting up remote endpoint \(session.name) (\(session.client))")
-        
-        stopPlayback()
-        
-        JellyfinWebSocket.shared.beginObservingSessionUpdated(clientId: session.clientId)
-        source = .jellyfinRemote
-        endpoint = RemoteAudioEndpoint(session: session)
-    }
-}
-
-extension AudioPlayer {
+extension AudioPlayer: AudioEndpoint {
     public var playing: Bool {
         get {
             endpoint?.playing ?? false
@@ -134,8 +100,8 @@ extension AudioPlayer {
         endpoint?.allowQueueLater ?? false
     }
     
-    public func seek(seconds: Double) async {
-        await endpoint?.seek(seconds: seconds)
+    public func seek(to seconds: Double) async {
+        await endpoint?.seek(to: seconds)
     }
     
     public func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool, playbackInfo: PlaybackInfo) {
@@ -164,23 +130,23 @@ extension AudioPlayer {
         source = .none
     }
     
-    public func advanceToNextTrack() {
-        endpoint?.advanceToNextTrack()
+    public func advance() {
+        endpoint?.advance()
     }
     
-    public func backToPreviousItem() {
-        endpoint?.backToPreviousItem()
+    public func rewind() {
+        endpoint?.rewind()
     }
     
-    public func removeHistoryTrack(index: Int) {
-        endpoint?.removeHistoryTrack(index: index)
+    public func removePlayed(at index: Int) {
+        endpoint?.removePlayed(at: index)
     }
     
-    public func removeTrack(index: Int) -> Track? {
-        endpoint?.removeTrack(index: index)
+    public func remove(at index: Int) -> Track? {
+        endpoint?.remove(at: index)
     }
     
-    public func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool = true, playbackInfo: PlaybackInfo) {
+    public func queue(_ track: Track, after index: Int, updateUnalteredQueue: Bool = true, playbackInfo: PlaybackInfo) {
         var playbackInfo = playbackInfo
         playbackInfo.tracks = [track]
         
@@ -188,35 +154,39 @@ extension AudioPlayer {
             playbackInfo.queueLocation = .now
             startPlayback(tracks: [track], startIndex: 0, shuffle: false, playbackInfo: playbackInfo)
         } else {
-            endpoint?.queueTrack(track, index: index, updateUnalteredQueue: updateUnalteredQueue)
+            endpoint?.queue(track, after: index, updateUnalteredQueue: updateUnalteredQueue)
             #if !os(macOS)
             playbackInfo.donate()
             #endif
         }
     }
-    public func queueTracks(_ tracks: [Track], index: Int, playbackInfo: PlaybackInfo) {
+    public func queue(_ tracks: [Track], after index: Int, playbackInfo: PlaybackInfo) {
         var playbackInfo = playbackInfo
         playbackInfo.tracks = tracks
         
         if endpoint == nil || (endpoint?.nowPlaying == nil && endpoint?.queue.count == 0) {
             startPlayback(tracks: tracks, startIndex: 0, shuffle: false, playbackInfo: playbackInfo)
         } else {
-            endpoint?.queueTracks(tracks, index: index)
+            endpoint?.queue(tracks, after: index)
             #if !os(macOS)
             playbackInfo.donate()
             #endif
         }
     }
     
-    public func moveTrack(from: Int, to: Int) {
-        endpoint?.moveTrack(from: from, to: to)
+    public func move(from index: Int, to destination: Int) {
+        endpoint?.move(from: index, to: destination)
     }
     
     public func skip(to: Int) {
         endpoint?.skip(to: to)
     }
     
-    public func restoreHistory(index: Int) {
-        endpoint?.restoreHistory(index: index)
+    public func restorePlayed(upTo index: Int) {
+        endpoint?.restorePlayed(upTo: index)
     }
+    
+    internal func startPlayback(tracks: [AFFoundation.Track], startIndex: Int, shuffle: Bool) { exit(1) }
+    internal func queue(_ track: AFFoundation.Track, after index: Int, updateUnalteredQueue: Bool) { exit(1) }
+    internal func queue(_ tracks: [AFFoundation.Track], after index: Int) { exit(1) }
 }

@@ -31,7 +31,7 @@ extension RemoteAudioEndpoint: AudioEndpoint {
         }
         set {
             Task {
-                await seek(seconds: newValue)
+                await seek(to: newValue)
             }
         }
     }
@@ -82,7 +82,7 @@ extension RemoteAudioEndpoint: AudioEndpoint {
         }
     }
     
-    func seek(seconds: Double) async {
+    func seek(to seconds: Double) async {
         try? await JellyfinClient.shared.update(sessionId: sessionId, positionSeconds: seconds)
     }
     
@@ -103,23 +103,23 @@ extension RemoteAudioEndpoint: AudioEndpoint {
         }
     }
     
-    func advanceToNextTrack() {
+    func advance() {
         Task {
             try? await JellyfinClient.shared.update(sessionId: sessionId, command: .next)
         }
     }
     
-    func backToPreviousItem() {
+    func rewind() {
         Task {
             try? await JellyfinClient.shared.update(sessionId: sessionId, command: .previous)
         }
     }
     
-    func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool) {
-        queueTracks([track], index: index)
+    func queue(_ track: Track, after index: Int, updateUnalteredQueue: Bool) {
+        queue([track], after: index)
     }
     
-    func queueTracks(_ tracks: [Track], index: Int) {
+    func queue(_ tracks: [Track], after index: Int) {
         Task {
             try? await JellyfinClient.shared.queue(sessionId: sessionId, tracks: tracks, queuePosition: index == 0 ? .next : .last)
         }
@@ -134,8 +134,8 @@ extension RemoteAudioEndpoint: AudioEndpoint {
     var allowQueueLater: Bool { true }
     
     func skip(to: Int) {}
-    func removeTrack(index: Int) -> Track? { nil }
-    func removeHistoryTrack(index: Int) {}
-    func moveTrack(from: Int, to: Int) {}
-    func restoreHistory(index: Int) {}
+    func remove(at index: Int) -> Track? { nil }
+    func removePlayed(at index: Int) {}
+    func move(from index: Int, to destination: Int) {}
+    func restorePlayed(upTo index: Int) {}
 }

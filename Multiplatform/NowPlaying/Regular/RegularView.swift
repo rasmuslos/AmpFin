@@ -30,7 +30,7 @@ internal extension NowPlaying {
                 }
                 .frame(height: 0)
                 
-                if let track = AudioPlayer.current.nowPlaying {
+                if let track = viewModel.nowPlaying {
                     Background()
                     
                     VStack {

@@ -28,6 +28,7 @@ internal extension NowPlaying {
 internal struct NowPlayingOverlayToggled: TransactionKey {
     static var defaultValue = false
 }
+
 internal extension Transaction {
     var nowPlayingOverlayToggled: Bool {
         get { self[NowPlayingOverlayToggled.self] }

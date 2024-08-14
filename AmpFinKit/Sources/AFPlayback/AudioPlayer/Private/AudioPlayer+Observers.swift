@@ -9,7 +9,7 @@ import Foundation
 import AFFoundation
 import AFNetwork
 
-extension AudioPlayer {
+internal extension AudioPlayer {
     func setupObservers() async {
         NotificationCenter.default.addObserver(forName: JellyfinWebSocket.disconnectedNotification, object: nil, queue: nil) { [self] _ in
             if source == .jellyfinRemote {
@@ -34,9 +34,9 @@ extension AudioPlayer {
             } else if command == "playpause" {
                 playing = !playing
             } else if command == "previoustrack" {
-                backToPreviousItem()
+                rewind()
             } else if command == "nexttrack" {
-                advanceToNextTrack()
+                advance()
             } else if command == "seek" {
                 let position = notification.userInfo?["position"] as? UInt64 ?? 0
                 currentTime = Double(position / 10_000_000)
@@ -59,9 +59,9 @@ extension AudioPlayer {
                 if command == "playnow" {
                     startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: nil))
                 } else if command == "playnext" {
-                    queueTracks(tracks, index: 0, playbackInfo: .init(container: nil))
+                    queue(tracks, after: 0, playbackInfo: .init(container: nil))
                 } else if command == "playlast" {
-                    queueTracks(tracks, index: queue.count, playbackInfo: .init(container: nil))
+                    queue(tracks, after: queue.count, playbackInfo: .init(container: nil))
                 }
             }
         }

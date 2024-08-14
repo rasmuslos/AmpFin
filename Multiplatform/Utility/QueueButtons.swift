@@ -39,20 +39,22 @@ internal struct QueueNextButton: View {
     }
 }
 internal struct QueueLaterButton: View {
+    @Environment(NowPlaying.ViewModel.self) private var nowPlayingViewModel
+    
     @State private var feedback = false
     
     var hideName = false
     let action: () -> Void
     
     var body: some View {
-        if AudioPlayer.current.allowQueueLater {
+        if nowPlayingViewModel.allowQueueLater {
             Button {
                 feedback.toggle()
                 action()
             } label: {
                 Label("queue.last", systemImage: "text.line.last.and.arrowtriangle.forward")
                 
-                if !hideName, let lastName = AudioPlayer.current.queue.last?.name {
+                if !hideName, let lastName = nowPlayingViewModel.queue.last?.name {
                     Text("queue.last.name \(lastName)")
                 }
             }

@@ -17,7 +17,7 @@ internal extension NowPlaying {
         func body(content: Content) -> some View {
             content
                 .safeAreaInset(edge: .bottom) {
-                    if let nowPlaying = AudioPlayer.current.nowPlaying {
+                    if let nowPlaying = viewModel.nowPlaying {
                         ZStack(alignment: .bottom) {
                             Rectangle()
                                 .frame(height: 300)
@@ -37,7 +37,7 @@ internal extension NowPlaying {
                             
                             if !viewModel.presented {
                                 Button {
-                                    viewModel.setNowPlayingViewPresented(true)
+                                    viewModel.setPresented(true)
                                 } label: {
                                     HStack(spacing: 8) {
                                         ItemImage(cover: nowPlaying.cover)
@@ -51,32 +51,29 @@ internal extension NowPlaying {
                                         
                                         Group {
                                             Group {
-                                                if AudioPlayer.current.buffering {
+                                                if viewModel.buffering {
                                                     ProgressView()
                                                 } else {
                                                     Button {
                                                         AudioPlayer.current.playing.toggle()
                                                     } label: {
-                                                        Label("playback.toggle", systemImage: AudioPlayer.current.playing ?  "pause.fill" : "play.fill")
+                                                        Label("playback.toggle", systemImage: viewModel.playing ?  "pause.fill" : "play.fill")
                                                             .labelStyle(.iconOnly)
                                                             .contentTransition(.symbolEffect(.replace.byLayer.downUp))
-                                                            .animation(.spring(duration: 0.2, bounce: 0.7), value: AudioPlayer.current.playing)
+                                                            .animation(.spring(duration: 0.2, bounce: 0.7), value: viewModel.playing)
                                                     }
-                                                    .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
                                                 }
                                             }
                                             .transition(.blurReplace)
                                             
                                             Button {
-                                                viewModel.animateForward.toggle()
-                                                AudioPlayer.current.advanceToNextTrack()
+                                                AudioPlayer.current.advance()
                                             } label: {
                                                 Label("playback.next", systemImage: "forward.fill")
                                                     .labelStyle(.iconOnly)
-                                                    .symbolEffect(.bounce.up, value: viewModel.animateForward)
+                                                    .symbolEffect(.bounce.up, value: viewModel.notifyForwards)
                                             }
                                             .padding(.horizontal, 8)
-                                            .sensoryFeedback(.increase, trigger: viewModel.animateForward)
                                         }
                                         .imageScale(.large)
                                     }
@@ -84,7 +81,7 @@ internal extension NowPlaying {
                                 .frame(height: 56)
                                 .padding(.horizontal, 8)
                                 .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 16, style: .continuous))
-                                .modifier(NowPlaying.ContextMenuModifier(track: nowPlaying, animateForwards: .init(get: { viewModel.animateForward }, set: { viewModel.animateForward = $0 })))
+                                .modifier(NowPlaying.ContextMenuModifier(track: nowPlaying))
                                 .foregroundStyle(.primary)
                                 .background(.regularMaterial)
                                 .transition(.move(edge: .bottom))
@@ -99,13 +96,16 @@ internal extension NowPlaying {
                                 .padding(.horizontal, 12)
                                 .zIndex(1)
                                 .dropDestination(for: Track.self) { tracks, _ in
-                                    AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
+                                    AudioPlayer.current.queue(tracks, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                                     return true
                                 }
                             }
                         }
                     }
                 }
+                .sensoryFeedback(.increase, trigger: viewModel.notifyForwards)
+                .sensoryFeedback(AudioPlayer.current.playing ? .start : .stop, trigger: viewModel.notifyPlaying)
+                .sensoryFeedback(.decrease, trigger: viewModel.notifyBackwards)
         }
     }
 }

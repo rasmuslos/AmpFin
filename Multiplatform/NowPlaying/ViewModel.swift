@@ -13,29 +13,65 @@ import AFPlayback
 internal extension NowPlaying {
     @Observable
     class ViewModel {
-        @MainActor var namespace: Namespace.ID!
+        // MARK: Presentation
+        
+        @ObservationIgnored var namespace: Namespace.ID!
         @MainActor var dragOffset: CGFloat
         
         @MainActor private(set) var presented: Bool
         
+        // MARK: Current presentation state
+        
         @MainActor var controlsVisible: Bool
         @MainActor private(set) var currentTab: NowPlaying.Tab
         
-        @MainActor var controlsDragging: Bool
+        @MainActor var mediaInfoToggled = false
         @MainActor var addToPlaylistSheetPresented: Bool
+        
+        // MARK: Sliders
+        
+        @MainActor var seekDragging: Bool
+        @MainActor var volumeDragging: Bool
+        @MainActor var controlsDragging: Bool
+        
+        @MainActor var draggedPercentage = 0.0
+        
+        // MARK: Background
         
         @MainActor private(set) var colors: [Color]
         @MainActor private(set) var highlights: [Color]
         
-        @MainActor var mediaInfoToggled = false
-        @MainActor var mediaInfo: Track.MediaInfo? = nil
+        // MARK: Current state
         
-        @MainActor var seekDragging: Bool
-        @MainActor var volumeDragging: Bool
-        @MainActor var draggedPercentage = 0.0
+        @MainActor private(set) var source: AudioPlayer.PlaybackSource
+        @MainActor private(set) var playbackInfo: PlaybackInfo?
         
-        @MainActor var animateBackward: Bool
-        @MainActor var animateForward: Bool
+        @MainActor private(set) var playing: Bool
+        
+        @MainActor private(set) var duration: Double
+        @MainActor private(set) var currentTime: Double
+        
+        @MainActor private(set) var history: [Track]
+        @MainActor private(set) var nowPlaying: Track?
+        @MainActor private(set) var queue: [Track]
+        
+        @MainActor private(set) var buffering: Bool
+        
+        @MainActor private(set) var shuffled: Bool
+        @MainActor private(set) var repeatMode: RepeatMode
+        
+        @MainActor private(set) var mediaInfo: Track.MediaInfo?
+        @MainActor private(set) var outputRoute: AudioPlayer.AudioRoute
+        
+        @MainActor private(set) var allowQueueLater: Bool
+        
+        // MARK: Helper
+        
+        @MainActor private(set) var notifyPlaying: Bool
+        @MainActor private(set) var notifyForwards: Bool
+        @MainActor private(set) var notifyBackwards: Bool
+        
+        @ObservationIgnored private var tokens = [Any]()
         
         @MainActor
         init() {
@@ -47,21 +83,44 @@ internal extension NowPlaying {
             controlsVisible = true
             currentTab = .cover
             
-            controlsDragging = false
+            mediaInfoToggled = false
             addToPlaylistSheetPresented = false
+            
+            seekDragging = false
+            volumeDragging = false
+            controlsDragging = false
+            
+            draggedPercentage = 0
             
             colors = []
             highlights = []
             
-            mediaInfoToggled = false
+            source = AudioPlayer.current.source
+            
+            playing = AudioPlayer.current.playing
+            
+            duration = AudioPlayer.current.duration
+            currentTime = AudioPlayer.current.currentTime
+            
+            history = AudioPlayer.current.history
+            nowPlaying = AudioPlayer.current.nowPlaying
+            queue = AudioPlayer.current.queue
+            
+            buffering = AudioPlayer.current.buffering
+            
+            shuffled = AudioPlayer.current.shuffled
+            repeatMode = AudioPlayer.current.repeatMode
+            
             mediaInfo = nil
+            outputRoute = AudioPlayer.current.outputRoute
             
-            seekDragging = false
-            volumeDragging = false
-            draggedPercentage = 0
+            allowQueueLater = AudioPlayer.current.allowQueueLater
             
-            animateBackward = false
-            animateForward = false
+            notifyPlaying = false
+            notifyForwards = false
+            notifyBackwards = false
+            
+            setupObservers()
         }
     }
 }
@@ -69,7 +128,7 @@ internal extension NowPlaying {
 internal extension NowPlaying.ViewModel {
     @MainActor
     var track: Track? {
-        if presented, let track = AudioPlayer.current.nowPlaying {
+        if presented, let track = nowPlaying {
             return track
         }
         
@@ -86,7 +145,7 @@ internal extension NowPlaying.ViewModel {
     
     @MainActor
     var showRoundedCorners: Bool {
-        dragOffset != 0
+        dragOffset != 0 || !presented
     }
     
     @MainActor
@@ -95,7 +154,7 @@ internal extension NowPlaying.ViewModel {
     }
     @MainActor
     var playedPercentage: Double {
-        AudioPlayer.current.currentTime / AudioPlayer.current.duration
+        currentTime / duration
     }
     
     @MainActor
@@ -135,45 +194,121 @@ internal extension NowPlaying.ViewModel {
     }
 }
 
-internal extension NowPlaying.ViewModel {
-    func trackDidChange() async {
-        await withTaskGroup(of: Void.self) {
-            $0.addTask { await self.determineColors() }
-            $0.addTask { await self.determineQuality() }
+private extension NowPlaying.ViewModel {
+    // This is truly swift the way it was intended to be
+    func setupObservers() {
+        for token in tokens {
+            NotificationCenter.default.removeObserver(token)
         }
-    }
-    func determineColors() async {
-        if let cover = await track?.cover {
-            guard let dominantColors = try? await AFVisuals.extractDominantColors(10, cover: cover) else {
-                await MainActor.run {
-                    self.colors = []
-                    self.highlights = []
+        
+        tokens = []
+        
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.sourceDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor in
+                self?.source = AudioPlayer.current.source
+            }
+        })
+        
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.trackDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task {
+                await MainActor.run { [weak self] in
+                    if self?.nowPlaying == nil && AudioPlayer.current.nowPlaying != nil {
+                        self?.setPresented(true)
+                    }
+                    
+                    self?.nowPlaying = AudioPlayer.current.nowPlaying
+                    self?.mediaInfo = nil
                 }
                 
-                return
+                await withTaskGroup(of: Void.self) {
+                    // MARK: Fetch media info
+                    $0.addTask { await self?.updateMediaInfo() }
+                    // MARK: extract colors
+                    $0.addTask {
+                        if let cover = await self?.track?.cover {
+                            guard let dominantColors = try? await AFVisuals.extractDominantColors(10, cover: cover) else {
+                                await MainActor.run { [weak self] in
+                                    self?.colors = []
+                                    self?.highlights = []
+                                }
+                                
+                                return
+                            }
+                            
+                            let colors = dominantColors.map { $0.color }
+                            let highlights = AFVisuals.determineSaturated(AFVisuals.highPassFilter(colors, threshold: 0.5), threshold: 0.3)
+                            
+                            await MainActor.run { [colors, highlights, weak self] in
+                                withAnimation {
+                                    self?.highlights = highlights
+                                    self?.colors = colors.filter { !highlights.contains($0) }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            
-            let colors = dominantColors.map { $0.color }
-            let highlights = AFVisuals.determineSaturated(AFVisuals.highPassFilter(colors, threshold: 0.5), threshold: 0.3)
-            
-            await MainActor.run { [colors, highlights] in
-                self.highlights = highlights
-                self.colors = colors.filter { !highlights.contains($0) }
+        })
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.playingDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.playing = AudioPlayer.current.playing
+                self?.notifyPlaying.toggle()
             }
-        }
+        })
+        
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.bufferingDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.buffering = AudioPlayer.current.buffering
+            }
+        })
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.playbackInfoDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.playbackInfo = AudioPlayer.current.playbackInfo
+            }
+        })
+        
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.timeDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.duration = AudioPlayer.current.duration
+                self?.currentTime = AudioPlayer.current.currentTime
+            }
+        })
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.queueDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.queue = AudioPlayer.current.queue
+                self?.history = AudioPlayer.current.history
+                
+                self?.shuffled = AudioPlayer.current.shuffled
+                self?.repeatMode = AudioPlayer.current.repeatMode
+            }
+        })
+        
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.bitrateDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                await self?.updateMediaInfo()
+            }
+        })
+        
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.routeDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.outputRoute = AudioPlayer.current.outputRoute
+            }
+        })
     }
-    func determineQuality() async {
+    func updateMediaInfo() async {
         let mediaInfo = await AudioPlayer.current.mediaInfo
         
         await MainActor.run {
             withAnimation {
                 self.mediaInfo = mediaInfo
-                mediaInfoToggled = mediaInfo?.lossless ?? false
+                self.mediaInfoToggled = mediaInfo?.lossless ?? false
             }
         }
     }
-    
-    func select(tab: NowPlaying.Tab) {
+}
+
+internal extension NowPlaying.ViewModel {
+    func selectTab(_ tab: NowPlaying.Tab) {
         Task { @MainActor in
             controlsVisible = true
             
@@ -186,7 +321,7 @@ internal extension NowPlaying.ViewModel {
             }
         }
     }
-    func setNowPlayingViewPresented(_ presented: Bool) {
+    func setPresented(_ presented: Bool) {
         Task { @MainActor in
             if presented {
                 dragOffset = 0
@@ -207,11 +342,11 @@ internal extension NowPlaying.ViewModel {
         }
     }
     
-    func updateProgress(_ position: Double) {
+    func setPosition(percentage: Double) {
         Task { @MainActor in
-            draggedPercentage = position
+            draggedPercentage = percentage
         }
         
-        AudioPlayer.current.currentTime = AudioPlayer.current.duration * position
+        AudioPlayer.current.currentTime = AudioPlayer.current.duration * percentage
     }
 }

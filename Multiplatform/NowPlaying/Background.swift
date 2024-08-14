@@ -45,7 +45,7 @@ internal extension NowPlaying {
                             }
                     }
                     
-                    FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: AudioPlayer.current.playing && !haltNowPlayingBackground ? speed : 0, blur: 0.9)
+                    FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: viewModel.playing && !haltNowPlayingBackground ? speed : 0, blur: 0.9)
                         .ignoresSafeArea(edges: .all)
                 } else {
                     Color.black

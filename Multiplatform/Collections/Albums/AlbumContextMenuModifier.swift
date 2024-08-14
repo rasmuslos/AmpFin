@@ -42,13 +42,13 @@ struct AlbumContextMenuModifier: ViewModifier {
                 
                 QueueNextButton {
                     Task {
-                        AudioPlayer.current.queueTracks(try await dataProvider.tracks(albumId: album.id), index: 0, playbackInfo: .init(container: album, queueLocation: .next))
+                        AudioPlayer.current.queue(try await dataProvider.tracks(albumId: album.id), after: 0, playbackInfo: .init(container: album, queueLocation: .next))
                     }
                 }
                 
                 QueueLaterButton {
                     Task {
-                        AudioPlayer.current.queueTracks(try await dataProvider.tracks(albumId: album.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: album, queueLocation: .later))
+                        AudioPlayer.current.queue(try await dataProvider.tracks(albumId: album.id), after: AudioPlayer.current.queue.count, playbackInfo: .init(container: album, queueLocation: .later))
                     }
                 }
                 

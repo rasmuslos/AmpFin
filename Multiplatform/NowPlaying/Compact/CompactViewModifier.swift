@@ -84,7 +84,7 @@ extension NowPlaying {
                 .overlay(alignment: .top) {
                     if viewModel.track != nil {
                         Button {
-                            viewModel.setNowPlayingViewPresented(false)
+                            viewModel.setPresented(false)
                         } label: {
                             Rectangle()
                                 .foregroundStyle(.thinMaterial)
@@ -113,27 +113,15 @@ extension NowPlaying {
                 .offset(y: viewModel.dragOffset)
                 .environment(\.colorScheme, .light)
                 .allowsHitTesting(viewModel.track != nil)
-                .persistentSystemOverlays(AudioPlayer.current.outputRoute.showLabel ? .hidden : .automatic)
+                .persistentSystemOverlays(viewModel.outputRoute.showLabel ? .hidden : .automatic)
             }
             .ignoresSafeArea(edges: .all)
             .environment(viewModel)
             .modifier(Navigation.NavigationModifier() {
-                viewModel.setNowPlayingViewPresented(false)
+                viewModel.setPresented(false)
             })
             .onAppear {
                 viewModel.namespace = namespace
-            }
-            .onChange(of: AudioPlayer.current.nowPlaying) { previous, current in
-                if previous == nil {
-                    viewModel.setNowPlayingViewPresented(true)
-                }
-                
-                if current == nil {
-                    viewModel.setNowPlayingViewPresented(false)
-                }
-            }
-            .task(id: AudioPlayer.current.nowPlaying) {
-                await viewModel.trackDidChange()
             }
             .sheet(item: .init(get: { viewModel.addToPlaylistTrack }, set: { viewModel.addToPlaylistSheetPresented = ($0 != nil) })) {
                 PlaylistAddSheet(track: $0)
@@ -157,7 +145,7 @@ private struct GestureModifier: ViewModifier {
                         }
                         
                         if $0.velocity.height > 3000 {
-                            viewModel.setNowPlayingViewPresented(false)
+                            viewModel.setPresented(false)
                         } else if $0.velocity.height < -3000 {
                             viewModel.dragOffset = 0
                         } else {
@@ -166,7 +154,7 @@ private struct GestureModifier: ViewModifier {
                     }
                     .onEnded {
                         if $0.translation.height > 200 && viewModel.dragOffset != 0 {
-                            viewModel.setNowPlayingViewPresented(false)
+                            viewModel.setPresented(false)
                         } else {
                             viewModel.dragOffset = 0
                         }
@@ -205,7 +193,7 @@ private struct BackgroundRemoveTransitionModifier: ViewModifier {
                     .offset(y: active ? -92 : 0)
             }
             .opacity(active ? 0.5 : 1)
-            .animation(.timingCurve(-0.1, 0, 0.8, 1, duration: 0.3), value: active)
+            .animation(.spring, value: active)
     }
 }
 

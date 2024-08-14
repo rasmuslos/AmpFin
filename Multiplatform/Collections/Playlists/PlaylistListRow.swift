@@ -39,7 +39,7 @@ struct PlaylistListRow: View {
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             QueueNextButton {
                 Task {
-                    AudioPlayer.current.queueTracks(try await JellyfinClient.shared.tracks(playlistId: playlist.id), index: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
+                    AudioPlayer.current.queue(try await JellyfinClient.shared.tracks(playlistId: playlist.id), after: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
                 }
             }
             .tint(.orange)
@@ -47,7 +47,7 @@ struct PlaylistListRow: View {
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             QueueLaterButton(hideName: true) {
                 Task {
-                    AudioPlayer.current.queueTracks(try await JellyfinClient.shared.tracks(playlistId: playlist.id), index: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
+                    AudioPlayer.current.queue(try await JellyfinClient.shared.tracks(playlistId: playlist.id), after: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
                 }
             }
             .tint(.blue)

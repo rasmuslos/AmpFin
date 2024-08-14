@@ -6,10 +6,16 @@
 //
 
 import Foundation
-import MediaPlayer
-import AVKit
 import Defaults
+
+import AVKit
+import MediaPlayer
+
 import AFFoundation
+import AFNetwork
+#if canImport(AFOffline)
+import AFOffline
+#endif
 
 internal extension LocalAudioEndpoint {
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool) {
@@ -28,10 +34,8 @@ internal extension LocalAudioEndpoint {
         }
         
         history = Array(tracks[0..<startIndex])
+        nowPlaying = tracks[startIndex]
         queue = Array(tracks[startIndex + 1..<tracks.count])
-        
-        setNowPlaying(track: tracks[startIndex])
-        populateAVPlayerQueue()
         
         #if !os(macOS)
         AudioPlayer.setupAudioSession()
@@ -39,120 +43,69 @@ internal extension LocalAudioEndpoint {
         #endif
         
         playing = true
-        
-        setupNowPlayingMetadata()
     }
     func stopPlayback() {
-        if playing {
-            playing = false
-        }
+        playing = false
         
         queue = []
         unalteredQueue = []
         
-        setNowPlaying(track: nil)
+        nowPlaying = nil
         history = []
         
-        clearNowPlayingMetadata()
+        clearNowPlayingWidget()
+        
         #if !os(macOS)
         AudioPlayer.updateAudioSession(active: false)
         #endif
     }
     
-    func seek(seconds: Double) async {
+    func seek(to seconds: Double) async {
         await audioPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 1000))
+        
         updatePlaybackReporter(scheduled: false)
-    }
-}
-
-internal extension LocalAudioEndpoint {
-    var playing: Bool {
-        get {
-            _playing
-        }
-        set {
-            if newValue {
-                audioPlayer.play()
-                #if !os(macOS)
-                AudioPlayer.updateAudioSession(active: true)
-                #endif
-            } else {
-                audioPlayer.pause()
-            }
-            
-            _playing = newValue
-            
-            updateNowPlayingStatus()
-            updatePlaybackReporter(scheduled: false)
-            
-            // Make sure SwiftUI views are updated
-            Task { @MainActor in
-                _playing = newValue
-            }
-        }
+        NotificationCenter.default.post(name: AudioPlayer.timeDidChangeNotification, object: nil)
     }
     
-    var currentTime: Double {
-        get {
-            _currentTime
-        }
-        set {
-            Task {
-                await seek(seconds: newValue)
-            }
-        }
-    }
-    
-    var shuffled: Bool {
-        get {
-            _shuffled
-        }
-        set {
-            _shuffled = newValue
-            
-            if(newValue) {
-                queue.shuffle()
-            } else {
-                queue = unalteredQueue.filter { track in
-                    queue.contains { $0.id == track.id }
+    var mediaInfo: Track.MediaInfo? {
+        get async {
+            if let itemId = nowPlaying?.id {
+                let serverBitrateLikelyToBeFalse = DownloadManager.shared.downloaded(trackId: itemId) && Defaults[.maxDownloadBitrate] > 0
+                
+                if !serverBitrateLikelyToBeFalse, var mediaInfo = try? await JellyfinClient.shared.mediaInfo(trackId: itemId) {
+                    guard let maxBitrate, let bitrate = mediaInfo.bitrate else {
+                        return mediaInfo
+                    }
+                    
+                    let maxBitrateBits = maxBitrate * 1000
+                    
+                    if (bitrate > maxBitrateBits) {
+                        mediaInfo.bitrate = maxBitrateBits
+                        mediaInfo.codec = "AAC"
+                        mediaInfo.lossless = false
+                    }
+                    
+                    return mediaInfo
                 }
             }
-        }
-    }
-    var repeatMode: RepeatMode {
-        get {
-            _repeatMode
-        }
-        set {
-            _repeatMode = newValue
             
-            Defaults[.repeatMode] = newValue
-            audioPlayer.actionAtItemEnd = newValue == .track ? .pause : .advance
-        }
-    }
-    
-    var volume: Float {
-        get {
-            #if os(iOS) && !targetEnvironment(macCatalyst)
-            _volume
-            #else
-            audioPlayer.volume
-            #endif
-        }
-        set {
-            #if os(iOS) && !targetEnvironment(macCatalyst)
-            _volume = newValue
+            let track = try? await audioPlayer.currentItem?.asset.load(.tracks).first
             
-            Task { @MainActor in
-                MPVolumeView.setVolume(newValue)
+            var format = await track?.mediaFormat()
+            let bitrate = try? await track?.load(.estimatedDataRate)
+            
+            if format != nil {
+                while format!.starts(with: ".") {
+                    format!.removeFirst()
+                }
             }
-            #else
-            audioPlayer.volume = newValue
-            #endif
+            
+            var bitrateInt: Int?
+            if let bitrate, bitrate > 0 {
+                bitrateInt = Int(bitrate)
+            }
+            
+            return .init(codec: format, lossless: false, bitrate: bitrateInt, bitDepth: nil, sampleRate: nil)
         }
-    }
-    
-    var allowQueueLater: Bool {
-        queue.count > 0
     }
 }

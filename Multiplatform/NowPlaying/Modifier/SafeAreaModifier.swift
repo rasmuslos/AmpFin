@@ -60,9 +60,10 @@ extension NowPlaying {
      */
     struct SafeAreaModifier: ViewModifier {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        @Environment(NowPlaying.ViewModel.self) private var viewModel
         
         private var isVisible: Bool {
-            AudioPlayer.current.nowPlaying != nil
+            viewModel.nowPlaying != nil
         }
         
         func body(content: Content) -> some View {

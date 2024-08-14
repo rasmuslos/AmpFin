@@ -84,10 +84,10 @@ internal extension NowPlaying {
                         }
                     }
                 }
-                .onChange(of: AudioPlayer.current.currentTime) {
+                .onChange(of: viewModel.currentTime) {
                     lyricsViewModel.updateLyricsIndex()
                 }
-                .task(id: AudioPlayer.current.nowPlaying) {
+                .task(id: viewModel.nowPlaying) {
                     await lyricsViewModel.trackDidChange()
                     lyricsViewModel.scroll(proxy, anchor: anchor)
                 }
@@ -98,6 +98,7 @@ internal extension NowPlaying {
 
 private struct Line: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(NowPlaying.ViewModel.self) private var viewModel
     @Environment(LyricsViewModel.self) private var lyricsViewModel
     
     let index: Int
@@ -140,8 +141,8 @@ private struct Line: View {
                 .buttonStyle(.plain)
             } else {
                 if index == lyricsViewModel.activeLineIndex {
-                    let duration = index + 1 >= lyricsViewModel.lyrics.count ? AudioPlayer.current.duration : lyricsViewModel.lyricsKeys[index + 1]
-                    let done = duration - AudioPlayer.current.currentTime
+                    let duration = index + 1 >= lyricsViewModel.lyrics.count ? viewModel.duration : lyricsViewModel.lyricsKeys[index + 1]
+                    let done = duration - viewModel.currentTime
                     let percentage = 1 - done / duration
                     
                     HStack(spacing: 10) {

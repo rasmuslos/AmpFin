@@ -11,6 +11,8 @@ import AVKit
 
 extension NowPlaying {
     struct VolumeSlider: View {
+        @Environment(ViewModel.self) private var viewModel
+        
         @Binding var dragging: Bool
         
         @State private var volume = Double(AudioPlayer.current.volume)
@@ -38,9 +40,9 @@ extension NowPlaying {
             .dynamicTypeSize(dragging ? .xLarge : .medium)
             .frame(height: 0)
             .animation(.easeInOut, value: dragging)
-            .onChange(of: AudioPlayer.current.volume) {
+            .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.volumeDidChangeNotification)) { _ in
                 if !dragging {
-                    volume = Double($1)
+                    volume = Double(AudioPlayer.current.volume)
                 }
             }
             .onChange(of: volume) {

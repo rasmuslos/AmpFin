@@ -20,7 +20,7 @@ extension NowPlaying {
         }
         
         private var routeIcon: String {
-            switch AudioPlayer.current.outputRoute.port {
+            switch viewModel.outputRoute.port {
                 case .usbAudio:
                     "cable.connector"
                 case .thunderbolt:
@@ -44,7 +44,7 @@ extension NowPlaying {
         
         @ViewBuilder private var lyricsButton: some View {
             Button {
-                viewModel.select(tab: .lyrics)
+                viewModel.selectTab(.lyrics)
             } label: {
                 Label("lyrics", systemImage: viewModel.currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
                     .labelStyle(.iconOnly)
@@ -56,7 +56,7 @@ extension NowPlaying {
         }
         @ViewBuilder private var queueButton: some View {
             Menu {
-                Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { AudioPlayer.current.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
+                Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { viewModel.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
                 
                 Menu {
                     Button {
@@ -83,7 +83,7 @@ extension NowPlaying {
                 Label("queue", systemImage: "list.dash")
                     .labelStyle(.iconOnly)
             } primaryAction: {
-                viewModel.select(tab: .queue)
+                viewModel.selectTab(.queue)
             }
             .buttonStyle(SymbolButtonStyle(active: viewModel.currentTab == .queue))
             .modifier(HoverEffectModifier(padding: 4))
@@ -91,7 +91,7 @@ extension NowPlaying {
         
         var body: some View {
             HStack(alignment: .center) {
-                if AudioPlayer.current.source == .local {
+                if viewModel.source == .local {
                     if isCompact {
                         Spacer()
                         
@@ -111,8 +111,8 @@ extension NowPlaying {
                         .modifier(HoverEffectModifier(padding: 4))
                         .frame(width: 75)
                         .overlay(alignment: .bottom) {
-                            if AudioPlayer.current.outputRoute.showLabel {
-                                Text(AudioPlayer.current.outputRoute.name)
+                            if viewModel.outputRoute.showLabel {
+                                Text(viewModel.outputRoute.name)
                                     .lineLimit(1)
                                     .font(.caption2.smallCaps())
                                     .foregroundStyle(.thinMaterial)
@@ -139,8 +139,8 @@ extension NowPlaying {
                             .buttonStyle(SymbolButtonStyle(active: false))
                             .modifier(HoverEffectModifier(padding: 4))
                             
-                            if AudioPlayer.current.outputRoute.showLabel {
-                                Text(AudioPlayer.current.outputRoute.name)
+                            if viewModel.outputRoute.showLabel {
+                                Text(viewModel.outputRoute.name)
                                     .lineLimit(1)
                                     .font(.caption.smallCaps())
                                     .foregroundStyle(.thinMaterial)
@@ -153,16 +153,17 @@ extension NowPlaying {
                             .padding(.horizontal, 16)
                         queueButton
                     }
-                } else if AudioPlayer.current.source == .jellyfinRemote {
+                } else if viewModel.source == .jellyfinRemote {
+                    // TODO: lyrics
                     Spacer()
                     
                     Button {
-                        AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
+                        AudioPlayer.current.shuffled.toggle()
                     } label: {
                         Label("shuffle", systemImage: "shuffle")
                             .labelStyle(.iconOnly)
                     }
-                    .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
+                    .buttonStyle(SymbolButtonStyle(active: viewModel.shuffled))
                     
                     Spacer()
                     
@@ -175,10 +176,10 @@ extension NowPlaying {
                             AudioPlayer.current.repeatMode = .none
                         }
                     } label: {
-                        Label("repeat", systemImage: "repeat\(AudioPlayer.current.repeatMode == .track ? ".1" : "")")
+                        Label("repeat", systemImage: "repeat\(viewModel.repeatMode == .track ? ".1" : "")")
                             .labelStyle(.iconOnly)
                     }
-                    .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
+                    .buttonStyle(SymbolButtonStyle(active: viewModel.repeatMode != .none))
                     
                     Spacer()
                     

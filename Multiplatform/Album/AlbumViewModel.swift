@@ -55,7 +55,7 @@ internal extension AlbumViewModel {
                 await fetchTracks()
             }
             
-            AudioPlayer.current.queueTracks(tracks, index: now ? 0 : AudioPlayer.current.queue.count, playbackInfo: .init(container: album))
+            AudioPlayer.current.queue(tracks, after: now ? 0 : AudioPlayer.current.queue.count, playbackInfo: .init(container: album))
         }
     }
     func instantMix() {

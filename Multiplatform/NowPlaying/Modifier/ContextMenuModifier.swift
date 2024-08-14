@@ -11,8 +11,9 @@ import AFPlayback
 
 internal extension NowPlaying {
     struct ContextMenuModifier: ViewModifier {
+        @Environment(NowPlaying.ViewModel.self) private var viewModel
+        
         let track: Track
-        @Binding var animateForwards: Bool
         
         @State private var addToPlaylistSheetPresented = false
         
@@ -57,26 +58,12 @@ internal extension NowPlaying {
                     
                     Divider()
                     
-                    Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { AudioPlayer.current.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
+                    Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { viewModel.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
                     
                     Menu {
-                        Button {
-                            AudioPlayer.current.repeatMode = .none
-                        } label: {
-                            Label("repeat.none", systemImage: "slash.circle")
-                        }
-                        
-                        Button {
-                            AudioPlayer.current.repeatMode = .queue
-                        } label: {
-                            Label("repeat.queue", systemImage: "repeat")
-                        }
-                        
-                        Button {
-                            AudioPlayer.current.repeatMode = .track
-                        } label: {
-                            Label("repeat.track", systemImage: "repeat.1")
-                        }
+                        Toggle("repeat.none", systemImage: "slash.circle", isOn: .init(get: { viewModel.repeatMode == .none }, set: { _ in AudioPlayer.current.repeatMode = .none }))
+                        Toggle("repeat.queue", systemImage: "repeat", isOn: .init(get: { viewModel.repeatMode == .queue }, set: { _ in AudioPlayer.current.repeatMode = .queue }))
+                        Toggle("repeat.track", systemImage: "repeat.1", isOn: .init(get: { viewModel.repeatMode == .track }, set: { _ in AudioPlayer.current.repeatMode = .track }))
                     } label: {
                         Label("repeat", systemImage: "repeat")
                     }
@@ -84,14 +71,13 @@ internal extension NowPlaying {
                     Divider()
                     
                     Button {
-                        AudioPlayer.current.backToPreviousItem()
+                        AudioPlayer.current.rewind()
                     } label: {
                         Label("playback.back", systemImage: "backward")
                     }
                     
                     Button {
-                        animateForwards.toggle()
-                        AudioPlayer.current.advanceToNextTrack()
+                        AudioPlayer.current.advance()
                     } label: {
                         Label("playback.next", systemImage: "forward")
                     }

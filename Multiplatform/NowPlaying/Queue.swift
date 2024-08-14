@@ -13,6 +13,7 @@ import AFPlayback
 internal extension NowPlaying {
     struct Queue: View {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+        @Environment(ViewModel.self) private var viewModel
         
         @State private var showHistory = false
         
@@ -23,7 +24,7 @@ internal extension NowPlaying {
                         .font(.headline)
                         .foregroundStyle(.primary)
                     
-                    if let playbackInfo = AudioPlayer.current.playbackInfo {
+                    if let playbackInfo = viewModel.playbackInfo {
                         Group {
                             if let container = playbackInfo.container {
                                 if container.type == .album {
@@ -52,7 +53,7 @@ internal extension NowPlaying {
                         Label("shuffle", systemImage: "shuffle")
                             .labelStyle(.iconOnly)
                     }
-                    .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled))
+                    .buttonStyle(SymbolButtonStyle(active: viewModel.shuffled))
                     
                     Button {
                         if AudioPlayer.current.repeatMode == .none {
@@ -63,11 +64,11 @@ internal extension NowPlaying {
                             AudioPlayer.current.repeatMode = .none
                         }
                     } label: {
-                        Label("repeat", systemImage: "repeat\(AudioPlayer.current.repeatMode == .track ? ".1" : "")")
+                        Label("repeat", systemImage: "repeat\(viewModel.repeatMode == .track ? ".1" : "")")
                             .labelStyle(.iconOnly)
                     }
-                    .id(AudioPlayer.current.repeatMode)
-                    .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none))
+                    .id(viewModel.repeatMode)
+                    .buttonStyle(SymbolButtonStyle(active: viewModel.repeatMode != .none))
                     
                     Button {
                         withAnimation(.easeInOut(duration: 0.25)) {
@@ -86,22 +87,22 @@ internal extension NowPlaying {
             
             List {
                 if showHistory {
-                    ForEach(Array(AudioPlayer.current.history.enumerated()), id: \.offset) { index, track in
+                    ForEach(Array(viewModel.history.enumerated()), id: \.offset) { index, track in
                         Row(track: track, draggable: false)
                             .onTapGesture {
-                                AudioPlayer.current.restoreHistory(index: index)
+                                AudioPlayer.current.restorePlayed(upTo: index)
                             }
                             .swipeActions(edge: .leading, allowsFullSwipe: true) {
                                 QueueNextButton {
-                                    AudioPlayer.current.queueTrack(track, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
-                                    AudioPlayer.current.removeHistoryTrack(index: index)
+                                    AudioPlayer.current.queue(track, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
+                                    AudioPlayer.current.removePlayed(at: index)
                                 }
                                 .tint(.orange)
                             }
                             .swipeActions(edge: .leading) {
                                 QueueLaterButton(hideName: true) {
-                                    AudioPlayer.current.queueTrack(track, index: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
-                                    AudioPlayer.current.removeHistoryTrack(index: index)
+                                    AudioPlayer.current.queue(track, after: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
+                                    AudioPlayer.current.removePlayed(at: index)
                                 }
                                 .tint(.blue)
                             }
@@ -112,7 +113,7 @@ internal extension NowPlaying {
                         .listRowBackground(Color.clear)
                         .listRowInsets(.init(top: 20, leading: 0, bottom: 12, trailing: 0))
                     
-                    ForEach(Array(AudioPlayer.current.queue.enumerated()), id: \.offset) { index, track in
+                    ForEach(Array(viewModel.queue.enumerated()), id: \.offset) { index, track in
                         Row(track: track, draggable: true)
                             .id(UUID())
                             .onTapGesture {
@@ -121,12 +122,12 @@ internal extension NowPlaying {
                     }
                     .onMove { from, to in
                         from.forEach {
-                            AudioPlayer.current.moveTrack(from: $0, to: to)
+                            AudioPlayer.current.move(from: $0, to: to)
                         }
                     }
                     .onDelete { indexSet in
                         indexSet.forEach {
-                            let _ = AudioPlayer.current.removeTrack(index: $0)
+                            let _ = AudioPlayer.current.remove(at: $0)
                         }
                     }
                 }

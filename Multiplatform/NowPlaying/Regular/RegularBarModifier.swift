@@ -16,14 +16,13 @@ extension NowPlaying {
         
         @State private var width: CGFloat = .zero
         @State private var adjust: CGFloat = .zero
-        @State private var sheetPresented = false
         
         @State private var viewModel = ViewModel()
         
         func body(content: Content) -> some View {
             content
                 .safeAreaInset(edge: .bottom) {
-                    if let currentTrack = AudioPlayer.current.nowPlaying {
+                    if let currentTrack = viewModel.nowPlaying {
                         HStack(spacing: 8) {
                             ItemImage(cover: currentTrack.cover)
                                 .frame(width: 48, height: 48)
@@ -34,36 +33,34 @@ extension NowPlaying {
                             Spacer()
                             
                             Button {
-                                AudioPlayer.current.shuffled = !AudioPlayer.current.shuffled
+                                AudioPlayer.current.shuffled.toggle()
                             } label: {
                                 Label("shuffle", systemImage: "shuffle")
                                     .labelStyle(.iconOnly)
                                     .font(.footnote)
                                     .fontWeight(.heavy)
                             }
-                            .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.shuffled, heavy: true))
+                            .buttonStyle(SymbolButtonStyle(active: viewModel.shuffled, heavy: true))
                             .modifier(HoverEffectModifier(padding: 4))
                             
                             Button {
-                                viewModel.animateBackward.toggle()
-                                AudioPlayer.current.backToPreviousItem()
+                                AudioPlayer.current.rewind()
                             } label: {
                                 Label("playback.back", systemImage: "backward.fill")
                                     .labelStyle(.iconOnly)
-                                    .symbolEffect(.bounce.up, value: viewModel.animateBackward)
+                                    .symbolEffect(.bounce.up, value: viewModel.notifyBackwards)
                             }
                             .font(.title3)
                             .modifier(HoverEffectModifier())
-                            .sensoryFeedback(.decrease, trigger: viewModel.animateBackward)
                             
                             Group {
-                                if AudioPlayer.current.buffering {
+                                if viewModel.buffering {
                                     ProgressView()
                                 } else {
                                     Button {
                                         AudioPlayer.current.playing.toggle()
                                     } label: {
-                                        Label("playback.toggle", systemImage: AudioPlayer.current.playing ? "pause.fill" : "play.fill")
+                                        Label("playback.toggle", systemImage: viewModel.playing ? "pause.fill" : "play.fill")
                                             .labelStyle(.iconOnly)
                                             .contentTransition(.symbolEffect(.replace.byLayer.downUp))
                                     }
@@ -73,19 +70,16 @@ extension NowPlaying {
                             .font(.title)
                             .modifier(HoverEffectModifier())
                             .transition(.blurReplace)
-                            .sensoryFeedback(.selection, trigger: AudioPlayer.current.playing)
                             
                             Button {
-                                viewModel.animateForward.toggle()
-                                AudioPlayer.current.advanceToNextTrack()
+                                AudioPlayer.current.advance()
                             } label: {
                                 Label("playback.next", systemImage: "forward.fill")
                                     .labelStyle(.iconOnly)
-                                    .symbolEffect(.bounce.up, value: viewModel.animateForward)
+                                    .symbolEffect(.bounce.up, value: viewModel.notifyForwards)
                             }
                             .font(.title3)
                             .modifier(HoverEffectModifier())
-                            .sensoryFeedback(.increase, trigger: viewModel.animateForward)
                             
                             Button {
                                 if AudioPlayer.current.repeatMode == .none {
@@ -96,12 +90,12 @@ extension NowPlaying {
                                     AudioPlayer.current.repeatMode = .none
                                 }
                             } label: {
-                                Label("repeat", systemImage: "repeat\(AudioPlayer.current.repeatMode == .track ? ".1" : "")")
+                                Label("repeat", systemImage: "repeat\(viewModel.repeatMode == .track ? ".1" : "")")
                                     .labelStyle(.iconOnly)
                                     .font(.footnote)
                                     .fontWeight(.heavy)
                             }
-                            .buttonStyle(SymbolButtonStyle(active: AudioPlayer.current.repeatMode != .none, heavy: true))
+                            .buttonStyle(SymbolButtonStyle(active: viewModel.repeatMode != .none, heavy: true))
                             .modifier(HoverEffectModifier(padding: 4))
                         }
                         .padding(.horizontal, 10)
@@ -113,7 +107,7 @@ extension NowPlaying {
                             Rectangle()
                                 .foregroundStyle(.regularMaterial)
                         }
-                        .modifier(NowPlaying.ContextMenuModifier(track: currentTrack, animateForwards: $viewModel.animateForward))
+                        .modifier(NowPlaying.ContextMenuModifier(track: currentTrack))
                         .draggable(currentTrack) {
                             TrackCollection.TrackPreview(track: currentTrack)
                                 .padding()
@@ -126,25 +120,21 @@ extension NowPlaying {
                         .animation(.spring, value: width)
                         .animation(.spring, value: adjust)
                         .onTapGesture {
-                            sheetPresented.toggle()
+                            viewModel.setPresented(true)
                         }
                         .dropDestination(for: Track.self) { tracks, _ in
-                            AudioPlayer.current.queueTracks(tracks, index: 0, playbackInfo: .init(container: nil, queueLocation: .next))
+                            AudioPlayer.current.queue(tracks, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                             return true
                         }
-                        .fullScreenCover(isPresented: $sheetPresented) {
+                        .fullScreenCover(isPresented: .init(get: { viewModel.presented }, set: { viewModel.setPresented($0) })) {
                             RegularView()
                                 .ignoresSafeArea(edges: .all)
                         }
                     }
                 }
-                .onChange(of: AudioPlayer.current.nowPlaying) { previous, current in
-                    guard previous == nil && current != nil else {
-                        return
-                    }
-                    
-                    sheetPresented = true
-                }
+                .sensoryFeedback(.increase, trigger: viewModel.notifyForwards)
+                .sensoryFeedback(AudioPlayer.current.playing ? .start : .stop, trigger: viewModel.notifyPlaying)
+                .sensoryFeedback(.decrease, trigger: viewModel.notifyBackwards)
                 .onReceive(NotificationCenter.default.publisher(for: NowPlaying.widthChangeNotification)) { notification in
                     if let width = notification.object as? CGFloat {
                         self.width = min(width, 1100)

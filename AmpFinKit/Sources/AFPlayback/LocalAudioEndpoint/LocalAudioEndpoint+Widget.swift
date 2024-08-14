@@ -16,8 +16,10 @@ import AppKit
 #endif
 
 internal extension LocalAudioEndpoint {
-    func setupNowPlayingMetadata() {
-        if let nowPlaying = nowPlaying {
+    func populateNowPlayingWidgetMetadata() {
+        if let nowPlaying {
+            AudioPlayer.current.updateCommandCenter(favorite: nowPlaying.favorite)
+            
             nowPlayingInfo = [:]
             
             nowPlayingInfo[MPMediaItemPropertyTitle] = nowPlaying.name
@@ -34,11 +36,35 @@ internal extension LocalAudioEndpoint {
             nowPlayingInfo[MPMediaItemPropertyArtistPersistentID] = nowPlaying.artists.first?.id
             
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            setRemoteNowPlayingProperties()
+            
+            Task {
+                guard let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url) else {
+                    return
+                }
+                
+                #if canImport(UIKit)
+                let image = UIImage(data: data)
+                #elseif canImport(AppKit)
+                let image = NSImage(data: data)
+                #endif
+                
+                guard let image = image else {
+                    return
+                }
+                
+                let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { _ in image })
+                nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+                
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            }
         }
     }
     
-    func updateNowPlayingStatus() {
+    func updateNowPlayingWidget() {
+        guard nowPlaying != nil else {
+            return
+        }
+        
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackProgress] = currentTime / duration
@@ -50,51 +76,8 @@ internal extension LocalAudioEndpoint {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
-    func clearNowPlayingMetadata() {
+    func clearNowPlayingWidget() {
         nowPlayingInfo = [:]
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-    }
-    
-    func setRemoteNowPlayingProperties() {
-        guard let nowPlaying = nowPlaying else {
-            return
-        }
-        
-        Task {
-            guard let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url) else {
-                return
-            }
-            
-            #if canImport(UIKit)
-            let image = UIImage(data: data)
-            #elseif canImport(AppKit)
-            let image = NSImage(data: data)
-            #endif
-            
-            guard let image = image else {
-                return
-            }
-            
-            let artwork = MPMediaItemArtwork.init(boundsSize: image.size, requestHandler: { _ in image })
-            nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
-            
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-        }
-        Task {
-            let lyrics: Track.Lyrics?
-            
-            #if canImport(AFOffline)
-            lyrics = try? OfflineManager.shared.lyrics(trackId: nowPlaying.id)
-            #else
-            lyrics = try? await JellyfinClient.shared.lyrics(trackId: nowPlaying.id)
-            #endif
-            
-            guard let lyrics = lyrics else {
-                return
-            }
-            
-            nowPlayingInfo[MPMediaItemPropertyLyrics] = lyrics.map { "\($0): \($1 ?? "")" }.joined(separator: "\n")
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-        }
     }
 }

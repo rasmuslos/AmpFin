@@ -6,49 +6,214 @@
 //
 
 import Foundation
-import Combine
 import Network
-import AVKit
+import Combine
 import OSLog
 import Defaults
-import AFFoundation
 
-@Observable
+import AVKit
+import MediaPlayer
+
+import AFFoundation
+import AFNetwork
+
+#if canImport(AFOffline)
+import AFOffline
+#endif
+
 internal final class LocalAudioEndpoint: AudioEndpoint {
     let audioPlayer: AVQueuePlayer
     
-    var history: [Track]
-    var nowPlaying: Track?
-    var queue: [Track]
+    // MARK: Playback
+    
+    var playing: Bool {
+        get {
+            audioPlayer.rate > 0
+        }
+        set {
+            guard newValue != playing else {
+                return
+            }
+            
+            if newValue {
+                audioPlayer.play()
+                
+                #if !os(macOS)
+                AudioPlayer.updateAudioSession(active: true)
+                #endif
+            } else {
+                audioPlayer.pause()
+            }
+            
+            updateNowPlayingWidget()
+            updatePlaybackReporter(scheduled: false)
+            
+            NotificationCenter.default.post(name: AudioPlayer.playingDidChangeNotification, object: nil)
+        }
+    }
+    var buffering: Bool {
+        didSet {
+            guard oldValue != buffering else {
+                return
+            }
+            
+            NotificationCenter.default.post(name: AudioPlayer.bufferingDidChangeNotification, object: nil)
+        }
+    }
+    
+    var currentTime: Double {
+        get {
+            audioPlayer.currentTime().seconds
+        }
+        set {
+            Task {
+                await seek(to: newValue)
+            }
+        }
+    }
+    var duration: Double {
+        audioPlayer.currentItem?.duration.seconds ?? 0
+    }
+    
+    var volume: Float {
+        get {
+            #if os(iOS) && !targetEnvironment(macCatalyst)
+            systemVolume
+            #else
+            audioPlayer.volume
+            #endif
+        }
+        set {
+            guard newValue != volume else {
+                return
+            }
+            
+            #if os(iOS) && !targetEnvironment(macCatalyst)
+            Task { @MainActor in
+                MPVolumeView.setVolume(newValue)
+            }
+            #else
+            audioPlayer.volume = newValue
+            #endif
+            
+            NotificationCenter.default.post(name: AudioPlayer.volumeDidChangeNotification, object: nil)
+        }
+    }
+    
+    var nowPlaying: Track? {
+        didSet {
+            guard oldValue != nowPlaying else {
+                return
+            }
+            
+            populateNowPlayingWidgetMetadata()
+            
+            if let nowPlaying = nowPlaying {
+                playbackReporter = PlaybackReporter(trackId: nowPlaying.id, playSessionId: JellyfinClient.sessionID(itemId: nowPlaying.id, bitrate: maxBitrate), queue: queue)
+                try? OfflineManager.shared.updateLastPlayed(trackId: nowPlaying.id)
+            } else {
+                playbackReporter = nil
+            }
+            
+            NotificationCenter.default.post(name: AudioPlayer.trackDidChangeNotification, object: nil)
+        }
+    }
+    
+    // MARK: Queue
+    
+    var queue: [Track] {
+        didSet {
+            guard oldValue != queue else {
+                return
+            }
+            
+            populateAVPlayerQueue()
+            NotificationCenter.default.post(name: AudioPlayer.queueDidChangeNotification, object: nil)
+        }
+    }
+    var history: [Track] {
+        didSet {
+            guard oldValue != history else {
+                return
+            }
+            
+            NotificationCenter.default.post(name: AudioPlayer.queueDidChangeNotification, object: nil)
+        }
+    }
+    
+    var shuffled: Bool {
+        didSet {
+            guard oldValue != shuffled else {
+                return
+            }
+            
+            if(shuffled) {
+                queue.shuffle()
+            } else {
+                queue = unalteredQueue.filter { track in
+                    queue.contains { $0.id == track.id }
+                }
+            }
+            
+            NotificationCenter.default.post(name: AudioPlayer.queueDidChangeNotification, object: nil)
+        }
+    }
+    var repeatMode: RepeatMode {
+        didSet {
+            guard oldValue != repeatMode else {
+                return
+            }
+            
+            Defaults[.repeatMode] = repeatMode
+            audioPlayer.actionAtItemEnd = repeatMode == .track ? .pause : .advance
+            
+            NotificationCenter.default.post(name: AudioPlayer.queueDidChangeNotification, object: nil)
+        }
+    }
+    
+    var allowQueueLater: Bool {
+        queue.count > 0
+    }
     
     var avPlayerQueue: [String]
     var unalteredQueue: [Track]
     
-    var nowPlayingInfo = [String: Any]()
+    // MARK: Utility
+    
+    var systemVolume: Float
+    var volumeSubscription: AnyCancellable?
+    
+    var nowPlayingInfo: [String: Any]
     var playbackReporter: PlaybackReporter?
     
-    // MARK: Helper
-    
-    var _playing: Bool = false
-    var _currentTime: Double = 0
-    
-    var _shuffled: Bool = false
-    var _repeatMode: RepeatMode = Defaults[.repeatMode]
-    
-    var _volume: Float = 0
-    
-    var buffering: Bool = false
-    var duration: Double = 0
-    
     /// Max bitrate in Kb/s
-    var maxBitrate: Int?
-    var networkMonitor = NWPathMonitor()
-    var outputRoute = LocalAudioEndpoint.audioRoute()
-    
-    // MARK: Util
+    var maxBitrate: Int? {
+        didSet {
+            guard oldValue != maxBitrate else {
+                return
+            }
+            
+            let currentTime = currentTime
+            
+            avPlayerQueue = []
+            populateAVPlayerQueue()
+            
+            self.currentTime = currentTime
+            
+            if playbackReporter != nil, let nowPlaying {
+                playbackReporter?.playSessionId = JellyfinClient.sessionID(itemId: nowPlaying.id, bitrate: maxBitrate)
+            }
+            
+            NotificationCenter.default.post(name: AudioPlayer.bitrateDidChangeNotification, object: nil)
+        }
+    }
+    var networkMonitor: NWPathMonitor
+    var outputRoute: AudioPlayer.AudioRoute {
+        let output = AVAudioSession.sharedInstance().currentRoute.outputs.first
+        return .init(port: output?.portType ?? .builtInSpeaker, name: output?.portName ?? "-/-")
+    }
     
     let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
-    var volumeSubscription: AnyCancellable? = nil
     
     private init() {
         audioPlayer = .init()
@@ -56,25 +221,35 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
         audioPlayer.allowsExternalPlayback = false
         audioPlayer.usesExternalPlaybackWhileExternalScreenIsActive = true
         
-        history = []
         nowPlaying = nil
+        
         queue = []
+        history = []
+        
+        shuffled = false
+        repeatMode = Defaults[.repeatMode]
         
         avPlayerQueue = []
         unalteredQueue = []
         
-        setupTimeObserver()
+        systemVolume = 0
+        volumeSubscription = nil
+        
+        nowPlayingInfo = [:]
+        networkMonitor = NWPathMonitor()
+        
+        buffering = false
+        playing = false
+        
         setupObservers()
         setupNetworkPathMonitor()
-
+        
         #if !os(macOS)
         AudioPlayer.updateAudioSession(active: false)
         #endif
     }
 }
 
-// MARK: Singleton
-
-extension LocalAudioEndpoint {
+internal extension LocalAudioEndpoint {
     static let shared = LocalAudioEndpoint()
 }

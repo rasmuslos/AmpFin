@@ -8,7 +8,7 @@
 import Foundation
 import MediaPlayer
 
-extension AudioPlayer {
+internal extension AudioPlayer {
     func setupRemoteControls() async {
         let commandCenter = MPRemoteCommandCenter.shared()
         
@@ -38,12 +38,12 @@ extension AudioPlayer {
         
         commandCenter.nextTrackCommand.isEnabled = true
         commandCenter.nextTrackCommand.addTarget { [unowned self] event in
-            advanceToNextTrack()
+            advance()
             return .success
         }
         commandCenter.previousTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.addTarget { [unowned self] event in
-            backToPreviousItem()
+            rewind()
             return .success
         }
         

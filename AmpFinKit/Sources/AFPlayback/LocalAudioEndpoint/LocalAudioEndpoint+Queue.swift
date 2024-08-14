@@ -10,7 +10,7 @@ import AVKit
 import AFFoundation
 
 internal extension LocalAudioEndpoint {
-    func trackDidFinish() {
+    func didPlayToEndTime() {
         if let nowPlaying {
             history.append(nowPlaying)
             
@@ -35,75 +35,22 @@ internal extension LocalAudioEndpoint {
             return
         }
         
-        setNowPlaying(track: queue.removeFirst())
+        nowPlaying = queue.removeFirst()
         
-        if let nowPlaying {
-            if avPlayerQueue.first == nowPlaying.id {
-                audioPlayer.advanceToNextItem()
-            }
-            
-            populateAVPlayerQueue()
-            playing = !queueWasEmpty || repeatMode != .none
-        }
+        audioPlayer.advanceToNextItem()
+        playing = !queueWasEmpty || repeatMode != .none
         
         if !playing {
             audioPlayer.seek(to: CMTime(seconds: 0, preferredTimescale: 1000))
-        }
-        
-        setupNowPlayingMetadata()
-    }
-    
-    func populateAVPlayerQueue() {
-        guard let nowPlaying else {
-            return
-        }
-        
-        var tracks = [nowPlaying]
-        var startIndex = -1
-        
-        tracks += queue.prefix(4)
-        
-        for (index, track) in tracks.enumerated() {
-            guard avPlayerQueue.count > index else {
-                startIndex = index
-                break
-            }
-            
-            if avPlayerQueue[index] == track.id {
-                continue
-            }
-            
-            startIndex = index
-            break
-        }
-        
-        guard startIndex > -1 else {
-            return
-        }
-        
-        logger.info("AVQueuePlayer queue outdated after index \(startIndex) / \(self.avPlayerQueue.count)")
-        
-        for item in audioPlayer.items()[startIndex..<audioPlayer.items().count] {
-            audioPlayer.remove(item)
-        }
-        
-        while startIndex < avPlayerQueue.count {
-            avPlayerQueue.removeLast()
-        }
-        
-        for track in tracks[startIndex..<tracks.count] {
-            audioPlayer.insert(avPlayerItem(track: track), after: nil)
-            avPlayerQueue.append(track.id)
         }
     }
 }
 
 internal extension LocalAudioEndpoint {
-    // MARK: Skipping
-    
-    func advanceToNextTrack() {
+    func advance() {
         if queue.count == 0 {
-            restoreHistory(index: 0)
+            restorePlayed(upTo: 0)
+            
             if repeatMode != .queue {
                 playing = false
             }
@@ -111,15 +58,11 @@ internal extension LocalAudioEndpoint {
             return
         }
         
-        trackDidFinish()
+        didPlayToEndTime()
     }
-    
-    func backToPreviousItem() {
-        if currentTime > 5 {
+    func rewind() {
+        if currentTime > 5 || history.count < 1 {
             currentTime = 0
-            return
-        }
-        if history.count < 1 {
             return
         }
         
@@ -128,86 +71,75 @@ internal extension LocalAudioEndpoint {
         }
         
         let previous = history.removeLast()
-        setNowPlaying(track: previous)
-        populateAVPlayerQueue()
         
-        setupNowPlayingMetadata()
+        nowPlaying = previous
     }
-    
-    func skip(to: Int) {
-        guard queue.count > to else {
+    func skip(to index: Int) {
+        guard queue.count > index else {
             return
         }
         
-        history.append(contentsOf: queue[0..<to])
-        queue.remove(atOffsets: IndexSet(0..<to))
+        history.append(contentsOf: queue[0..<index])
+        queue.remove(atOffsets: IndexSet(0..<index))
         
-        advanceToNextTrack()
+        advance()
     }
     
-    // MARK: Updating
-    
-    func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool = true) {
+    func queue(_ track: Track, after index: Int, updateUnalteredQueue: Bool = true) {
         if updateUnalteredQueue {
             unalteredQueue.insert(track, at: index)
         }
         
         queue.insert(track, at: index)
-        populateAVPlayerQueue()
     }
-    func queueTracks(_ tracks: [Track], index: Int) {
+    func queue(_ tracks: [Track], after index: Int) {
         for (i, track) in tracks.enumerated() {
-            queueTrack(track, index: index + i)
+            queue(track, after: index + i)
         }
     }
     
-    func removeTrack(index: Int) -> Track? {
+    func remove(at index: Int) -> Track? {
         if queue.count < index + 1 {
             return nil
         }
         
         let track = queue.remove(at: index)
+        
         if let index = unalteredQueue.firstIndex(where: { $0.id == track.id }) {
             unalteredQueue.remove(at: index)
         }
         
-        populateAVPlayerQueue()
-        
         return track
     }
-    func removeHistoryTrack(index: Int) {
+    func removePlayed(at index: Int) {
         history.remove(at: index)
     }
     
-    func moveTrack(from: Int, to: Int) {
-        if let track = removeTrack(index: from) {
-            if let index = unalteredQueue.firstIndex(where: { $0.id == track.id }) {
-                unalteredQueue.remove(at: index)
-            }
-            
-            if from < to {
-                queueTrack(track, index: to - 1)
-            } else {
-                queueTrack(track, index: to)
-            }
+    func move(from index: Int, to destination: Int) {
+        guard let track = remove(at: index) else {
+            return
         }
-        
-        populateAVPlayerQueue()
+            
+        if index < destination {
+            queue(track, after: index - 1)
+        } else {
+            queue(track, after: index)
+        }
     }
     
-    func restoreHistory(index: Int) {
+    func restorePlayed(upTo index: Int) {
         let amount = history.count - index
         for track in history.suffix(amount).reversed() {
-            queueTrack(track, index: 0, updateUnalteredQueue: false)
+            queue(track, after: 0, updateUnalteredQueue: false)
         }
         
         history.removeLast(amount)
         
         if let nowPlaying = nowPlaying {
-            queueTrack(nowPlaying, index: queue.count)
+            queue(nowPlaying, after: queue.count)
         }
         
-        advanceToNextTrack()
+        advance()
         history.removeLast()
     }
 }

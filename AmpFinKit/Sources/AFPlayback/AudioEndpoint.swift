@@ -9,8 +9,6 @@ import Foundation
 import AFFoundation
 
 protocol AudioEndpoint {
-    // MARK: Computed properties
-    
     var playing: Bool { get set }
     var volume: Float { get set }
     
@@ -31,24 +29,22 @@ protocol AudioEndpoint {
     
     var allowQueueLater: Bool { get }
     
-    // MARK: Functions
-    
-    func seek(seconds: Double) async
+    func seek(to seconds: Double) async
     
     func startPlayback(tracks: [Track], startIndex: Int, shuffle: Bool)
     func stopPlayback()
     
-    func advanceToNextTrack()
-    func backToPreviousItem()
+    func advance()
+    func rewind()
     
-    func removeHistoryTrack(index: Int)
+    func removePlayed(at index: Int)
     
-    func removeTrack(index: Int) -> Track?
-    func queueTrack(_ track: Track, index: Int, updateUnalteredQueue: Bool)
-    func queueTracks(_ tracks: [Track], index: Int)
+    func remove(at index: Int) -> Track?
+    func queue(_ track: Track, after index: Int, updateUnalteredQueue: Bool)
+    func queue(_ tracks: [Track], after index: Int)
     
-    func moveTrack(from: Int, to: Int)
+    func move(from index: Int, to destination: Int)
     
-    func skip(to: Int)
-    func restoreHistory(index: Int)
+    func skip(to index: Int)
+    func restorePlayed(upTo index: Int)
 }

@@ -20,8 +20,8 @@ internal extension NowPlaying {
             
             ItemImage(cover: track.cover)
                 .shadow(radius: 20)
-                .scaleEffect(AudioPlayer.current.playing ? 1 : 0.8)
-                .animation(.spring(duration: 0.3, bounce: 0.6), value: AudioPlayer.current.playing)
+                .scaleEffect(viewModel.playing ? 1 : 0.8)
+                .animation(.spring(duration: 0.3, bounce: 0.6), value: viewModel.playing)
                 .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
             
             Spacer()
@@ -60,7 +60,7 @@ internal extension NowPlaying {
                     .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .bottomTrailing)
                     .transition(.opacity)
                     .onTapGesture {
-                        viewModel.select(tab: .cover)
+                        viewModel.selectTab(.cover)
                     }
                 
                 VStack(alignment: .leading, spacing: 2) {
@@ -86,10 +86,12 @@ internal extension NowPlaying {
 }
 
 private struct FavoriteButton: View {
+    @Environment(NowPlaying.ViewModel.self) private var viewModel
+    
     let track: Track
     
     var body: some View {
-        if AudioPlayer.current.source == .local {
+        if viewModel.source == .local {
             Button {
                 track.favorite.toggle()
             } label: {
@@ -134,7 +136,7 @@ private struct ArtistsMenu: View {
                 }
             }
             
-            if let playbackInfo = AudioPlayer.current.playbackInfo, let playlist = playbackInfo.container as? Playlist {
+            if let playbackInfo = viewModel.playbackInfo, let playlist = playbackInfo.container as? Playlist {
                 Button {
                     Navigation.navigate(playlistId: playlist.id)
                 } label: {

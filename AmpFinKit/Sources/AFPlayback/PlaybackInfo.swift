@@ -14,7 +14,7 @@ import Intents
 import AFOffline
 #endif
 
-public struct PlaybackInfo {
+public struct PlaybackInfo: Equatable {
     public var tracks: [Track]!
     public let container: Item?
     
