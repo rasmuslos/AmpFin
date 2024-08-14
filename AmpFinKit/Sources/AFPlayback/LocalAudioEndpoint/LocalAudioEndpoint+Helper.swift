@@ -73,9 +73,11 @@ internal extension LocalAudioEndpoint {
             return
         }
         
-        logger.info("AVQueuePlayer queue outdated after index \(startIndex) / \(self.avPlayerQueue.count)")
+        logger.info("AVQueuePlayer queue outdated after index \(startIndex) / \(self.avPlayerQueue.count) [\(self.audioPlayer.items().count) in queue]")
         
-        for item in audioPlayer.items()[startIndex..<audioPlayer.items().count] {
+        let removeStartIndex = min(audioPlayer.items().count, startIndex)
+        
+        for item in audioPlayer.items()[removeStartIndex..<audioPlayer.items().count] {
             audioPlayer.remove(item)
         }
         

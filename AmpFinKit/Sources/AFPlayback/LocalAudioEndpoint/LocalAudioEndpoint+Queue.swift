@@ -35,10 +35,13 @@ internal extension LocalAudioEndpoint {
             return
         }
         
-        nowPlaying = queue.removeFirst()
+        nowPlaying = queue.first
         
         audioPlayer.advanceToNextItem()
         playing = !queueWasEmpty || repeatMode != .none
+        
+        avPlayerQueue.removeFirst()
+        queue.removeFirst()
         
         if !playing {
             audioPlayer.seek(to: CMTime(seconds: 0, preferredTimescale: 1000))
@@ -66,13 +69,16 @@ internal extension LocalAudioEndpoint {
             return
         }
         
+        let previous = history.removeLast()
+        
         if let nowPlaying = nowPlaying {
             queue.insert(nowPlaying, at: 0)
         }
         
-        let previous = history.removeLast()
+        queue.insert(previous, at: 0)
+        advance()
         
-        nowPlaying = previous
+        history.removeLast()
     }
     func skip(to index: Int) {
         guard queue.count > index else {

@@ -19,11 +19,9 @@ internal extension NowPlaying {
         @MainActor var dragOffset: CGFloat
         
         @MainActor private(set) var presented: Bool
+        @MainActor private(set) var currentTab: NowPlaying.Tab
         
         // MARK: Current presentation state
-        
-        @MainActor var controlsVisible: Bool
-        @MainActor private(set) var currentTab: NowPlaying.Tab
         
         @MainActor var mediaInfoToggled = false
         @MainActor var addToPlaylistSheetPresented: Bool
@@ -70,8 +68,10 @@ internal extension NowPlaying {
         @MainActor private(set) var lyrics: Track.Lyrics
         @MainActor private(set) var lyricsFetchFailed: Bool
         
-        @MainActor private(set) var scrolling: Bool
         @MainActor private(set) var activeLineIndex: Int
+        
+        @MainActor private(set) var scrolling: Bool
+        @MainActor private(set) var controlsVisible: Bool
         
         @ObservationIgnored private var scrollTimeout: Task<Void, Error>?
         
@@ -89,8 +89,6 @@ internal extension NowPlaying {
             dragOffset = .zero
             
             presented = false
-            
-            controlsVisible = true
             currentTab = .cover
             
             mediaInfoToggled = false
@@ -129,8 +127,10 @@ internal extension NowPlaying {
             lyrics = [:]
             lyricsFetchFailed = false
             
-            scrolling = true
             activeLineIndex = 0
+            
+            scrolling = true
+            controlsVisible = true
             
             scrollTimeout = nil
             
@@ -430,7 +430,7 @@ internal extension NowPlaying.ViewModel {
 internal extension NowPlaying.ViewModel {
     @MainActor
     func scroll(_ proxy: ScrollViewProxy, anchor: UnitPoint) {
-        if scrolling {
+        if scrolling && !controlsDragging {
             return
         }
         
@@ -441,7 +441,7 @@ internal extension NowPlaying.ViewModel {
     
     func didScroll(up: Bool) {
         Task { @MainActor in
-            guard currentTab == .lyrics else {
+            guard currentTab == .lyrics && !controlsDragging else {
                 return
             }
             
@@ -460,7 +460,7 @@ internal extension NowPlaying.ViewModel {
             try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
             try Task.checkCancellation()
             
-            guard await currentTab == .lyrics else {
+            guard await currentTab == .lyrics, await controlsDragging == false else {
                 return
             }
             
