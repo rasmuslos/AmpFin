@@ -65,6 +65,16 @@ internal extension NowPlaying {
         
         @MainActor private(set) var allowQueueLater: Bool
         
+        // MARK: Lyrics
+        
+        @MainActor private(set) var lyrics: Track.Lyrics
+        @MainActor private(set) var lyricsFetchFailed: Bool
+        
+        @MainActor private(set) var scrolling: Bool
+        @MainActor private(set) var activeLineIndex: Int
+        
+        @ObservationIgnored private var scrollTimeout: Task<Void, Error>?
+        
         // MARK: Helper
         
         @MainActor private(set) var notifyPlaying: Bool
@@ -116,6 +126,14 @@ internal extension NowPlaying {
             
             allowQueueLater = AudioPlayer.current.allowQueueLater
             
+            lyrics = [:]
+            lyricsFetchFailed = false
+            
+            scrolling = true
+            activeLineIndex = 0
+            
+            scrollTimeout = nil
+            
             notifyPlaying = false
             notifyForwards = false
             notifyBackwards = false
@@ -124,6 +142,8 @@ internal extension NowPlaying {
         }
     }
 }
+
+// MARK: Properties
 
 internal extension NowPlaying.ViewModel {
     @MainActor
@@ -192,7 +212,19 @@ internal extension NowPlaying.ViewModel {
         
         return nil
     }
+    
+    @MainActor
+    var lyricsKeys: [Double] {
+        Array(lyrics.keys).sorted(by: <)
+    }
+    
+    @MainActor
+    var lyricsLoaded: Bool {
+        !lyrics.isEmpty && !lyricsKeys.isEmpty
+    }
 }
+
+// MARK: Observers
 
 private extension NowPlaying.ViewModel {
     // This is truly swift the way it was intended to be
@@ -246,6 +278,41 @@ private extension NowPlaying.ViewModel {
                             }
                         }
                     }
+                    // MARK: Fetch Lyrics
+                    $0.addTask {
+                        await MainActor.run { [weak self] in
+                            withAnimation {
+                                self?.lyrics = [:]
+                            }
+                            
+                            self?.setActiveLine(0)
+                        }
+                        
+                        let trackId = AudioPlayer.current.nowPlaying?.id
+                        
+                        await MainActor.run { [weak self] in
+                            self?.lyricsFetchFailed = trackId == nil
+                        }
+                        
+                        guard let trackId else {
+                            return
+                        }
+                        
+                        var lyrics = try? OfflineManager.shared.lyrics(trackId: trackId, allowUpdate: true)
+                        
+                        if lyrics == nil {
+                            lyrics = try? await JellyfinClient.shared.lyrics(trackId: trackId)
+                        }
+                        
+                        await MainActor.run { [lyrics, weak self] in
+                            withAnimation {
+                                self?.lyricsFetchFailed = lyrics == nil
+                                self?.lyrics = lyrics ?? [:]
+                            }
+                        }
+                        
+                        self?.updateLyricsIndex()
+                    }
                 }
             }
         })
@@ -271,6 +338,8 @@ private extension NowPlaying.ViewModel {
             Task { @MainActor [weak self] in
                 self?.duration = AudioPlayer.current.duration
                 self?.currentTime = AudioPlayer.current.currentTime
+                
+                self?.updateLyricsIndex()
             }
         })
         tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.queueDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
@@ -307,6 +376,8 @@ private extension NowPlaying.ViewModel {
     }
 }
 
+// MARK: Setter
+
 internal extension NowPlaying.ViewModel {
     func selectTab(_ tab: NowPlaying.Tab) {
         Task { @MainActor in
@@ -320,6 +391,9 @@ internal extension NowPlaying.ViewModel {
                 }
             }
         }
+        
+        updateLyricsIndex()
+        startScrollTimer()
     }
     func setPresented(_ presented: Bool) {
         Task { @MainActor in
@@ -348,5 +422,78 @@ internal extension NowPlaying.ViewModel {
         }
         
         AudioPlayer.current.currentTime = AudioPlayer.current.duration * percentage
+    }
+}
+
+// MARK: Lyrics
+
+internal extension NowPlaying.ViewModel {
+    @MainActor
+    func scroll(_ proxy: ScrollViewProxy, anchor: UnitPoint) {
+        if scrolling {
+            return
+        }
+        
+        withAnimation(.spring) {
+            proxy.scrollTo(activeLineIndex, anchor: anchor)
+        }
+    }
+    
+    func didScroll(up: Bool) {
+        Task { @MainActor in
+            guard currentTab == .lyrics else {
+                return
+            }
+            
+            withAnimation {
+                scrolling = true
+                controlsVisible = up
+            }
+        }
+        
+        startScrollTimer()
+    }
+    
+    func startScrollTimer() {
+        scrollTimeout?.cancel()
+        scrollTimeout = Task {
+            try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
+            try Task.checkCancellation()
+            
+            guard await currentTab == .lyrics else {
+                return
+            }
+            
+            await MainActor.run {
+                withAnimation {
+                    controlsVisible = false
+                    scrolling = false
+                }
+            }
+        }
+    }
+    
+    func setActiveLine(_ index: Int) {
+        Task { @MainActor in
+            withAnimation(.spring) {
+                activeLineIndex = index
+            }
+        }
+    }
+    func updateLyricsIndex() {
+        Task { @MainActor in
+            guard !lyricsKeys.isEmpty else {
+                setActiveLine(0)
+                return
+            }
+            
+            let currentTime = AudioPlayer.current.currentTime
+            
+            if let index = lyricsKeys.lastIndex(where: { $0 <= currentTime }) {
+                setActiveLine(index)
+            } else {
+                setActiveLine(0)
+            }
+        }
     }
 }

@@ -11,13 +11,11 @@ import AFPlayback
 
 extension NowPlaying {
     struct RegularBarModifier: ViewModifier {
-        @Namespace private var namespace
+        @Environment(NowPlaying.ViewModel.self) private var viewModel
         @Environment(\.libraryDataProvider) private var dataProvider
         
         @State private var width: CGFloat = .zero
         @State private var adjust: CGFloat = .zero
-        
-        @State private var viewModel = ViewModel()
         
         func body(content: Content) -> some View {
             content
@@ -146,9 +144,6 @@ extension NowPlaying {
                     }
                 }
                 .environment(viewModel)
-                .onAppear {
-                    viewModel.namespace = namespace
-                }
         }
     }
 }

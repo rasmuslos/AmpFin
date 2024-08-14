@@ -45,7 +45,7 @@ internal extension NowPlaying {
                                     
                                     Group {
                                         if viewModel.currentTab == .lyrics {
-                                            Lyrics(track: track)
+                                            Lyrics()
                                         } else if viewModel.currentTab == .queue {
                                             Queue()
                                         }
@@ -73,7 +73,7 @@ internal extension NowPlaying {
                                         if viewModel.currentTab == .queue {
                                             Queue()
                                         } else if viewModel.currentTab == .lyrics {
-                                            Lyrics(track: track)
+                                            Lyrics()
                                         }
                                     }
                                     .transition(.blurReplace)

@@ -15,9 +15,11 @@ import AmpFinKit
 import AFPlayback
 
 internal struct ContentView: View {
+    @Namespace private var namespace
+    @Default(.migratedToNewDatastore) private var migratedToNewDatastore
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    @Default(.migratedToNewDatastore) private var migratedToNewDatastore
+    @State private var nowPlayingViewModel = NowPlaying.ViewModel()
     
     private var navigationController: some View {
         Group {
@@ -42,6 +44,7 @@ internal struct ContentView: View {
                 }
         } else if JellyfinClient.shared.authorized {
             navigationController
+                .environment(nowPlayingViewModel)
                 .onContinueUserActivity(CSSearchableItemActionType) { activity in
                     guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
                         return
@@ -93,6 +96,8 @@ internal struct ContentView: View {
                     
                     JellyfinWebSocket.shared.connect()
                     AudioPlayer.current.allowRemoteControl = true
+                    
+                    nowPlayingViewModel.namespace = namespace
                 }
         } else {
             LoginView()

@@ -11,9 +11,7 @@ import AFPlayback
 
 extension NowPlaying {
     struct CompactViewModifier: ViewModifier {
-        @Namespace private var namespace
-        
-        @State private var viewModel = ViewModel()
+        @Environment(NowPlaying.ViewModel.self) private var viewModel
         
         func body(content: Content) -> some View {
             ZStack {
@@ -42,7 +40,7 @@ extension NowPlaying {
                             
                             Group {
                                 if viewModel.currentTab == .lyrics {
-                                    Lyrics(track: track)
+                                    Lyrics()
                                 } else if viewModel.currentTab == .queue {
                                     Queue()
                                 }
@@ -120,9 +118,6 @@ extension NowPlaying {
             .modifier(Navigation.NavigationModifier() {
                 viewModel.setPresented(false)
             })
-            .onAppear {
-                viewModel.namespace = namespace
-            }
             .sheet(item: .init(get: { viewModel.addToPlaylistTrack }, set: { viewModel.addToPlaylistSheetPresented = ($0 != nil) })) {
                 PlaylistAddSheet(track: $0)
             }
