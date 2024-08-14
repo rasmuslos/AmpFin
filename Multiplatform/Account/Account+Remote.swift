@@ -11,12 +11,14 @@ import AFPlayback
 
 extension AccountSheet {
     struct Remote: View {
+        @Environment(NowPlaying.ViewModel.self) private var nowPlayingViewModel
+        
         @State private var sessions: [Session]? = nil
         
         var body: some View {
             Section("account.remote") {
                 if JellyfinWebSocket.shared.connected {
-                    if AudioPlayer.current.source == .jellyfinRemote {
+                    if nowPlayingViewModel.source == .jellyfinRemote {
                         Button(role: .destructive) {
                             AudioPlayer.current.stopPlayback()
                         } label: {

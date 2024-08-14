@@ -13,6 +13,8 @@ struct TrackCollection {}
 
 internal extension TrackCollection {
     struct TrackIndexCover: View {
+        @Environment(NowPlaying.ViewModel.self) private var nowPlayingViewModel
+        
         let track: Track
         let album: Album?
         
@@ -25,7 +27,7 @@ internal extension TrackCollection {
         }
         
         private var active: Bool {
-            AudioPlayer.current.nowPlaying == track
+            nowPlayingViewModel.nowPlaying == track
         }
         
         var body: some View {
@@ -53,6 +55,7 @@ internal extension TrackCollection {
                     Image(systemName: "waveform")
                         .font(album == nil ? .body : .caption)
                         .foregroundStyle(album == nil ? .white : .secondary)
+                        .symbolEffect(.variableColor.iterative, isActive: nowPlayingViewModel.playing)
                 }
                 .opacity(active ? 1 : 0)
             }
