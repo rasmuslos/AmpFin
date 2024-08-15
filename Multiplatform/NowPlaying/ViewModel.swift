@@ -19,6 +19,7 @@ internal extension NowPlaying {
         @MainActor var dragOffset: CGFloat
         
         @MainActor private(set) var presented: Bool
+        @MainActor var queueTab: QueueTab? = .queue
         @MainActor private(set) var currentTab: NowPlaying.Tab
         
         // MARK: Current presentation state
@@ -141,6 +142,16 @@ internal extension NowPlaying {
             notifyBackwards = false
             
             setupObservers()
+        }
+    }
+    
+    enum QueueTab: Hashable, Identifiable, Equatable, CaseIterable {
+        case history
+        case queue
+        case infiniteQueue
+        
+        var id: Self {
+            self
         }
     }
 }

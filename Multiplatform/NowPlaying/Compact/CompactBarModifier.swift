@@ -103,9 +103,6 @@ internal extension NowPlaying {
                         }
                     }
                 }
-                .sensoryFeedback(.increase, trigger: viewModel.notifyForwards)
-                .sensoryFeedback(AudioPlayer.current.playing ? .start : .stop, trigger: viewModel.notifyPlaying)
-                .sensoryFeedback(.decrease, trigger: viewModel.notifyBackwards)
         }
     }
 }

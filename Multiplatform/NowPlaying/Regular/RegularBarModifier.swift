@@ -124,9 +124,6 @@ extension NowPlaying {
                         }
                     }
                 }
-                .sensoryFeedback(.increase, trigger: viewModel.notifyForwards)
-                .sensoryFeedback(AudioPlayer.current.playing ? .start : .stop, trigger: viewModel.notifyPlaying)
-                .sensoryFeedback(.decrease, trigger: viewModel.notifyBackwards)
                 .onReceive(NotificationCenter.default.publisher(for: NowPlaying.widthChangeNotification)) { notification in
                     if let width = notification.object as? CGFloat {
                         self.width = min(width, 1100)

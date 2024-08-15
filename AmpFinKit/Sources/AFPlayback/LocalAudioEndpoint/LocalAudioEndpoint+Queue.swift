@@ -32,7 +32,7 @@ internal extension LocalAudioEndpoint {
                 queueWasEmpty = true
             } else {
                 queueWasEmpty = false
-                queue.append(infiniteQueue!.removeLast())
+                queue.append(infiniteQueue!.removeFirst())
             }
         } else {
             queueWasEmpty = false
@@ -141,32 +141,36 @@ internal extension LocalAudioEndpoint {
     }
     
     func remove(at index: Int) -> Track? {
-        if queue.count < index + 1 {
-            return nil
+        if queue.count > index {
+            let track = queue.remove(at: index)
+            
+            if let index = unalteredQueue.firstIndex(where: { $0.id == track.id }) {
+                unalteredQueue.remove(at: index)
+            }
+            
+            return track
+        } else {
+            let infiniteIndex = index - queue.count
+            return infiniteQueue?.remove(at: infiniteIndex)
         }
-        
-        let track = queue.remove(at: index)
-        
-        if let index = unalteredQueue.firstIndex(where: { $0.id == track.id }) {
-            unalteredQueue.remove(at: index)
-        }
-        
-        return track
     }
     func removePlayed(at index: Int) {
         history.remove(at: index)
     }
     
     func move(from index: Int, to destination: Int) {
-        guard let track = remove(at: index) else {
+        guard queue.count > index else {
             return
         }
         
-        if index < destination {
-            queue(track, after: destination + 1)
-        } else {
-            queue(track, after: destination)
-        }
+        var copy = queue
+        let to = min(destination, queue.count)
+        
+        let track = copy.remove(at: index)
+        copy.insert(track, at: to)
+        unalteredQueue.insert(track, at: to)
+        
+        queue = copy
     }
     
     func restorePlayed(upTo index: Int) {

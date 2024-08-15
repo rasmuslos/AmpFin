@@ -44,6 +44,9 @@ internal struct ContentView: View {
                 }
         } else if JellyfinClient.shared.authorized {
             navigationController
+                .sensoryFeedback(.increase, trigger: nowPlayingViewModel.notifyForwards)
+                .sensoryFeedback(AudioPlayer.current.playing ? .start : .stop, trigger: nowPlayingViewModel.notifyPlaying)
+                .sensoryFeedback(.decrease, trigger: nowPlayingViewModel.notifyBackwards)
                 .environment(nowPlayingViewModel)
                 .onContinueUserActivity(CSSearchableItemActionType) { activity in
                     guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {

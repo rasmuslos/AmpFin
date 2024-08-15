@@ -1696,13 +1696,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unendliche Warteschlange"
+            "value" : "Unendlich"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Infinite Queue"
+            "value" : "Infinite"
           }
         }
       }
