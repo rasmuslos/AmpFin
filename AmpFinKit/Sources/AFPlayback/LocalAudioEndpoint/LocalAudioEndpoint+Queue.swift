@@ -63,7 +63,7 @@ internal extension LocalAudioEndpoint {
             return
         }
         
-        guard let last = queue.last ?? nowPlaying else {
+        guard let last = queue.last ?? infiniteQueue!.last ?? nowPlaying else {
             return
         }
         

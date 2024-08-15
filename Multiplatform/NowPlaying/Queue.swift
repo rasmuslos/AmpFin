@@ -207,25 +207,28 @@ private struct QueueSection<Content: View>: View {
     let tracks: [Track]
     var defaultScrollAnchorAtBottom = false
     
+    @State private var position: String? = nil
+    
     @ViewBuilder let content: (_ track: Track, _ index: Int) -> Content
     
     var body: some View {
-            ScrollView {
-                if tracks.isEmpty {
-                    Text("queue.empty")
-                        .font(.caption.smallCaps())
-                        .foregroundStyle(.regularMaterial)
-                        .multilineTextAlignment(.center)
-                        .padding(20)
-                }
-                
-                ForEach(Array(tracks.enumerated()), id: \.element) {
-                    content($1, $0)
-                }
+        ScrollView {
+            if tracks.isEmpty {
+                Text("queue.empty")
+                    .font(.caption.smallCaps())
+                    .foregroundStyle(.regularMaterial)
+                    .multilineTextAlignment(.center)
+                    .padding(20)
             }
-            .scrollIndicators(.hidden)
-            .contentMargins(.top, 12, for: .scrollContent)
-            .defaultScrollAnchor(defaultScrollAnchorAtBottom ? .bottom : .top)
+            
+            ForEach(Array(tracks.enumerated()), id: \.element) {
+                content($1, $0)
+            }
+        }
+        .scrollPosition(id: $position)
+        .scrollIndicators(.hidden)
+        .contentMargins(.top, 12, for: .scrollContent)
+        .defaultScrollAnchor(defaultScrollAnchorAtBottom && !tracks.isEmpty ? .bottom : .top)
     }
 }
 
@@ -283,6 +286,7 @@ private struct Row: View {
             .labelStyle(.iconOnly)
             .foregroundStyle(.thinMaterial)
         }
+        .id(track.id)
         .contentShape(.rect)
     }
 }

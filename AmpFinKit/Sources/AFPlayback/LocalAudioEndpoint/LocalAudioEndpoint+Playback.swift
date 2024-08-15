@@ -47,11 +47,12 @@ internal extension LocalAudioEndpoint {
     func stopPlayback() {
         playing = false
         
-        queue = []
-        unalteredQueue = []
-        
-        nowPlaying = nil
         history = []
+        nowPlaying = nil
+        
+        queue = []
+        infiniteQueue = []
+        unalteredQueue = []
         
         clearNowPlayingWidget()
         
