@@ -10,7 +10,7 @@ import AVKit
 import AFFoundation
 
 internal extension LocalAudioEndpoint {
-    func didPlayToEndTime() {
+    func advance(advanceAudioPlayer: Bool) {
         if let nowPlaying {
             history.append(nowPlaying)
             
@@ -61,7 +61,7 @@ internal extension LocalAudioEndpoint {
             return
         }
         
-        didPlayToEndTime()
+        advance(advanceAudioPlayer: true)
     }
     func rewind() {
         if currentTime > 5 || history.count < 1 {

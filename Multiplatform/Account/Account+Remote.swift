@@ -40,14 +40,14 @@ extension AccountSheet {
                                         if let nowPlaying = session.nowPlaying {
                                             HStack {
                                                 Image(systemName: "waveform")
-                                                    .symbolEffect(.pulse.byLayer)
+                                                    .symbolEffect(.variableColor.iterative)
                                                 
                                                 Text(nowPlaying.name)
                                                 
                                                 Spacer()
                                             }
                                             .font(.caption)
-                                            .foregroundStyle(.secondary)
+                                            .foregroundStyle(.gray)
                                         }
                                     }
                                 }

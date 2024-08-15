@@ -1611,22 +1611,6 @@
         }
       }
     },
-    "remote.stop" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop"
-          }
-        }
-      }
-    },
     "repeat" : {
       "localizations" : {
         "de" : {
@@ -1769,23 +1753,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jellyfin"
-          }
-        }
-      }
-    },
-    "search.library" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bibliothek"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Library"
           }
         }
       }

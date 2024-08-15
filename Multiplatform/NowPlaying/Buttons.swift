@@ -154,7 +154,10 @@ extension NowPlaying {
                         queueButton
                     }
                 } else if viewModel.source == .jellyfinRemote {
-                    // TODO: lyrics
+                    Spacer()
+                    
+                    lyricsButton
+                    
                     Spacer()
                     
                     Button {
@@ -180,16 +183,6 @@ extension NowPlaying {
                             .labelStyle(.iconOnly)
                     }
                     .buttonStyle(SymbolButtonStyle(active: viewModel.repeatMode != .none))
-                    
-                    Spacer()
-                    
-                    Button {
-                        AudioPlayer.current.stopPlayback()
-                    } label: {
-                        Label("remote.stop", systemImage: "xmark")
-                            .labelStyle(.iconOnly)
-                    }
-                    .buttonStyle(SymbolButtonStyle(active: false))
                     
                     Spacer()
                 }

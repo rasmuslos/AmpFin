@@ -79,11 +79,7 @@ internal extension LocalAudioEndpoint {
                 currentTime = 0
                 playing = true
             } else {
-                if !avPlayerQueue.isEmpty {
-                    avPlayerQueue.removeFirst()
-                }
-                
-                didPlayToEndTime()
+                advance(advanceAudioPlayer: false)
             }
         }
         
