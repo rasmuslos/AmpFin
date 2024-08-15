@@ -128,6 +128,7 @@ extension RemoteAudioEndpoint: AudioEndpoint {
     // Jellyfin does not support these
     
     var queue: [Track] { [] }
+    var infiniteQueue: [Track]? { nil }
     var history: [Track] { [] }
     var buffering: Bool { false }
     var outputRoute: AudioPlayer.AudioRoute { .init(port: .virtual, name: clientId) }

@@ -28,7 +28,7 @@ internal extension Session {
             isPaused: from.PlayState.IsPaused,
             isMuted: from.PlayState.IsMuted,
             volumeLevel: Float(from.PlayState.VolumeLevel ?? 0) / 100,
-            repeatMode: from.PlayState.RepeatMode == "RepeatNone" ? .none : from.PlayState.RepeatMode == "RepeatOne" ? .track : .queue,
+            repeatMode: from.PlayState.RepeatMode == "RepeatAll" ? .queue : from.PlayState.RepeatMode == "RepeatOne" ? .track : .none,
             shuffled: from.PlayState.PlaybackOrder == "Shuffle")
     }
 }

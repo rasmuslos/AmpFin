@@ -44,6 +44,10 @@ public enum INPlaybackQueueLocation {
 @available(macOS, unavailable)
 extension PlaybackInfo {
     internal func donate() {
+        #if DEBUG
+        return;
+        #endif
+        
         #if canImport(AFOffline)
         if let album = container as? Album {
             try? OfflineManager.shared.updateLastPlayed(albumId: album.id)
@@ -62,15 +66,12 @@ extension PlaybackInfo {
             let repeatMode: INPlaybackRepeatMode
             
             switch AudioPlayer.current.repeatMode {
-                case .none:
-                    repeatMode = .none
-                    break
-                case .track:
-                    repeatMode = .one
-                    break
                 case .queue:
                     repeatMode = .all
-                    break
+                case .track:
+                    repeatMode = .one
+                default:
+                    repeatMode = .none
             }
             
             #if !os(macOS)

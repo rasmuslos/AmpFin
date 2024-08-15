@@ -17,7 +17,9 @@ protocol AudioEndpoint {
     
     var history: [Track] { get }
     var nowPlaying: Track? { get }
+    
     var queue: [Track] { get }
+    var infiniteQueue: [Track]? { get }
     
     var buffering: Bool { get }
     

@@ -16,6 +16,7 @@ public extension AudioPlayer {
     
     static let timeDidChangeNotification = Notification.Name("io.rfk.ampfin.audioPlayer.updates.time")
     static let queueDidChangeNotification = Notification.Name("io.rfk.ampfin.audioPlayer.updates.queue")
+    static let queueModeDidChangeNotification = Notification.Name("io.rfk.ampfin.audioPlayer.updates.queueMode")
     
     static let volumeDidChangeNotification = Notification.Name("io.rfk.ampfin.audioPlayer.updates.volume")
     static let bitrateDidChangeNotification = Notification.Name("io.rfk.ampfin.audioPlayer.updates.bitrate")

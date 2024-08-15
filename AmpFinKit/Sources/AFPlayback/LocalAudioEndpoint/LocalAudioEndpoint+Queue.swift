@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Rasmus Krämer on 19.03.24.
 //
@@ -8,6 +8,7 @@
 import Foundation
 import AVKit
 import AFFoundation
+import AFNetwork
 
 internal extension LocalAudioEndpoint {
     func advance(advanceAudioPlayer: Bool) {
@@ -19,13 +20,20 @@ internal extension LocalAudioEndpoint {
             }
         }
         
+        print(nowPlaying?.name)
+        
         let queueWasEmpty: Bool
         
         if queue.isEmpty {
-            queue = history
-            history = []
-            
-            queueWasEmpty = true
+            if infiniteQueue!.isEmpty {   
+                queue = history
+                history = []
+                
+                queueWasEmpty = true
+            } else {
+                queueWasEmpty = false
+                queue.append(infiniteQueue!.removeLast())
+            }
         } else {
             queueWasEmpty = false
         }
@@ -34,6 +42,8 @@ internal extension LocalAudioEndpoint {
             stopPlayback()
             return
         }
+        
+        print(queue.map { $0.name })
         
         nowPlaying = queue.first
         
@@ -47,20 +57,29 @@ internal extension LocalAudioEndpoint {
             audioPlayer.seek(to: CMTime(seconds: 0, preferredTimescale: 1000))
         }
     }
+    
+    func checkAndUpdateInfiniteQueue() {
+        guard infiniteQueue!.count < 6, repeatMode == .infinite else {
+            return
+        }
+        
+        guard let last = queue.last ?? nowPlaying else {
+            return
+        }
+        
+        Task {
+            guard let tracks = try? await JellyfinClient.shared.tracks(instantMixBaseId: last.id, limit: 28) else {
+                return
+            }
+            
+            let historySuffix = history.suffix(20)
+            infiniteQueue!.append(contentsOf: tracks.filter { !historySuffix.contains($0) && !queue.contains($0) })
+        }
+    }
 }
 
 internal extension LocalAudioEndpoint {
     func advance() {
-        if queue.count == 0 {
-            restorePlayed(upTo: 0)
-            
-            if repeatMode != .queue {
-                playing = false
-            }
-            
-            return
-        }
-        
         advance(advanceAudioPlayer: true)
     }
     func rewind() {
@@ -81,14 +100,31 @@ internal extension LocalAudioEndpoint {
         history.removeLast()
     }
     func skip(to index: Int) {
-        guard queue.count > index else {
-            return
+        if queue.count > index {
+            history.append(contentsOf: queue[0..<index])
+            queue.remove(atOffsets: IndexSet(0..<index))
+            
+            advance()
+            
+            let previous = history.removeLast()
+            history.insert(previous, at: history.count - index)
+        } else {
+            let infiniteIndex = index - queue.count
+            
+            guard infiniteQueue!.count > infiniteIndex else {
+                return
+            }
+            
+            queue.append(infiniteQueue!.remove(at: infiniteIndex))
+            
+            advance()
+            
+            history.append(contentsOf: queue)
+            history.append(contentsOf: infiniteQueue![0..<infiniteIndex])
+            
+            queue = []
+            infiniteQueue!.remove(atOffsets: IndexSet(0..<infiniteIndex))
         }
-        
-        history.append(contentsOf: queue[0..<index])
-        queue.remove(atOffsets: IndexSet(0..<index))
-        
-        advance()
     }
     
     func queue(_ track: Track, after index: Int, updateUnalteredQueue: Bool = true) {
@@ -125,11 +161,11 @@ internal extension LocalAudioEndpoint {
         guard let track = remove(at: index) else {
             return
         }
-            
+        
         if index < destination {
-            queue(track, after: index - 1)
+            queue(track, after: destination + 1)
         } else {
-            queue(track, after: index)
+            queue(track, after: destination)
         }
     }
     

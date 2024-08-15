@@ -51,7 +51,9 @@ internal extension NowPlaying {
         
         @MainActor private(set) var history: [Track]
         @MainActor private(set) var nowPlaying: Track?
+        
         @MainActor private(set) var queue: [Track]
+        @MainActor private(set) var infiniteQueue: [Track]?
         
         @MainActor private(set) var buffering: Bool
         
@@ -344,11 +346,22 @@ private extension NowPlaying.ViewModel {
         })
         tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.queueDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
             Task { @MainActor [weak self] in
-                self?.queue = AudioPlayer.current.queue
                 self?.history = AudioPlayer.current.history
+                self?.queue = AudioPlayer.current.queue
+                self?.infiniteQueue = AudioPlayer.current.infiniteQueue
                 
-                self?.shuffled = AudioPlayer.current.shuffled
-                self?.repeatMode = AudioPlayer.current.repeatMode
+                withAnimation {
+                    self?.shuffled = AudioPlayer.current.shuffled
+                    self?.repeatMode = AudioPlayer.current.repeatMode
+                }
+            }
+        })
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.queueModeDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                withAnimation {
+                    self?.shuffled = AudioPlayer.current.shuffled
+                    self?.repeatMode = AudioPlayer.current.repeatMode
+                }
             }
         })
         
@@ -460,7 +473,7 @@ internal extension NowPlaying.ViewModel {
             try await Task.sleep(nanoseconds: UInt64(4) * NSEC_PER_SEC)
             try Task.checkCancellation()
             
-            guard await currentTab == .lyrics, await controlsDragging == false else {
+            guard await controlsDragging == false, await currentTab == .lyrics else {
                 return
             }
             

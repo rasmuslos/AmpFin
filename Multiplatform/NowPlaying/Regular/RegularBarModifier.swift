@@ -80,15 +80,9 @@ extension NowPlaying {
                             .modifier(HoverEffectModifier())
                             
                             Button {
-                                if AudioPlayer.current.repeatMode == .none {
-                                    AudioPlayer.current.repeatMode = .queue
-                                } else if AudioPlayer.current.repeatMode == .queue {
-                                    AudioPlayer.current.repeatMode = .track
-                                } else if AudioPlayer.current.repeatMode == .track {
-                                    AudioPlayer.current.repeatMode = .none
-                                }
+                                AudioPlayer.current.repeatMode = viewModel.repeatMode.next
                             } label: {
-                                Label("repeat", systemImage: "repeat\(viewModel.repeatMode == .track ? ".1" : "")")
+                                Label("repeat", systemImage: viewModel.repeatMode == .infinite ? "infinity" : "repeat\(viewModel.repeatMode == .track ? ".1" : "")")
                                     .labelStyle(.iconOnly)
                                     .font(.footnote)
                                     .fontWeight(.heavy)

@@ -74,6 +74,10 @@ internal extension LocalAudioEndpoint {
             }
         }
         
+        rateSubscription = audioPlayer.observe(\.rate) { _, _ in
+            NotificationCenter.default.post(name: AudioPlayer.playingDidChangeNotification, object: nil)
+        }
+        
         NotificationCenter.default.addObserver(forName: AVPlayerItem.didPlayToEndTimeNotification, object: nil, queue: nil) { [self] _ in
             if repeatMode == .track {
                 currentTime = 0

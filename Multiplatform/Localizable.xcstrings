@@ -610,6 +610,7 @@
       }
     },
     "history" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1451,6 +1452,9 @@
         }
       }
     },
+    "queue.empty" : {
+
+    },
     "queue.history" : {
       "localizations" : {
         "de" : {
@@ -1466,6 +1470,12 @@
           }
         }
       }
+    },
+    "queue.infinite" : {
+
+    },
+    "queue.infinite.text" : {
+
     },
     "queue.last" : {
       "localizations" : {
@@ -1547,6 +1557,12 @@
         }
       }
     },
+    "queue.remove" : {
+
+    },
+    "queue.remove.dragging" : {
+
+    },
     "queue.reorder" : {
       "localizations" : {
         "de" : {
@@ -1626,6 +1642,9 @@
           }
         }
       }
+    },
+    "repeat.infinite" : {
+
     },
     "repeat.none" : {
       "localizations" : {

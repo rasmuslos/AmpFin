@@ -8,8 +8,13 @@
 import Foundation
 import Defaults
 
-public enum RepeatMode: Int, Equatable, Codable, _DefaultsSerializable {
+public enum RepeatMode: Int, Identifiable, Equatable, Codable, CaseIterable, _DefaultsSerializable {
     case none = 0
     case track = 1
     case queue = 2
+    case infinite = 3
+    
+    public var id: Int {
+        rawValue
+    }
 }

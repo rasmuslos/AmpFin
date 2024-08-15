@@ -128,9 +128,21 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
             }
             
             populateAVPlayerQueue()
+            checkAndUpdateInfiniteQueue()
+            
             NotificationCenter.default.post(name: AudioPlayer.queueDidChangeNotification, object: nil)
         }
     }
+    var infiniteQueue: [Track]? = [Track]() {
+        didSet {
+            guard oldValue != infiniteQueue else {
+                return
+            }
+            
+            NotificationCenter.default.post(name: AudioPlayer.queueDidChangeNotification, object: nil)
+        }
+    }
+    
     var history: [Track] {
         didSet {
             guard oldValue != history else {
@@ -155,7 +167,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
                 }
             }
             
-            NotificationCenter.default.post(name: AudioPlayer.queueDidChangeNotification, object: nil)
+            NotificationCenter.default.post(name: AudioPlayer.queueModeDidChangeNotification, object: nil)
         }
     }
     var repeatMode: RepeatMode {
@@ -167,7 +179,13 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
             Defaults[.repeatMode] = repeatMode
             audioPlayer.actionAtItemEnd = repeatMode == .track ? .pause : .advance
             
-            NotificationCenter.default.post(name: AudioPlayer.queueDidChangeNotification, object: nil)
+            if repeatMode != .infinite {
+                infiniteQueue = []
+            } else {
+                checkAndUpdateInfiniteQueue()
+            }
+            
+            NotificationCenter.default.post(name: AudioPlayer.queueModeDidChangeNotification, object: nil)
         }
     }
     
@@ -182,6 +200,8 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     
     var systemVolume: Float
     var volumeSubscription: AnyCancellable?
+    
+    var rateSubscription: NSKeyValueObservation?
     
     var nowPlayingInfo: [String: Any]
     var playbackReporter: PlaybackReporter?

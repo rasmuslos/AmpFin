@@ -27,7 +27,7 @@ public extension JellyfinClient {
             "IsPaused": paused,
             "VolumeLevel": Int(volume * 100),
             "IsMuted": volume == 0,
-            "RepeatMode": repeatMode == .none ? "RepeatNone" : repeatMode == .track ? "RepeatOne" : "RepeatAll",
+            "RepeatMode": repeatMode == .queue ? "RepeatAll" : repeatMode == .track ? "RepeatOne" : "RepeatNone",
             "ShuffleMode": shuffled ? "Shuffle" : "Sorted",
             "PlaybackRate": 1,
             "PositionTicks": UInt64(position * 10_000_000),

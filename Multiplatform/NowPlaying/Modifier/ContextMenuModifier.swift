@@ -61,9 +61,20 @@ internal extension NowPlaying {
                     Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { viewModel.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
                     
                     Menu {
-                        Toggle("repeat.none", systemImage: "slash.circle", isOn: .init(get: { viewModel.repeatMode == .none }, set: { _ in AudioPlayer.current.repeatMode = .none }))
-                        Toggle("repeat.queue", systemImage: "repeat", isOn: .init(get: { viewModel.repeatMode == .queue }, set: { _ in AudioPlayer.current.repeatMode = .queue }))
-                        Toggle("repeat.track", systemImage: "repeat.1", isOn: .init(get: { viewModel.repeatMode == .track }, set: { _ in AudioPlayer.current.repeatMode = .track }))
+                        ForEach(RepeatMode.allCases.filter { AudioPlayer.current.infiniteQueue != nil || $0 != .infinite }) { repeatMode in
+                            Toggle(isOn: .init(get: { viewModel.repeatMode == repeatMode }, set: { _ in AudioPlayer.current.repeatMode = repeatMode })) {
+                                switch repeatMode {
+                                    case .none:
+                                        Label("repeat.none", systemImage: "slash.circle")
+                                    case .queue:
+                                        Label("repeat.queue", systemImage: "repeat")
+                                    case .track:
+                                        Label("repeat.track", systemImage: "repeat.1")
+                                    case .infinite:
+                                        Label("repeat.infinite", systemImage: "infinity")
+                                }
+                            }
+                        }
                     } label: {
                         Label("repeat", systemImage: "repeat")
                     }

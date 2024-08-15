@@ -70,7 +70,7 @@ public extension JellyfinClient {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "Sessions/\(sessionId)/Command", method: "POST", body: [
             "Name": "SetRepeatMode",
             "Arguments": [
-                "RepeatMode": repeatMode == .none ? "RepeatNone" : repeatMode == .track ? "RepeatOne" : "RepeatAll",
+                "RepeatMode": repeatMode == .queue ? "RepeatAll" : repeatMode == .track ? "RepeatOne" : "RepeatNone",
             ],
         ]))
     }

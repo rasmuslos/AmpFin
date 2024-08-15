@@ -59,22 +59,19 @@ extension NowPlaying {
                 Toggle("shuffle", systemImage: "shuffle", isOn: .init(get: { viewModel.shuffled }, set: { AudioPlayer.current.shuffled = $0 }))
                 
                 Menu {
-                    Button {
-                        AudioPlayer.current.repeatMode = .none
-                    } label: {
-                        Label("repeat.none", systemImage: "slash.circle")
-                    }
-                    
-                    Button {
-                        AudioPlayer.current.repeatMode = .queue
-                    } label: {
-                        Label("repeat.queue", systemImage: "repeat")
-                    }
-                    
-                    Button {
-                        AudioPlayer.current.repeatMode = .track
-                    } label: {
-                        Label("repeat.track", systemImage: "repeat.1")
+                    ForEach(RepeatMode.allCases.filter { AudioPlayer.current.infiniteQueue != nil || $0 != .infinite }) { repeatMode in
+                        Toggle(isOn: .init(get: { viewModel.repeatMode == repeatMode }, set: { _ in AudioPlayer.current.repeatMode = repeatMode })) {
+                            switch repeatMode {
+                                case .none:
+                                    Label("repeat.none", systemImage: "slash.circle")
+                                case .queue:
+                                    Label("repeat.queue", systemImage: "repeat")
+                                case .track:
+                                    Label("repeat.track", systemImage: "repeat.1")
+                                case .infinite:
+                                    Label("repeat.infinite", systemImage: "infinity")
+                            }
+                        }
                     }
                 } label: {
                     Label("repeat", systemImage: "repeat")
@@ -171,13 +168,7 @@ extension NowPlaying {
                     Spacer()
                     
                     Button {
-                        if AudioPlayer.current.repeatMode == .none {
-                            AudioPlayer.current.repeatMode = .queue
-                        } else if AudioPlayer.current.repeatMode == .queue {
-                            AudioPlayer.current.repeatMode = .track
-                        } else if AudioPlayer.current.repeatMode == .track {
-                            AudioPlayer.current.repeatMode = .none
-                        }
+                        AudioPlayer.current.repeatMode = viewModel.repeatMode.next
                     } label: {
                         Label("repeat", systemImage: "repeat\(viewModel.repeatMode == .track ? ".1" : "")")
                             .labelStyle(.iconOnly)

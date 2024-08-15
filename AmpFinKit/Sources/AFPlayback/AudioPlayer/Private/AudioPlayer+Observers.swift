@@ -42,7 +42,7 @@ internal extension AudioPlayer {
                 currentTime = Double(position / 10_000_000)
             } else if command == "repeatMode" {
                 let mode = notification.userInfo?["repeatMode"] as? String
-                repeatMode = mode == "RepeatAll" ? .queue : mode == "RepeatNone" ? .none : .track
+                repeatMode = mode == "RepeatAll" ? .queue : mode == "RepeatOne" ? .track : .none
             } else if command == "shuffleMode" {
                 shuffled = notification.userInfo?["shuffleMode"] as? String == "Shuffle"
             }

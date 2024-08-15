@@ -86,6 +86,10 @@ extension AudioPlayer: AudioEndpoint {
         endpoint?.queue ?? []
     }
     
+    public var infiniteQueue: [Track]? {
+        endpoint?.infiniteQueue
+    }
+    
     public var mediaInfo: Track.MediaInfo? {
         get async {
             await endpoint?.mediaInfo
