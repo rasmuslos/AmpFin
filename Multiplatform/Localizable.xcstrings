@@ -609,23 +609,6 @@
         }
       }
     },
-    "history" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verlauf"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "History"
-          }
-        }
-      }
-    },
     "home.randomAlbums" : {
       "localizations" : {
         "de" : {
@@ -1453,7 +1436,20 @@
       }
     },
     "queue.empty" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Lieder zum anzeigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tracks to display"
+          }
+        }
+      }
     },
     "queue.history" : {
       "localizations" : {
@@ -1472,10 +1468,36 @@
       }
     },
     "queue.infinite" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unendliche Wiedergabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Infinite Queue"
+          }
+        }
+      }
     },
     "queue.infinite.text" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basierend auf der Warteschlange"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Based on your current queue"
+          }
+        }
+      }
     },
     "queue.last" : {
       "localizations" : {
@@ -1558,10 +1580,36 @@
       }
     },
     "queue.remove" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus der Warteschlange entfernen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove from queue"
+          }
+        }
+      }
     },
     "queue.remove.dragging" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hierher ziehen, um das Lied zu entfernen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drag here to remove from queue"
+          }
+        }
+      }
     },
     "queue.reorder" : {
       "localizations" : {
@@ -1644,7 +1692,20 @@
       }
     },
     "repeat.infinite" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unendliche Warteschlange"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Infinite Queue"
+          }
+        }
+      }
     },
     "repeat.none" : {
       "localizations" : {
@@ -2604,23 +2665,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tracks"
-          }
-        }
-      }
-    },
-    "tracks.disk %lld" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CD %lld"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disk %lld"
           }
         }
       }

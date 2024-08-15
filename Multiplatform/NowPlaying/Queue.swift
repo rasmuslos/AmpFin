@@ -196,6 +196,7 @@ private struct Header: View {
             }
         }
         .padding(.top, 16)
+        .contentShape(.rect)
         .animation(.spring, value: dragging)
         .animation(.spring, value: scrollPosition)
         .onDrop(of: [.item], delegate: RemoveDropDelegate(dragging: $dragging))
@@ -209,15 +210,15 @@ private struct QueueSection<Content: View>: View {
     @ViewBuilder let content: (_ track: Track, _ index: Int) -> Content
     
     var body: some View {
-            if tracks.isEmpty {
-                Text("queue.empty")
-                    .font(.caption.smallCaps())
-                    .foregroundStyle(.regularMaterial)
-                    .multilineTextAlignment(.center)
-                    .padding(20)
-            }
-            
             ScrollView {
+                if tracks.isEmpty {
+                    Text("queue.empty")
+                        .font(.caption.smallCaps())
+                        .foregroundStyle(.regularMaterial)
+                        .multilineTextAlignment(.center)
+                        .padding(20)
+                }
+                
                 ForEach(Array(tracks.enumerated()), id: \.element) {
                     content($1, $0)
                 }

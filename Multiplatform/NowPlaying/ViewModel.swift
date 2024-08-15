@@ -403,10 +403,10 @@ internal extension NowPlaying.ViewModel {
                     currentTab = tab
                 }
             }
+            
+            updateLyricsIndex()
+            startScrollTimer()
         }
-        
-        updateLyricsIndex()
-        startScrollTimer()
     }
     func setPresented(_ presented: Bool) {
         Task { @MainActor in
