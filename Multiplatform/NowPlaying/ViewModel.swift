@@ -357,15 +357,15 @@ private extension NowPlaying.ViewModel {
         })
         tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.queueDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
             Task { @MainActor [weak self] in
-                self?.history = AudioPlayer.current.history
-                self?.queue = AudioPlayer.current.queue
-                self?.infiniteQueue = AudioPlayer.current.infiniteQueue
-                
-                if self?.queue.isEmpty == true && self?.history.isEmpty == true {
-                    self?.queueTab = .queue
-                }
-                
                 withAnimation {
+                    self?.history = AudioPlayer.current.history
+                    self?.queue = AudioPlayer.current.queue
+                    self?.infiniteQueue = AudioPlayer.current.infiniteQueue
+                    
+                    if self?.queue.isEmpty == true && self?.history.isEmpty == true {
+                        self?.queueTab = .queue
+                    }
+                    
                     self?.shuffled = AudioPlayer.current.shuffled
                     self?.repeatMode = AudioPlayer.current.repeatMode
                 }

@@ -49,7 +49,6 @@
 		3A3E25BC2BDBC47000006310 /* Handler+Play.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E25BB2BDBC47000006310 /* Handler+Play.swift */; };
 		3A3E25BE2BDBD02400006310 /* PlayMediaHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E25BD2BDBD02400006310 /* PlayMediaHandler.swift */; };
 		3A3EA5A72ACC206500600BC5 /* DownloadIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */; };
-		3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F11392B010FB600E205DA /* HistoryTip.swift */; };
 		3A3FEECD2AF7A3C8001F8AA0 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */; };
 		3A4A3B872BDBEB0B00A90835 /* Handler+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A3B862BDBEB0B00A90835 /* Handler+Search.swift */; };
 		3A4A3B892BDCDF5300A90835 /* Handler+Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A3B882BDCDF5300A90835 /* Handler+Add.swift */; };
@@ -195,7 +194,6 @@
 		3A3E25BB2BDBC47000006310 /* Handler+Play.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Handler+Play.swift"; sourceTree = "<group>"; };
 		3A3E25BD2BDBD02400006310 /* PlayMediaHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMediaHandler.swift; sourceTree = "<group>"; };
 		3A3EA5A62ACC206500600BC5 /* DownloadIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadIndicator.swift; sourceTree = "<group>"; };
-		3A3F11392B010FB600E205DA /* HistoryTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTip.swift; sourceTree = "<group>"; };
 		3A3FEECC2AF7A3C8001F8AA0 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		3A442BE42B483C0B008FECE2 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3A442BE62B483C0B008FECE2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -352,7 +350,6 @@
 		3A2B932D2B00C79D00638AE9 /* Tips */ = {
 			isa = PBXGroup;
 			children = (
-				3A3F11392B010FB600E205DA /* HistoryTip.swift */,
 				3AD351CD2BAF2A70005DF243 /* RemoteTip.swift */,
 				3A2B93302B00C9DA00638AE9 /* DownloadTip.swift */,
 				3A2B93322B00D28700638AE9 /* InstantMixTip.swift */,
@@ -848,7 +845,6 @@
 				3A7939022B387851001B3B3D /* OnlineLibraryDataProivder.swift in Sources */,
 				3A0F99F02BE8BF4600F6B7B4 /* UIScreen+Radius.swift in Sources */,
 				3A2B28E52B433C8A00DF9731 /* PlaylistsView.swift in Sources */,
-				3A3F113A2B010FB600E205DA /* HistoryTip.swift in Sources */,
 				3AF3BA922C52358800C96E1F /* DisplayContext.swift in Sources */,
 				3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */,
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,

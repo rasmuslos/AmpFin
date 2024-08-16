@@ -32,7 +32,7 @@ internal extension NowPlaying {
                         Group {
                             if viewModel.lyricsFetchFailed {
                                 Text("lyrics.failed")
-                                    .font(.caption.smallCaps())
+                                    .font(.subheadline)
                                     .foregroundStyle(.regularMaterial)
                                     .multilineTextAlignment(.center)
                                     .padding(20)

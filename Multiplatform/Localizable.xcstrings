@@ -44,7 +44,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Delete all downloads"
+            "value" : "Remove all downloads"
           }
         }
       }
@@ -54,13 +54,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spotlight Index löschen"
+            "value" : "Spotlight-Index & Cache zurücksetzen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Delete Spotlight index"
+            "value" : "Reset Spotlight-Index & Cache"
           }
         }
       }
@@ -86,13 +86,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keine Downloads"
+            "value" : "Keine aktiven Downloads"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No downloads"
+            "value" : "No active downloads"
           }
         }
       }
@@ -620,7 +620,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your playback-history is empty"
+            "value" : "Your playback-history is empty."
           }
         }
       }
@@ -679,13 +679,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lade"
+            "value" : "Lade..."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Loading"
+            "value" : "Loading…"
           }
         }
       }
@@ -711,13 +711,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jellyfin Instanz nicht gefunden"
+            "value" : "Jellyfin Instanz nicht gefunden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jellyfin instance not found"
+            "value" : "Jellyfin instance not found."
           }
         }
       }
@@ -728,13 +728,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fehlerhafte Server-URL (Format: http(s)://host:port)"
+            "value" : "Fehlerhafte Server-URL (Format: http(s)://host:port)."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The server URL appears to be invalid (Format: http(s)://host:port)"
+            "value" : "The server URL appears to be invalid (Format: http(s)://host:port)."
           }
         }
       }
@@ -744,13 +744,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lade"
+            "value" : "Lade..."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Loading"
+            "value" : "Loading..."
           }
         }
       }
@@ -824,13 +824,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Melde dich an um loszulegen"
+            "value" : "Melde dich an um loszulegen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please login to get started"
+            "value" : "Please login to get started."
           }
         }
       }
@@ -920,13 +920,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lyrics können nicht abgerufen werden (Benötigt Jellyfin 10.9+)"
+            "value" : "Lyrics können nicht abgerufen werden (Benötigt Jellyfin 10.9+)."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lyrics cannot be retrieved (requires Jellyfin 10.9 or later)"
+            "value" : "Lyrics cannot be retrieved (requires Jellyfin 10.9 or later)."
           }
         }
       }
@@ -1016,7 +1016,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es kann keine Verbindung zu deiner Jellyfin Instanz hergestellt werden. Überprüfe die Verbindung"
+            "value" : "Es kann keine Verbindung zu deiner Jellyfin Instanz hergestellt werden. Überprüfe die Verbindung."
           }
         },
         "en" : {
@@ -1096,13 +1096,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vom Album %@"
+            "value" : "Album: %@"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "From album %@"
+            "value" : "Album: %@"
           }
         }
       }
@@ -1112,13 +1112,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Von Künstler %@"
+            "value" : "Künstler: %@"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "From artist %@"
+            "value" : "Artist: %@"
           }
         }
       }
@@ -1160,13 +1160,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Von Playlist %@"
+            "value" : "Playlist: %@"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "From playlist %@"
+            "value" : "Playlist: %@"
           }
         }
       }
@@ -1176,13 +1176,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Von Suche \"%@\""
+            "value" : "Suche: \"%@\""
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "From search \"%@\""
+            "value" : "Search: \"%@\""
           }
         }
       }
@@ -1240,13 +1240,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fehler beim verarbeiten"
+            "value" : "Fehler beim verarbeiten."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Error while processing"
+            "value" : "Error while processing."
           }
         }
       }
@@ -1478,7 +1478,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your Queue is empty. Scroll down to view the infinite queue"
+            "value" : "Your Queue is empty. Scroll down to view the infinite queue."
           }
         }
       }
@@ -1520,13 +1520,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Basierend auf der Warteschlange"
+            "value" : "Basierend auf deiner Warteschlange"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Based on your current queue"
+            "value" : "Selection based on your current queue"
           }
         }
       }
@@ -1552,13 +1552,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nach %@"
+            "value" : "Nach: %@"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "After %@"
+            "value" : "After: %@"
           }
         }
       }
@@ -2402,13 +2402,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ändere das Verhalten beim spielen von Künstlern in der Einstellungs-App"
+            "value" : "Ändere das Verhalten beim spielen von Künstlern in der Einstellungs-App."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Configure artist play behavior options in the Settings app"
+            "value" : "Configure artist play behavior options in the Settings app."
           }
         }
       }
@@ -2434,13 +2434,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lade das Album herunter und höre es unterwegs an"
+            "value" : "Lade das Album herunter und höre es unterwegs an."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Download this album for seamless listening on-the-go"
+            "value" : "Download this album for seamless listening on-the-go."
           }
         }
       }
@@ -2461,50 +2461,18 @@
         }
       }
     },
-    "tip.history.message" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Um den aktuellen Hörverlauf zu sehen, benutze die Schaltfläche neben dem Shuffle-Icon"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To view your current listening history, tap the button beside the shuffle icon."
-          }
-        }
-      }
-    },
-    "tip.history.title" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hörverlauf ansehen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "View playback history"
-          }
-        }
-      }
-    },
     "tip.mix.message" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generiere eine dynamische Warteschlange, basierend auf dem Lied welches du auswählst"
+            "value" : "Generiere eine dynamische Warteschlange, basierend auf dem Lied welches du auswählst."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Discover similar music by generating a dynamic queue based on the track you choose"
+            "value" : "Discover similar music by generating a dynamic queue based on the track you choose."
           }
         }
       }
@@ -2536,7 +2504,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Take command of another supported Jellyfin client (e.g., Jellyfin Web), or have one of them take control of your current session"
+            "value" : "Take command of another supported Jellyfin client (e.g., Jellyfin Web), or have one of them take control of your current session."
           }
         }
       }

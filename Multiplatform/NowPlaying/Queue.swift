@@ -26,7 +26,7 @@ internal extension NowPlaying {
                 GeometryReader { proxy in
                     ScrollViewReader { scrollProxy in
                         ScrollView {
-                            VStack(spacing: 0) {
+                            LazyVStack(spacing: 0) {
                                 QueueSection(tracks: viewModel.history, emptyText: "history.empty", defaultScrollAnchorAtBottom: true) { track, index in
                                     Row(track: track, draggable: false) {
                                         AudioPlayer.current.removePlayed(at: index)
@@ -82,13 +82,13 @@ internal extension NowPlaying {
                         .scrollPosition(id: $viewModel.queueTab, anchor: .top)
                         .mask(
                             VStack(spacing: 0) {
-                                LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
+                                LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
                                     .frame(height: 32)
                                 
                                 Rectangle()
                                     .fill(Color.black)
                                 
-                                LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                                LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
                                     .frame(height: 32)
                             }
                         )
@@ -121,7 +121,7 @@ private struct Header: View {
     
     var body: some View {
         HStack(spacing: 4) {
-            VStack(alignment: .leading, spacing: 2) {
+            LazyVStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.headline)
                     .foregroundStyle(.primary)
@@ -258,10 +258,11 @@ private struct QueueSection<Content: View>: View {
         ScrollView {
             if tracks.isEmpty {
                 Text(emptyText)
-                    .font(.caption.smallCaps())
+                    .font(.subheadline)
                     .foregroundStyle(.regularMaterial)
                     .multilineTextAlignment(.center)
-                    .padding(20)
+                    .padding(.top, 100)
+                    .padding(.horizontal, 20)
             }
             
             ForEach(Array(tracks.enumerated()), id: \.element) {
@@ -365,10 +366,8 @@ private struct TrackDropDelegate: DropDelegate {
             return
         }
         
-        withAnimation {
-            AudioPlayer.current.move(from: index, to: current.0)
-            dragging.wrappedValue?.0 = current.0
-        }
+        AudioPlayer.current.move(from: index, to: current.0)
+        dragging.wrappedValue?.0 = current.0
     }
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
