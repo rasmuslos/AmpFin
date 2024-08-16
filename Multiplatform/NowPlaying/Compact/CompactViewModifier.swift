@@ -53,6 +53,7 @@ extension NowPlaying {
                         if viewModel.controlsVisible {
                             VStack(spacing: 0) {
                                 Controls(compact: false)
+                                    .padding(.top, 4)
                                     .modifier(GestureModifier(active: viewModel.currentTab == .cover))
                                 
                                 Buttons()

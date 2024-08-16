@@ -83,13 +83,13 @@ internal extension NowPlaying {
                         .mask(
                             VStack(spacing: 0) {
                                 LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
-                                    .frame(height: 32)
+                                    .frame(height: 24)
                                 
                                 Rectangle()
                                     .fill(Color.black)
                                 
                                 LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
-                                    .frame(height: 32)
+                                    .frame(height: 24)
                             }
                         )
                         .onChange(of: viewModel.currentTab, initial: true) {

@@ -31,7 +31,7 @@ extension NowPlaying {
                         .foregroundStyle(dragging ? .ultraThickMaterial : .thickMaterial)
                 }
                 .clipShape(.rect(cornerRadius: 8))
-                .highPriorityGesture(DragGesture(minimumDistance: 0)
+                .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .global)
                     .onChanged { value in
                         if blocked {
                             return
@@ -54,8 +54,11 @@ extension NowPlaying {
                             return
                         }
                         
+                        let velocity = value.velocity.width
+                        let acceleration = velocity > 500 ? 1.3 : 1.05
+                        
                         let delta = value.location.x - lastLocation.x
-                        let offset = (delta / geometry.size.width)
+                        let offset = (delta / geometry.size.width) * acceleration
                         
                         self.lastLocation = value.location
                         
@@ -79,6 +82,8 @@ extension NowPlaying {
 }
 
 #Preview {
-    NowPlaying.Slider(percentage: .constant(50), dragging: .constant(false))
+    @Previewable @State var percentage = 0.5
+    
+    NowPlaying.Slider(percentage: $percentage, dragging: .constant(false))
         .padding(.horizontal)
 }

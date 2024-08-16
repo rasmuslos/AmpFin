@@ -46,7 +46,7 @@
 
 A four minute audio file would require:
 - 4 MB using 128 Kb/s
-- 8  MB using 256 Kb/s
+- 8 MB using 256 Kb/s
 
 AmpFin will not automatically select a bitrate on unstable or slow networks. If you select Lossless AmpFin will try to play the audio file without any modifications. Existing downloads are not affected.</string>
 		</dict>

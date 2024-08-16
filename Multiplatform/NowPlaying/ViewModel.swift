@@ -16,7 +16,7 @@ internal extension NowPlaying {
         // MARK: Presentation
         
         @ObservationIgnored var namespace: Namespace.ID!
-        @MainActor var dragOffset: CGFloat
+        @MainActor var _dragOffset: CGFloat
         
         @MainActor private(set) var presented: Bool
         @MainActor var queueTab: QueueTab? = .queue
@@ -89,7 +89,7 @@ internal extension NowPlaying {
         @MainActor
         init() {
             namespace = nil
-            dragOffset = .zero
+            _dragOffset = .zero
             
             presented = false
             currentTab = .cover
@@ -159,6 +159,24 @@ internal extension NowPlaying {
 // MARK: Properties
 
 internal extension NowPlaying.ViewModel {
+    @MainActor
+    var dragOffset: CGFloat {
+        get {
+            if !self.presented {
+                return .infinity
+            }
+            
+            if self.controlsDragging {
+                return .zero
+            }
+            
+            return self._dragOffset
+        }
+        set {
+            self._dragOffset = newValue
+        }
+    }
+    
     @MainActor
     var track: Track? {
         if presented, let track = nowPlaying {

@@ -52,7 +52,7 @@ internal extension LocalAudioEndpoint {
         avPlayerQueue.removeFirst()
         queue.removeFirst()
         
-        if !playing {
+        if !playing && advanceAudioPlayer {
             audioPlayer.seek(to: CMTime(seconds: 0, preferredTimescale: 1000))
         }
     }

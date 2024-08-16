@@ -53,7 +53,8 @@ internal extension LocalAudioEndpoint {
         var tracks = [nowPlaying]
         var startIndex = -1
         
-        tracks += queue.prefix(4)
+        let candidates = queue.prefix(4) + infiniteQueue!.prefix(4)
+        tracks += candidates.prefix(4)
         
         for (index, track) in tracks.enumerated() {
             guard avPlayerQueue.count > index else {
