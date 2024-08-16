@@ -101,6 +101,7 @@ internal struct ContentView: View {
                     AudioPlayer.current.allowRemoteControl = true
                     
                     nowPlayingViewModel.namespace = namespace
+                    UIApplication.shared.addGestureRecognizer()
                 }
         } else {
             LoginView()

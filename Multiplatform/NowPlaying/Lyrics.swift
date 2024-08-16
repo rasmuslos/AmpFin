@@ -60,7 +60,9 @@ internal extension NowPlaying {
                     }
                 )
                 .padding(.horizontal, -28)
-                .modifier(LyricsGestureModifier())
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.tapGestureFiredNotification)) { _ in
+                    viewModel.didInteract()
+                }
                 .onChange(of: viewModel.activeLineIndex, initial: true) {
                     viewModel.scroll(proxy, anchor: anchor)
                 }
@@ -151,18 +153,3 @@ private struct Line: View {
     }
 }
 
-struct LyricsGestureModifier: ViewModifier {
-    @Environment(NowPlaying.ViewModel.self) private var viewModel
-    
-    func body(content: Content) -> some View {
-        if viewModel.scrolling {
-            content
-        } else {
-            content
-                .highPriorityGesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged({ gesture in viewModel.didScroll(up: 0 < gesture.velocity.height) })
-                )
-        }
-    }
-}

@@ -20,6 +20,7 @@ internal extension LocalAudioEndpoint {
         #if !os(macOS) && !targetEnvironment(macCatalyst)
         volumeSubscription = AVAudioSession.sharedInstance().publisher(for: \.outputVolume).sink { volume in
             self.systemVolume = volume
+            NotificationCenter.default.post(name: AudioPlayer.volumeDidChangeNotification, object: nil)
         }
         
         NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), queue: nil) { [self] notification in

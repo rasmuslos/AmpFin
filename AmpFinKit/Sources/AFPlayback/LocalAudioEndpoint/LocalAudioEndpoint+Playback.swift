@@ -50,6 +50,8 @@ internal extension LocalAudioEndpoint {
         history = []
         nowPlaying = nil
         
+        avPlayerQueue = []
+        
         queue = []
         infiniteQueue = []
         unalteredQueue = []

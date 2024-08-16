@@ -27,7 +27,7 @@ internal extension NowPlaying {
                     ScrollViewReader { scrollProxy in
                         ScrollView {
                             VStack(spacing: 0) {
-                                QueueSection(tracks: viewModel.history, defaultScrollAnchorAtBottom: true) { track, index in
+                                QueueSection(tracks: viewModel.history, emptyText: "history.empty", defaultScrollAnchorAtBottom: true) { track, index in
                                     Row(track: track, draggable: false) {
                                         AudioPlayer.current.removePlayed(at: index)
                                     }
@@ -38,7 +38,7 @@ internal extension NowPlaying {
                                 .id(QueueTab.history)
                                 .frame(height: proxy.size.height)
                                 
-                                QueueSection(tracks: viewModel.queue) { track, index in
+                                QueueSection(tracks: viewModel.queue, emptyText: "queue.empty") { track, index in
                                     Row(track: track, draggable: true) {
                                         let _ = AudioPlayer.current.remove(at: index)
                                     }
@@ -62,7 +62,7 @@ internal extension NowPlaying {
                                 .frame(height: proxy.size.height)
                                 
                                 if let infiniteQueue = viewModel.infiniteQueue {
-                                    QueueSection(tracks: infiniteQueue) { track, index in
+                                    QueueSection(tracks: infiniteQueue, emptyText: "infiniteQueue.empty") { track, index in
                                         Row(track: track, draggable: false) {
                                             let _ = AudioPlayer.current.remove(at: viewModel.queue.count + index)
                                         }
@@ -247,6 +247,7 @@ private struct QueueSection<Content: View>: View {
     @Environment(NowPlaying.ViewModel.self) private var viewModel
     
     let tracks: [Track]
+    let emptyText: LocalizedStringKey
     var defaultScrollAnchorAtBottom = false
     
     @State private var position: String? = nil
@@ -256,7 +257,7 @@ private struct QueueSection<Content: View>: View {
     var body: some View {
         ScrollView {
             if tracks.isEmpty {
-                Text("queue.empty")
+                Text(emptyText)
                     .font(.caption.smallCaps())
                     .foregroundStyle(.regularMaterial)
                     .multilineTextAlignment(.center)
@@ -300,7 +301,7 @@ private struct Row: View {
                     Text(artistName)
                         .lineLimit(1)
                         .font(.callout)
-                        .foregroundStyle(.thinMaterial)
+                        .foregroundStyle(.white.opacity(0.6))
                 }
             }
             
@@ -331,7 +332,7 @@ private struct Row: View {
             .bold()
             .fontDesign(.rounded)
             .labelStyle(.iconOnly)
-            .foregroundStyle(.thinMaterial)
+            .foregroundStyle(.white.opacity(0.6))
         }
         .id(track.id)
         .contentShape(.rect)

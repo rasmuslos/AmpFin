@@ -20,8 +20,6 @@ internal extension LocalAudioEndpoint {
             }
         }
         
-        print(nowPlaying?.name)
-        
         let queueWasEmpty: Bool
         
         if queue.isEmpty {
@@ -43,11 +41,12 @@ internal extension LocalAudioEndpoint {
             return
         }
         
-        print(queue.map { $0.name })
-        
         nowPlaying = queue.first
         
-        audioPlayer.advanceToNextItem()
+        if advanceAudioPlayer {
+            audioPlayer.advanceToNextItem()
+        }
+        
         playing = !queueWasEmpty || repeatMode != .none
         
         avPlayerQueue.removeFirst()

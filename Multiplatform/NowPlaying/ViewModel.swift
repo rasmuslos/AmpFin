@@ -361,6 +361,10 @@ private extension NowPlaying.ViewModel {
                 self?.queue = AudioPlayer.current.queue
                 self?.infiniteQueue = AudioPlayer.current.infiniteQueue
                 
+                if self?.queue.isEmpty == true && self?.history.isEmpty == true {
+                    self?.queueTab = .queue
+                }
+                
                 withAnimation {
                     self?.shuffled = AudioPlayer.current.shuffled
                     self?.repeatMode = AudioPlayer.current.repeatMode
@@ -463,7 +467,7 @@ internal extension NowPlaying.ViewModel {
         }
     }
     
-    func didScroll(up: Bool) {
+    func didInteract() {
         Task { @MainActor in
             guard currentTab == .lyrics && !controlsDragging else {
                 return
@@ -471,7 +475,7 @@ internal extension NowPlaying.ViewModel {
             
             withAnimation {
                 scrolling = true
-                controlsVisible = up
+                controlsVisible = true
             }
         }
         

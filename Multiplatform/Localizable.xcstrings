@@ -609,6 +609,22 @@
         }
       }
     },
+    "history.empty" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Verlauf ist leer."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your playback-history is empty"
+          }
+        }
+      }
+    },
     "home.randomAlbums" : {
       "localizations" : {
         "de" : {
@@ -638,6 +654,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recently added"
+          }
+        }
+      }
+    },
+    "infiniteQueue.empty" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere die unendliche Warteschlange mit dem Unendlich-Symbol"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable the infinite queue by pressing the infinity symbol."
           }
         }
       }
@@ -1440,13 +1472,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keine Lieder zum anzeigen"
+            "value" : "Die Warteschlange ist leer. Wische nach unten um zur unendlichen Warteschlange zu gelangen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No tracks to display"
+            "value" : "Your Queue is empty. Scroll down to view the infinite queue"
           }
         }
       }
@@ -1600,7 +1632,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hierher ziehen, um das Lied zu entfernen"
+            "value" : "Ziehe das Lied hierher um es aus der Warteschlange zu entfernen"
           }
         },
         "en" : {
