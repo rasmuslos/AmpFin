@@ -31,6 +31,7 @@ struct PlaylistView: View {
         }
         .listStyle(.plain)
         .environment(\.editMode, $editMode)
+        .environment(\.displayContext, .playlist)
         .navigationTitle(playlist.name)
         .ignoresSafeArea(edges: .top)
         .modifier(ToolbarModifier(playlist: playlist, toolbarVisible: $toolbarVisible, tracks: $tracks, editMode: $editMode))

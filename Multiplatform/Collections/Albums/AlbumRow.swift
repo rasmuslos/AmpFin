@@ -14,6 +14,8 @@ struct AlbumRow: View {
     let title: String
     let albums: [Album]
     
+    var displayContext: DisplayContext = .unknown
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .firstTextBaseline) {
@@ -33,6 +35,7 @@ struct AlbumRow: View {
                             .padding(.horizontal, 20)
                     }
                     .navigationTitle(title)
+                    .environment(\.displayContext, displayContext)
                     .modifier(NowPlaying.SafeAreaModifier())
                 } label: {
                     EmptyView()
@@ -63,6 +66,7 @@ struct AlbumRow: View {
             .scrollTargetBehavior(.viewAligned)
             .scrollClipDisabled()
             .padding(.horizontal, 20)
+            .environment(\.displayContext, displayContext)
         }
     }
 }

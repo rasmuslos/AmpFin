@@ -12,20 +12,27 @@ import AFPlayback
 
 @Observable
 internal final class AlbumViewModel {
-    let album: Album
-    private(set) var tracks: [Track]
+    @MainActor let album: Album
+    @MainActor private(set) var tracks: [Track]
     
-    var dataProvider: LibraryDataProvider!
+    @MainActor var dataProvider: LibraryDataProvider!
     
-    private(set) var buttonColor: Color
-    var toolbarBackgroundVisible: Bool
+    @MainActor private(set) var similarAlbums: [Album]
+    @MainActor private(set) var albumsReleasedSameArtist: [Album]
     
-    private(set) var errorFeedback: Bool
-    private let offlineTracker: ItemOfflineTracker
+    @MainActor private(set) var buttonColor: Color
+    @MainActor var toolbarBackgroundVisible: Bool
     
+    @MainActor private(set) var errorFeedback: Bool
+    @MainActor private let offlineTracker: ItemOfflineTracker
+    
+    @MainActor
     init(_ album: Album) {
         self.album = album
         tracks = []
+        
+        similarAlbums = []
+        albumsReleasedSameArtist = []
         
         buttonColor = .accentColor
         toolbarBackgroundVisible = false
@@ -33,29 +40,25 @@ internal final class AlbumViewModel {
         errorFeedback = false
         offlineTracker = album.offlineTracker
     }
-    
-    func toggleFavorite() {
-        album.favorite.toggle()
-    }
 }
 
 internal extension AlbumViewModel {
     func play(shuffled: Bool) {
         Task {
-            if tracks.isEmpty {
+            if await tracks.isEmpty {
                 await fetchTracks()
             }
             
-            AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffled, playbackInfo: .init(container: album))
+            await AudioPlayer.current.startPlayback(tracks: tracks.sorted { $0.index < $1.index }, startIndex: 0, shuffle: shuffled, playbackInfo: .init(container: album))
         }
     }
     func queue(now: Bool) {
         Task {
-            if tracks.isEmpty {
+            if await tracks.isEmpty {
                 await fetchTracks()
             }
             
-            AudioPlayer.current.queue(tracks, after: now ? 0 : AudioPlayer.current.queue.count, playbackInfo: .init(container: album))
+            await AudioPlayer.current.queue(tracks, after: now ? 0 : AudioPlayer.current.queue.count, playbackInfo: .init(container: album))
         }
     }
     func instantMix() {
@@ -63,7 +66,9 @@ internal extension AlbumViewModel {
             do {
                 try await album.startInstantMix()
             } catch {
-                errorFeedback.toggle()
+                await MainActor.run {
+                    self.errorFeedback.toggle()
+                }
             }
         }
     }
@@ -71,19 +76,25 @@ internal extension AlbumViewModel {
 
 internal extension AlbumViewModel {
     func download() {
-        Task.detached { [album] in
+        Task {
             do {
                 try await OfflineManager.shared.download(album: album)
             } catch {
-                self.errorFeedback.toggle()
+                await MainActor.run {
+                    self.errorFeedback.toggle()
+                }
             }
         }
     }
     func evict() {
-        do {
-            try OfflineManager.shared.delete(albumId: album.id)
-        } catch {
-            errorFeedback.toggle()
+        Task {
+            do {
+                try OfflineManager.shared.delete(albumId: await album.id)
+            } catch {
+                await MainActor.run {
+                    errorFeedback.toggle()
+                }
+            }
         }
     }
 }
@@ -93,6 +104,9 @@ extension AlbumViewModel {
         await withTaskGroup(of: Void.self) {
             $0.addTask { await self.fetchTracks() }
             $0.addTask { await self.determineButtonColor() }
+            
+            $0.addTask { await self.fetchSimilarAlbums() }
+            $0.addTask { await self.fetchAlbumsReleasedSameArtist() }
         }
     }
     
@@ -106,11 +120,48 @@ extension AlbumViewModel {
                 }
             }
         } catch {
-            errorFeedback.toggle()
+            await MainActor.run {
+                self.errorFeedback.toggle()
+            }
         }
     }
+    private func fetchSimilarAlbums() async {
+        guard await dataProvider as? OfflineLibraryDataProvider == nil else {
+            return
+        }
+        
+        let albumId = await album.id
+        
+        guard let similar = try? await JellyfinClient.shared.albums(similarToAlbumId: album.id).filter({ $0.id != albumId }) else {
+            return
+        }
+        
+        await MainActor.run {
+            withAnimation {
+                self.similarAlbums = similar
+            }
+        }
+    }
+    func fetchAlbumsReleasedSameArtist() async {
+        guard let artist = await album.artists.first else {
+            return
+        }
+        
+        let albumId = await album.id
+        
+        guard let albumsReleasedSameArtist = try? await dataProvider.albums(artistId: artist.id, limit: 20, startIndex: 0, sortOrder: .released, ascending: false).0.filter({ $0.id != albumId }) else {
+            return
+        }
+        
+        await MainActor.run {
+            withAnimation {
+                self.albumsReleasedSameArtist = albumsReleasedSameArtist
+            }
+        }
+    }
+    
     private func determineButtonColor() async {
-        if let cover = album.cover,
+        if let cover = await album.cover,
            let colors = try? await AFVisuals.extractDominantColors(4, cover: cover),
            let result = AFVisuals.determineSaturated(colors.map { $0.color }) {
             await MainActor.run {
@@ -128,6 +179,7 @@ internal extension AlbumViewModel {
         offlineTracker.status
     }
     
+    @MainActor
     var runtime: Double {
         tracks.reduce(0, { $0 + $1.runtime })
     }

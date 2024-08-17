@@ -75,6 +75,7 @@ internal struct SearchView: View {
         }
         .autocorrectionDisabled()
         .textInputAutocapitalization(.never)
+        .environment(\.displayContext, .search)
         .modifier(NowPlaying.SafeAreaModifier())
         .task(id: searchTab) {
             fetchSearchResults(shouldReset: true)

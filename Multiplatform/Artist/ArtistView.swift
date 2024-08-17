@@ -10,11 +10,12 @@ import Defaults
 import AmpFinKit
 
 internal struct ArtistView: View {
-    @Default(.sortOrder) private var sortOrder
-    @Default(.sortAscending) private var sortAscending
     @Environment(\.libraryDataProvider) private var dataProvider
     
     let artist: Artist
+    
+    @State private var sortAscending = false
+    @State private var sortOrder: ItemSortOrder = .released
     
     @State private var tracks = [Track]()
     
@@ -76,6 +77,7 @@ internal struct ArtistView: View {
         }
         .modifier(Toolbar(artist: artist))
         .modifier(NowPlaying.SafeAreaModifier())
+        .environment(\.displayContext, .artist)
         .task {
             await loadTracks()
         }

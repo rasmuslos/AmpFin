@@ -10,6 +10,7 @@ import AmpFinKit
 
 internal struct AlbumCover: View {
     @Environment(\.redactionReasons) private var redactionReasons
+    @Environment(\.displayContext) private var displayContext
     
     let album: Album
     
@@ -25,10 +26,17 @@ internal struct AlbumCover: View {
                         .lineLimit(1)
                     
                     Group {
-                        if let artistName = album.artistName {
-                            Text(artistName)
-                        } else {
-                            Text(verbatim: "")
+                        switch displayContext {
+                            case .artist:
+                                if let releaseDate = album.releaseDate {
+                                    Text(releaseDate, format: .dateTime.year())
+                                }
+                            default:
+                                if let artistName = album.artistName {
+                                    Text(artistName)
+                                } else {
+                                    Text(verbatim: "")
+                                }
                         }
                     }
                     .font(.caption)

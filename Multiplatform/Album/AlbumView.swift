@@ -42,7 +42,7 @@ struct AlbumView: View {
             .listRowSeparator(.hidden, edges: .top)
             .foregroundStyle(.secondary)
             
-            AdditionalAlbums(album: viewModel.album)
+            AdditionalAlbums()
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         .listStyle(.plain)
@@ -50,6 +50,7 @@ struct AlbumView: View {
         .ignoresSafeArea(edges: .top)
         .modifier(ToolbarModifier())
         .environment(viewModel)
+        .environment(\.displayContext, .album)
         .modifier(NowPlaying.SafeAreaModifier())
         .sensoryFeedback(.error, trigger: viewModel.errorFeedback)
         .task {

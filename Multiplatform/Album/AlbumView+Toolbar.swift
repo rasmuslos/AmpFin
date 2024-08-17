@@ -113,7 +113,7 @@ private struct ToolbarMenu: View {
     var body: some View {
         Menu {
             Button {
-                viewModel.toggleFavorite()
+                viewModel.album.favorite.toggle()
             } label: {
                 Label("favorite", systemImage: viewModel.album.favorite ? "star.fill" : "star")
             }
