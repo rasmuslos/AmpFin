@@ -55,7 +55,7 @@ extension NowPlaying {
                         }
                         
                         let velocity = value.velocity.width
-                        let acceleration = velocity > 500 ? 1.3 : 1.05
+                        let acceleration = velocity > 500 ? 1.5 : 1.2
                         
                         let delta = value.location.x - lastLocation.x
                         let offset = (delta / geometry.size.width) * acceleration

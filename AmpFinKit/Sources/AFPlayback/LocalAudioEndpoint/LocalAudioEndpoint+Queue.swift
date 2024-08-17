@@ -20,28 +20,26 @@ internal extension LocalAudioEndpoint {
             }
         }
         
-        let queueWasEmpty: Bool
+        var queueWasEmpty = false
+        var infiniteNext: Track? = nil
         
         if queue.isEmpty {
-            if infiniteQueue!.isEmpty {   
+            if infiniteQueue!.isEmpty {
                 queue = history
                 history = []
                 
                 queueWasEmpty = true
             } else {
-                queueWasEmpty = false
-                queue.append(infiniteQueue!.removeFirst())
+                infiniteNext = infiniteQueue!.removeFirst()
             }
-        } else {
-            queueWasEmpty = false
         }
         
-        guard !queue.isEmpty else {
+        guard !queue.isEmpty || infiniteNext != nil else {
             stopPlayback()
             return
         }
         
-        nowPlaying = queue.first
+        nowPlaying = queue.first ?? infiniteNext
         
         if advanceAudioPlayer {
             audioPlayer.advanceToNextItem()
@@ -49,8 +47,11 @@ internal extension LocalAudioEndpoint {
         
         playing = !queueWasEmpty || repeatMode != .none
         
-        avPlayerQueue.removeFirst()
-        queue.removeFirst()
+        if infiniteNext == nil {
+            queue.removeFirst()
+        } else {
+            queue = []
+        }
         
         if !playing && advanceAudioPlayer {
             audioPlayer.seek(to: CMTime(seconds: 0, preferredTimescale: 1000))
@@ -72,7 +73,7 @@ internal extension LocalAudioEndpoint {
             }
             
             let historySuffix = history.suffix(20)
-            infiniteQueue!.append(contentsOf: tracks.filter { !historySuffix.contains($0) && !queue.contains($0) })
+            infiniteQueue!.append(contentsOf: tracks.filter { !historySuffix.contains($0) && !queue.contains($0) && $0 != nowPlaying })
         }
     }
 }

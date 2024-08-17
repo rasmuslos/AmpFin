@@ -123,6 +123,10 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
     
     var queue: [Track] {
         didSet {
+            if queue.isEmpty && nowPlaying != nil {
+                populateAVPlayerQueue()
+            }
+            
             guard oldValue != queue else {
                 return
             }

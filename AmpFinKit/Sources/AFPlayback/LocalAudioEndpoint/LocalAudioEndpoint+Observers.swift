@@ -84,7 +84,6 @@ internal extension LocalAudioEndpoint {
                 currentTime = 0
                 playing = true
             } else {
-                print(audioPlayer.currentTime())
                 advance(advanceAudioPlayer: false)
             }
         }

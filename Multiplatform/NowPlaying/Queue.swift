@@ -15,6 +15,7 @@ internal extension NowPlaying {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         @Environment(ViewModel.self) private var viewModel
         
+        @State private var toggledRow: Int? = nil
         @State private var dragging: (Int, Track)? = nil
         
         var body: some View {
@@ -28,7 +29,7 @@ internal extension NowPlaying {
                         ScrollView {
                             LazyVStack(spacing: 0) {
                                 QueueSection(tracks: viewModel.history, emptyText: "history.empty", defaultScrollAnchorAtBottom: true) { track, index in
-                                    Row(track: track, draggable: false) {
+                                    Row(track: track, toggled: .constant(false)) {
                                         AudioPlayer.current.removePlayed(at: index)
                                     }
                                     .onTapGesture {
@@ -39,7 +40,12 @@ internal extension NowPlaying {
                                 .frame(height: proxy.size.height)
                                 
                                 QueueSection(tracks: viewModel.queue, emptyText: "queue.empty") { track, index in
-                                    Row(track: track, draggable: true) {
+                                    Row(track: track, toggled: .init(get: { toggledRow == index }, set: {
+                                        if $0 {
+                                            toggledRow = index
+                                        }
+                                    })) {
+                                        toggledRow = nil
                                         let _ = AudioPlayer.current.remove(at: index)
                                     }
                                     .shadow(radius: dragging?.0 == index ? 8 : 0)
@@ -63,7 +69,7 @@ internal extension NowPlaying {
                                 
                                 if let infiniteQueue = viewModel.infiniteQueue {
                                     QueueSection(tracks: infiniteQueue, emptyText: "infiniteQueue.empty") { track, index in
-                                        Row(track: track, draggable: false) {
+                                        Row(track: track, toggled: .constant(false)) {
                                             let _ = AudioPlayer.current.remove(at: viewModel.queue.count + index)
                                         }
                                         .onTapGesture {
@@ -82,14 +88,14 @@ internal extension NowPlaying {
                         .scrollPosition(id: $viewModel.queueTab, anchor: .top)
                         .mask(
                             VStack(spacing: 0) {
-                                LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
-                                    .frame(height: 24)
+                                LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]), startPoint: .top, endPoint: .bottom)
+                                    .frame(height: 32)
                                 
                                 Rectangle()
                                     .fill(Color.black)
                                 
-                                LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
-                                    .frame(height: 24)
+                                LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                                    .frame(height: 32)
                             }
                         )
                         .onChange(of: viewModel.currentTab, initial: true) {
@@ -282,10 +288,8 @@ private struct QueueSection<Content: View>: View {
 
 private struct Row: View {
     let track: Track
-    let draggable: Bool
+    @Binding var toggled: Bool
     let remove: (() -> Void)
-    
-    @State private var removeVisible = false
     
     var body: some View {
         HStack(spacing: 0) {
@@ -309,7 +313,7 @@ private struct Row: View {
             Spacer()
             
             Group {
-                if removeVisible || !draggable {
+                if toggled {
                     Button {
                         remove()
                     } label: {
@@ -323,7 +327,7 @@ private struct Row: View {
                 } else {
                     Button {
                         withAnimation {
-                            removeVisible = true
+                            toggled = true
                         }
                     } label: {
                         Label("queue.reorder", systemImage: "line.3.horizontal")
@@ -352,9 +356,18 @@ private class TrackItemProvider: NSItemProvider {
         didEnd()
     }
 }
-private struct TrackDropDelegate: DropDelegate {
+private class TrackDropDelegate: DropDelegate {
     var current: (Int, Track)
     var dragging: Binding<(Int, Track)?>
+    
+    var timeout: Task<Void, Error>?
+    
+    init(current: (Int, Track), dragging: Binding<(Int, Track)?>) {
+        self.current = current
+        self.dragging = dragging
+        
+        timeout = nil
+    }
     
     func performDrop(info: DropInfo) -> Bool {
         dragging.wrappedValue = nil
@@ -366,8 +379,19 @@ private struct TrackDropDelegate: DropDelegate {
             return
         }
         
-        AudioPlayer.current.move(from: index, to: current.0)
-        dragging.wrappedValue?.0 = current.0
+        self.timeout?.cancel()
+        self.timeout = Task { [self] in
+            try await Task.sleep(nanoseconds: UInt64(0.4) * NSEC_PER_SEC)
+            try Task.checkCancellation()
+            
+            AudioPlayer.current.move(from: index, to: current.0)
+            dragging.wrappedValue?.0 = current.0
+        }
+    }
+    
+    func dropExited(info: DropInfo) {
+        self.timeout?.cancel()
+        self.timeout = nil
     }
     
     func dropUpdated(info: DropInfo) -> DropProposal? {

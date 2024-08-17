@@ -45,6 +45,8 @@ internal extension LocalAudioEndpoint {
         playing = true
     }
     func stopPlayback() {
+        audioPlayer.removeAllItems()
+        
         playing = false
         
         history = []
