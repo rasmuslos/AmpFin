@@ -11,13 +11,14 @@ import UIKit
 internal extension UIApplication {
     func addGestureRecognizer() {
         guard let window = (connectedScenes.first as? UIWindowScene)?.windows.first else { return }
-        let gesture = UITapGestureRecognizer(target: window, action: nil)
         
-        gesture.requiresExclusiveTouchType = false
-        gesture.cancelsTouchesInView = false
-        gesture.delegate = self
+        let tapGesture = UITapGestureRecognizer(target: window, action: nil)
         
-        window.addGestureRecognizer(gesture)
+        tapGesture.requiresExclusiveTouchType = false
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
+        
+        window.addGestureRecognizer(tapGesture)
     }
     
     static let tapGestureFiredNotification = Notification.Name("io.rfk.ampfin.tapGestureFiredNotification")

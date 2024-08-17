@@ -32,6 +32,59 @@ internal extension NowPlaying {
                                     Row(track: track, toggled: .constant(false)) {
                                         AudioPlayer.current.removePlayed(at: index)
                                     }
+                                    .contextMenu {
+                                        QueueButtons {
+                                            if $0 {
+                                                AudioPlayer.current.queue(track, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
+                                            } else {
+                                                AudioPlayer.current.queue(track, after: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
+                                            }
+                                        }
+                                        
+                                        Divider()
+                                        
+                                        Button {
+                                            track.favorite.toggle()
+                                        } label: {
+                                            Label("favorite", systemImage: track.favorite ? "star.fill" : "star")
+                                        }
+                                        
+                                        Button {
+                                            viewModel.addToPlaylistTrack = track
+                                        } label: {
+                                            Label("playlist.add", systemImage: "plus")
+                                        }
+                                        .disabled(!JellyfinClient.shared.online)
+                                        
+                                        Divider()
+                                        
+                                        Button(action: { Navigation.navigate(albumId: track.album.id) }) {
+                                            Label("album.view", systemImage: "square.stack")
+                                            
+                                            if let albumName = track.album.name {
+                                                Text(albumName)
+                                            }
+                                        }
+                                        
+                                        ForEach(track.artists) { artist in
+                                            Button {
+                                                Navigation.navigate(artistId: artist.id)
+                                            } label: {
+                                                Label("artist.view", systemImage: "music.mic")
+                                                Text(artist.name)
+                                            }
+                                        }
+                                        
+                                        Divider()
+                                        
+                                        Button(role: .destructive) {
+                                            AudioPlayer.current.removePlayed(at: index)
+                                        } label: {
+                                            Label("queue.remove", systemImage: "xmark")
+                                        }
+                                    } preview: {
+                                        TrackCollection.TrackPreview(track: track)
+                                    }
                                     .onTapGesture {
                                         AudioPlayer.current.restorePlayed(upTo: index)
                                     }

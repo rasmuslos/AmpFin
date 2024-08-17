@@ -25,7 +25,7 @@ internal extension NowPlaying {
         // MARK: Current presentation state
         
         @MainActor var mediaInfoToggled = false
-        @MainActor var addToPlaylistSheetPresented: Bool
+        @MainActor var addToPlaylistTrack: Track?
         
         // MARK: Sliders
         
@@ -95,7 +95,7 @@ internal extension NowPlaying {
             currentTab = .cover
             
             mediaInfoToggled = false
-            addToPlaylistSheetPresented = false
+            addToPlaylistTrack = nil
             
             seekDragging = false
             volumeDragging = false
@@ -184,14 +184,6 @@ internal extension NowPlaying.ViewModel {
         }
         
         return nil
-    }
-    @MainActor
-    var addToPlaylistTrack: Track? {
-        guard addToPlaylistSheetPresented else {
-            return nil
-        }
-        
-        return track
     }
     
     @MainActor
@@ -342,6 +334,7 @@ private extension NowPlaying.ViewModel {
                             }
                         }
                         
+                        self?.setActiveLine(0)
                         self?.updateLyricsIndex()
                     }
                 }
@@ -379,6 +372,8 @@ private extension NowPlaying.ViewModel {
                     self?.history = AudioPlayer.current.history
                     self?.queue = AudioPlayer.current.queue
                     self?.infiniteQueue = AudioPlayer.current.infiniteQueue
+                    
+                    self?.allowQueueLater = AudioPlayer.current.allowQueueLater
                     
                     if self?.queue.isEmpty == true && self?.history.isEmpty == true {
                         self?.queueTab = .queue
@@ -450,7 +445,7 @@ internal extension NowPlaying.ViewModel {
                 controlsVisible = true
             }
             
-            addToPlaylistSheetPresented = false
+            addToPlaylistTrack = nil
             
             UIApplication.shared.isIdleTimerDisabled = presented
             

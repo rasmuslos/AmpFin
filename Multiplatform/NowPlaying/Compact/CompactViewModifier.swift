@@ -119,7 +119,11 @@ extension NowPlaying {
             .modifier(Navigation.NavigationModifier() {
                 viewModel.setPresented(false)
             })
-            .sheet(item: .init(get: { viewModel.addToPlaylistTrack }, set: { viewModel.addToPlaylistSheetPresented = ($0 != nil) })) {
+            .sheet(item: .init(get: { viewModel.addToPlaylistTrack }, set: {
+                if $0 == nil {
+                    viewModel.addToPlaylistTrack = nil
+                }
+            })) {
                 PlaylistAddSheet(track: $0)
             }
         }

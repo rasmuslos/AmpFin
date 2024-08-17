@@ -146,7 +146,7 @@ private struct ArtistsMenu: View {
             }
             
             Button {
-                viewModel.addToPlaylistSheetPresented.toggle()
+                viewModel.addToPlaylistTrack = track
             } label: {
                 Label("playlist.add", systemImage: "plus")
             }
