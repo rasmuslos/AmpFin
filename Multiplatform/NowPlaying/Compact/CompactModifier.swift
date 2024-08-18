@@ -39,6 +39,7 @@ internal extension NowPlaying {
                             CollapsedForeground(track: track)
                                 .transition(.opacity)
                                 .opacity(viewModel.expanded ? 0 : 1)
+                                .allowsHitTesting(!viewModel.expanded)
                             
                             ExpandedForeground(track: track)
                                 .transition(.move(edge: .bottom))
@@ -117,7 +118,7 @@ private struct ExpandedForeground: View {
             }
         }
         .padding(.horizontal, 28)
-        .padding(.top, viewModel.expanded ? UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top : 0)
+        .padding(.top, viewModel.expanded ? (UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top ?? 100) - 20 : 0)
         .environment(\.colorScheme, .light)
         .persistentSystemOverlays(viewModel.outputRoute.showLabel ? .hidden : .automatic)
     }
