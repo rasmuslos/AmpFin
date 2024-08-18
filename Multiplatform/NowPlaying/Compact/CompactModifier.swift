@@ -36,14 +36,14 @@ internal extension NowPlaying {
                         
                         // Foreground
                         VStack(spacing: 0) {
-                            if !viewModel.expanded {
-                                CollapsedForeground(track: track)
-                                    .transition(.opacity)
-                            }
+                            CollapsedForeground(track: track)
+                                .transition(.opacity)
+                                .opacity(viewModel.expanded ? 0 : 1)
                             
                             ExpandedForeground(track: track)
                                 .transition(.move(edge: .bottom))
                         }
+                        .clipped()
                     }
                     .offset(x: 0, y: viewModel.dragOffset)
                     .ignoresSafeArea(edges: .all)
@@ -132,9 +132,11 @@ private struct CollapsedForeground: View {
             viewModel.setPresented(!viewModel.expanded)
         } label: {
             HStack(spacing: 8) {
-                ItemImage(cover: track.cover)
-                    .frame(width: 40, height: 40)
-                    .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
+                if !viewModel.expanded {
+                    ItemImage(cover: track.cover)
+                        .frame(width: 40, height: 40)
+                        .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
+                }
                 
                 Text(track.name)
                     .lineLimit(1)

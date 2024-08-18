@@ -267,12 +267,14 @@ private extension NowPlaying.ViewModel {
         tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.trackDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
             Task {
                 await MainActor.run { [weak self] in
-                    if self?.nowPlaying == nil && AudioPlayer.current.nowPlaying != nil {
+                    let nowPlaying = self?.nowPlaying
+                    
+                    self?.mediaInfo = nil
+                    self?.nowPlaying = AudioPlayer.current.nowPlaying
+                    
+                    if nowPlaying == nil && self?.nowPlaying != nil {
                         self?.setPresented(true)
                     }
-                    
-                    self?.nowPlaying = AudioPlayer.current.nowPlaying
-                    self?.mediaInfo = nil
                 }
                 
                 await withTaskGroup(of: Void.self) {

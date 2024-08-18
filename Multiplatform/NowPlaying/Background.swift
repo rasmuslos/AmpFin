@@ -69,6 +69,7 @@ internal extension NowPlaying {
                     
                     Rectangle()
                 }
+                .drawingGroup()
             }
             #endif
         }
