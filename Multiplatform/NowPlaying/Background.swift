@@ -57,21 +57,6 @@ internal extension NowPlaying {
             }
             .allowsHitTesting(false)
             .overlay(.black.opacity(0.25))
-            #if !os(visionOS)
-            .mask {
-                VStack(spacing: 0) {
-                    UnevenRoundedRectangle(topLeadingRadius: viewModel.showRoundedCorners ? UIScreen.main.displayCornerRadius : 0,
-                                           bottomLeadingRadius: 0,
-                                           bottomTrailingRadius: 0,
-                                           topTrailingRadius: viewModel.showRoundedCorners ? UIScreen.main.displayCornerRadius : 0,
-                                           style: .continuous)
-                    .frame(height: 50)
-                    
-                    Rectangle()
-                }
-                .drawingGroup()
-            }
-            #endif
         }
     }
 }

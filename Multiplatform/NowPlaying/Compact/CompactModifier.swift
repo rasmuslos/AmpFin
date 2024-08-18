@@ -26,12 +26,12 @@ internal extension NowPlaying {
                             
                             Rectangle()
                                 .foregroundStyle(.regularMaterial)
-                                .clipShape(.rect(cornerRadius: 16, style: .continuous))
                                 .shadow(color: .black.opacity(0.4), radius: 20)
                                 .opacity(viewModel.expanded ? 0 : 1)
                             
                         }
                         .allowsHitTesting(false)
+                        .clipShape(.rect(cornerRadius: viewModel.backgroundCornerRadius, style: .continuous))
                         .animation(.spring, value: viewModel.expanded)
                         
                         // Foreground

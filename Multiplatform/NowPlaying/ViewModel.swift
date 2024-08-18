@@ -187,8 +187,16 @@ internal extension NowPlaying.ViewModel {
     }
     
     @MainActor
-    var showRoundedCorners: Bool {
-        dragOffset != 0 || !expanded
+    var backgroundCornerRadius: CGFloat {
+        guard expanded else {
+            return 16
+        }
+        
+        if dragOffset > 0 {
+            return UIScreen.main.displayCornerRadius
+        }
+        
+        return 0
     }
     
     @MainActor
