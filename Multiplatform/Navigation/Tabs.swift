@@ -102,9 +102,9 @@ internal struct Tabs: View {
                     Label("tab.search", systemImage: "magnifyingglass")
                 }
             }
-            .modifier(NowPlaying.CompactBarModifier())
+            .modifier(NowPlaying.CompactTabBarBackgroundModifier())
         }
-        .modifier(NowPlaying.CompactViewModifier())
+        .modifier(NowPlaying.CompactModifier())
         .modifier(Navigation.NotificationModifier(
             navigateAlbum: {
                 if OfflineManager.shared.offlineStatus(albumId: $0) == .downloaded {

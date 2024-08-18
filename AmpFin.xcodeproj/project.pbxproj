@@ -22,6 +22,7 @@
 		3A234E152AA8DBC900197AA7 /* SortSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E142AA8DBC900197AA7 /* SortSelector.swift */; };
 		3A234E182AA8E0AD00197AA7 /* TrackListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E172AA8E0AD00197AA7 /* TrackListRow.swift */; };
 		3A234E202AA8E8A000197AA7 /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A234E1F2AA8E8A000197AA7 /* TrackList.swift */; };
+		3A243A4A2C724ACD0071E4E1 /* CompactTabBarBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A243A492C724ACD0071E4E1 /* CompactTabBarBackgroundModifier.swift */; };
 		3A2442002BF52682000657CB /* String+Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2441FF2BF52682000657CB /* String+Distance.swift */; };
 		3A24E5D92B4BF5850052DD20 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A24E5D82B4BF5850052DD20 /* Settings.bundle */; };
 		3A24E5DC2B4BF7860052DD20 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A24E5DE2B4BF7860052DD20 /* AppIntentVocabulary.plist */; };
@@ -78,7 +79,7 @@
 		3A8850622AA90D1200456DDD /* AlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8850612AA90D1200456DDD /* AlbumsView.swift */; };
 		3A8850642AA90E4600456DDD /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8850632AA90E4600456DDD /* AlbumView.swift */; };
 		3A8850662AA9165300456DDD /* TrackListButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8850652AA9165300456DDD /* TrackListButtons.swift */; };
-		3A8B993C2AA9FCC6004AAA7B /* CompactViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B993B2AA9FCC5004AAA7B /* CompactViewModifier.swift */; };
+		3A8B993C2AA9FCC6004AAA7B /* CompactModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B993B2AA9FCC5004AAA7B /* CompactModifier.swift */; };
 		3A8B993E2AA9FE02004AAA7B /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B993D2AA9FE02004AAA7B /* Title.swift */; };
 		3A8B99402AAA0085004AAA7B /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B993F2AAA0085004AAA7B /* Controls.swift */; };
 		3A8B99422AAA0880004AAA7B /* VolumeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B99412AAA0880004AAA7B /* VolumeSlider.swift */; };
@@ -110,7 +111,6 @@
 		3ADE8E982AA92B47009826A3 /* Color+IsLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */; };
 		3ADE8EA02AA93D39009826A3 /* AlbumView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8E9F2AA93D39009826A3 /* AlbumView+Toolbar.swift */; };
 		3ADE8EA42AA94142009826A3 /* UINavigationController+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */; };
-		3ADE8EA72AA9464D009826A3 /* CompactBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE8EA62AA9464D009826A3 /* CompactBarModifier.swift */; };
 		3AE1B0DC2ABCDA0A0052C8AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */; };
 		3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3AE1B0E22ABCDCE80052C8AA /* NukeUI */; };
 		3AEB322B2AA7EC3C00853210 /* MultiplatformApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEB321A2AA7EC3C00853210 /* MultiplatformApp.swift */; };
@@ -164,6 +164,7 @@
 		3A234E142AA8DBC900197AA7 /* SortSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelector.swift; sourceTree = "<group>"; };
 		3A234E172AA8E0AD00197AA7 /* TrackListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListRow.swift; sourceTree = "<group>"; };
 		3A234E1F2AA8E8A000197AA7 /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
+		3A243A492C724ACD0071E4E1 /* CompactTabBarBackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactTabBarBackgroundModifier.swift; sourceTree = "<group>"; };
 		3A2441FF2BF52682000657CB /* String+Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Distance.swift"; sourceTree = "<group>"; };
 		3A24E5D82B4BF5850052DD20 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		3A24E5DD2B4BF7860052DD20 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
@@ -224,7 +225,7 @@
 		3A8850612AA90D1200456DDD /* AlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsView.swift; sourceTree = "<group>"; };
 		3A8850632AA90E4600456DDD /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
 		3A8850652AA9165300456DDD /* TrackListButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListButtons.swift; sourceTree = "<group>"; };
-		3A8B993B2AA9FCC5004AAA7B /* CompactViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactViewModifier.swift; sourceTree = "<group>"; };
+		3A8B993B2AA9FCC5004AAA7B /* CompactModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactModifier.swift; sourceTree = "<group>"; };
 		3A8B993D2AA9FE02004AAA7B /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
 		3A8B993F2AAA0085004AAA7B /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		3A8B99412AAA0880004AAA7B /* VolumeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeSlider.swift; sourceTree = "<group>"; };
@@ -261,7 +262,6 @@
 		3ADE8E972AA92B47009826A3 /* Color+IsLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+IsLight.swift"; sourceTree = "<group>"; };
 		3ADE8E9F2AA93D39009826A3 /* AlbumView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumView+Toolbar.swift"; sourceTree = "<group>"; };
 		3ADE8EA32AA94142009826A3 /* UINavigationController+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Gesture.swift"; sourceTree = "<group>"; };
-		3ADE8EA62AA9464D009826A3 /* CompactBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactBarModifier.swift; sourceTree = "<group>"; };
 		3AE1B0DB2ABCDA0A0052C8AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AEB321A2AA7EC3C00853210 /* MultiplatformApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiplatformApp.swift; sourceTree = "<group>"; };
 		3AEB321F2AA7EC3C00853210 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -483,8 +483,8 @@
 		3AAE1B492BC584D100FD0200 /* Compact */ = {
 			isa = PBXGroup;
 			children = (
-				3ADE8EA62AA9464D009826A3 /* CompactBarModifier.swift */,
-				3A8B993B2AA9FCC5004AAA7B /* CompactViewModifier.swift */,
+				3A243A492C724ACD0071E4E1 /* CompactTabBarBackgroundModifier.swift */,
+				3A8B993B2AA9FCC5004AAA7B /* CompactModifier.swift */,
 			);
 			path = Compact;
 			sourceTree = "<group>";
@@ -849,11 +849,10 @@
 				3A8850602AA90CA200456DDD /* AlbumGrid.swift in Sources */,
 				3A98A02E2AABA36600EA84CF /* LoadingView.swift in Sources */,
 				3AAC768D2B02C68600E337C1 /* ItemImage.swift in Sources */,
-				3ADE8EA72AA9464D009826A3 /* CompactBarModifier.swift in Sources */,
 				3A1CBC192B0D284200855A70 /* Navigation.swift in Sources */,
 				3A88505C2AA909CE00456DDD /* AlbumCover.swift in Sources */,
 				3A5515EE2BC3E1CA00B922D7 /* Sidebar.swift in Sources */,
-				3A8B993C2AA9FCC6004AAA7B /* CompactViewModifier.swift in Sources */,
+				3A8B993C2AA9FCC6004AAA7B /* CompactModifier.swift in Sources */,
 				3A62CC492C08BC790093EA66 /* Double+Duration.swift in Sources */,
 				3A6F50AD2AACAFDF00FC8A29 /* AlbumLoadView.swift in Sources */,
 				3A3BC2152C537F7700F339A6 /* ViewModel.swift in Sources */,
@@ -900,6 +899,7 @@
 				3AFCD1212BC5CB6A00589301 /* Buttons.swift in Sources */,
 				3AEB322B2AA7EC3C00853210 /* MultiplatformApp.swift in Sources */,
 				3A3EA5A72ACC206500600BC5 /* DownloadIndicator.swift in Sources */,
+				3A243A4A2C724ACD0071E4E1 /* CompactTabBarBackgroundModifier.swift in Sources */,
 				3A7939002B387851001B3B3D /* OfflineLibraryDataProvider.swift in Sources */,
 				3AAE1B512BC591E500FD0200 /* Background.swift in Sources */,
 				3A8850662AA9165300456DDD /* TrackListButtons.swift in Sources */,

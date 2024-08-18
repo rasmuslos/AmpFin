@@ -118,7 +118,7 @@ extension NowPlaying {
                             AudioPlayer.current.queue(tracks, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                             return true
                         }
-                        .fullScreenCover(isPresented: .init(get: { viewModel.presented }, set: { viewModel.setPresented($0) })) {
+                        .fullScreenCover(isPresented: .init(get: { viewModel.expanded }, set: { viewModel.setPresented($0) })) {
                             RegularView()
                                 .ignoresSafeArea(edges: .all)
                         }

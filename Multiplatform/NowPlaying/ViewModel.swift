@@ -18,7 +18,7 @@ internal extension NowPlaying {
         @ObservationIgnored var namespace: Namespace.ID!
         @MainActor var _dragOffset: CGFloat
         
-        @MainActor private(set) var presented: Bool
+        @MainActor private(set) var expanded: Bool
         @MainActor var queueTab: QueueTab? = .queue
         @MainActor private(set) var currentTab: NowPlaying.Tab
         
@@ -91,7 +91,7 @@ internal extension NowPlaying {
             namespace = nil
             _dragOffset = .zero
             
-            presented = false
+            expanded = false
             currentTab = .cover
             
             mediaInfoToggled = false
@@ -162,12 +162,12 @@ internal extension NowPlaying.ViewModel {
     @MainActor
     var dragOffset: CGFloat {
         get {
-            if !self.presented {
-                return .infinity
+            if !self.expanded {
+                return 0
             }
             
             if self.controlsDragging {
-                return .zero
+                return 0
             }
             
             return self._dragOffset
@@ -179,7 +179,7 @@ internal extension NowPlaying.ViewModel {
     
     @MainActor
     var track: Track? {
-        if presented, let track = nowPlaying {
+        if expanded, let track = nowPlaying {
             return track
         }
         
@@ -188,7 +188,7 @@ internal extension NowPlaying.ViewModel {
     
     @MainActor
     var showRoundedCorners: Bool {
-        dragOffset != 0 || !presented
+        dragOffset != 0 || !expanded
     }
     
     @MainActor
@@ -449,10 +449,8 @@ internal extension NowPlaying.ViewModel {
             
             UIApplication.shared.isIdleTimerDisabled = presented
             
-            withTransaction(\.nowPlayingOverlayToggled, true) {
-                withAnimation(presented ? .bouncy.delay(0.25) : .bouncy) {
-                    self.presented = presented
-                }
+            withAnimation(.spring) {
+                self.expanded = presented
             }
         }
     }

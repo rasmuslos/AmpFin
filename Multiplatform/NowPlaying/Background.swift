@@ -28,11 +28,14 @@ internal extension NowPlaying {
                     Color.black
                     
                     GeometryReader { proxy in
+                        let width = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
+                        let height = proxy.size.height + proxy.safeAreaInsets.top + proxy.safeAreaInsets.bottom
+                        
                         Color.clear
                             .fixedSize()
                             .overlay {
-                                let offsetX = max(0, size - proxy.size.width) * offset
-                                let offsetY = max(0, size - proxy.size.height) * offset
+                                let offsetX = max(0, size - width) * offset
+                                let offsetY = max(0, size - height) * offset
                                 
                                 ItemImage(cover: cover)
                                     .id(cover.url)
@@ -41,7 +44,7 @@ internal extension NowPlaying {
                                     .blur(radius: 100)
                             }
                             .onChange(of: proxy.size, initial: true) {
-                                size = max(size, max(proxy.size.width, proxy.size.height) + 400)
+                                size = max(size, max(width, height) + 400)
                             }
                     }
                     
