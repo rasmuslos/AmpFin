@@ -125,6 +125,7 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
         didSet {
             if queue.isEmpty && nowPlaying != nil {
                 populateAVPlayerQueue()
+                checkAndUpdateInfiniteQueue()
             }
             
             guard oldValue != queue else {

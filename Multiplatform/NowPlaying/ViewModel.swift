@@ -375,7 +375,7 @@ private extension NowPlaying.ViewModel {
                     
                     self?.allowQueueLater = AudioPlayer.current.allowQueueLater
                     
-                    if self?.queue.isEmpty == true && self?.history.isEmpty == true {
+                    if self?.queue.isEmpty == true && self?.history.isEmpty == true && self?.infiniteQueue?.isEmpty ?? true {
                         self?.queueTab = .queue
                     }
                     

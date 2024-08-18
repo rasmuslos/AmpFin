@@ -101,8 +101,7 @@ internal extension NowPlaying {
                                         toggledRow = nil
                                         let _ = AudioPlayer.current.remove(at: index)
                                     }
-                                    .shadow(radius: dragging?.0 == index ? 8 : 0)
-                                    .opacity(dragging?.0 == index ? 0.6 : 1)
+                                    .opacity(dragging?.0 == index && dragging?.1 == track ? 0.6 : 1)
                                     .animation(.spring, value: dragging?.0)
                                     .onDrag {
                                         dragging = (index, track)
