@@ -49,7 +49,7 @@ internal extension NowPlaying {
                     .ignoresSafeArea(edges: .all)
                     .toolbarBackground(.hidden, for: .tabBar)
                     .frame(height: viewModel.expanded ? nil : 56)
-                    .padding(.horizontal, viewModel.expanded ? 0 : 8)
+                    .padding(.horizontal, viewModel.expanded ? 0 : 12)
                     .padding(.bottom, viewModel.expanded ? 0 : 88)
                     .animation(.spring, value: viewModel.expanded)
                 }
@@ -134,7 +134,7 @@ private struct CollapsedForeground: View {
             HStack(spacing: 8) {
                 ItemImage(cover: track.cover)
                     .frame(width: 40, height: 40)
-                    .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topTrailing)
+                    .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
                 
                 Text(track.name)
                     .lineLimit(1)
@@ -169,6 +169,7 @@ private struct CollapsedForeground: View {
                 }
                 .imageScale(.large)
             }
+            .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .foregroundStyle(.primary)
@@ -182,7 +183,7 @@ private struct CollapsedForeground: View {
             AudioPlayer.current.queue(tracks, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
             return true
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 8)
     }
 }
 

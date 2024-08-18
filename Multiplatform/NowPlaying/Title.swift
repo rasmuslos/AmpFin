@@ -57,7 +57,7 @@ internal extension NowPlaying {
                 ItemImage(cover: track.cover)
                     .shadow(radius: 10)
                     .frame(width: 72, height: 72)
-                    .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .bottomTrailing)
+                    .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
                     .transition(.opacity)
                     .onTapGesture {
                         viewModel.selectTab(.cover)
