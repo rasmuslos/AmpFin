@@ -216,7 +216,9 @@ private struct GestureModifier: ViewModifier {
                         if $0.translation.height > 200 && viewModel.dragOffset != 0 {
                             viewModel.setPresented(false)
                         } else {
-                            viewModel.dragOffset = 0
+                            withAnimation {
+                                viewModel.dragOffset = 0
+                            }
                         }
                     }
             )
