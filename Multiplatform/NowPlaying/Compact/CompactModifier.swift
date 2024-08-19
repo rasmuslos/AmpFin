@@ -45,6 +45,8 @@ internal extension NowPlaying {
                                 UnevenRoundedRectangle(bottomLeadingRadius: viewModel.backgroundCornerRadius, bottomTrailingRadius: viewModel.backgroundCornerRadius, style: .continuous)
                                     .frame(maxHeight: 60)
                             }
+                            .compositingGroup()
+                            .drawingGroup()
                         }
                         .shadow(color: .black.opacity(0.4), radius: 20)
                         
