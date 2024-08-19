@@ -57,14 +57,20 @@ internal extension NowPlaying {
         
         var body: some View {
             HStack(spacing: 12) {
-                ItemImage(cover: track.cover)
-                    .shadow(radius: 10)
-                    .frame(width: 72, height: 72)
-                    .matchedGeometryEffect(id: "image", in: viewModel.namespace, properties: .frame, anchor: .topLeading)
-                    .transition(.opacity)
-                    .onTapGesture {
-                        viewModel.selectTab(.cover)
+                Group {
+                    if viewModel.expanded {
+                        ItemImage(cover: track.cover)
+                            .matchedGeometryEffect(id: "image", in: viewModel.namespace, properties: .frame, anchor: .topLeading)
+                    } else {
+                        Rectangle()
+                            .hidden()
                     }
+                }
+                .shadow(radius: 10)
+                .frame(width: 72, height: 72)
+                .onTapGesture {
+                    viewModel.selectTab(.cover)
+                }
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(track.name)
