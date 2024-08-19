@@ -97,7 +97,7 @@ private struct ExpandedForeground: View {
                     } else {
                         NowPlaying.SmallTitle(track: track)
                             .modifier(GestureModifier(active: true))
-                            .padding(.top, 40)
+                            .padding(.top, 20)
                         
                         if viewModel.currentTab == .lyrics {
                             NowPlaying.Lyrics()
@@ -140,7 +140,6 @@ private struct ExpandedForeground: View {
             }
         }
         .padding(.horizontal, 28)
-        .padding(.top, viewModel.expanded ? 8 : 0)
         .environment(\.colorScheme, .light)
         .persistentSystemOverlays(viewModel.outputRoute.showLabel ? .hidden : .automatic)
     }
@@ -158,7 +157,7 @@ private struct CollapsedForeground: View {
                 if !viewModel.expanded {
                     ItemImage(cover: track.cover)
                         .frame(width: 40, height: 40)
-                        .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
+                        .matchedGeometryEffect(id: "image", in: viewModel.namespace, properties: .frame, anchor: .topLeading)
                 } else {
                     Rectangle()
                         .hidden()

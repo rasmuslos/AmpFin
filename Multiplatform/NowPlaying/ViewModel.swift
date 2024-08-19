@@ -282,6 +282,8 @@ private extension NowPlaying.ViewModel {
                     
                     if nowPlaying == nil && self?.nowPlaying != nil {
                         self?.setPresented(true)
+                    } else if self?.nowPlaying == nil {
+                        self?.setPresented(false)
                     }
                 }
                 
