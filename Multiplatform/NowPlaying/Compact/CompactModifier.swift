@@ -21,22 +21,40 @@ internal extension NowPlaying {
                     ZStack {
                         // Background
                         ZStack {
+                            // Prevent content from shining through
                             Rectangle()
                                 .foregroundStyle(.background)
                             
+                            // Now playing bar background
                             Rectangle()
                                 .foregroundStyle(.regularMaterial)
-                                .shadow(color: .black.opacity(0.4), radius: 20)
                                 .opacity(viewModel.expanded ? 0 : 1)
                             
+                            // Now playing view background
                             Background()
                                 .opacity(viewModel.expanded ? 1 : 0)
-                            
                         }
                         .allowsHitTesting(false)
-                        .clipShape(.rect(cornerRadius: viewModel.backgroundCornerRadius, style: .continuous))
-                        .animation(.spring, value: viewModel.expanded)
-                        .shadow(color: viewModel.expanded ? .clear : .black.opacity(0.4), radius: 20)
+                        .mask {
+                            VStack(spacing: 0) {
+                                UnevenRoundedRectangle(topLeadingRadius: viewModel.backgroundCornerRadius, topTrailingRadius: viewModel.backgroundCornerRadius, style: .continuous)
+                                    .frame(maxHeight: 60)
+                                
+                                Rectangle()
+                                
+                                UnevenRoundedRectangle(bottomLeadingRadius: viewModel.backgroundCornerRadius, bottomTrailingRadius: viewModel.backgroundCornerRadius, style: .continuous)
+                                    .frame(maxHeight: 60)
+                            }
+                        }
+                        .shadow(color: .black.opacity(0.4), radius: 20)
+                        
+                        // Drag gesture catcher
+                        if viewModel.expanded {
+                            Rectangle()
+                                .foregroundStyle(.clear)
+                                .contentShape(.rect)
+                                .modifier(GestureModifier(active: true))
+                        }
                         
                         // Foreground
                         VStack(spacing: 0) {
@@ -48,7 +66,6 @@ internal extension NowPlaying {
                             ExpandedForeground(track: track)
                                 .transition(.move(edge: .bottom))
                         }
-                        .clipped()
                     }
                     .offset(x: 0, y: viewModel.dragOffset)
                     .ignoresSafeArea(edges: .all)
@@ -56,7 +73,7 @@ internal extension NowPlaying {
                     .frame(height: viewModel.expanded ? nil : 56)
                     .padding(.horizontal, viewModel.expanded ? 0 : 12)
                     .padding(.bottom, viewModel.expanded ? 0 : 88)
-                    .animation(.spring, value: viewModel.expanded)
+                    .animation(.snappy(duration: 0.8), value: viewModel.expanded)
                 }
                 
             }
@@ -73,35 +90,36 @@ private struct ExpandedForeground: View {
     var body: some View {
         VStack(spacing: 0) {
             if viewModel.expanded {
-                if viewModel.currentTab == .cover {
-                    NowPlaying.LargeTitle(track: track)
-                        .modifier(GestureModifier(active: viewModel.currentTab == .cover))
-                } else {
-                    NowPlaying.SmallTitle(track: track)
-                        .modifier(GestureModifier(active: true))
-                        .padding(.top, 40)
-                    
-                    if viewModel.currentTab == .lyrics {
-                        NowPlaying.Lyrics()
-                    } else if viewModel.currentTab == .queue {
-                        NowPlaying.Queue()
-                    }
-                }
-                
-                if viewModel.controlsVisible {
-                    VStack(spacing: 0) {
-                        NowPlaying.Controls(compact: false)
-                            .padding(.top, 4)
-                            .modifier(GestureModifier(active: viewModel.currentTab == .cover))
+                VStack(spacing: 0) {
+                    if viewModel.currentTab == .cover {
+                        NowPlaying.LargeTitle(track: track)
+                            .modifier(GestureModifier(active: true))
+                    } else {
+                        NowPlaying.SmallTitle(track: track)
+                            .modifier(GestureModifier(active: true))
+                            .padding(.top, 40)
                         
-                        NowPlaying.Buttons()
-                            .padding(.top, 28)
-                            .padding(.horizontal, -28)
+                        if viewModel.currentTab == .lyrics {
+                            NowPlaying.Lyrics()
+                        } else if viewModel.currentTab == .queue {
+                            NowPlaying.Queue()
+                        }
                     }
-                    .padding(.top, viewModel.currentTab == .cover ? 20 : 0)
-                    .padding(.bottom, 28)
-                    .transition(.move(edge: .bottom))
+                    
+                    if viewModel.controlsVisible {
+                        VStack(spacing: 0) {
+                            NowPlaying.Controls(compact: false)
+                                .padding(.top, 4)
+                            
+                            NowPlaying.Buttons()
+                                .padding(.top, 28)
+                                .padding(.horizontal, -28)
+                        }
+                        .padding(.top, viewModel.currentTab == .cover ? 20 : 0)
+                        .padding(.bottom, 28)
+                    }
                 }
+                .transition(.move(edge: .bottom))
             }
         }
         .foregroundStyle(.white)
@@ -141,6 +159,10 @@ private struct CollapsedForeground: View {
                     ItemImage(cover: track.cover)
                         .frame(width: 40, height: 40)
                         .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
+                } else {
+                    Rectangle()
+                        .hidden()
+                        .frame(width: 40, height: 40)
                 }
                 
                 Text(track.name)
@@ -181,6 +203,7 @@ private struct CollapsedForeground: View {
         .buttonStyle(.plain)
         .foregroundStyle(.primary)
         .frame(height: 56)
+        .clipShape(.rect(cornerRadius: 16, style: .continuous))
         .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 16, style: .continuous))
         .modifier(NowPlaying.ContextMenuModifier(track: track))
         .draggable(track) {
@@ -209,16 +232,14 @@ private struct GestureModifier: ViewModifier {
                             return
                         }
                         
-                        if $0.velocity.height > 3000 {
+                        if $0.velocity.height > 3500 {
                             viewModel.setPresented(false)
-                        } else if $0.velocity.height < -3000 {
-                            viewModel.dragOffset = 0
                         } else {
-                            viewModel.dragOffset = max(0, $0.translation.height)
+                            viewModel.dragOffset = min(500, max(0, $0.translation.height))
                         }
                     }
                     .onEnded {
-                        if $0.translation.height > 200 && viewModel.dragOffset != 0 {
+                        if $0.translation.height > 200 {
                             viewModel.setPresented(false)
                         } else {
                             withAnimation {

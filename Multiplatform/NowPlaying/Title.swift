@@ -18,11 +18,14 @@ internal extension NowPlaying {
         var body: some View {
             Spacer()
             
-            ItemImage(cover: track.cover)
-                .shadow(radius: 20)
-                .scaleEffect(viewModel.playing ? 1 : 0.8)
-                .animation(.spring(duration: 0.3, bounce: 0.6), value: viewModel.playing)
-                .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
+            if viewModel.expanded {
+                ItemImage(cover: track.cover)
+                    .zIndex(2)
+                    .shadow(radius: 20)
+                    .scaleEffect(viewModel.playing ? 1 : 0.8)
+                    .animation(.spring(duration: 0.3, bounce: 0.6), value: viewModel.playing)
+                    .matchedGeometryEffect(id: "image", in: viewModel.namespace, anchor: .topLeading)
+            }
             
             Spacer()
             

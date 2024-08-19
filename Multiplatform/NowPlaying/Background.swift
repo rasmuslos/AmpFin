@@ -24,7 +24,7 @@ internal extension NowPlaying {
         
         var body: some View {
             ZStack {
-                if let cover = viewModel.track?.cover {
+                if let cover = viewModel.nowPlaying?.cover {
                     Color.black
                     
                     GeometryReader { proxy in
