@@ -459,7 +459,7 @@ internal extension NowPlaying.ViewModel {
             
             UIApplication.shared.isIdleTimerDisabled = presented
             
-            withAnimation(.spring) {
+            withAnimation(.spring(duration: 1)) {
                 self.expanded = presented
             }
         }

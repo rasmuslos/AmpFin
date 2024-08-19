@@ -21,18 +21,22 @@ internal extension NowPlaying {
                     ZStack {
                         // Background
                         ZStack {
-                            Background()
-                                .opacity(viewModel.expanded ? 1 : 0)
+                            Rectangle()
+                                .foregroundStyle(.background)
                             
                             Rectangle()
                                 .foregroundStyle(.regularMaterial)
                                 .shadow(color: .black.opacity(0.4), radius: 20)
                                 .opacity(viewModel.expanded ? 0 : 1)
                             
+                            Background()
+                                .opacity(viewModel.expanded ? 1 : 0)
+                            
                         }
                         .allowsHitTesting(false)
                         .clipShape(.rect(cornerRadius: viewModel.backgroundCornerRadius, style: .continuous))
                         .animation(.spring, value: viewModel.expanded)
+                        .shadow(color: viewModel.expanded ? .clear : .black.opacity(0.4), radius: 20)
                         
                         // Foreground
                         VStack(spacing: 0) {
@@ -118,7 +122,7 @@ private struct ExpandedForeground: View {
             }
         }
         .padding(.horizontal, 28)
-        .padding(.top, viewModel.expanded ? (UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }?.safeAreaInsets.top ?? 100) - 20 : 0)
+        .padding(.top, viewModel.expanded ? 8 : 0)
         .environment(\.colorScheme, .light)
         .persistentSystemOverlays(viewModel.outputRoute.showLabel ? .hidden : .automatic)
     }
@@ -176,6 +180,7 @@ private struct CollapsedForeground: View {
         }
         .buttonStyle(.plain)
         .foregroundStyle(.primary)
+        .frame(height: 56)
         .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 16, style: .continuous))
         .modifier(NowPlaying.ContextMenuModifier(track: track))
         .draggable(track) {
