@@ -64,7 +64,7 @@ struct LyricsSheet: View {
     }
     
     private nonisolated func fetchLyrics(track: Track) async {
-        await MainActor.run {
+        await MainActor.withAnimation {
             failed = false
         }
         
@@ -77,16 +77,14 @@ struct LyricsSheet: View {
         }
         
         guard let lyrics else {
-            await MainActor.run {
+            await MainActor.withAnimation {
                 failed = true
             }
             return
         }
         
-        await MainActor.run {
-            withAnimation {
-                self.lyrics = lyrics
-            }
+        await MainActor.withAnimation {
+            self.lyrics = lyrics
         }
     }
 }

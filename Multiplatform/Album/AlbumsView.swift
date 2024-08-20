@@ -94,7 +94,7 @@ internal struct AlbumsView: View {
         task?.cancel()
         task = Task.detached(priority: .userInitiated) {
             guard let result = try? await dataProvider.albums(limit: 100, startIndex: albums.count, sortOrder: sortOrder, ascending: sortAscending, search: search) else {
-                await MainActor.run {
+                await MainActor.withAnimation {
                     failure = true
                 }
                 return
@@ -102,7 +102,7 @@ internal struct AlbumsView: View {
             
             try Task.checkCancellation()
             
-            await MainActor.run {
+            await MainActor.withAnimation {
                 count = result.1
                 albums += result.0
                 

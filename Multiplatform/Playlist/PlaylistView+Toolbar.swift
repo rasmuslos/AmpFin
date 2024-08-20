@@ -8,159 +8,109 @@
 import Foundation
 import SwiftUI
 import AmpFinKit
-import AFPlayback
 
-extension PlaylistView {
+internal extension PlaylistView {
     struct ToolbarModifier: ViewModifier {
-        @Environment(\.dismiss) private var dismiss
-        
-        let playlist: Playlist
-        
-        @Binding var toolbarVisible: Bool
-        
-        @Binding var tracks: [Track]
-        @Binding var editMode: EditMode
-        
-        @State private var alertPresented = false
-        @State private var offlineTracker: ItemOfflineTracker?
+        @Environment(PlaylistViewModel.self) private var viewModel
         
         func body(content: Content) -> some View {
             content
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        if let offlineTracker {
-                            Button {
-                                if offlineTracker.status == .none {
-                                    Task {
-                                        try! await OfflineManager.shared.download(playlist: playlist)
-                                    }
-                                } else if offlineTracker.status == .downloaded {
-                                    try! OfflineManager.shared.delete(playlistId: playlist.id)
-                                }
-                            } label: {
-                                switch offlineTracker.status {
-                                    case .none:
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Group {
+                            switch viewModel.downloadStatus {
+                                case .none:
+                                    Button {
+                                        viewModel.download()
+                                    } label: {
                                         Label("download", systemImage: "arrow.down")
                                             .labelStyle(.iconOnly)
-                                    case .working:
-                                        ProgressView()
-                                    case .downloaded:
+                                    }
+                                case .downloaded:
+                                    Button {
+                                        viewModel.evict()
+                                    } label: {
                                         Label("download.remove", systemImage: "xmark")
                                             .labelStyle(.iconOnly)
-                                }
+                                    }
+                                default:
+                                    ProgressView()
                             }
-                            .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
-                        } else {
-                            ProgressView()
-                                .task {
-                                    offlineTracker = playlist.offlineTracker
-                                }
                         }
-                    }
+                        .symbolVariant(.circle)
                     
-                    ToolbarItem(placement: .topBarTrailing) {
-                        if editMode == .active {
+                        if viewModel.editMode == .active {
                             Button {
                                 withAnimation {
-                                    editMode = .inactive
+                                    viewModel.editMode = .inactive
                                 }
                             } label: {
                                 Label("done", systemImage: "checkmark")
                                     .labelStyle(.iconOnly)
-                                    .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
+                                    .symbolVariant(.circle)
                             }
                         } else {
                             Menu {
                                 Button {
-                                    playlist.favorite.toggle()
+                                    viewModel.playlist.favorite.toggle()
                                 } label: {
-                                    Label("favorite", systemImage: playlist.favorite ? "star.fill" : "star")
+                                    Label("favorite", systemImage: viewModel.playlist.favorite ? "star.fill" : "star")
+                                }
+                                
+                                Divider()
+                                
+                                Button {
+                                    viewModel.play(shuffled: false)
+                                } label: {
+                                    Label("queue.play", systemImage: "play.fill")
+                                }
+                                Button {
+                                    viewModel.play(shuffled: true)
+                                } label: {
+                                    Label("queue.shuffle", systemImage: "shuffle")
                                 }
                                 
                                 Divider()
                                 
                                 QueueButtons {
-                                    if $0 {
-                                        AudioPlayer.current.queue(tracks, after: 0, playbackInfo: .init(container: playlist, queueLocation: .next))
-                                    } else {
-                                        AudioPlayer.current.queue(tracks, after: AudioPlayer.current.queue.count, playbackInfo: .init(container: playlist, queueLocation: .later))
-                                    }
+                                    viewModel.queue(now: $0)
                                 }
                                 
                                 Divider()
                                 
                                 Button {
                                     withAnimation {
-                                        editMode = .active
+                                        viewModel.editMode = .active
                                     }
                                 } label: {
                                     Label("playlist.edit", systemImage: "pencil")
                                 }
                                 .disabled(!JellyfinClient.shared.online)
                                 
+                                Divider()
+                                
                                 Button(role: .destructive) {
-                                    alertPresented.toggle()
+                                    viewModel.deleteAlertPresented.toggle()
                                 } label: {
-                                    Label("playlist.delete", systemImage: "trash")
+                                    Label("playlist.delete", systemImage: "xmark")
                                 }
                                 .disabled(!JellyfinClient.shared.online)
                                 
-                                if let offlineTracker, offlineTracker.status != .none {
-                                    Divider()
-                                    
+                                if viewModel.downloadStatus != .none {
                                     Button(role: .destructive) {
-                                        try? OfflineManager.shared.delete(playlistId: playlist.id)
+                                        viewModel.evict()
                                     } label: {
-                                        Label("download.remove.force", systemImage: "trash")
+                                        Label(viewModel.downloadStatus == .working ? "download.remove.force" : "download.remove", systemImage: "trash")
                                             .foregroundStyle(.red)
                                     }
                                 }
                             } label: {
                                 Image(systemName: "ellipsis")
-                                    .modifier(FullscreenToolbarModifier(toolbarVisible: toolbarVisible))
+                                    .symbolVariant(.circle)
                             }
                         }
                     }
                 }
-                .alert("playlist.delete.alert", isPresented: $alertPresented) {
-                    Button(role: .cancel) {
-                        alertPresented = false
-                    } label: {
-                        Text("cancel")
-                    }
-                    
-                    Button(role: .destructive) {
-                        Task {
-                            try! await JellyfinClient.shared.delete(identifier: playlist.id)
-                            alertPresented = false
-                            
-                            dismiss()
-                        }
-                    } label: {
-                        Text("playlist.delete.finalize")
-                    }
-                }
-        }
-    }
-}
-
-private struct FullscreenToolbarModifier: ViewModifier {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    let toolbarVisible: Bool
-    
-    func body(content: Content) -> some View {
-        if horizontalSizeClass == .regular {
-            content
-                .symbolVariant(.circle)
-        } else if toolbarVisible {
-            content
-                .symbolVariant(.circle)
-        } else {
-            content
-                .symbolVariant(.circle.fill)
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(.white, .black.opacity(0.25))
         }
     }
 }

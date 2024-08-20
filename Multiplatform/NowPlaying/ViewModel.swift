@@ -274,7 +274,7 @@ private extension NowPlaying.ViewModel {
         
         tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.trackDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
             Task {
-                await MainActor.run { [weak self] in
+                await MainActor.withAnimation { [weak self] in
                     let nowPlaying = self?.nowPlaying
                     
                     self?.mediaInfo = nil
@@ -294,7 +294,7 @@ private extension NowPlaying.ViewModel {
                     $0.addTask {
                         if let cover = await self?.track?.cover {
                             guard let dominantColors = try? await AFVisuals.extractDominantColors(10, cover: cover) else {
-                                await MainActor.run { [weak self] in
+                                await MainActor.withAnimation { [weak self] in
                                     self?.colors = []
                                     self?.highlights = []
                                 }
@@ -305,27 +305,22 @@ private extension NowPlaying.ViewModel {
                             let colors = dominantColors.map { $0.color }
                             let highlights = AFVisuals.determineSaturated(AFVisuals.highPassFilter(colors, threshold: 0.5), threshold: 0.3)
                             
-                            await MainActor.run { [colors, highlights, weak self] in
-                                withAnimation {
-                                    self?.highlights = highlights
-                                    self?.colors = colors.filter { !highlights.contains($0) }
-                                }
+                            await MainActor.withAnimation { [colors, highlights, weak self] in
+                                self?.highlights = highlights
+                                self?.colors = colors.filter { !highlights.contains($0) }
                             }
                         }
                     }
                     // MARK: Fetch Lyrics
                     $0.addTask {
-                        await MainActor.run { [weak self] in
-                            withAnimation {
-                                self?.lyrics = [:]
-                            }
-                            
+                        await MainActor.withAnimation { [weak self] in
+                            self?.lyrics = [:]
                             self?.setActiveLine(0)
                         }
                         
                         let trackId = AudioPlayer.current.nowPlaying?.id
                         
-                        await MainActor.run { [weak self] in
+                        await MainActor.withAnimation { [weak self] in
                             self?.lyricsFetchFailed = trackId == nil
                         }
                         
@@ -339,11 +334,9 @@ private extension NowPlaying.ViewModel {
                             lyrics = try? await JellyfinClient.shared.lyrics(trackId: trackId)
                         }
                         
-                        await MainActor.run { [lyrics, weak self] in
-                            withAnimation {
-                                self?.lyricsFetchFailed = lyrics == nil
-                                self?.lyrics = lyrics ?? [:]
-                            }
+                        await MainActor.withAnimation { [lyrics, weak self] in
+                            self?.lyricsFetchFailed = lyrics == nil
+                            self?.lyrics = lyrics ?? [:]
                         }
                         
                         self?.setActiveLine(0)
@@ -420,11 +413,9 @@ private extension NowPlaying.ViewModel {
     func updateMediaInfo() async {
         let mediaInfo = await AudioPlayer.current.mediaInfo
         
-        await MainActor.run {
-            withAnimation {
-                self.mediaInfo = mediaInfo
-                self.mediaInfoToggled = mediaInfo?.lossless ?? false
-            }
+        await MainActor.withAnimation {
+            self.mediaInfo = mediaInfo
+            self.mediaInfoToggled = mediaInfo?.lossless ?? false
         }
     }
 }
@@ -515,11 +506,9 @@ internal extension NowPlaying.ViewModel {
                 return
             }
             
-            await MainActor.run {
-                withAnimation {
-                    controlsVisible = false
-                    scrolling = false
-                }
+            await MainActor.withAnimation {
+                self.controlsVisible = false
+                self.scrolling = false
             }
         }
     }

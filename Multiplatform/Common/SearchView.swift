@@ -106,7 +106,7 @@ internal struct SearchView: View {
             async let artists = searchTab.dataProvider.artists(limit: 20, startIndex: 0, albumOnly: false, search: search).0
             async let playlists = searchTab.dataProvider.playlists(search: search)
             
-            try? await MainActor.run { [tracks, albums, artists, playlists] in
+            try? await MainActor.withAnimation { [tracks, albums, artists, playlists] in
                 guard !Task.isCancelled else {
                     return
                 }

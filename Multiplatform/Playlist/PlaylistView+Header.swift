@@ -6,15 +6,12 @@
 //
 
 import SwiftUI
+import FluidGradient
 import AmpFinKit
 
 internal extension PlaylistView {
     struct Header: View {
-        let playlist: Playlist
-        
-        @Binding var toolbarVisible: Bool
-        
-        let startPlayback: (_ shuffle: Bool) -> ()
+        @Environment(PlaylistViewModel.self) private var viewModel
         
         @State private var height: CGFloat = .zero
         @State private var offset: CGFloat = .zero
@@ -35,7 +32,7 @@ internal extension PlaylistView {
                             }
                         }
                         .onChange(of: proxy.frame(in: .global).minY) {
-                            toolbarVisible = proxy.frame(in: .global).minY < 0
+                            viewModel.toolbarBackgroundVisible = proxy.frame(in: .global).minY < 0
                         }
                 }
                 
@@ -43,21 +40,22 @@ internal extension PlaylistView {
                     Spacer(minLength: 400)
                     
                     HStack {
-                        Text("playlist.trackCount \(playlist.trackCount)")
+                        Text("playlist.trackCount \(viewModel.playlist.trackCount)")
                         + Text(verbatim: " • ")
-                        + Text(playlist.duration.duration)
+                        + Text(viewModel.playlist.duration.duration)
                     }
                     .font(.subheadline.smallCaps())
                     .fontDesign(.rounded)
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 12)
                     
-                    TrackListButtons(background: .ultraThinMaterial, startPlayback: startPlayback)
+                    TrackListButtons(background: .ultraThinMaterial, startPlayback: viewModel.play)
                 }
                 .padding(.bottom, 12)
                 .padding(.horizontal, 20)
                 .background {
-                    Background(playlist: playlist)
+                    FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: 0.1, blur: 0.7)
+                        .background(.tertiary)
                         .offset(y: -offset)
                         .frame(height: height + offset * 2)
                 }

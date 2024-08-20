@@ -32,7 +32,8 @@ public extension AFVisuals {
     /**
      This method extracts `k` dominant colors from the provided cover image using the Accelerate-Framework to run efficiently on all Apple devices.
      
-     This code is heavily inspired by the Apple Accelerate sample project [Calculating the dominant colors in an image](https://developer.apple.com/documentation/accelerate/vimage/calculating_the_dominant_colors_in_an_image)
+     This code is taken from the Apple Accelerate sample project [Calculating the dominant colors in an image](https://developer.apple.com/documentation/accelerate/vimage/calculating_the_dominant_colors_in_an_image).
+     Some adjustments have been made to convert everything to a static function and to support Swift Concurrency.
      */
     static func extractDominantColors(_ k: Int, cover: Cover) async throws -> [DominantColor] {
         let dimension = 256 // cover.size.dimensions

@@ -145,7 +145,7 @@ internal struct ArtistView: View {
             
             try Task.checkCancellation()
             
-            await MainActor.run {
+            await MainActor.withAnimation {
                 count = result.1
                 albums += result.0
                 

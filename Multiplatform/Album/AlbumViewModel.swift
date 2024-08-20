@@ -114,10 +114,8 @@ extension AlbumViewModel {
         do {
             let tracks = try await dataProvider.tracks(albumId: album.id)
             
-            await MainActor.run {
-                withAnimation {
-                    self.tracks = tracks
-                }
+            await MainActor.withAnimation {
+                self.tracks = tracks
             }
         } catch {
             await MainActor.run {
@@ -136,10 +134,8 @@ extension AlbumViewModel {
             return
         }
         
-        await MainActor.run {
-            withAnimation {
-                self.similarAlbums = similar
-            }
+        await MainActor.withAnimation {
+            self.similarAlbums = similar
         }
     }
     func fetchAlbumsReleasedSameArtist() async {
@@ -153,10 +149,8 @@ extension AlbumViewModel {
             return
         }
         
-        await MainActor.run {
-            withAnimation {
-                self.albumsReleasedSameArtist = albumsReleasedSameArtist
-            }
+        await MainActor.withAnimation {
+            self.albumsReleasedSameArtist = albumsReleasedSameArtist
         }
     }
     
@@ -164,10 +158,8 @@ extension AlbumViewModel {
         if let cover = await album.cover,
            let colors = try? await AFVisuals.extractDominantColors(4, cover: cover),
            let result = AFVisuals.determineSaturated(colors.map { $0.color }) {
-            await MainActor.run {
-                withAnimation {
-                    buttonColor = result
-                }
+            await MainActor.withAnimation {
+                self.buttonColor = result
             }
         }
     }

@@ -11,81 +11,64 @@ import AFPlayback
 
 struct PlaylistView: View {
     @Environment(\.libraryDataProvider) private var dataProvider
+    @Environment(\.dismiss) private var dismiss
     
-    let playlist: Playlist
+    @State private var viewModel: PlaylistViewModel
     
-    @State private var toolbarVisible = false
-    
-    @State private var tracks = [Track]()
-    @State private var editMode: EditMode = .inactive
+    init(playlist: Playlist) {
+        viewModel = .init(playlist)
+    }
     
     var body: some View {
         List {
-            Header(playlist: playlist, toolbarVisible: $toolbarVisible) { shuffle in
-                AudioPlayer.current.startPlayback(tracks: tracks, startIndex: 0, shuffle: shuffle, playbackInfo: .init(container: playlist))
-            }
-            .padding(.bottom, 8)
+            Header()
+                .padding(.bottom, 8)
             
-            TrackList(tracks: tracks, container: playlist, deleteCallback: JellyfinClient.shared.online ? removeTrack : nil, moveCallback: JellyfinClient.shared.online ? moveTrack : nil)
+            TrackList(tracks: viewModel.tracks, container: viewModel.playlist, preview: viewModel.editMode == .active, deleteCallback: viewModel.removeTrack, moveCallback: viewModel.moveTrack)
                 .padding(.horizontal, 20)
         }
         .listStyle(.plain)
-        .environment(\.editMode, $editMode)
-        .environment(\.displayContext, .playlist)
-        .navigationTitle(playlist.name)
         .ignoresSafeArea(edges: .top)
-        .modifier(ToolbarModifier(playlist: playlist, toolbarVisible: $toolbarVisible, tracks: $tracks, editMode: $editMode))
+        .navigationTitle(viewModel.playlist.name)
+        .sensoryFeedback(.error, trigger: viewModel.errorFeedback)
+        .alert("playlist.delete.alert", isPresented: $viewModel.deleteAlertPresented) {
+            Button(role: .cancel) {
+                viewModel.deleteAlertPresented = false
+            } label: {
+                Text("cancel")
+            }
+            Button(role: .destructive) {
+                viewModel.delete()
+            } label: {
+                Text("playlist.delete.finalize")
+            }
+        }
+        .modifier(ToolbarModifier())
+        .environment(\.editMode, $viewModel.editMode)
+        .environment(\.displayContext, .playlist)
+        .environment(viewModel)
         .modifier(NowPlaying.SafeAreaModifier())
-        .task { await loadTracks() }
-        .refreshable { await loadTracks() }
+        .task {
+            viewModel.dataProvider = dataProvider
+            await viewModel.load()
+        }
+        .refreshable {
+            await viewModel.load()
+        }
+        .onChange(of: viewModel.dismiss) {
+            
+        }
         .userActivity("io.rfk.ampfin.playlist") {
-            $0.title = playlist.name
+            $0.title = viewModel.playlist.name
             $0.isEligibleForHandoff = true
-            $0.persistentIdentifier = playlist.id
-            $0.targetContentIdentifier = "playlist:\(playlist.id)"
+            $0.persistentIdentifier = viewModel.playlist.id
+            $0.targetContentIdentifier = "playlist:\(viewModel.playlist.id)"
             $0.userInfo = [
-                "playlistId": playlist.id
+                "playlistId": viewModel.playlist.id
             ]
             $0.webpageURL = URL(string: JellyfinClient.shared.serverUrl.appending(path: "web").absoluteString + "#")!.appending(path: "details").appending(queryItems: [
-                .init(name: "id", value: playlist.id),
+                .init(name: "id", value: viewModel.playlist.id),
             ])
-        }
-    }
-}
-
-private extension PlaylistView {
-    func loadTracks() async {
-        guard let tracks = try? await dataProvider.tracks(playlistId: playlist.id) else {
-            return
-        }
-        
-        self.tracks = tracks
-    }
-    
-    func removeTrack(track: Track) {
-        Task {
-            try await JellyfinClient.shared.remove(trackId: track.id, playlistId: playlist.id)
-            
-            withAnimation {
-                if let firstMatching = tracks.firstIndex(of: track) {
-                    tracks.remove(at: firstMatching)
-                    
-                    playlist.trackCount = tracks.count
-                    playlist.duration = tracks.reduce(0, { $0 + $1.runtime })
-                }
-            }
-        }
-    }
-    
-    func moveTrack(track: Track, to: Int) {
-        Task {
-            var to = to
-            
-            if tracks.firstIndex(of: track)! < to {
-                to -= 1
-            }
-            
-            try await JellyfinClient.shared.move(trackId: track.id, index: to, playlistId: playlist.id)
         }
     }
 }

@@ -145,7 +145,7 @@ private struct ToolbarMenu: View {
             
             if viewModel.downloadStatus != .none {
                 Button(role: .destructive) {
-                    try? OfflineManager.shared.delete(albumId: viewModel.album.id)
+                    viewModel.evict()
                 } label: {
                     Label(viewModel.downloadStatus == .working ? "download.remove.force" : "download.remove", systemImage: "trash")
                         .foregroundStyle(.red)
@@ -180,4 +180,3 @@ private struct FullscreenToolbarModifier: ViewModifier {
         }
     }
 }
-

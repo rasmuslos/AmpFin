@@ -14,6 +14,7 @@ internal struct TrackList: View {
     var count: Int = 0
     
     var container: Item? = nil
+    var preview: Bool = false
     
     var deleteCallback: TrackCollection.DeleteCallback = nil
     var moveCallback: TrackCollection.MoveCallback = nil
@@ -32,7 +33,7 @@ internal struct TrackList: View {
     
     var body: some View {
             ForEach(sorted) { track in
-                TrackListRow(track: track, container: container, deleteCallback: deleteCallback) {
+                TrackListRow(track: track, container: container, preview: preview, deleteCallback: deleteCallback) {
                     if let index = tracks.firstIndex(where: { $0.id == track.id }) {
                         AudioPlayer.current.startPlayback(tracks: tracks, startIndex: index, shuffle: false, playbackInfo: .init(container: container))
                     }
