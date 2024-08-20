@@ -50,15 +50,23 @@ internal extension LocalAudioEndpoint {
             return
         }
         
-        var tracks = [nowPlaying]
-        var startIndex = -1
+        var expected = [nowPlaying]
         
         let candidates = queue.prefix(4) + infiniteQueue!.prefix(4)
-        tracks += candidates.prefix(4)
+        expected += candidates.prefix(4)
         
-        for (index, track) in tracks.enumerated() {
+        
+        if audioPlayer.items().count > avPlayerQueue.count {
+            logger.warning("AVQueuePlayer queue contains more (\(self.audioPlayer.items().count)) items than expected (\(self.avPlayerQueue.count))")
+        }
+        
+        var firstOutdatedIndex = -1
+        
+        // Find the first index where a mismatch occurs
+        for (index, track) in expected.enumerated() {
             guard avPlayerQueue.count > index else {
-                startIndex = index
+                // Queue was shorter and has to be extended
+                firstOutdatedIndex = index
                 break
             }
             
@@ -66,27 +74,28 @@ internal extension LocalAudioEndpoint {
                 continue
             }
             
-            startIndex = index
+            firstOutdatedIndex = index
             break
         }
         
-        guard startIndex > -1 else {
+        logger.info("AVQueuePlayer queue outdated starting from \(firstOutdatedIndex == -1 ? "-" : String(firstOutdatedIndex + 1)) / \(self.avPlayerQueue.count) [\(expected.count) expected]")
+        
+        guard firstOutdatedIndex > -1 else {
             return
         }
         
-        logger.info("AVQueuePlayer queue outdated after index \(startIndex) / \(self.avPlayerQueue.count) [\(self.audioPlayer.items().count) in queue]")
-        
-        let removeStartIndex = min(audioPlayer.items().count, startIndex)
-        
-        for item in audioPlayer.items()[removeStartIndex..<audioPlayer.items().count] {
-            audioPlayer.remove(item)
-        }
-        
-        while startIndex < avPlayerQueue.count {
+        // Remove outdated tracks
+        while firstOutdatedIndex < avPlayerQueue.count {
+            guard let last = audioPlayer.items().last else {
+                break
+            }
+            
+            audioPlayer.remove(last)
             avPlayerQueue.removeLast()
         }
         
-        for track in tracks[startIndex..<tracks.count] {
+        // Fill queue
+        for track in expected[firstOutdatedIndex..<expected.count] {
             audioPlayer.insert(avPlayerItem(track: track), after: nil)
             avPlayerQueue.append(track.id)
         }

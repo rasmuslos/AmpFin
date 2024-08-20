@@ -17,6 +17,10 @@ internal extension LocalAudioEndpoint {
             
             if avPlayerQueue.first == nowPlaying.id {
                 avPlayerQueue.removeFirst()
+                
+                if advanceAudioPlayer {
+                    audioPlayer.advanceToNextItem()
+                }
             }
         }
         
@@ -40,10 +44,6 @@ internal extension LocalAudioEndpoint {
         }
         
         nowPlaying = queue.first ?? infiniteNext
-        
-        if advanceAudioPlayer {
-            audioPlayer.advanceToNextItem()
-        }
         
         playing = !queueWasEmpty || repeatMode != .none
         
