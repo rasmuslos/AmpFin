@@ -452,9 +452,7 @@ internal extension NowPlaying.ViewModel {
             
             UIApplication.shared.isIdleTimerDisabled = presented
             
-            withTransaction(\.nowPlayingToggled, true) {
-                self.expanded = presented
-            }
+            self.expanded = presented
         }
     }
     
@@ -536,8 +534,4 @@ internal extension NowPlaying.ViewModel {
             }
         }
     }
-}
-
-internal extension Transaction {
-    @Entry var nowPlayingToggled = false
 }

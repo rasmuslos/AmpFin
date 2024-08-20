@@ -20,6 +20,6 @@ internal enum DisplayContext: Identifiable, Equatable, Hashable {
     }
 }
 
-extension EnvironmentValues {
+internal extension EnvironmentValues {
     @Entry var displayContext: DisplayContext = .unknown
 }
