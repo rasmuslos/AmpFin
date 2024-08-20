@@ -23,7 +23,7 @@ extension NowPlaying {
                 
                 ZStack(alignment: .leading) {
                     Rectangle()
-                        .foregroundStyle(.gray.opacity(0.4))
+                        .foregroundStyle(.gray.opacity(0.2))
                         .saturation(2)
                     
                     Rectangle()
