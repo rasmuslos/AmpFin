@@ -29,7 +29,7 @@ extension NowPlaying {
                     Rectangle()
                         .frame(width: width)
                         .animation(.spring, value: width)
-                        .foregroundStyle(dragging ? .white.opacity(0.8) : .white.opacity(0.4))
+                        .foregroundStyle(dragging ? .white.opacity(0.8) : .white.opacity(0.6))
                         .saturation(2)
                 }
                 .clipShape(.rect(cornerRadius: 8))
