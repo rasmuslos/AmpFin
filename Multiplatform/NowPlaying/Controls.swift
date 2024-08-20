@@ -74,7 +74,7 @@ private struct ProgressSlider: View {
                     .frame(width: 64, alignment: .trailing)
             }
             .font(.footnote.smallCaps())
-            .foregroundStyle(.white.opacity(0.6))
+            .foregroundStyle(.white.opacity(0.4))
         }
     }
 }
@@ -118,8 +118,8 @@ private struct ControlButtons: View {
             .modifier(HoverEffectModifier())
         }
         .foregroundStyle(.primary)
-        .padding(.top, compact ? 40 : 44)
-        .padding(.bottom, compact ? 60 : 68)
+        .padding(.top, compact ? 48 : 44)
+        .padding(.bottom, compact ? 68 : 68)
     }
 }
 

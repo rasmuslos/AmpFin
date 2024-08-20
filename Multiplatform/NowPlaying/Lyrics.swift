@@ -33,7 +33,7 @@ internal extension NowPlaying {
                             if viewModel.lyricsFetchFailed {
                                 Text("lyrics.failed")
                                     .font(.subheadline)
-                                    .foregroundStyle(.white.opacity(0.6))
+                                    .foregroundStyle(.white.opacity(0.4))
                                     .multilineTextAlignment(.center)
                                     .padding(20)
                             } else {

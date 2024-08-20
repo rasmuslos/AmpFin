@@ -204,7 +204,7 @@ private struct Header: View {
                     }
                 }
                 .font(.caption)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.white.opacity(0.4))
                 .lineLimit(1)
             }
             .contentTransition(.opacity)
@@ -317,7 +317,7 @@ private struct QueueSection<Content: View>: View {
             if tracks.isEmpty {
                 Text(emptyText)
                     .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.white.opacity(0.4))
                     .multilineTextAlignment(.center)
                     .padding(.top, 100)
                     .padding(.horizontal, 20)
@@ -358,7 +358,7 @@ private struct Row: View {
                     Text(artistName)
                         .lineLimit(1)
                         .font(.callout)
-                        .foregroundStyle(.white.opacity(0.6))
+                        .foregroundStyle(.white.opacity(0.4))
                 }
             }
             
@@ -389,7 +389,7 @@ private struct Row: View {
             .bold()
             .fontDesign(.rounded)
             .labelStyle(.iconOnly)
-            .foregroundStyle(.white.opacity(0.6))
+            .foregroundStyle(.white.opacity(0.4))
         }
         .id(track.id)
         .contentShape(.rect)

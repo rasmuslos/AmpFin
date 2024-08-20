@@ -134,7 +134,7 @@ private struct ExpandedForeground: View {
                     viewModel.setPresented(false)
                 } label: {
                     Rectangle()
-                        .foregroundStyle(.white.opacity(0.6))
+                        .foregroundStyle(.white.opacity(0.4))
                         .frame(width: 32, height: 4)
                         .clipShape(.rect(cornerRadius: .infinity))
                 }

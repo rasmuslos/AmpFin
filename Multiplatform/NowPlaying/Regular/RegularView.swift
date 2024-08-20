@@ -105,7 +105,7 @@ internal extension NowPlaying {
                             dismiss()
                         } label: {
                             Rectangle()
-                                .foregroundStyle(.white.opacity(0.6))
+                                .foregroundStyle(.white.opacity(0.4))
                                 .frame(width: 52, height: 8)
                                 .clipShape(.rect(cornerRadius: .infinity))
                         }

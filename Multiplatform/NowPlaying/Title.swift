@@ -164,7 +164,7 @@ private struct ArtistsMenu: View {
                 .lineLimit(1)
         }
         .buttonStyle(.plain)
-        .foregroundStyle(.white.opacity(0.6))
+        .foregroundStyle(.white.opacity(0.4))
         .modifier(HoverEffectModifier())
     }
 }

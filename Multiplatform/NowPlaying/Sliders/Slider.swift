@@ -23,13 +23,14 @@ extension NowPlaying {
                 
                 ZStack(alignment: .leading) {
                     Rectangle()
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(.gray.opacity(0.4))
+                        .saturation(2)
                     
                     Rectangle()
                         .frame(width: width)
                         .animation(.spring, value: width)
-                        .foregroundStyle(.white)
-                        .opacity(dragging ? 1 : 0.6)
+                        .foregroundStyle(dragging ? .white.opacity(0.8) : .white.opacity(0.4))
+                        .saturation(2)
                 }
                 .clipShape(.rect(cornerRadius: 8))
                 .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .global)
@@ -56,7 +57,7 @@ extension NowPlaying {
                         }
                         
                         let velocity = value.velocity.width
-                        let acceleration = velocity > 500 ? 1.5 : 1.2
+                        let acceleration = velocity > 300 ? 1.5 : 1.2
                         
                         let delta = value.location.x - lastLocation.x
                         let offset = (delta / geometry.size.width) * acceleration
