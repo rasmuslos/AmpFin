@@ -82,6 +82,9 @@ internal extension NowPlaying {
                 
             }
             .ignoresSafeArea(edges: .all)
+            .modifier(Navigation.NavigationModifier() {
+                viewModel.setPresented(false)
+            })
         }
     }
 }
