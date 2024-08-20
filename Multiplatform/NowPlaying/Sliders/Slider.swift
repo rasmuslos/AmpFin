@@ -23,12 +23,13 @@ extension NowPlaying {
                 
                 ZStack(alignment: .leading) {
                     Rectangle()
-                        .foregroundStyle(.ultraThinMaterial)
+                        .foregroundStyle(.white.opacity(0.5))
                     
                     Rectangle()
                         .frame(width: width)
                         .animation(.spring, value: width)
-                        .foregroundStyle(dragging ? .ultraThickMaterial : .thickMaterial)
+                        .foregroundStyle(.white)
+                        .opacity(dragging ? 1 : 0.6)
                 }
                 .clipShape(.rect(cornerRadius: 8))
                 .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .global)
@@ -82,8 +83,9 @@ extension NowPlaying {
 }
 
 #Preview {
+    @Previewable @State var dragging = false
     @Previewable @State var percentage = 0.5
     
-    NowPlaying.Slider(percentage: $percentage, dragging: .constant(false))
+    NowPlaying.Slider(percentage: $percentage, dragging: $dragging)
         .padding(.horizontal)
 }

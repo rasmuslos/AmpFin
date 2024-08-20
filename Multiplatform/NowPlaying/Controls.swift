@@ -74,7 +74,7 @@ private struct ProgressSlider: View {
                     .frame(width: 64, alignment: .trailing)
             }
             .font(.footnote.smallCaps())
-            .foregroundStyle(.thinMaterial)
+            .foregroundStyle(.white.opacity(0.6))
         }
     }
 }

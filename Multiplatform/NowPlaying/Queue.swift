@@ -204,7 +204,7 @@ private struct Header: View {
                     }
                 }
                 .font(.caption)
-                .foregroundStyle(.thinMaterial)
+                .foregroundStyle(.white.opacity(0.6))
                 .lineLimit(1)
             }
             .contentTransition(.opacity)
@@ -317,7 +317,7 @@ private struct QueueSection<Content: View>: View {
             if tracks.isEmpty {
                 Text(emptyText)
                     .font(.subheadline)
-                    .foregroundStyle(.regularMaterial)
+                    .foregroundStyle(.white.opacity(0.6))
                     .multilineTextAlignment(.center)
                     .padding(.top, 100)
                     .padding(.horizontal, 20)

@@ -49,7 +49,8 @@ extension NowPlaying {
                 Label("lyrics", systemImage: viewModel.currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
                     .labelStyle(.iconOnly)
             }
-            .foregroundStyle(viewModel.currentTab == .lyrics ? .thickMaterial : .thinMaterial)
+            .foregroundStyle(.white)
+            .opacity(viewModel.currentTab == .lyrics ? 1 : 0.6)
             .animation(.none, value: viewModel.currentTab)
             .buttonStyle(.plain)
             .modifier(HoverEffectModifier(padding: 4))

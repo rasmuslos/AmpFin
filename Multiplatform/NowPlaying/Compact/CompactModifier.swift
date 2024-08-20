@@ -40,12 +40,14 @@ internal extension NowPlaying {
                                 UnevenRoundedRectangle(topLeadingRadius: viewModel.backgroundCornerRadius, topTrailingRadius: viewModel.backgroundCornerRadius, style: .continuous)
                                     .frame(maxHeight: 60)
                                 
+                                // The padding prevents the mask from cutting lines in the background
+                                // during the transformation. They are caused by the `spring` animation.
                                 Rectangle()
+                                    .padding(.vertical, -8)
                                 
                                 UnevenRoundedRectangle(bottomLeadingRadius: viewModel.backgroundCornerRadius, bottomTrailingRadius: viewModel.backgroundCornerRadius, style: .continuous)
                                     .frame(maxHeight: 60)
                             }
-                            .compositingGroup()
                             .drawingGroup()
                         }
                         .shadow(color: .black.opacity(0.4), radius: 20)
@@ -119,6 +121,7 @@ private struct ExpandedForeground: View {
                         }
                         .padding(.top, viewModel.currentTab == .cover ? 20 : 0)
                         .padding(.bottom, 28)
+                        .transition(.move(edge: .bottom))
                     }
                 }
                 .transition(.move(edge: .bottom))
@@ -131,7 +134,7 @@ private struct ExpandedForeground: View {
                     viewModel.setPresented(false)
                 } label: {
                     Rectangle()
-                        .foregroundStyle(.thinMaterial)
+                        .foregroundStyle(.white.opacity(0.6))
                         .frame(width: 32, height: 4)
                         .clipShape(.rect(cornerRadius: .infinity))
                 }
