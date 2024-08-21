@@ -16,6 +16,7 @@ internal extension NowPlaying {
         func body(content: Content) -> some View {
             ZStack(alignment: .bottom) {
                 content
+                    .allowsHitTesting(!viewModel.expanded)
                 
                 if let track = viewModel.nowPlaying {
                     ZStack {
