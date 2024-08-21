@@ -23,13 +23,13 @@ extension NowPlaying {
                 
                 ZStack(alignment: .leading) {
                     Rectangle()
-                        .foregroundStyle(.gray.opacity(0.2))
+                        .foregroundStyle(.gray.opacity(0.3))
                         .saturation(2)
                     
                     Rectangle()
                         .frame(width: width)
                         .animation(.spring, value: width)
-                        .foregroundStyle(dragging ? .white.opacity(0.8) : .white.opacity(0.6))
+                        .foregroundStyle(dragging ? .white : .white.opacity(0.8))
                         .saturation(2)
                 }
                 .clipShape(.rect(cornerRadius: 8))

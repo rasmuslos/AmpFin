@@ -16,6 +16,8 @@ internal extension NowPlaying {
         @Environment(ViewModel.self) private var viewModel
         
         @State private var toggledRow: Int? = nil
+        @State private var infiniteToggledRow: Int? = nil
+        
         @State private var dragging: (Int, Track)? = nil
         
         var body: some View {
@@ -121,8 +123,23 @@ internal extension NowPlaying {
                                 
                                 if let infiniteQueue = viewModel.infiniteQueue {
                                     QueueSection(tracks: infiniteQueue, emptyText: "infiniteQueue.empty") { track, index in
-                                        Row(track: track, toggled: .constant(false)) {
-                                            let _ = AudioPlayer.current.remove(at: viewModel.queue.count + index)
+                                        let audioPlayerIndex = viewModel.queue.count + index
+                                        
+                                        Row(track: track, toggled: .init(get: { toggledRow == audioPlayerIndex }, set: {
+                                            if $0 {
+                                                toggledRow = audioPlayerIndex
+                                            }
+                                        })) {
+                                            toggledRow = nil
+                                            let _ = AudioPlayer.current.remove(at: audioPlayerIndex)
+                                        }
+                                        .onDrag {
+                                            dragging = (audioPlayerIndex, track)
+                                            return TrackItemProvider() {
+                                                dragging = nil
+                                            }
+                                        } preview: {
+                                            TrackCollection.TrackPreview(track: track)
                                         }
                                         .onTapGesture {
                                             AudioPlayer.current.skip(to: viewModel.queue.count + index)

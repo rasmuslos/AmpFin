@@ -56,7 +56,7 @@ internal extension NowPlaying {
                 }
             }
             .allowsHitTesting(false)
-            .overlay(.black.opacity(0.25))
+            .overlay(.black.opacity(0.4))
         }
     }
 }

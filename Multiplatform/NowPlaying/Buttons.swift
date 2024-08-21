@@ -48,6 +48,7 @@ extension NowPlaying {
             } label: {
                 Label("lyrics", systemImage: viewModel.currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
                     .labelStyle(.iconOnly)
+                    .contentShape(.rect)
             }
             .foregroundStyle(.white)
             .opacity(viewModel.currentTab == .lyrics ? 1 : 0.6)
@@ -80,6 +81,7 @@ extension NowPlaying {
             } label: {
                 Label("queue", systemImage: "list.dash")
                     .labelStyle(.iconOnly)
+                    .contentShape(.rect)
             } primaryAction: {
                 viewModel.selectTab(.queue)
             }
@@ -103,6 +105,7 @@ extension NowPlaying {
                         } label: {
                             Label("output", systemImage: routeIcon)
                                 .labelStyle(.iconOnly)
+                                .contentShape(.rect)
                                 .contentTransition(.symbolEffect(.replace.byLayer.downUp))
                         }
                         .buttonStyle(SymbolButtonStyle(active: false))
@@ -132,6 +135,7 @@ extension NowPlaying {
                             } label: {
                                 Label("output", systemImage: routeIcon)
                                     .labelStyle(.iconOnly)
+                                    .contentShape(.rect)
                                     .contentTransition(.symbolEffect(.replace.byLayer.downUp))
                             }
                             .buttonStyle(SymbolButtonStyle(active: false))
@@ -163,6 +167,7 @@ extension NowPlaying {
                     } label: {
                         Label("shuffle", systemImage: "shuffle")
                             .labelStyle(.iconOnly)
+                            .contentShape(.rect)
                     }
                     .buttonStyle(SymbolButtonStyle(active: viewModel.shuffled))
                     
@@ -173,6 +178,7 @@ extension NowPlaying {
                     } label: {
                         Label("repeat", systemImage: "repeat\(viewModel.repeatMode == .track ? ".1" : "")")
                             .labelStyle(.iconOnly)
+                            .contentShape(.rect)
                     }
                     .buttonStyle(SymbolButtonStyle(active: viewModel.repeatMode != .none))
                     
