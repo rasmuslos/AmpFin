@@ -14,6 +14,7 @@ internal struct AccountSheet: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var username: String?
+    @State private var serverVersion: String?
     @State private var downloads: [Track]? = nil
     
     var body: some View {
@@ -112,6 +113,13 @@ internal struct AccountSheet: View {
                 Section("account.server") {
                     Group {
                         Text(JellyfinClient.shared.serverUrl.absoluteString)
+                        
+                        if let serverVersion {
+                            Text("server.version \(serverVersion)")
+                        } else {
+                            ProgressView()
+                        }
+                        
                         Text(JellyfinClient.shared.clientId)
                         Text(JellyfinClient.shared.token)
                             .privacySensitive()
@@ -130,6 +138,7 @@ internal struct AccountSheet: View {
             }
             .task {
                 do {
+                    serverVersion = try? await JellyfinClient.shared.serverVersion()
                     (username, _, _, _) = try await JellyfinClient.shared.userData()
                 } catch {}
             }

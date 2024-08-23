@@ -1965,6 +1965,22 @@
         }
       }
     },
+    "server.version %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version: %@"
+          }
+        }
+      }
+    },
     "shuffle" : {
       "localizations" : {
         "de" : {
