@@ -74,7 +74,7 @@ internal extension NowPlaying {
         @MainActor private(set) var activeLineIndex: Int
         
         @MainActor private(set) var scrolling: Bool
-        @MainActor private(set) var controlsVisible: Bool
+        @MainActor private(set) var _controlsVisible: Bool
         
         @ObservationIgnored private var scrollTimeout: Task<Void, Error>?
         
@@ -133,7 +133,7 @@ internal extension NowPlaying {
             activeLineIndex = 0
             
             scrolling = true
-            controlsVisible = true
+            _controlsVisible = true
             
             scrollTimeout = nil
             
@@ -184,6 +184,15 @@ internal extension NowPlaying.ViewModel {
         }
         
         return nil
+    }
+    
+    @MainActor
+    var controlsVisible: Bool {
+        guard currentTab == .lyrics && !lyricsFetchFailed && !lyrics.isEmpty else {
+            return false
+        }
+        
+        return _controlsVisible
     }
     
     @MainActor
@@ -425,7 +434,7 @@ private extension NowPlaying.ViewModel {
 internal extension NowPlaying.ViewModel {
     func selectTab(_ tab: NowPlaying.Tab) {
         Task { @MainActor in
-            controlsVisible = true
+            _controlsVisible = true
             
             withAnimation(.bouncy) {
                 if currentTab == tab {
@@ -444,10 +453,8 @@ internal extension NowPlaying.ViewModel {
             if presented {
                 dragOffset = 0
             }
-            if currentTab != .lyrics || presented {
-                controlsVisible = true
-            }
             
+            _controlsVisible = true
             addToPlaylistTrack = nil
             
             UIApplication.shared.isIdleTimerDisabled = presented
@@ -487,7 +494,7 @@ internal extension NowPlaying.ViewModel {
             
             withAnimation {
                 scrolling = true
-                controlsVisible = true
+                _controlsVisible = true
             }
         }
         
@@ -505,7 +512,7 @@ internal extension NowPlaying.ViewModel {
             }
             
             await MainActor.withAnimation {
-                self.controlsVisible = false
+                self._controlsVisible = false
                 self.scrolling = false
             }
         }
