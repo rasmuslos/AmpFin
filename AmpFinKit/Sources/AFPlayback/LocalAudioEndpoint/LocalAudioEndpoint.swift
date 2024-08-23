@@ -220,7 +220,16 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
             
             let currentTime = currentTime
             
+            #if canImport(AFOffline)
+            if let nowPlaying, DownloadManager.shared.downloaded(trackId: nowPlaying.id) {
+                avPlayerQueue = [nowPlaying.id]
+            } else {
+                avPlayerQueue = []
+            }
+            #else
             avPlayerQueue = []
+            #endif
+            
             populateAVPlayerQueue()
             
             self.currentTime = currentTime
