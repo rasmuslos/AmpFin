@@ -23,12 +23,20 @@ internal extension NowPlaying {
                         // Background
                         ZStack {
                             // Prevent content from shining through
-                            Rectangle()
-                                .foregroundStyle(.background)
+                            if viewModel.expanded {
+                                Rectangle()
+                                    .foregroundStyle(.background)
+                                    .transition(.opacity)
+                                    .transaction {
+                                        if !viewModel.expanded {
+                                            $0.animation = .smooth.delay(0.6)
+                                        }
+                                    }
+                            }
                             
                             // Now playing bar background
                             Rectangle()
-                                .foregroundStyle(.regularMaterial)
+                                .foregroundStyle(.thinMaterial)
                                 .opacity(viewModel.expanded ? 0 : 1)
                             
                             // Now playing view background
