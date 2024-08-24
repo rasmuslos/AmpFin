@@ -189,7 +189,7 @@ internal extension NowPlaying.ViewModel {
     @MainActor
     var controlsVisible: Bool {
         guard currentTab == .lyrics && !lyricsFetchFailed && !lyrics.isEmpty else {
-            return false
+            return true
         }
         
         return _controlsVisible
