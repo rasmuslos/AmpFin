@@ -55,6 +55,11 @@ extension NowPlaying {
             .animation(.none, value: viewModel.currentTab)
             .buttonStyle(.plain)
             .modifier(HoverEffectModifier(padding: 4))
+            .padding(12)
+            .onTapGesture {
+                viewModel.selectTab(.lyrics)
+            }
+            .padding(-12)
         }
         @ViewBuilder private var queueButton: some View {
             Menu {
@@ -87,6 +92,11 @@ extension NowPlaying {
             }
             .buttonStyle(SymbolButtonStyle(active: viewModel.currentTab == .queue))
             .modifier(HoverEffectModifier(padding: 4))
+            .padding(12)
+            .onTapGesture {
+                viewModel.selectTab(.queue)
+            }
+            .padding(-12)
         }
         
         var body: some View {
@@ -111,6 +121,11 @@ extension NowPlaying {
                         .buttonStyle(SymbolButtonStyle(active: false))
                         .modifier(HoverEffectModifier(padding: 4))
                         .frame(width: 75)
+                        .padding(12)
+                        .onTapGesture {
+                            AirPlay.shared.presentPicker()
+                        }
+                        .padding(-12)
                         .overlay(alignment: .bottom) {
                             if viewModel.outputRoute.showLabel {
                                 Text(viewModel.outputRoute.name)
@@ -170,6 +185,11 @@ extension NowPlaying {
                             .contentShape(.rect)
                     }
                     .buttonStyle(SymbolButtonStyle(active: viewModel.shuffled))
+                    .padding(12)
+                    .onTapGesture {
+                        AudioPlayer.current.shuffled.toggle()
+                    }
+                    .padding(-12)
                     
                     Spacer()
                     
@@ -181,6 +201,11 @@ extension NowPlaying {
                             .contentShape(.rect)
                     }
                     .buttonStyle(SymbolButtonStyle(active: viewModel.repeatMode != .none))
+                    .padding(12)
+                    .onTapGesture {
+                        AudioPlayer.current.repeatMode = viewModel.repeatMode.next
+                    }
+                    .padding(-12)
                     
                     Spacer()
                 }
