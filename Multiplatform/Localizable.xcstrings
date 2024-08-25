@@ -2414,6 +2414,7 @@
       }
     },
     "tip.artistPlayback.message" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2430,6 +2431,7 @@
       }
     },
     "tip.artistPlayback.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2446,6 +2448,7 @@
       }
     },
     "tip.download.message" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2462,6 +2465,7 @@
       }
     },
     "tip.download.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2478,6 +2482,7 @@
       }
     },
     "tip.mix.message" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2494,6 +2499,7 @@
       }
     },
     "tip.mix.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2510,6 +2516,7 @@
       }
     },
     "tip.remote.message" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2526,6 +2533,7 @@
       }
     },
     "tip.remote.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

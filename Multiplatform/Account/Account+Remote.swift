@@ -69,7 +69,6 @@ extension AccountSheet {
                     .foregroundStyle(.primary)
                 }
             }
-            .popoverTip(RemoteTip())
         }
     }
 }

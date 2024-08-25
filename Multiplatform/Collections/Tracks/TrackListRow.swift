@@ -81,7 +81,6 @@ struct TrackListRow: View {
                 }
                 .buttonStyle(.plain)
                 .hoverEffect(.lift)
-                .popoverTip(InstantMixTip())
             }
         }
         .id(track.id)

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 import Nuke
 import Defaults
 import AmpFinKit
@@ -21,10 +20,6 @@ struct MultiplatformApp: App {
         #endif
         
         ImagePipeline.shared = ImagePipeline(configuration: .withDataCache)
-        
-        try? Tips.configure([
-            .displayFrequency(.daily),
-        ])
     }
     
     var body: some Scene {

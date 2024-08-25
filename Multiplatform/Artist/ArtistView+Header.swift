@@ -111,7 +111,6 @@ internal extension ArtistView {
                             .buttonBorderShape(.circle)
                             .hoverEffect(.lift)
                             .font(.title)
-                            .popoverTip(ArtistPlaybackTip())
                         }
                         .padding(.vertical, 12)
                         .padding(.horizontal, 20)
