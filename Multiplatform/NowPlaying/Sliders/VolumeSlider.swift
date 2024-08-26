@@ -7,12 +7,9 @@
 
 import SwiftUI
 import AFPlayback
-import AVKit
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct VolumeSlider: View {
-        @Environment(ViewModel.self) private var viewModel
-        
         @Binding var dragging: Bool
         
         @State private var volume = Double(AudioPlayer.current.volume)

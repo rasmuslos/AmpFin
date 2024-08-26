@@ -116,7 +116,7 @@ private struct FavoriteButton: View {
             }
             .buttonStyle(.plain)
             .modifier(HoverEffectModifier())
-            .sensoryFeedback(track.favorite ? .increase : .decrease, trigger: track.favorite)
+            .sensoryFeedback(.impact(flexibility: track.favorite ? .solid : .soft), trigger: track.favorite)
         }
     }
 }

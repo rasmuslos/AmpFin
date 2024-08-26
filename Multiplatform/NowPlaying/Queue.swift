@@ -169,7 +169,7 @@ internal extension NowPlaying {
                     }
                 }
             }
-            .sensoryFeedback(.levelChange, trigger: viewModel.queueTab)
+            .sensoryFeedback(.selection, trigger: viewModel.queueTab)
         }
     }
 }
