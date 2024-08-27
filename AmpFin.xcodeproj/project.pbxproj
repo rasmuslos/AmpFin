@@ -37,6 +37,7 @@
 		3A36A5A02ADEF99700D83BE7 /* AlbumView+Additional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A59F2ADEF99700D83BE7 /* AlbumView+Additional.swift */; };
 		3A36A5A22ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36A5A12ADF04AB00D83BE7 /* AlbumContextMenuModifier.swift */; };
 		3A36ED3F2BE8EDD200AECE9C /* Account+Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36ED3E2BE8EDD200AECE9C /* Account+Remote.swift */; };
+		3A3A36FA2C7CAE7D001A29FD /* RFKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A3A36F92C7CAE7D001A29FD /* RFKit */; };
 		3A3AF1A62AC4523600811D7D /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AF1A52AC4523600811D7D /* AccountSheet.swift */; };
 		3A3BC2152C537F7700F339A6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3BC2142C537F7700F339A6 /* ViewModel.swift */; };
 		3A3DA6612AAB29470091211A /* ArtistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3DA6602AAB29470091211A /* ArtistsView.swift */; };
@@ -287,6 +288,7 @@
 				3A2146E32BF4D015001DA9E2 /* AmpFinKit in Frameworks */,
 				3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */,
 				3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */,
+				3A3A36FA2C7CAE7D001A29FD /* RFKit in Frameworks */,
 				3A2146E52BF4D019001DA9E2 /* AFPlayback in Frameworks */,
 				3A5515F22BC435A200B922D7 /* Defaults in Frameworks */,
 			);
@@ -681,6 +683,7 @@
 				3A5515F12BC435A200B922D7 /* Defaults */,
 				3A2146E22BF4D015001DA9E2 /* AmpFinKit */,
 				3A2146E42BF4D019001DA9E2 /* AFPlayback */,
+				3A3A36F92C7CAE7D001A29FD /* RFKit */,
 			);
 			productName = JellyfinMusic;
 			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* AmpFin.app */;
@@ -718,6 +721,7 @@
 				3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */,
 				3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 				3A5515F02BC435A200B922D7 /* XCRemoteSwiftPackageReference "Defaults" */,
+				3A3A36F82C7CAE7D001A29FD /* XCRemoteSwiftPackageReference "RFKit" */,
 			);
 			productRefGroup = 3ABAFCAB2AA7D6C40011BFD6 /* Products */;
 			projectDirPath = "";
@@ -1250,6 +1254,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3A3A36F82C7CAE7D001A29FD /* XCRemoteSwiftPackageReference "RFKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rasmuslos/RFKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		3A5515F02BC435A200B922D7 /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
@@ -1288,6 +1300,11 @@
 		3A2146E62BF4D024001DA9E2 /* AmpFinKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AmpFinKit;
+		};
+		3A3A36F92C7CAE7D001A29FD /* RFKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A3A36F82C7CAE7D001A29FD /* XCRemoteSwiftPackageReference "RFKit" */;
+			productName = RFKit;
 		};
 		3A5515F12BC435A200B922D7 /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -72,7 +72,6 @@ internal extension NowPlaying {
                         // Foreground
                         VStack(spacing: 0) {
                             CollapsedForeground(track: track)
-                                .transition(.opacity)
                                 .opacity(viewModel.expanded ? 0 : 1)
                                 .allowsHitTesting(!viewModel.expanded)
                             
@@ -105,12 +104,14 @@ private struct ExpandedForeground: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            if viewModel.expanded && viewModel.currentTab == .cover {
+                NowPlaying.LargeTitle(track: track)
+                    .modifier(GestureModifier(active: true))
+            }
+            
             if viewModel.expanded {
                 VStack(spacing: 0) {
-                    if viewModel.currentTab == .cover {
-                        NowPlaying.LargeTitle(track: track)
-                            .modifier(GestureModifier(active: true))
-                    } else {
+                    if viewModel.currentTab != .cover {
                         NowPlaying.SmallTitle(track: track)
                             .modifier(GestureModifier(active: true))
                             .padding(.top, 20)
@@ -146,7 +147,8 @@ private struct ExpandedForeground: View {
                     viewModel.setPresented(false)
                 } label: {
                     Rectangle()
-                        .foregroundStyle(.white.opacity(0.4))
+                        .foregroundStyle(.thinMaterial)
+                        .saturation(2)
                         .frame(width: 32, height: 4)
                         .clipShape(.rect(cornerRadius: .infinity))
                 }
@@ -172,7 +174,7 @@ private struct CollapsedForeground: View {
         } label: {
             HStack(spacing: 8) {
                 if !viewModel.expanded {
-                    ItemImage(cover: track.cover)
+                    ItemImage(cover: track.cover, cornerRadius: 8)
                         .frame(width: 40, height: 40)
                         .matchedGeometryEffect(id: "image", in: viewModel.namespace, properties: .frame, anchor: .topLeading)
                 } else {
@@ -219,7 +221,7 @@ private struct CollapsedForeground: View {
         .buttonStyle(.plain)
         .foregroundStyle(.primary)
         .frame(height: 56)
-        .clipShape(.rect(cornerRadius: 16, style: .continuous))
+        .clipShape(.rect(cornerRadius: 12, style: .continuous))
         .contentShape(.hoverMenuInteraction, .rect(cornerRadius: 16, style: .continuous))
         .modifier(NowPlaying.ContextMenuModifier(track: track))
         .draggable(track) {

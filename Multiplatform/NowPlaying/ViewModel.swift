@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import RFKVisuals
 import AmpFinKit
 import AFPlayback
 
@@ -80,9 +81,9 @@ internal extension NowPlaying {
         
         // MARK: Helper
         
-        @MainActor private(set) var notifyPlaying: Bool
-        @MainActor private(set) var notifyForwards: Bool
-        @MainActor private(set) var notifyBackwards: Bool
+        @MainActor private(set) var notifyPlaying: Int
+        @MainActor private(set) var notifyForwards: Int
+        @MainActor private(set) var notifyBackwards: Int
         
         @ObservationIgnored private var tokens = [Any]()
         
@@ -137,9 +138,9 @@ internal extension NowPlaying {
             
             scrollTimeout = nil
             
-            notifyPlaying = false
-            notifyForwards = false
-            notifyBackwards = false
+            notifyPlaying = 0
+            notifyForwards = 0
+            notifyBackwards = 0
             
             setupObservers()
         }
@@ -162,15 +163,11 @@ internal extension NowPlaying.ViewModel {
     @MainActor
     var dragOffset: CGFloat {
         get {
-            if !self.expanded {
+            if !expanded || controlsDragging || _dragOffset < 40 {
                 return 0
             }
             
-            if self.controlsDragging {
-                return 0
-            }
-            
-            return self._dragOffset
+            return _dragOffset
         }
         set {
             self._dragOffset = newValue
@@ -302,7 +299,7 @@ private extension NowPlaying.ViewModel {
                     // MARK: extract colors
                     $0.addTask {
                         if let cover = await self?.track?.cover {
-                            guard let dominantColors = try? await AFVisuals.extractDominantColors(10, cover: cover) else {
+                            guard let dominantColors = try? await RFKVisuals.extractDominantColors(10, url: cover.url) else {
                                 await MainActor.withAnimation { [weak self] in
                                     self?.colors = []
                                     self?.highlights = []
@@ -312,10 +309,10 @@ private extension NowPlaying.ViewModel {
                             }
                             
                             let colors = dominantColors.map { $0.color }
-                            let highlights = AFVisuals.determineSaturated(AFVisuals.highPassFilter(colors, threshold: 0.5), threshold: 0.3)
+                            let highlights = RFKVisuals.determineSaturated(RFKVisuals.highPassFilter(colors, threshold: 0.5), threshold: 0.3)
                             
                             await MainActor.withAnimation { [colors, highlights, weak self] in
-                                self?.highlights = highlights
+                                self?.highlights = highlights.map { RFKVisuals.adjust($0, saturation: 0.8, brightness: 0.8) }
                                 self?.colors = colors.filter { !highlights.contains($0) }
                             }
                         }
@@ -357,7 +354,7 @@ private extension NowPlaying.ViewModel {
         tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.playingDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
             Task { @MainActor [weak self] in
                 self?.playing = AudioPlayer.current.playing
-                self?.notifyPlaying.toggle()
+                self?.notifyPlaying += 1
             }
         })
         
@@ -416,6 +413,17 @@ private extension NowPlaying.ViewModel {
         tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.routeDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
             Task { @MainActor [weak self] in
                 self?.outputRoute = AudioPlayer.current.outputRoute
+            }
+        })
+        
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.forwardsNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.notifyForwards += 1
+            }
+        })
+        tokens.append(NotificationCenter.default.addObserver(forName: AudioPlayer.backwardsNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.notifyBackwards += 1
             }
         })
     }

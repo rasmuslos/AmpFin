@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import RFKVisuals
 import AmpFinKit
 import AFPlayback
 
@@ -235,12 +236,12 @@ private extension PlaylistViewModel {
     }
     
     func extractColors() async {
-        guard let cover = await playlist.cover, let dominantColors = try? await AFVisuals.extractDominantColors(10, cover: cover) else {
+        guard let cover = await playlist.cover, let dominantColors = try? await RFKVisuals.extractDominantColors(10, url: cover.url) else {
             return
         }
         
         let colors = dominantColors.map { $0.color }
-        let mostSaturated = AFVisuals.determineSaturated(AFVisuals.highPassFilter(colors, threshold: 0.4))
+        let mostSaturated = RFKVisuals.determineSaturated(RFKVisuals.highPassFilter(colors, threshold: 0.4))
         
         await MainActor.withAnimation { [colors, mostSaturated] in
             self.colors = colors.filter { $0 != mostSaturated }

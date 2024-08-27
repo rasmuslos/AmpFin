@@ -56,19 +56,20 @@ private struct ProgressSlider: View {
                 
                 Spacer()
                 
-                Button {
-                    viewModel.mediaInfoToggled.toggle()
-                } label: {
-                    Text(viewModel.qualityText ?? String(""))
-                        .font(.footnote.smallCaps())
-                        .foregroundStyle(.primary)
-                        .padding(.vertical, compact ? 1 : 2)
-                        .padding(.horizontal, compact ? 12 : 8)
-                        .background(.ultraThinMaterial)
-                        .clipShape(.rect(cornerRadius: 4))
-                        .opacity(viewModel.qualityText == nil ? 0 : 1)
+                if let qualityText = viewModel.qualityText {
+                    Button {
+                        viewModel.mediaInfoToggled.toggle()
+                    } label: {
+                        Text(qualityText)
+                            .padding(.vertical, compact ? 1 : 2)
+                            .padding(.horizontal, compact ? 12 : 8)
+                            .background(.ultraThinMaterial)
+                            .saturation(2)
+                            .font(.footnote.smallCaps())
+                            .clipShape(.rect(cornerRadius: 4))
+                    }
+                    Spacer()
                 }
-                Spacer()
                 
                 Text(Duration.seconds(AudioPlayer.current.duration).formatted(.time(pattern: .minuteSecond)))
                     .frame(width: 64, alignment: .trailing)

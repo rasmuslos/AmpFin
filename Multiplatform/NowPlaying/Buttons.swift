@@ -50,8 +50,8 @@ extension NowPlaying {
                     .labelStyle(.iconOnly)
                     .contentShape(.rect)
             }
-            .foregroundStyle(.white)
-            .opacity(viewModel.currentTab == .lyrics ? 1 : 0.6)
+            .foregroundStyle(viewModel.currentTab == .lyrics ? .thickMaterial : .thinMaterial)
+            .saturation(2)
             .animation(.none, value: viewModel.currentTab)
             .buttonStyle(.plain)
             .modifier(HoverEffectModifier(padding: 4))
@@ -132,6 +132,7 @@ extension NowPlaying {
                                     .lineLimit(1)
                                     .font(.caption2.smallCaps())
                                     .foregroundStyle(.thinMaterial)
+                                    .saturation(2)
                                     .offset(y: 12)
                                     .fixedSize()
                             }
@@ -161,6 +162,7 @@ extension NowPlaying {
                                     .lineLimit(1)
                                     .font(.caption.smallCaps())
                                     .foregroundStyle(.thinMaterial)
+                                    .saturation(2)
                             }
                         }
                         

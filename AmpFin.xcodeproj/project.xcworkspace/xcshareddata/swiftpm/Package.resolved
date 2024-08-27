@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "rfkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rasmuslos/RFKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0e8bf22bd5528c277aaa17c98643b194ede386f6"
+      }
+    },
+    {
       "identity" : "starscream",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daltoniam/Starscream.git",

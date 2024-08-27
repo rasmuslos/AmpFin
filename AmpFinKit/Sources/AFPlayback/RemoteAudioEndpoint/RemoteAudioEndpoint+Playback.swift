@@ -106,12 +106,14 @@ extension RemoteAudioEndpoint: AudioEndpoint {
     func advance() {
         Task {
             try? await JellyfinClient.shared.update(sessionId: sessionId, command: .next)
+            NotificationCenter.default.post(name: AudioPlayer.forwardsNotification, object: nil)
         }
     }
     
     func rewind() {
         Task {
             try? await JellyfinClient.shared.update(sessionId: sessionId, command: .previous)
+            NotificationCenter.default.post(name: AudioPlayer.backwardsNotification, object: nil)
         }
     }
     

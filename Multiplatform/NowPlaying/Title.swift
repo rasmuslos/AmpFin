@@ -110,7 +110,8 @@ private struct FavoriteButton: View {
                     .symbolEffect(track.favorite ? .bounce.byLayer.down : .bounce.byLayer.up, options: .speed(0.4), value: track.favorite)
                     .labelStyle(.iconOnly)
                     .font(.title)
-                    .foregroundStyle(.white.opacity(track.favorite ? 0.8 : 0.2), .white.opacity(track.favorite ? 0.4 : 0.2))
+                    .foregroundStyle(track.favorite ? .regularMaterial : .ultraThinMaterial, .ultraThinMaterial)
+                    .saturation(2)
                     .symbolRenderingMode(.palette)
                     .contentTransition(.symbolEffect(.replace))
             }
@@ -164,7 +165,8 @@ private struct ArtistsMenu: View {
                 .lineLimit(1)
         }
         .buttonStyle(.plain)
-        .foregroundStyle(.white.opacity(0.4))
+        .foregroundStyle(.thinMaterial)
+        .saturation(2)
         .modifier(HoverEffectModifier())
     }
 }

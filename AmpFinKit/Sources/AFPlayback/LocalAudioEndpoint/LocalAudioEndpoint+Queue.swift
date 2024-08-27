@@ -81,6 +81,7 @@ internal extension LocalAudioEndpoint {
 internal extension LocalAudioEndpoint {
     func advance() {
         advance(advanceAudioPlayer: true)
+        NotificationCenter.default.post(name: AudioPlayer.forwardsNotification, object: nil)
     }
     func rewind() {
         if currentTime > 5 || history.count < 1 {
@@ -98,6 +99,7 @@ internal extension LocalAudioEndpoint {
         advance()
         
         history.removeLast()
+        NotificationCenter.default.post(name: AudioPlayer.backwardsNotification, object: nil)
     }
     func skip(to index: Int) {
         if queue.count > index {
