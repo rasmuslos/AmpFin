@@ -24,7 +24,7 @@ extension NowPlaying {
                 ZStack(alignment: .leading) {
                     Rectangle()
                         .foregroundStyle(.ultraThinMaterial)
-                        .saturation(1.4)
+                        .saturation(1.6)
                     
                     Rectangle()
                         .frame(width: width)

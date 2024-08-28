@@ -40,6 +40,7 @@ internal extension NowPlaying {
         
         @MainActor private(set) var colors: [Color]
         @MainActor private(set) var highlights: [Color]
+        @MainActor private var extractedCoverItemID: String?
         
         // MARK: Current state
         
@@ -309,11 +310,36 @@ private extension NowPlaying.ViewModel {
                             }
                             
                             let colors = dominantColors.map { $0.color }
-                            let highlights = RFKVisuals.determineSaturated(RFKVisuals.highPassFilter(colors, threshold: 0.5), threshold: 0.3)
+                            var highlights = RFKVisuals.highPassFilter(colors, threshold: 0.3)
+                            
+                            if highlights.isEmpty {
+                                highlights = [.yellow, .red, .orange, .blue, .green, .purple]
+                            }
+                            
+                            let count = highlights.count
+                            for i in 0..<count {
+                                let n = Int.random(in: 0...2)
+                                
+                                for j in 0...n {
+                                    guard j != 0 else {
+                                        continue
+                                    }
+                                    
+                                    highlights.append(highlights[i])
+                                }
+                            }
+                            
+                            let extractedCoverItemID = await self?.extractedCoverItemID
+                            let itemID = await self?.nowPlaying?.id
+                            
+                            guard !Task.isCancelled && extractedCoverItemID != itemID else {
+                                return
+                            }
                             
                             await MainActor.withAnimation { [colors, highlights, weak self] in
-                                self?.highlights = highlights.map { RFKVisuals.adjust($0, saturation: 0.8, brightness: 0.8) }
+                                self?.highlights = highlights.map { RFKVisuals.adjust($0, saturation: 0.5, brightness: 1) }
                                 self?.colors = colors.filter { !highlights.contains($0) }
+                                self?.extractedCoverItemID = itemID
                             }
                         }
                     }

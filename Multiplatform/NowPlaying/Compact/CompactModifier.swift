@@ -80,6 +80,7 @@ internal extension NowPlaying {
                         }
                     }
                     .offset(x: 0, y: viewModel.dragOffset)
+                    .ignoresSafeArea(.keyboard)
                     .ignoresSafeArea(edges: .all)
                     .toolbarBackground(.hidden, for: .tabBar)
                     .frame(height: viewModel.expanded ? nil : 56)
@@ -114,7 +115,7 @@ private struct ExpandedForeground: View {
                     if viewModel.currentTab != .cover {
                         NowPlaying.SmallTitle(track: track)
                             .modifier(GestureModifier(active: true))
-                            .padding(.top, 20)
+                            .padding(.top, 40)
                         
                         if viewModel.currentTab == .lyrics {
                             NowPlaying.Lyrics()

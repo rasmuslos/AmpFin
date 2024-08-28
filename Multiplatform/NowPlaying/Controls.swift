@@ -64,7 +64,7 @@ private struct ProgressSlider: View {
                             .padding(.vertical, compact ? 1 : 2)
                             .padding(.horizontal, compact ? 12 : 8)
                             .background(.ultraThinMaterial)
-                            .saturation(1.4)
+                            .saturation(1.6)
                             .font(.footnote.smallCaps())
                             .clipShape(.rect(cornerRadius: 4))
                     }
@@ -75,7 +75,7 @@ private struct ProgressSlider: View {
                     .frame(width: 64, alignment: .trailing)
             }
             .font(.footnote.smallCaps())
-            .foregroundStyle(.white.opacity(0.4))
+            .foregroundStyle(.thinMaterial)
         }
     }
 }
@@ -119,8 +119,8 @@ private struct ControlButtons: View {
             .modifier(HoverEffectModifier())
         }
         .foregroundStyle(.primary)
-        .padding(.top, compact ? 48 : 44)
-        .padding(.bottom, compact ? 68 : 68)
+        .padding(.top, compact ? 60 : 44)
+        .padding(.bottom, compact ? 80 : 68)
     }
 }
 
