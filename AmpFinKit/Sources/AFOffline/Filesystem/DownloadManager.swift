@@ -38,6 +38,15 @@ public final class DownloadManager: NSObject {
     func createDirectories() {
         try! FileManager.default.createDirectory(at: covers, withIntermediateDirectories: true)
         try! FileManager.default.createDirectory(at: tracks, withIntermediateDirectories: true)
+        
+        var tracks = tracks
+        var covers = covers
+        
+        var excludedFromBackupResourceValues = URLResourceValues()
+        excludedFromBackupResourceValues.isExcludedFromBackup = true
+        
+        try? tracks.setResourceValues(excludedFromBackupResourceValues)
+        try? covers.setResourceValues(excludedFromBackupResourceValues)
     }
 }
 
