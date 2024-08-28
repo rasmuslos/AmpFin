@@ -24,13 +24,12 @@ extension NowPlaying {
                 ZStack(alignment: .leading) {
                     Rectangle()
                         .foregroundStyle(.ultraThinMaterial)
-                        .saturation(2)
+                        .saturation(1.4)
                     
                     Rectangle()
                         .frame(width: width)
                         .animation(.spring, value: width)
                         .foregroundStyle(dragging ? .thickMaterial : .thinMaterial)
-                        .saturation(2)
                 }
                 .clipShape(.rect(cornerRadius: 8))
                 .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .global)

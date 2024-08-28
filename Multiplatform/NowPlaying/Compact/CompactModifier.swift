@@ -148,7 +148,6 @@ private struct ExpandedForeground: View {
                 } label: {
                     Rectangle()
                         .foregroundStyle(.thinMaterial)
-                        .saturation(2)
                         .frame(width: 32, height: 4)
                         .clipShape(.rect(cornerRadius: .infinity))
                 }

@@ -37,7 +37,6 @@ private struct ForegroundStyleModifier: ViewModifier {
         } else {
             content
                 .foregroundStyle(active ? .thickMaterial : .thinMaterial)
-                .saturation(2)
         }
     }
 }

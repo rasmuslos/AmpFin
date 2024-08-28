@@ -64,7 +64,7 @@ private struct ProgressSlider: View {
                             .padding(.vertical, compact ? 1 : 2)
                             .padding(.horizontal, compact ? 12 : 8)
                             .background(.ultraThinMaterial)
-                            .saturation(2)
+                            .saturation(1.4)
                             .font(.footnote.smallCaps())
                             .clipShape(.rect(cornerRadius: 4))
                     }

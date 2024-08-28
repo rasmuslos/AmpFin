@@ -35,7 +35,6 @@ internal extension NowPlaying {
                 .buttonStyle(.plain)
             }
             .foregroundStyle(.thinMaterial)
-            .saturation(2)
             .dynamicTypeSize(dragging ? .xLarge : .medium)
             .frame(height: 0)
             .animation(.easeInOut, value: dragging)
