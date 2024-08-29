@@ -43,7 +43,7 @@ internal extension NowPlaying {
                     }
                 }
                 .overlay {
-                    Color.black.opacity(0.35)
+                    Color.black.opacity(0.2)
                 }
             }
             .allowsHitTesting(false)

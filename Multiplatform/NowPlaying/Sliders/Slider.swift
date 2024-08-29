@@ -28,8 +28,10 @@ extension NowPlaying {
                     
                     Rectangle()
                         .frame(width: width)
-                        .animation(.spring, value: width)
-                        .foregroundStyle(dragging ? .thickMaterial : .thinMaterial)
+                        .foregroundStyle(.white)
+                        .opacity(dragging ? 0.8 : 0.4)
+                        .animation(.smooth, value: width)
+                        .animation(.smooth, value: dragging)
                 }
                 .clipShape(.rect(cornerRadius: 8))
                 .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .global)

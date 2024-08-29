@@ -310,21 +310,16 @@ private extension NowPlaying.ViewModel {
                             }
                             
                             let colors = dominantColors.map { $0.color }
-                            var highlights = RFKVisuals.highPassFilter(colors, threshold: 0.3)
+                            var highlights = RFKVisuals.highPassFilter(colors, threshold: 0.4)
                             
                             if highlights.isEmpty {
                                 highlights = [.yellow, .red, .orange, .blue, .green, .purple]
                             }
                             
                             let count = highlights.count
+                            
                             for i in 0..<count {
-                                let n = Int.random(in: 0...2)
-                                
-                                for j in 0...n {
-                                    guard j != 0 else {
-                                        continue
-                                    }
-                                    
+                                if Int.random(in: 0...1) == 1 {
                                     highlights.append(highlights[i])
                                 }
                             }
@@ -337,7 +332,7 @@ private extension NowPlaying.ViewModel {
                             }
                             
                             await MainActor.withAnimation { [colors, highlights, weak self] in
-                                self?.highlights = highlights.map { RFKVisuals.adjust($0, saturation: 0.5, brightness: 1) }
+                                self?.highlights = highlights.map { RFKVisuals.adjust($0, saturation: 0.5, brightness: 0.5) }
                                 self?.colors = colors.filter { !highlights.contains($0) }
                                 self?.extractedCoverItemID = itemID
                             }
