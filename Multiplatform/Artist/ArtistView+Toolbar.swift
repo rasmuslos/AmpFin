@@ -14,12 +14,15 @@ internal extension ArtistView {
     struct Toolbar: ViewModifier {
         let artist: Artist
         
+        @Binding var sortOrder: ItemSortOrder
+        @Binding var ascending: Bool
+        
         func body(content: Content) -> some View {
             content
                 .navigationTitle(artist.name)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        SortSelector()
+                        SortSelector(sortOrder: $sortOrder, ascending: $ascending)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {

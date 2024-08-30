@@ -36,7 +36,7 @@ internal extension NowPlaying {
                             
                             // Now playing bar background
                             Rectangle()
-                                .foregroundStyle(.thinMaterial)
+                                .foregroundStyle(.regularMaterial)
                                 .opacity(viewModel.expanded ? 0 : 1)
                             
                             // Now playing view background

@@ -14,8 +14,8 @@ internal struct TracksView: View {
     @Environment(\.libraryDataProvider) private var dataProvider
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    @Default(.sortOrder) private var sortOrder
-    @Default(.sortAscending) private var sortAscending
+    @Default(.sortOrder_tracks) private var sortOrder
+    @Default(.sortAscending_tracks) private var sortAscending
     
     let favoritesOnly: Bool
     
@@ -55,9 +55,11 @@ internal struct TracksView: View {
                             .padding(.horizontal, 20)
                         }
                         .listStyle(.plain)
+                        .padding(.top, 4)
                         .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "search.tracks")
+                        .environment(\.displayContext, favoritesOnly ? .favorite : .unknown)
                         .toolbar {
-                            SortSelector()
+                            SortSelector(sortOrder: $sortOrder, ascending: $sortAscending)
                         }
                     } else {
                         TrackTable(tracks: tracks, count: count, loadMore:  {
@@ -75,7 +77,7 @@ internal struct TracksView: View {
                                     .symbolVariant(.circle)
                             }
                             
-                            SortSelector()
+                            SortSelector(sortOrder: $sortOrder, ascending: $sortAscending)
                         }
                     }
             } else if failure {

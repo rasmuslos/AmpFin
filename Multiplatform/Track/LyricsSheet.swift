@@ -15,48 +15,45 @@ struct LyricsSheet: View {
     @State private var lyrics: Track.Lyrics = [:]
     
     var body: some View {
-        NavigationStack {
-            Group {
-                if lyrics.isEmpty {
-                    if failed {
-                        ErrorView()
-                    } else {
-                        LoadingView()
-                            .task {
-                                await fetchLyrics(track: track)
-                            }
-                    }
+        Group {
+            if lyrics.isEmpty {
+                if failed {
+                    ErrorView()
+                        .refreshable {
+                            await fetchLyrics(track: track)
+                        }
                 } else {
-                    ScrollView {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                ForEach(Array(lyrics.values), id: \.?.hashValue) { text in
-                                    if let text, !text.isEmpty {
-                                        Text(text)
-                                            .font(.headline)
-                                            .fontDesign(.rounded)
-                                            .multilineTextAlignment(.leading)
-                                            .padding(.vertical, 8)
-                                    }
+                    LoadingView()
+                        .task {
+                            await fetchLyrics(track: track)
+                        }
+                }
+            } else {
+                ScrollView {
+                    HStack {
+                        VStack(alignment: .leading) {
+                            ForEach(Array(lyrics.values), id: \.?.hashValue) { text in
+                                if let text, !text.isEmpty {
+                                    Text(text)
+                                        .font(.headline)
+                                        .multilineTextAlignment(.leading)
+                                        .padding(.vertical, 8)
                                 }
                             }
-                            
-                            Spacer()
                         }
-                        .padding(20)
+                        
+                        Spacer()
                     }
-                    .safeAreaInset(edge: .top) {
-                        ZStack {
-                            TrackListRow(track: track, preview: true) {}
-                                .padding(.vertical, 12)
-                                .padding(.horizontal, 20)
-                        }
-                        .background(.bar)
-                    }
+                    .padding(20)
                 }
-            }
-            .refreshable {
-                await fetchLyrics(track: track)
+                .safeAreaInset(edge: .top) {
+                    ZStack {
+                        TrackListRow(track: track, preview: true) {}
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 20)
+                    }
+                    .background(.bar)
+                }
             }
         }
         .presentationDragIndicator(.visible)

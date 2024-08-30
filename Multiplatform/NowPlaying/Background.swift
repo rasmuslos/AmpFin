@@ -26,24 +26,19 @@ internal extension NowPlaying {
                 Color.black
                 Color.gray.opacity(0.8)
                 
-                ZStack {
-                    if let cover = viewModel.nowPlaying?.cover {
-                        GeometryReader { proxy in
-                            let width = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
-                            let height = proxy.size.height + proxy.safeAreaInsets.top + proxy.safeAreaInsets.bottom
-                            
-                            ItemImage(cover: cover)
-                                .id(cover.url)
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: width, height: height)
-                                .blur(radius: 100)
-                        }
+                if let cover = viewModel.nowPlaying?.cover {
+                    GeometryReader { proxy in
+                        let width = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
+                        let height = proxy.size.height + proxy.safeAreaInsets.top + proxy.safeAreaInsets.bottom
                         
-                        FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: viewModel.playing && !haltNowPlayingBackground ? speed : 0, blur: 0.7)
+                        ItemImage(cover: cover)
+                            .id(cover.url)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: width, height: height)
+                            .blur(radius: 100)
                     }
-                }
-                .overlay {
-                    Color.black.opacity(0.2)
+                    
+                    FluidGradient(blobs: viewModel.colors, highlights: viewModel.highlights, speed: viewModel.playing && !haltNowPlayingBackground ? speed : 0, blur: 0.7)
                 }
             }
             .allowsHitTesting(false)

@@ -12,8 +12,8 @@ import AmpFinKit
 internal struct AlbumsView: View {
     @Environment(\.libraryDataProvider) private var dataProvider
     
-    @Default(.sortOrder) private var sortOrder
-    @Default(.sortAscending) private var sortAscending
+    @Default(.sortOrder_albums) private var sortOrder
+    @Default(.sortAscending_albums) private var sortAscending
     
     @State private var success = false
     @State private var failure = false
@@ -51,7 +51,7 @@ internal struct AlbumsView: View {
         .navigationTitle("title.albums")
         .modifier(NowPlaying.SafeAreaModifier())
         .toolbar {
-            SortSelector()
+            SortSelector(sortOrder: $sortOrder, ascending: $sortAscending)
         }
         .onAppear {
             if albums.isEmpty {

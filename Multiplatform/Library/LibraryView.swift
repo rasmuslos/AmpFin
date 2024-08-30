@@ -71,22 +71,26 @@ struct LibraryView: View {
         }
         .navigationTitle("title.library")
         .modifier(NowPlaying.SafeAreaModifier())
-        .task {
+        .task(id: libraryRandomAlbums) {
             if !libraryRandomAlbums || albums.isEmpty == true {
                 await loadAlbums()
             }
         }
-        .refreshable { await loadAlbums() }
+        .refreshable {
+            await loadAlbums()
+        }
     }
     
-    private func loadAlbums() async {
-        let function = libraryRandomAlbums ? dataProvider.randomAlbums : dataProvider.recentAlbums
+    private nonisolated func loadAlbums() async {
+        let function = await libraryRandomAlbums ? dataProvider.randomAlbums : dataProvider.recentAlbums
         
         guard let albums = try? await function() else {
             return
         }
         
-        self.albums = albums
+        await MainActor.withAnimation {
+            self.albums = albums
+        }
     }
 }
 

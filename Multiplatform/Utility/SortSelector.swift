@@ -10,10 +10,10 @@ import Defaults
 import AmpFinKit
 
 internal struct SortSelector: View {
-    @Default(.sortOrder) private var sortOrder
-    @Default(.sortAscending) private var ascending
-    
     @Environment(\.libraryDataProvider) private var dataProvider
+    
+    @Binding var sortOrder: ItemSortOrder
+    @Binding var ascending: Bool
     
     private var supported: [ItemSortOrder] {
         if dataProvider.supportsAdvancedFilters {
@@ -37,9 +37,10 @@ internal struct SortSelector: View {
             
             Toggle("ascending", isOn: $ascending)
         } label: {
-            Label("sort", systemImage: "arrow.up.arrow.down")
+            Label("sort", systemImage: "arrowshape.\(ascending ? "up" : "down")")
                 .labelStyle(.iconOnly)
-                .symbolVariant(ascending ? .circle.fill : .circle)
+                .symbolVariant(.circle)
+                .contentTransition(.symbolEffect(.automatic))
         }
     }
 }
@@ -72,5 +73,8 @@ private extension ItemSortOrder {
 }
 
 #Preview {
-    SortSelector()
+    @Previewable @State var sortOrder: ItemSortOrder = .random
+    @Previewable @State var ascending: Bool = true
+    
+    SortSelector(sortOrder: $sortOrder, ascending: $ascending)
 }

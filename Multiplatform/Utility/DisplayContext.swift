@@ -13,6 +13,7 @@ internal enum DisplayContext: Identifiable, Equatable, Hashable {
     case album
     case artist
     case playlist
+    case favorite
     case search
     
     var id: Self {

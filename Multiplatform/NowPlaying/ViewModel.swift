@@ -164,7 +164,7 @@ internal extension NowPlaying.ViewModel {
     @MainActor
     var dragOffset: CGFloat {
         get {
-            if !expanded || controlsDragging || _dragOffset < 40 {
+            if !expanded || controlsDragging || _dragOffset < 10 {
                 return 0
             }
             
@@ -309,13 +309,8 @@ private extension NowPlaying.ViewModel {
                                 return
                             }
                             
-                            let colors = dominantColors.map { $0.color }
-                            var highlights = RFKVisuals.highPassFilter(colors, threshold: 0.4)
-                            
-                            if highlights.isEmpty {
-                                highlights = [.yellow, .red, .orange, .blue, .green, .purple]
-                            }
-                            
+                            let colors = RFKVisuals.brightnessExtremeFilter(dominantColors.map { $0.color }, threshold: 0.1)
+                            var highlights = RFKVisuals.contrastRatios(RFKVisuals.brightnessExtremeFilter(colors)).filter { $0.value > 10 }.map { $0.key }
                             let count = highlights.count
                             
                             for i in 0..<count {
@@ -332,7 +327,7 @@ private extension NowPlaying.ViewModel {
                             }
                             
                             await MainActor.withAnimation { [colors, highlights, weak self] in
-                                self?.highlights = highlights.map { RFKVisuals.adjust($0, saturation: 0.5, brightness: 0.5) }
+                                self?.highlights = highlights
                                 self?.colors = colors.filter { !highlights.contains($0) }
                                 self?.extractedCoverItemID = itemID
                             }
@@ -448,6 +443,7 @@ private extension NowPlaying.ViewModel {
             }
         })
     }
+    
     func updateMediaInfo() async {
         let mediaInfo = await AudioPlayer.current.mediaInfo
         

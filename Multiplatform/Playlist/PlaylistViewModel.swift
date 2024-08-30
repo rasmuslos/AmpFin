@@ -241,7 +241,7 @@ private extension PlaylistViewModel {
         }
         
         let colors = dominantColors.map { $0.color }
-        let mostSaturated = RFKVisuals.determineSaturated(RFKVisuals.highPassFilter(colors, threshold: 0.4))
+        let mostSaturated = RFKVisuals.determineMostSaturated(RFKVisuals.brightnessExtremeFilter(colors))
         
         await MainActor.withAnimation { [colors, mostSaturated] in
             self.colors = colors.filter { $0 != mostSaturated }

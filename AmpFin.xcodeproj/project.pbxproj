@@ -297,12 +297,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A111B662C81FC9E001BED19 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				3A234DFA2AA883EC00197AA7 /* LibraryView.swift */,
+				3A6F50A62AACA3D600FC8A29 /* SearchView.swift */,
+				3A234E042AA88D6000197AA7 /* TracksView.swift */,
+				3A3DA6602AAB29470091211A /* ArtistsView.swift */,
+				3A8850612AA90D1200456DDD /* AlbumsView.swift */,
+				3A2B28E42B433C8A00DF9731 /* PlaylistsView.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
 		3A150F5F2BC688DA006E29E2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				3A234E042AA88D6000197AA7 /* TracksView.swift */,
-				3A234DFA2AA883EC00197AA7 /* LibraryView.swift */,
-				3A6F50A62AACA3D600FC8A29 /* SearchView.swift */,
 				3A98A02F2AABA37B00EA84CF /* ErrorView.swift */,
 				3A98A02D2AABA36600EA84CF /* LoadingView.swift */,
 			);
@@ -333,7 +343,6 @@
 		3A2B28EB2B43737200DF9731 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
-				3A2B28E42B433C8A00DF9731 /* PlaylistsView.swift */,
 				3A2B28EC2B43739100DF9731 /* PlaylistView.swift */,
 				3A2B28EE2B43798600DF9731 /* PlaylistView+Header.swift */,
 				3A2B28FF2B43819400DF9731 /* PlaylistView+Toolbar.swift */,
@@ -363,7 +372,6 @@
 		3A3DA6692AAB2DCD0091211A /* Artist */ = {
 			isa = PBXGroup;
 			children = (
-				3A3DA6602AAB29470091211A /* ArtistsView.swift */,
 				3A3DA66A2AAB2DDA0091211A /* ArtistView.swift */,
 				3A3DA66C2AAB2EAE0091211A /* ArtistView+Header.swift */,
 				3AD1B3CA2BC44C440051C5AE /* ArtistView+Toolbar.swift */,
@@ -570,7 +578,6 @@
 		3ADE8E9E2AA93CC4009826A3 /* Album */ = {
 			isa = PBXGroup;
 			children = (
-				3A8850612AA90D1200456DDD /* AlbumsView.swift */,
 				3A8850632AA90E4600456DDD /* AlbumView.swift */,
 				3ADE8E902AA924E8009826A3 /* AlbumView+Header.swift */,
 				3ADE8E9F2AA93D39009826A3 /* AlbumView+Toolbar.swift */,
@@ -609,6 +616,7 @@
 				3A3DA6692AAB2DCD0091211A /* Artist */,
 				3ADE8E9E2AA93CC4009826A3 /* Album */,
 				3A2B28EB2B43737200DF9731 /* Playlist */,
+				3A111B662C81FC9E001BED19 /* Library */,
 				3AEB32282AA7EC3C00853210 /* Account */,
 				3A150F602BC68FD2006E29E2 /* Collections */,
 				3A5515F52BC4471600B922D7 /* Navigation */,

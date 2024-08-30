@@ -13,8 +13,11 @@ internal extension Defaults.Keys {
     static let migratedToNewDatastore = Key("migratedToNewDatastore_n1u3enjoieqgurfjciuqw0ayj", default: false)
     
     // MARK: Sort
-    static let sortAscending = Key("sortAscending", default: false)
-    static let sortOrder = Key<ItemSortOrder>("sortOrder", default: .added)
+    static let sortAscending_tracks = Key("sortAscending_tracks", default: false)
+    static let sortOrder_tracks = Key<ItemSortOrder>("sortOrder_tracks", default: .added)
+    
+    static let sortAscending_albums = Key("sortAscending_albums", default: false)
+    static let sortOrder_albums = Key<ItemSortOrder>("sortOrder_albums", default: .added)
     
     // MARK: Navigation
     

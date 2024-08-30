@@ -35,6 +35,7 @@ internal struct ArtistView: View {
             VStack(spacing: 0) {
                 if artist.cover != nil {
                     Header(artist: artist)
+                        .padding(.bottom, 12)
                 }
                 
                 if !tracks.isEmpty {
@@ -44,12 +45,11 @@ internal struct ArtistView: View {
                         
                         Spacer()
                     }
-                    .padding(.top, 12)
-                    .padding(.bottom, 8)
                     .padding(.horizontal, 20)
                     
                     TrackGrid(tracks: tracks, container: artist)
-                        .padding(.bottom, 8)
+                        .padding(.top, 8)
+                        .padding(.bottom, 12)
                 }
                 
                 if !albums.isEmpty {
@@ -59,13 +59,12 @@ internal struct ArtistView: View {
                         
                         Spacer()
                     }
-                    .padding(.top, 12)
-                    .padding(.bottom, 8)
                     .padding(.horizontal, 20)
                     
                     AlbumGrid(albums: albums, count: count) {
                         loadAlbums(reset: false)
                     }
+                    .padding(.top, 8)
                     .padding(.horizontal, 20)
                 } else {
                     Text("artist.empty")
@@ -75,7 +74,7 @@ internal struct ArtistView: View {
                 }
             }
         }
-        .modifier(Toolbar(artist: artist))
+        .modifier(Toolbar(artist: artist, sortOrder: $sortOrder, ascending: $sortAscending))
         .modifier(NowPlaying.SafeAreaModifier())
         .environment(\.displayContext, .artist)
         .task {

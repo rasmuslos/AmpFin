@@ -10,6 +10,8 @@ import AmpFinKit
 import AFPlayback
 
 struct TrackListRow: View {
+    @Environment(\.displayContext) private var displayContext
+    
     let track: Track
     var container: Item? = nil
     
@@ -32,6 +34,10 @@ struct TrackListRow: View {
         return !track.artists.elementsEqual(album!.artists) { $0.id == $1.id }
     }
     
+    private var bold: Bool {
+        track.favorite && album == nil && displayContext != .favorite
+    }
+    
     var body: some View {
         HStack(spacing: 4) {
             Button {
@@ -44,7 +50,7 @@ struct TrackListRow: View {
                         Text(track.name)
                             .lineLimit(1)
                             .font(album == nil ? .subheadline : .callout)
-                            .bold(album == nil && track.favorite)
+                            .bold(bold)
                         
                         if showArtist, let artistName = track.artistName {
                             Text(artistName)

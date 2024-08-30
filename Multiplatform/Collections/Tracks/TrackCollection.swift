@@ -13,6 +13,7 @@ struct TrackCollection {}
 
 internal extension TrackCollection {
     struct TrackIndexCover: View {
+        @Environment(\.displayContext) private var displayContext
         @Environment(NowPlaying.ViewModel.self) private var nowPlayingViewModel
         
         let track: Track
@@ -29,13 +30,16 @@ internal extension TrackCollection {
         private var active: Bool {
             nowPlayingViewModel.nowPlaying == track
         }
+        private var bold: Bool {
+            track.favorite && displayContext != .favorite
+        }
         
         var body: some View {
             Group {
                 if album != nil {
                     Text(String(track.index.index))
                         .font(.callout)
-                        .bold(track.favorite)
+                        .bold(bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(.secondary)
                         .opacity(active ? 0 : 1)
