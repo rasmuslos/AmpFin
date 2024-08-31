@@ -19,7 +19,7 @@ internal extension NowPlaying {
         @ObservationIgnored var namespace: Namespace.ID!
         @MainActor var _dragOffset: CGFloat
         
-        @MainActor private(set) var expanded: Bool
+        @MainActor private var _expanded: Bool
         @MainActor var queueTab: QueueTab? = .queue
         @MainActor private(set) var currentTab: NowPlaying.Tab
         
@@ -93,7 +93,7 @@ internal extension NowPlaying {
             namespace = nil
             _dragOffset = .zero
             
-            expanded = false
+            _expanded = false
             currentTab = .cover
             
             mediaInfoToggled = false
@@ -162,6 +162,27 @@ internal extension NowPlaying {
 
 internal extension NowPlaying.ViewModel {
     @MainActor
+    var expanded: Bool {
+        get {
+            if nowPlaying == nil {
+                return false
+            }
+            
+            return _expanded
+        } set {
+            if newValue {
+                dragOffset = 0
+            }
+            
+            _controlsVisible = true
+            addToPlaylistTrack = nil
+            
+            UIApplication.shared.isIdleTimerDisabled = newValue
+            _expanded = newValue
+        }
+    }
+    
+    @MainActor
     var dragOffset: CGFloat {
         get {
             if !expanded || controlsDragging || _dragOffset < 10 {
@@ -173,15 +194,6 @@ internal extension NowPlaying.ViewModel {
         set {
             self._dragOffset = newValue
         }
-    }
-    
-    @MainActor
-    var track: Track? {
-        if expanded, let track = nowPlaying {
-            return track
-        }
-        
-        return nil
     }
     
     @MainActor
@@ -288,9 +300,9 @@ private extension NowPlaying.ViewModel {
                     self?.nowPlaying = AudioPlayer.current.nowPlaying
                     
                     if nowPlaying == nil && self?.nowPlaying != nil {
-                        self?.setPresented(true)
+                        self?.expanded = true
                     } else if self?.nowPlaying == nil {
-                        self?.setPresented(false)
+                        self?.expanded = false
                     }
                 }
                 
@@ -299,7 +311,8 @@ private extension NowPlaying.ViewModel {
                     $0.addTask { await self?.updateMediaInfo() }
                     // MARK: extract colors
                     $0.addTask {
-                        if let cover = await self?.track?.cover {
+                        print("ddd")
+                        if let cover = await self?.nowPlaying?.cover {
                             guard let dominantColors = try? await RFKVisuals.extractDominantColors(10, url: cover.url) else {
                                 await MainActor.withAnimation { [weak self] in
                                     self?.colors = []
@@ -473,20 +486,6 @@ internal extension NowPlaying.ViewModel {
             
             updateLyricsIndex()
             startScrollTimer()
-        }
-    }
-    func setPresented(_ presented: Bool) {
-        Task { @MainActor in
-            if presented {
-                dragOffset = 0
-            }
-            
-            _controlsVisible = true
-            addToPlaylistTrack = nil
-            
-            UIApplication.shared.isIdleTimerDisabled = presented
-            
-            self.expanded = presented
         }
     }
     

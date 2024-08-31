@@ -18,6 +18,8 @@ extension NowPlaying {
         @State private var adjust: CGFloat = .zero
         
         func body(content: Content) -> some View {
+            @Bindable var viewModel = viewModel
+            
             content
                 .safeAreaInset(edge: .bottom) {
                     if let currentTrack = viewModel.nowPlaying {
@@ -112,13 +114,13 @@ extension NowPlaying {
                         .animation(.spring, value: width)
                         .animation(.spring, value: adjust)
                         .onTapGesture {
-                            viewModel.setPresented(true)
+                            viewModel.expanded = true
                         }
                         .dropDestination(for: Track.self) { tracks, _ in
                             AudioPlayer.current.queue(tracks, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
                             return true
                         }
-                        .fullScreenCover(isPresented: .init(get: { viewModel.expanded }, set: { viewModel.setPresented($0) })) {
+                        .fullScreenCover(isPresented: $viewModel.expanded) {
                             RegularView()
                                 .ignoresSafeArea(edges: .all)
                         }

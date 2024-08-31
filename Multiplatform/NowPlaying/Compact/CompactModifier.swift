@@ -92,7 +92,7 @@ internal extension NowPlaying {
             }
             .ignoresSafeArea(edges: .all)
             .modifier(Navigation.NavigationModifier() {
-                viewModel.setPresented(false)
+                viewModel.expanded = false
             })
         }
     }
@@ -143,9 +143,9 @@ private struct ExpandedForeground: View {
         }
         .foregroundStyle(.white)
         .overlay(alignment: .top) {
-            if viewModel.track != nil {
+            if viewModel.expanded {
                 Button {
-                    viewModel.setPresented(false)
+                    viewModel.expanded = false
                 } label: {
                     Rectangle()
                         .foregroundStyle(.thinMaterial)
@@ -170,7 +170,7 @@ private struct CollapsedForeground: View {
     
     var body: some View {
         Button {
-            viewModel.setPresented(!viewModel.expanded)
+            viewModel.expanded.toggle()
         } label: {
             HStack(spacing: 8) {
                 if !viewModel.expanded {
@@ -251,14 +251,14 @@ private struct GestureModifier: ViewModifier {
                         }
                         
                         if $0.velocity.height > 3500 {
-                            viewModel.setPresented(false)
+                            viewModel.expanded = false
                         } else {
                             viewModel.dragOffset = min(500, max(0, $0.translation.height))
                         }
                     }
                     .onEnded {
                         if $0.translation.height > 200 {
-                            viewModel.setPresented(false)
+                            viewModel.expanded = false
                         } else {
                             withAnimation {
                                 viewModel.dragOffset = 0
