@@ -310,7 +310,9 @@ private extension NowPlaying.ViewModel {
                             }
                             
                             let colors = RFKVisuals.brightnessExtremeFilter(dominantColors.map { $0.color }, threshold: 0.1)
-                            var highlights = RFKVisuals.contrastRatios(RFKVisuals.brightnessExtremeFilter(colors)).filter { $0.value > 10 }.map { $0.key }
+                            var highlights = RFKVisuals
+                                .contrastRatios(RFKVisuals.brightnessExtremeFilter(colors)).filter { $0.value > 10 }
+                                .map { RFKVisuals.adjust($0.key, saturation: 0, brightness: 0.55) }
                             let count = highlights.count
                             
                             for i in 0..<count {

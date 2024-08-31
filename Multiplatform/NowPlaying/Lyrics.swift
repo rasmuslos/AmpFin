@@ -147,8 +147,9 @@ private struct Line: View {
             Spacer()
         }
         .bold()
-        .foregroundStyle(active ? .white.opacity(0.8) : .gray.opacity(0.4))
-        .blur(radius: active || viewModel.scrolling ? 0 : min(4, abs(delta) * 0.75 + 1.25))
+        // .foregroundStyle(active ? .white.opacity(0.8) : .gray.opacity(0.4))
+        .foregroundStyle(active ? .thickMaterial : .ultraThinMaterial)
+        .blur(radius: active || viewModel.scrolling ? 0 : min(5, abs(delta) + 1.25))
         .padding(.vertical, active || text != nil ? padding : 0)
     }
 }
