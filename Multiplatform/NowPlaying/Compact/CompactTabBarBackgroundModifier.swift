@@ -7,7 +7,6 @@
 
 import SwiftUI
 import AmpFinKit
-import AFPlayback
 
 internal extension NowPlaying {
     struct CompactTabBarBackgroundModifier: ViewModifier {
@@ -33,6 +32,8 @@ internal extension NowPlaying {
                             .padding(.bottom, -225)
                             .allowsHitTesting(false)
                             .toolbarBackground(.hidden, for: .tabBar)
+                            .ignoresSafeArea(.keyboard)
+                            .ignoresSafeArea(edges: .all)
                     }
                 }
         }
