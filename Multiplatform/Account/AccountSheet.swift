@@ -112,13 +112,7 @@ internal struct AccountSheet: View {
                 
                 Section("account.server") {
                     Group {
-                        Text(JellyfinClient.shared.serverUrl.absoluteString)
-                        
-                        if let serverVersion {
-                            Text("server.version \(serverVersion)")
-                        } else {
-                            ProgressView()
-                        }
+                        Text("account.server \(JellyfinClient.shared.serverUrl.absoluteString) ?? \(serverVersion ?? "?")")
                         
                         Text(JellyfinClient.shared.clientId)
                         Text(JellyfinClient.shared.token)

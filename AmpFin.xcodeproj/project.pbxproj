@@ -491,14 +491,14 @@
 			path = Regular;
 			sourceTree = "<group>";
 		};
-		3AAE1B4D2BC5858E00FD0200 /* Modifier */ = {
+		3AAE1B4D2BC5858E00FD0200 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
 				3AAE1B4B2BC5858200FD0200 /* SafeAreaModifier.swift */,
 				3A209FCB2AAB1F6700AD67C3 /* SymbolButtonStyle.swift */,
 				3A773C5A2BA5F2F2005FD583 /* ContextMenuModifier.swift */,
 			);
-			path = Modifier;
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 		3AAF0DED2B4960EF0032DEFF /* Siri Extension */ = {
@@ -600,7 +600,7 @@
 				3A8B993F2AAA0085004AAA7B /* Controls.swift */,
 				3AAE1B502BC591E500FD0200 /* Background.swift */,
 				3A8B99432AAA089F004AAA7B /* Sliders */,
-				3AAE1B4D2BC5858E00FD0200 /* Modifier */,
+				3AAE1B4D2BC5858E00FD0200 /* Modifiers */,
 				3AAE1B4A2BC584D600FD0200 /* Regular */,
 				3AAE1B492BC584D100FD0200 /* Compact */,
 			);
