@@ -16,6 +16,7 @@ struct PlaylistAddSheet: View {
     
     @State private var creatingNewPlaylist = false
     @State private var newPlaylistName = ""
+    @State private var publicPlaylist: Bool = true
     
     @State private var failed = false
     @State private var working = false
@@ -40,12 +41,14 @@ struct PlaylistAddSheet: View {
                             if creatingNewPlaylist {
                                 TextField("playlist.new.name", text: $newPlaylistName)
                                 
+                                Toggle("playlist.new.public", isOn: $publicPlaylist)
+                                
                                 Button {
                                     Task {
                                         do {
                                             working = true
                                             
-                                            try await JellyfinClient.shared.create(playlistName: newPlaylistName, trackIds: [track.id])
+                                            try await JellyfinClient.shared.create(playlistName: newPlaylistName, trackIds: [track.id], IsPublic: publicPlaylist)
                                             dismiss()
                                         } catch {
                                             failed = true

@@ -1379,6 +1379,16 @@
         }
       }
     },
+    "playlist.new.public" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared with Instance"
+          }
+        }
+      }
+    },
     "playlist.remove" : {
       "localizations" : {
         "de" : {
