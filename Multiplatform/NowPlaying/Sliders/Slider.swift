@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct Slider: View {
         @Binding var percentage: Double
         @Binding var dragging: Bool

@@ -29,7 +29,12 @@ internal extension JellyfinClient {
         
         var request = URLRequest(url: url)
         request.httpMethod = clientRequest.method
+        request.httpShouldHandleCookies = true
         request.timeoutInterval = 15
+        
+        for pair in customHTTPHeaders {
+            request.addValue(pair.value, forHTTPHeaderField: pair.key)
+        }
         
         if let token = _token {
             request.addValue("MediaBrowser Client=\"AmpFin\", Device=\"\(deviceType)\", DeviceId=\"\(clientId)\", Version=\"\(clientVersion)\", Token=\"\(token)\"", forHTTPHeaderField: "X-Emby-Authorization")

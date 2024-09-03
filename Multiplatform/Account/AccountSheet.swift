@@ -74,6 +74,13 @@ internal struct AccountSheet: View {
                 }
                 
                 Section {
+                    NavigationLink(destination: HeaderEditView()) {
+                        Label("login.customHTTPHeaders", systemImage: "network.badge.shield.half.filled")
+                    }
+                }
+                .foregroundStyle(.primary)
+                
+                Section {
                     Button {
                         UIApplication.shared.open(URL(string: "https://github.com/rasmuslos/AmpFin")!)
                     } label: {

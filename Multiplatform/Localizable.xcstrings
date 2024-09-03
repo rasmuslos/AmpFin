@@ -193,6 +193,16 @@
         }
       }
     },
+    "account.server %@ ?? %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "account.server %1$@ ?? %2$@"
+          }
+        }
+      }
+    },
     "account.settings" : {
       "localizations" : {
         "de" : {
@@ -689,6 +699,27 @@
           }
         }
       }
+    },
+    "login.customHTTPHeaders" : {
+
+    },
+    "login.customHTTPHeaders.add" : {
+
+    },
+    "login.customHTTPHeaders.discard" : {
+
+    },
+    "login.customHTTPHeaders.key" : {
+
+    },
+    "login.customHTTPHeaders.remove" : {
+
+    },
+    "login.customHTTPHeaders.save" : {
+
+    },
+    "login.customHTTPHeaders.value" : {
+
     },
     "login.error.failed" : {
       "localizations" : {
@@ -1966,6 +1997,7 @@
       }
     },
     "server.version %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

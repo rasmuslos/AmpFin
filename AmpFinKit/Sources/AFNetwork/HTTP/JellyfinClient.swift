@@ -17,6 +17,7 @@ public final class JellyfinClient {
     public private(set) var _userId: String!
     
     public private(set) var clientId: String
+    internal var _customHTTPHeaders: [CustomHTTPHeader]?
     
     public let clientBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "unknown"
     public let clientVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"

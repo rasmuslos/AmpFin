@@ -102,6 +102,7 @@
 		3AAF0DEC2B4960EF0032DEFF /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A442C092B485E56008FECE2 /* Intents.framework */; };
 		3AAF0DEF2B4960EF0032DEFF /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAF0DEE2B4960EF0032DEFF /* IntentHandler.swift */; };
 		3AAF0DF32B4960EF0032DEFF /* Siri Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AAF0DEB2B4960EF0032DEFF /* Siri Extension.appex */; platformFilters = (ios, maccatalyst, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3ABF77E52C87452C0006ADBC /* HeaderEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF77E42C87452C0006ADBC /* HeaderEditView.swift */; };
 		3AC65BD92BE222CD00448D5E /* TrackGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC65BD82BE222CD00448D5E /* TrackGrid.swift */; };
 		3AC65BDB2BE224D500448D5E /* Array+Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC65BDA2BE224D500448D5E /* Array+Repeat.swift */; };
 		3AD1B3CB2BC44C440051C5AE /* ArtistView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1B3CA2BC44C440051C5AE /* ArtistView+Toolbar.swift */; };
@@ -250,6 +251,7 @@
 		3AB697A22B386B20009000DD /* MockLibraryDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLibraryDataProvider.swift; sourceTree = "<group>"; };
 		3AB697A32B386B20009000DD /* OfflineLibraryDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineLibraryDataProvider.swift; sourceTree = "<group>"; };
 		3ABAFCAA2AA7D6C40011BFD6 /* AmpFin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AmpFin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3ABF77E42C87452C0006ADBC /* HeaderEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderEditView.swift; sourceTree = "<group>"; };
 		3AC65BD82BE222CD00448D5E /* TrackGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackGrid.swift; sourceTree = "<group>"; };
 		3AC65BDA2BE224D500448D5E /* Array+Repeat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Repeat.swift"; sourceTree = "<group>"; };
 		3AD1B3CA2BC44C440051C5AE /* ArtistView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArtistView+Toolbar.swift"; sourceTree = "<group>"; };
@@ -640,6 +642,7 @@
 			children = (
 				3AEB32292AA7EC3C00853210 /* LoginView.swift */,
 				3A3AF1A52AC4523600811D7D /* AccountSheet.swift */,
+				3ABF77E42C87452C0006ADBC /* HeaderEditView.swift */,
 				3A36ED3E2BE8EDD200AECE9C /* Account+Remote.swift */,
 			);
 			path = Account;
@@ -846,6 +849,7 @@
 				3A1CBC192B0D284200855A70 /* Navigation.swift in Sources */,
 				3A88505C2AA909CE00456DDD /* AlbumCover.swift in Sources */,
 				3A5515EE2BC3E1CA00B922D7 /* Sidebar.swift in Sources */,
+				3ABF77E52C87452C0006ADBC /* HeaderEditView.swift in Sources */,
 				3A8B993C2AA9FCC6004AAA7B /* CompactModifier.swift in Sources */,
 				3A62CC492C08BC790093EA66 /* Double+Duration.swift in Sources */,
 				3A6F50AD2AACAFDF00FC8A29 /* AlbumLoadView.swift in Sources */,

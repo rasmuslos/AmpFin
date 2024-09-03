@@ -10,7 +10,7 @@ import MediaPlayer
 import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct Controls: View {
         @Environment(ViewModel.self) private var viewModel
         
