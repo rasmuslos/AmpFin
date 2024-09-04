@@ -14,6 +14,8 @@ struct PlaylistAddSheet: View {
     
     let track: Track
     
+    @State private var serverVersion: String?
+    
     @State private var creatingNewPlaylist = false
     @State private var newPlaylistName = ""
     @State private var publicPlaylist: Bool = true
@@ -41,7 +43,9 @@ struct PlaylistAddSheet: View {
                             if creatingNewPlaylist {
                                 TextField("playlist.new.name", text: $newPlaylistName)
                                 
-                                Toggle("playlist.new.public", isOn: $publicPlaylist)
+                                Toggle("playlist.new.public", isOn: $publicPlaylist).disabled(
+                                    serverVersion?.compare("10.9.0", options: .numeric) == .orderedAscending
+                                )
                                 
                                 Button {
                                     Task {
@@ -119,6 +123,15 @@ struct PlaylistAddSheet: View {
             }
             #endif
             .toolbarTitleDisplayMode(.inline)
+        }
+        .task {
+            do {
+                serverVersion = try await JellyfinClient.shared.serverVersion()
+            } catch {
+                #if DEBUG
+                print("Failed to fetch server version: \(error)")
+                #endif
+            }
         }
         .foregroundStyle(colorScheme == .dark ? .white : .black)
         // This indicator does nothing on macOS and will only confuse our user
