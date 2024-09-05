@@ -311,9 +311,8 @@ private extension NowPlaying.ViewModel {
                     $0.addTask { await self?.updateMediaInfo() }
                     // MARK: extract colors
                     $0.addTask {
-                        print("ddd")
-                        if let cover = await self?.nowPlaying?.cover {
-                            guard let dominantColors = try? await RFKVisuals.extractDominantColors(10, url: cover.url) else {
+                        if let image = await self?.nowPlaying?.cover?.systemImage {
+                            guard let dominantColors = try? await RFKVisuals.extractDominantColors(10, image: image) else {
                                 await MainActor.withAnimation { [weak self] in
                                     self?.colors = []
                                     self?.highlights = []
@@ -322,17 +321,12 @@ private extension NowPlaying.ViewModel {
                                 return
                             }
                             
-                            let colors = RFKVisuals.brightnessExtremeFilter(dominantColors.map { $0.color }, threshold: 0.1)
+                            let colors = RFKVisuals.brightnessExtremeFilter(dominantColors.map { $0.color }, threshold: 0.25)
                             var highlights = RFKVisuals
-                                .contrastRatios(RFKVisuals.brightnessExtremeFilter(colors)).filter { $0.value > 10 }
-                                .map { RFKVisuals.adjust($0.key, saturation: 0, brightness: 0.55) }
-                            let count = highlights.count
-                            
-                            for i in 0..<count {
-                                if Int.random(in: 0...1) == 1 {
-                                    highlights.append(highlights[i])
-                                }
-                            }
+                                .contrastRatios(RFKVisuals.brightnessExtremeFilter(colors, threshold: 0.35))
+                                .sorted { $0.value < $1.value }
+                                .filter { $0.value > 15 }
+                                .map { $0.key }
                             
                             let extractedCoverItemID = await self?.extractedCoverItemID
                             let itemID = await self?.nowPlaying?.id

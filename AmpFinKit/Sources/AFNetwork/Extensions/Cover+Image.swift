@@ -6,7 +6,6 @@
 // 
     
 import Foundation
-import Nuke
 import AFFoundation
 
 #if canImport(UIKit)

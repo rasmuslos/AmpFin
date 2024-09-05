@@ -236,7 +236,8 @@ private extension PlaylistViewModel {
     }
     
     func extractColors() async {
-        guard let cover = await playlist.cover, let dominantColors = try? await RFKVisuals.extractDominantColors(10, url: cover.url) else {
+        guard let image = await playlist.cover?.systemImage,
+              let dominantColors = try? await RFKVisuals.extractDominantColors(10, image: image) else {
             return
         }
         
