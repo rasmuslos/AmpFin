@@ -18,7 +18,7 @@ internal extension NowPlaying {
         @Environment(ViewModel.self) private var viewModel
         
         @State private var offset = CGFloat.random(in: 0...1)
-        @State private var baseSpeed = CGFloat.random(in: 0.1...0.2)
+        @State private var baseSpeed = CGFloat.random(in: 0.2...0.3)
         
         private var speed: CGFloat {
             guard viewModel.expanded && viewModel.playing && !haltNowPlayingBackground else {
@@ -26,7 +26,7 @@ internal extension NowPlaying {
             }
             
             if viewModel.highlights.count < 3 {
-                return 0.07
+                return 0.1
             } else if viewModel.highlights.count < 5 {
                 return baseSpeed
             }
@@ -34,6 +34,10 @@ internal extension NowPlaying {
             return baseSpeed * 2
         }
         private var blurRadius: CGFloat {
+            if viewModel.currentTab == .lyrics {
+                return 0.7
+            }
+            
             if viewModel.highlights.count < 3 {
                 return 0.9
             } else if viewModel.highlights.count < 5 {
