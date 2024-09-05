@@ -21,7 +21,7 @@ internal extension NowPlaying {
         @State private var baseSpeed = CGFloat.random(in: 0.1...0.2)
         
         private var speed: CGFloat {
-            guard viewModel.playing && !haltNowPlayingBackground else {
+            guard viewModel.expanded && viewModel.playing && !haltNowPlayingBackground else {
                 return 0
             }
             

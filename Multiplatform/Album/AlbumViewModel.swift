@@ -158,7 +158,7 @@ extension AlbumViewModel {
     private func determineButtonColor() async {
         if let image = await album.cover?.systemImage,
            let colors = try? await RFKVisuals.extractDominantColors(4, image: image),
-           let result = RFKVisuals.determineMostSaturated(colors.map { $0.color }) {
+           let result = RFKVisuals.determineMostSaturated(RFKVisuals.brightnessExtremeFilter(colors.map { $0.color }, threshold: 0.25)) {
             await MainActor.withAnimation {
                 self.buttonColor = result
             }

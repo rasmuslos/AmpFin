@@ -322,10 +322,10 @@ private extension NowPlaying.ViewModel {
                             }
                             
                             let colors = RFKVisuals.brightnessExtremeFilter(dominantColors.map { $0.color }, threshold: 0.25)
-                            var highlights = RFKVisuals
+                            let highlights = RFKVisuals
                                 .contrastRatios(RFKVisuals.brightnessExtremeFilter(colors, threshold: 0.35))
                                 .sorted { $0.value < $1.value }
-                                .filter { $0.value > 15 }
+                                .filter { $0.value > 1 }
                                 .map { $0.key }
                             
                             let extractedCoverItemID = await self?.extractedCoverItemID
