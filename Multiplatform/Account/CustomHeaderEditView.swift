@@ -45,6 +45,12 @@ struct CustomHeaderEditView: View {
                 }
                 
                 Button {
+                    
+                    // Remove empty headers, as that causes requests to fail
+                    current = current.filter { element in
+                        !element.key.isEmpty && !element.value.isEmpty
+                    }
+                    
                     JellyfinClient.shared.customHTTPHeaders = current
                     callback?()
                 } label: {
