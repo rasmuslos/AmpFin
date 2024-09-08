@@ -252,7 +252,6 @@ internal final class LocalAudioEndpoint: AudioEndpoint {
         audioPlayer = .init()
         audioPlayer.actionAtItemEnd = Defaults[.repeatMode] == .track ? .pause : .advance
         audioPlayer.allowsExternalPlayback = false
-        audioPlayer.automaticallyWaitsToMinimizeStalling = false
         audioPlayer.usesExternalPlaybackWhileExternalScreenIsActive = true
         
         nowPlaying = nil

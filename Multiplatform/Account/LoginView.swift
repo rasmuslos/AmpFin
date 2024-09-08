@@ -95,8 +95,23 @@ struct LoginView: View {
                             }
                             .foregroundStyle(.red)
                         }
+                        
+                        if loginFlowState == .server {
+                            Section {
+                                Button {
+                                    loginFlowState = .customHTTPHeaders
+                                } label: {
+                                    Label("login.customHTTPHeaders", systemImage: "lock.shield.fill")
+                                }
+                                .foregroundStyle(.secondary)
+                            }
+                        }
                     }
                     .onSubmit(flowStep)
+                case .customHTTPHeaders:
+                    CustomHeaderEditView() {
+                        loginFlowState = .server
+                    }
                 case .serverLoading, .credentialsLoading:
                     VStack {
                         ProgressView()
@@ -164,6 +179,8 @@ internal extension LoginView {
         case serverLoading
         case credentials
         case credentialsLoading
+        
+        case customHTTPHeaders
     }
     enum LoginError {
         case server

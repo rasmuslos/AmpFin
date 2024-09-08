@@ -102,6 +102,10 @@ internal struct ContentView: View {
                     
                     nowPlayingViewModel.namespace = namespace
                     UIApplication.shared.addGestureRecognizer()
+                    
+                    Task.detached {
+                        try await JellyfinClient.shared.updateCachedServerVersion()
+                    }
                 }
         } else {
             LoginView()

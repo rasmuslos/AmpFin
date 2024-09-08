@@ -74,6 +74,13 @@ internal struct AccountSheet: View {
                 }
                 
                 Section {
+                    NavigationLink(destination: CustomHeaderEditView()) {
+                        Label("login.customHTTPHeaders", systemImage: "network.badge.shield.half.filled")
+                    }
+                }
+                .foregroundStyle(.primary)
+                
+                Section {
                     Button {
                         UIApplication.shared.open(URL(string: "https://github.com/rasmuslos/AmpFin")!)
                     } label: {
@@ -112,13 +119,7 @@ internal struct AccountSheet: View {
                 
                 Section("account.server") {
                     Group {
-                        Text(JellyfinClient.shared.serverUrl.absoluteString)
-                        
-                        if let serverVersion {
-                            Text("server.version \(serverVersion)")
-                        } else {
-                            ProgressView()
-                        }
+                        Text("account.server \(JellyfinClient.shared.serverUrl.absoluteString) \(serverVersion ?? "?")")
                         
                         Text(JellyfinClient.shared.clientId)
                         Text(JellyfinClient.shared.token)
