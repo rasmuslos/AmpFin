@@ -109,9 +109,11 @@ struct LoginView: View {
                     }
                     .onSubmit(flowStep)
                 case .customHTTPHeaders:
+                NavigationView {
                     CustomHeaderEditView() {
                         loginFlowState = .server
                     }
+                }
                 case .serverLoading, .credentialsLoading:
                     VStack {
                         ProgressView()
