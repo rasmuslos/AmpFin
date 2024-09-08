@@ -160,18 +160,23 @@ internal extension LocalAudioEndpoint {
         history.remove(at: index)
     }
     
-    func move(from index: Int, to destination: Int) {
-        guard queue.count > index else {
+    func move(from: Int, to: Int) {
+        guard queue.count > from else {
             return
         }
         
         var copy = queue
-        let to = min(destination, queue.count)
+        let to = min(to, queue.count)
         
-        let track = copy.remove(at: index)
-        copy.insert(track, at: to)
+        let track = copy.remove(at: from)
+        
+        if from < to {
+            queue.insert(track, at: to)
+        } else {
+            queue.insert(track, at: to - 1)
+        }
+        
         unalteredQueue.insert(track, at: to)
-        
         queue = copy
     }
     

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     /**
      This thing is very funny, we will need this due to how Apple implemented NavigationSplitView.
      The NavigationSplitView is implemented with a wrapper around UIKit, so not a SwiftUI native component.

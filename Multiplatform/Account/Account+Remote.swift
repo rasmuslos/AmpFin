@@ -9,7 +9,7 @@ import SwiftUI
 import AmpFinKit
 import AFPlayback
 
-extension AccountSheet {
+internal extension AccountSheet {
     struct Remote: View {
         @Environment(NowPlaying.ViewModel.self) private var nowPlayingViewModel
         

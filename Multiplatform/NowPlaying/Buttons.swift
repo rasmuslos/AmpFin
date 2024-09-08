@@ -48,10 +48,10 @@ extension NowPlaying {
             } label: {
                 Label("lyrics", systemImage: viewModel.currentTab == .lyrics ? "text.bubble.fill" : "text.bubble")
                     .labelStyle(.iconOnly)
+                    .foregroundStyle(viewModel.currentTab == .lyrics ? .thickMaterial : .thinMaterial)
+                    .animation(.none, value: viewModel.currentTab)
                     .contentShape(.rect)
             }
-            .foregroundStyle(viewModel.currentTab == .lyrics ? .thickMaterial : .thinMaterial)
-            .animation(.none, value: viewModel.currentTab)
             .buttonStyle(.plain)
             .modifier(HoverEffectModifier(padding: 4))
             .padding(12)
@@ -59,6 +59,7 @@ extension NowPlaying {
                 viewModel.selectTab(.lyrics)
             }
             .padding(-12)
+            .disabled(!JellyfinClient.shared.supports(.lyrics))
         }
         @ViewBuilder private var queueButton: some View {
             Menu {

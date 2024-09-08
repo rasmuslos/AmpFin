@@ -31,7 +31,13 @@ extension DownloadManager {
             ])
         }
         
-        return urlSession.downloadTask(with: URLRequest(url: url))
+        var request = URLRequest(url: url)
+        
+        for header in JellyfinClient.shared.customHTTPHeaders {
+            request.addValue(header.value, forHTTPHeaderField: header.key)
+        }
+        
+        return urlSession.downloadTask(with: request)
     }
     
     func getTrackContainer(trackId: String) -> OfflineTrack.Container {

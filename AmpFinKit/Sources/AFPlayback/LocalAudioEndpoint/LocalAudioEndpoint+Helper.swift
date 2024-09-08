@@ -43,7 +43,11 @@ internal extension LocalAudioEndpoint {
             ])
         }
         
-        return AVPlayerItem(url: url)
+        let asset = AVURLAsset(url: url, options: [
+            "AVURLAssetHTTPHeaderFieldsKey": JellyfinClient.shared.customHTTPHeaderDictionary,
+        ])
+        
+        return AVPlayerItem(asset: asset)
     }
     func populateAVPlayerQueue() {
         guard let nowPlaying else {
