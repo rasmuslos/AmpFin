@@ -53,7 +53,8 @@ struct LoginView: View {
             Spacer()
         }
         .sheet(isPresented: $loginSheetPresented, content: {
-            switch loginFlowState {
+            NavigationView {
+                switch loginFlowState {
                 case .server, .credentials:
                     Form {
                         Section {
@@ -83,14 +84,14 @@ struct LoginView: View {
                         } footer: {
                             Group {
                                 switch loginError {
-                                    case .server:
-                                        Text("login.error.server")
-                                    case .url:
-                                        Text("login.error.url")
-                                    case .failed:
-                                        Text("login.error.failed")
-                                    case nil:
-                                        EmptyView()
+                                case .server:
+                                    Text("login.error.server")
+                                case .url:
+                                    Text("login.error.url")
+                                case .failed:
+                                    Text("login.error.failed")
+                                case nil:
+                                    EmptyView()
                                 }
                             }
                             .foregroundStyle(.red)
@@ -107,13 +108,22 @@ struct LoginView: View {
                             }
                         }
                     }
+                    .toolbar {
+                        if loginFlowState == .credentials {
+                            ToolbarItemGroup(placement: .topBarLeading) {
+                                Button {
+                                    loginFlowState = .server
+                                } label: {
+                                    Label("back", systemImage: "chevron.left")
+                                }
+                            }
+                        }   
+                    }
                     .onSubmit(flowStep)
                 case .customHTTPHeaders:
-                NavigationView {
                     CustomHeaderEditView() {
                         loginFlowState = .server
                     }
-                }
                 case .serverLoading, .credentialsLoading:
                     VStack {
                         ProgressView()
@@ -123,6 +133,7 @@ struct LoginView: View {
                             .foregroundStyle(.secondary)
                             .padding(20)
                     }
+                }
             }
         })
     }
