@@ -193,12 +193,12 @@
         }
       }
     },
-    "account.server %@ ?? %@" : {
+    "account.server %@ %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "account.server %1$@ ?? %2$@"
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
           }
         }
       }
@@ -701,25 +701,75 @@
       }
     },
     "login.customHTTPHeaders" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom HTTP-Headers"
+          }
+        }
+      }
     },
     "login.customHTTPHeaders.add" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "login.customHTTPHeaders.discard" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard changes"
+          }
+        }
+      }
     },
     "login.customHTTPHeaders.key" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Key"
+          }
+        }
+      }
     },
     "login.customHTTPHeaders.remove" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
+          }
+        }
+      }
     },
     "login.customHTTPHeaders.save" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
     },
     "login.customHTTPHeaders.value" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Value"
+          }
+        }
+      }
     },
     "login.error.failed" : {
       "localizations" : {
@@ -951,13 +1001,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lyrics können nicht abgerufen werden (Benötigt Jellyfin 10.9+)."
+            "value" : "Lyrics können nicht abgerufen werden"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lyrics cannot be retrieved (requires Jellyfin 10.9 or later)."
+            "value" : "Lyrics cannot be retrieved"
           }
         }
       }
@@ -1996,23 +2046,6 @@
         }
       }
     },
-    "server.version %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Version: %@"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Version: %@"
-          }
-        }
-      }
-    },
     "shuffle" : {
       "localizations" : {
         "de" : {
@@ -2441,142 +2474,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Released"
-          }
-        }
-      }
-    },
-    "tip.artistPlayback.message" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ändere das Verhalten beim spielen von Künstlern in der Einstellungs-App."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configure artist play behavior options in the Settings app."
-          }
-        }
-      }
-    },
-    "tip.artistPlayback.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Instant-Mix oder zufällige Lieder?"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Instant-Mix or random tracks?"
-          }
-        }
-      }
-    },
-    "tip.download.message" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lade das Album herunter und höre es unterwegs an."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Download this album for seamless listening on-the-go."
-          }
-        }
-      }
-    },
-    "tip.download.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alben herunterladen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Download albums"
-          }
-        }
-      }
-    },
-    "tip.mix.message" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Generiere eine dynamische Warteschlange, basierend auf dem Lied welches du auswählst."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Discover similar music by generating a dynamic queue based on the track you choose."
-          }
-        }
-      }
-    },
-    "tip.mix.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Instant Mix"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Instant mix"
-          }
-        }
-      }
-    },
-    "tip.remote.message" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es ist möglich eine andere unterstütze Anwendung - z.B. Jellyfin-Web - mit AmpFin zu steuern. Es können auch Befehle empfangen werden."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Take command of another supported Jellyfin client (e.g., Jellyfin Web), or have one of them take control of your current session."
-          }
-        }
-      }
-    },
-    "tip.remote.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ferbendiehung"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remote control"
           }
         }
       }

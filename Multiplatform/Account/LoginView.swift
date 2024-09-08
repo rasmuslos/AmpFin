@@ -109,7 +109,7 @@ struct LoginView: View {
                     }
                     .onSubmit(flowStep)
                 case .customHTTPHeaders:
-                    HeaderEditView() {
+                    CustomHeaderEditView() {
                         loginFlowState = .server
                     }
                 case .serverLoading, .credentialsLoading:

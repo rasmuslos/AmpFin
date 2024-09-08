@@ -74,7 +74,7 @@ internal struct AccountSheet: View {
                 }
                 
                 Section {
-                    NavigationLink(destination: HeaderEditView()) {
+                    NavigationLink(destination: CustomHeaderEditView()) {
                         Label("login.customHTTPHeaders", systemImage: "network.badge.shield.half.filled")
                     }
                 }
@@ -119,7 +119,7 @@ internal struct AccountSheet: View {
                 
                 Section("account.server") {
                     Group {
-                        Text("account.server \(JellyfinClient.shared.serverUrl.absoluteString) ?? \(serverVersion ?? "?")")
+                        Text("account.server \(JellyfinClient.shared.serverUrl.absoluteString) \(serverVersion ?? "?")")
                         
                         Text(JellyfinClient.shared.clientId)
                         Text(JellyfinClient.shared.token)

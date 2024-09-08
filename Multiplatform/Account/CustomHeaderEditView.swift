@@ -6,12 +6,10 @@
 //
 
 import SwiftUI
-import Defaults
 import AmpFinKit
 
-struct HeaderEditView: View {
+struct CustomHeaderEditView: View {
     @State private var current = JellyfinClient.shared.customHTTPHeaders
-    @State private var previous = JellyfinClient.shared.customHTTPHeaders
     
     var callback: (() -> Void)? = nil
     
@@ -34,36 +32,37 @@ struct HeaderEditView: View {
                     }
                 }
             }
-            
-            Group {
+        }
+        .navigationTitle("login.customHTTPHeaders")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
                     current.append(.init(key: "", value: ""))
                 } label: {
                     Label("login.customHTTPHeaders.add", systemImage: "plus")
+                        .labelStyle(.iconOnly)
                 }
+                
                 Button {
                     JellyfinClient.shared.customHTTPHeaders = current
                     callback?()
                 } label: {
                     Label("login.customHTTPHeaders.save", systemImage: "checkmark")
+                        .labelStyle(.titleOnly)
                 }
-            }
-            .foregroundStyle(.primary)
-            
-            if let callback = callback {
-                Button(role: .destructive) {
-                    JellyfinClient.shared.customHTTPHeaders = previous
-                    callback()
-                } label: {
-                    Label("login.customHTTPHeaders.discard", systemImage: "minus")
-                }
-                .foregroundStyle(.red)
             }
         }
-        .navigationTitle("login.customHTTPHeaders")
+        .onAppear {
+            if current.isEmpty {
+                current.append(.init(key: "", value: ""))
+            }
+        }
     }
 }
 
 #Preview {
-    HeaderEditView()
+    NavigationStack {
+        CustomHeaderEditView() {}
+    }
 }
