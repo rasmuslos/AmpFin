@@ -84,14 +84,14 @@ struct LoginView: View {
                         } footer: {
                             Group {
                                 switch loginError {
-                                case .server:
-                                    Text("login.error.server")
-                                case .url:
-                                    Text("login.error.url")
-                                case .failed:
-                                    Text("login.error.failed")
-                                case nil:
-                                    EmptyView()
+                                    case .server:
+                                        Text("login.error.server")
+                                    case .url:
+                                        Text("login.error.url")
+                                    case .failed:
+                                        Text("login.error.failed")
+                                    case nil:
+                                        EmptyView()
                                 }
                             }
                             .foregroundStyle(.red)
