@@ -59,6 +59,7 @@ extension NowPlaying {
                 viewModel.selectTab(.lyrics)
             }
             .padding(-12)
+            .disabled(!JellyfinClient.shared.supports(.lyrics))
         }
         @ViewBuilder private var queueButton: some View {
             Menu {

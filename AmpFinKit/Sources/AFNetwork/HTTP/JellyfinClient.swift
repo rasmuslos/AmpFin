@@ -17,6 +17,8 @@ public final class JellyfinClient {
     public private(set) var _userId: String!
     
     public private(set) var clientId: String
+    
+    internal var serverVersion: ServerVersion?
     internal var _customHTTPHeaders: [CustomHTTPHeader]?
     
     public let clientBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "unknown"
@@ -47,6 +49,10 @@ public final class JellyfinClient {
         } else {
             clientId = String(length: 100)
             Self.defaults.set(clientId, forKey: "clientId")
+        }
+        
+        if let lastKnownServerVersion = Self.defaults.string(forKey: "lastKnownServerVersion") {
+            serverVersion = parseServerVersion(lastKnownServerVersion)
         }
     }
     
