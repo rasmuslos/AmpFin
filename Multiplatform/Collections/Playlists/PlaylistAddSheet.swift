@@ -44,7 +44,7 @@ struct PlaylistAddSheet: View {
                                 TextField("playlist.new.name", text: $newPlaylistName)
                                 
                                 Toggle("playlist.new.public", isOn: $publicPlaylist).disabled(
-                                    serverVersion?.compare("10.9.0", options: .numeric) == .orderedAscending
+                                    !JellyfinClient.shared.supports(.sharedPlaylists)
                                 )
                                 
                                 Button {
