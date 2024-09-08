@@ -16,12 +16,12 @@ private let playlistQuery = [
 ]
 
 public extension JellyfinClient {
-    func create(playlistName: String, trackIds: [String], IsPublic: Bool) async throws {
+    func create(playlistName: String, trackIds: [String], isPublic: Bool) async throws {
         let _ = try await request(ClientRequest<EmptyResponse>(path: "Playlists", method: "POST", body: [
             "Ids": trackIds,
             "Name": playlistName,
             "MediaType": "Audio",
-            "IsPublic": IsPublic
+            "IsPublic": isPublic
         ], userId: true))
     }
     

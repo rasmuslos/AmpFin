@@ -52,7 +52,7 @@ struct PlaylistAddSheet: View {
                                         do {
                                             working = true
                                             
-                                            try await JellyfinClient.shared.create(playlistName: newPlaylistName, trackIds: [track.id], IsPublic: publicPlaylist)
+                                            try await JellyfinClient.shared.create(playlistName: newPlaylistName, trackIds: [track.id], isPublic: publicPlaylist)
                                             dismiss()
                                         } catch {
                                             failed = true
