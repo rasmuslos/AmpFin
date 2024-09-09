@@ -13,6 +13,10 @@ struct CustomHeaderEditView: View {
     
     var callback: (() -> Void)? = nil
     
+    private var trimmed: [JellyfinClient.CustomHTTPHeader] {
+        current.filter { !$0.key.isEmpty && !$0.value.isEmpty }
+    }
+    
     var body: some View {
         List {
             ForEach(Array(current.enumerated()), id: \.offset) { (index, pair) in
@@ -36,6 +40,17 @@ struct CustomHeaderEditView: View {
         .navigationTitle("login.customHTTPHeaders")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            if let callback {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        callback()
+                    } label: {
+                        Label("done", systemImage: "chevron.left")
+                            .labelStyle(.iconOnly)
+                    }
+                }
+            }
+            
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
                     current.append(.init(key: "", value: ""))
@@ -45,7 +60,7 @@ struct CustomHeaderEditView: View {
                 }
                 
                 Button {
-                    JellyfinClient.shared.customHTTPHeaders = current
+                    JellyfinClient.shared.customHTTPHeaders = trimmed
                     callback?()
                 } label: {
                     Label("login.customHTTPHeaders.save", systemImage: "checkmark")

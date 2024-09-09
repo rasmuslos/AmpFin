@@ -195,6 +195,12 @@
     },
     "account.server %@ %@" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -702,6 +708,12 @@
     },
     "login.customHTTPHeaders" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigene HTTP-Header"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -712,6 +724,12 @@
     },
     "login.customHTTPHeaders.add" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinzufügen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -720,19 +738,14 @@
         }
       }
     },
-    "login.customHTTPHeaders.discard" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Discard changes"
-          }
-        }
-      }
-    },
     "login.customHTTPHeaders.key" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schlüssel"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -743,6 +756,12 @@
     },
     "login.customHTTPHeaders.remove" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entfernen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -753,6 +772,12 @@
     },
     "login.customHTTPHeaders.save" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sichern"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -763,6 +788,12 @@
     },
     "login.customHTTPHeaders.value" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wert"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",

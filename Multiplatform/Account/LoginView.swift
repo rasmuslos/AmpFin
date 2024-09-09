@@ -53,75 +53,81 @@ struct LoginView: View {
             Spacer()
         }
         .sheet(isPresented: $loginSheetPresented, content: {
-            switch loginFlowState {
-                case .server, .credentials:
-                    Form {
-                        Section {
-                            if loginFlowState == .server {
-                                TextField("login.server", text: $server)
-                                    .keyboardType(.URL)
-                                    .autocorrectionDisabled()
-                                    .textInputAutocapitalization(.never)
-                            } else if loginFlowState == .credentials {
-                                TextField("login.username", text: $username)
-                                SecureField("login.password", text: $password)
-                                    .autocorrectionDisabled()
-                                    .textInputAutocapitalization(.never)
+            Group {
+                switch loginFlowState {
+                    case .server, .credentials:
+                        Form {
+                            Section {
+                                if loginFlowState == .server {
+                                    TextField("login.server", text: $server)
+                                        .keyboardType(.URL)
+                                        .autocorrectionDisabled()
+                                        .textInputAutocapitalization(.never)
+                                } else if loginFlowState == .credentials {
+                                    TextField("login.username", text: $username)
+                                    SecureField("login.password", text: $password)
+                                        .autocorrectionDisabled()
+                                        .textInputAutocapitalization(.never)
+                                }
+                                
+                                Button {
+                                    flowStep()
+                                } label: {
+                                    Text("login.next")
+                                }
+                            } header: {
+                                if let serverVersion {
+                                    Text("login.version \(serverVersion)")
+                                } else {
+                                    Text("login.title")
+                                }
+                            } footer: {
+                                Group {
+                                    switch loginError {
+                                        case .server:
+                                            Text("login.error.server")
+                                        case .url:
+                                            Text("login.error.url")
+                                        case .failed:
+                                            Text("login.error.failed")
+                                        case nil:
+                                            EmptyView()
+                                    }
+                                }
+                                .foregroundStyle(.red)
                             }
                             
-                            Button {
-                                flowStep()
-                            } label: {
-                                Text("login.next")
-                            }
-                        } header: {
-                            if let serverVersion {
-                                Text("login.version \(serverVersion)")
-                            } else {
-                                Text("login.title")
-                            }
-                        } footer: {
-                            Group {
-                                switch loginError {
-                                    case .server:
-                                        Text("login.error.server")
-                                    case .url:
-                                        Text("login.error.url")
-                                    case .failed:
-                                        Text("login.error.failed")
-                                    case nil:
-                                        EmptyView()
+                            if loginFlowState == .server {
+                                Section {
+                                    Button {
+                                        loginFlowState = .customHTTPHeaders
+                                    } label: {
+                                        Label("login.customHTTPHeaders", systemImage: "lock.shield.fill")
+                                    }
+                                    .foregroundStyle(.secondary)
                                 }
                             }
-                            .foregroundStyle(.red)
                         }
-                        
-                        if loginFlowState == .server {
-                            Section {
-                                Button {
-                                    loginFlowState = .customHTTPHeaders
-                                } label: {
-                                    Label("login.customHTTPHeaders", systemImage: "lock.shield.fill")
-                                }
+                        .onSubmit(flowStep)
+                    case .customHTTPHeaders:
+                        NavigationStack {
+                            CustomHeaderEditView() {
+                                loginFlowState = .server
+                            }
+                        }
+                    case .serverLoading, .credentialsLoading:
+                        VStack {
+                            ProgressView()
+                            
+                            Text("login.loading")
+                                .font(.caption)
                                 .foregroundStyle(.secondary)
-                            }
+                                .padding(20)
                         }
-                    }
-                    .onSubmit(flowStep)
-                case .customHTTPHeaders:
-                    CustomHeaderEditView() {
-                        loginFlowState = .server
-                    }
-                case .serverLoading, .credentialsLoading:
-                    VStack {
-                        ProgressView()
-                        
-                        Text("login.loading")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .padding(20)
-                    }
+                }
             }
+            .transition(.opacity)
+            .animation(.smooth, value: loginFlowState)
         })
     }
 }
