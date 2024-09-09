@@ -13,7 +13,10 @@ struct CustomHeaderEditView: View {
     
     var callback: (() -> Void)? = nil
     
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
+    
         List {
             ForEach(Array(current.enumerated()), id: \.offset) { (index, pair) in
                 Section {
@@ -53,6 +56,9 @@ struct CustomHeaderEditView: View {
                     
                     JellyfinClient.shared.customHTTPHeaders = current
                     callback?()
+                    
+                    // Dismiss the view
+                    dismiss()
                 } label: {
                     Label("login.customHTTPHeaders.save", systemImage: "checkmark")
                         .labelStyle(.titleOnly)

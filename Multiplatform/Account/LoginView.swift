@@ -99,12 +99,11 @@ struct LoginView: View {
                         
                         if loginFlowState == .server {
                             Section {
-                                Button {
-                                    loginFlowState = .customHTTPHeaders
-                                } label: {
+                                NavigationLink(destination: CustomHeaderEditView()) {
                                     Label("login.customHTTPHeaders", systemImage: "lock.shield.fill")
+                                        .foregroundStyle(.secondary)
+                                    
                                 }
-                                .foregroundStyle(.secondary)
                             }
                         }
                     }
@@ -113,6 +112,7 @@ struct LoginView: View {
                             ToolbarItemGroup(placement: .topBarLeading) {
                                 Button {
                                     loginFlowState = .server
+                                    serverVersion = nil
                                 } label: {
                                     Label("back", systemImage: "chevron.left")
                                 }
