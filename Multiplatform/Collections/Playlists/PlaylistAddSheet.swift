@@ -41,9 +41,8 @@ struct PlaylistAddSheet: View {
                             if creatingNewPlaylist {
                                 TextField("playlist.new.name", text: $newPlaylistName)
                                 
-                                Toggle("playlist.new.public", isOn: $publicPlaylist).disabled(
-                                    !JellyfinClient.shared.supports(.sharedPlaylists)
-                                )
+                                Toggle("playlist.new.public", isOn: $publicPlaylist)
+                                    .disabled(!JellyfinClient.shared.supports(.sharedPlaylists))
                                 
                                 Button {
                                     Task {
