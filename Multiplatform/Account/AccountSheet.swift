@@ -17,8 +17,10 @@ internal struct AccountSheet: View {
     @State private var serverVersion: String?
     @State private var downloads: [Track]? = nil
     
+    @State private var navigationPath = NavigationPath()
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             List {
                 HStack(spacing: 0) {
                     ItemImage(cover: Cover(
@@ -74,7 +76,7 @@ internal struct AccountSheet: View {
                 }
                 
                 Section {
-                    NavigationLink(destination: CustomHeaderEditView()) {
+                    NavigationLink(value: "") {
                         Label("login.customHTTPHeaders", systemImage: "network.badge.shield.half.filled")
                     }
                 }
@@ -136,6 +138,13 @@ internal struct AccountSheet: View {
                 }
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+            }
+            .navigationTitle("account.title")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: String.self) { _ in
+                CustomHeaderEditView(backButtonVisible: false) {
+                    navigationPath.removeLast()
+                }
             }
             .task {
                 do {

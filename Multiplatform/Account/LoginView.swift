@@ -111,7 +111,7 @@ struct LoginView: View {
                         .onSubmit(flowStep)
                     case .customHTTPHeaders:
                         NavigationStack {
-                            CustomHeaderEditView() {
+                            CustomHeaderEditView(backButtonVisible: true) {
                                 loginFlowState = .server
                             }
                         }
