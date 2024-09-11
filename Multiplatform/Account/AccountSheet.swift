@@ -54,6 +54,10 @@ internal struct AccountSheet: View {
                     } label: {
                         Label("account.settings", systemImage: "gear")
                     }
+                    
+                    NavigationLink(value: "") {
+                        Label("login.customHTTPHeaders", systemImage: "network.badge.shield.half.filled")
+                    }
                 }
                 .foregroundStyle(.primary)
                 
@@ -74,13 +78,6 @@ internal struct AccountSheet: View {
                             }
                     }
                 }
-                
-                Section {
-                    NavigationLink(value: "") {
-                        Label("login.customHTTPHeaders", systemImage: "network.badge.shield.half.filled")
-                    }
-                }
-                .foregroundStyle(.primary)
                 
                 Section {
                     Button {
