@@ -123,6 +123,7 @@ private struct FavoriteButton: View {
 
 private struct ArtistsMenu: View {
     @Environment(NowPlaying.ViewModel.self) private var viewModel
+    @State private var addToPlaylistSheetPresented = false
     
     let track: Track
     
@@ -156,6 +157,7 @@ private struct ArtistsMenu: View {
             
             Button {
                 viewModel.addToPlaylistTrack = track
+                addToPlaylistSheetPresented.toggle()
             } label: {
                 Label("playlist.add", systemImage: "plus")
             }
@@ -166,5 +168,8 @@ private struct ArtistsMenu: View {
         .buttonStyle(.plain)
         .foregroundStyle(.white.opacity(0.4))
         .modifier(HoverEffectModifier())
+        .sheet(isPresented: $addToPlaylistSheetPresented) {
+            PlaylistAddSheet(track: track)
+        }
     }
 }
