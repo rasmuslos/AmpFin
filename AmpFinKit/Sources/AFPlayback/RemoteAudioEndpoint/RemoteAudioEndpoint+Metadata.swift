@@ -80,17 +80,7 @@ internal extension RemoteAudioEndpoint {
         nowPlayingInfo[MPNowPlayingInfoPropertyExternalContentIdentifier] = nowPlaying.id
         
         Task {
-            guard let cover = nowPlaying.cover, let data = try? Data(contentsOf: cover.url) else {
-                return
-            }
-            
-            #if canImport(UIKit)
-            let image = UIImage(data: data)
-            #elseif canImport(AppKit)
-            let image = NSImage(data: data)
-            #endif
-            
-            guard let image = image else {
+            guard let image = await nowPlaying.cover?.systemImage else {
                 return
             }
             

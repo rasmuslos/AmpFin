@@ -56,7 +56,7 @@ private extension MediaResolver {
             return INImage(url: cover.url)
         }
         
-        guard let data = try? Data(contentsOf: cover.url) else {
+        guard let image = await cover.systemImage, let data = image.pngData() else {
             return nil
         }
         

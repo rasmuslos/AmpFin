@@ -8,7 +8,7 @@
 import SwiftUI
 import AmpFinKit
 
-struct CustomHeaderEditView: View {
+internal struct CustomHeaderEditView: View {
     @State private var current = JellyfinClient.shared.customHTTPHeaders
     
     let backButtonVisible: Bool

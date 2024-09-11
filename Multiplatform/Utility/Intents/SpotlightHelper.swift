@@ -6,10 +6,11 @@
 //
 
 import Foundation
-import Defaults
+import UIKit
 import CoreSpotlight
 import OSLog
 import Intents
+import Defaults
 import AmpFinKit
 
 struct SpotlightHelper {
@@ -67,8 +68,8 @@ struct SpotlightHelper {
                         attributes.playCount = track.playCount as NSNumber
                         attributes.audioTrackNumber = NSNumber(value: track.index.disk + track.index.index)
                         
-                        if let cover = track.cover, let data = try? Data(contentsOf: cover.url) {
-                            attributes.thumbnailData = data
+                        if let image = await track.cover?.systemImage {
+                            attributes.thumbnailData = image.pngData()
                         }
                         
                         let item = CSSearchableItem(
@@ -102,8 +103,8 @@ struct SpotlightHelper {
                     attributes.title = playlist.name
                     attributes.duration = NSNumber(value: playlist.duration)
                     
-                    if let cover = playlist.cover, let data = try? Data(contentsOf: cover.url) {
-                        attributes.thumbnailData = data
+                    if let image = await playlist.cover?.systemImage {
+                        attributes.thumbnailData = image.pngData()
                     }
                     
                     let item = CSSearchableItem(
