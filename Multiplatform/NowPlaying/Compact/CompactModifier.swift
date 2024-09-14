@@ -14,6 +14,8 @@ internal extension NowPlaying {
         @Environment(NowPlaying.ViewModel.self) private var viewModel
         
         func body(content: Content) -> some View {
+            @Bindable var viewModel = viewModel
+            
             ZStack(alignment: .bottom) {
                 content
                     .allowsHitTesting(!viewModel.expanded)
@@ -91,6 +93,9 @@ internal extension NowPlaying {
                 
             }
             .ignoresSafeArea(edges: .all)
+            .sheet(item: $viewModel.addToPlaylistTrack) {
+                PlaylistAddSheet(track: $0)
+            }
             .modifier(Navigation.NavigationModifier() {
                 viewModel.expanded = false
             })

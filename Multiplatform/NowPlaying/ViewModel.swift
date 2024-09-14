@@ -185,7 +185,7 @@ internal extension NowPlaying.ViewModel {
     @MainActor
     var dragOffset: CGFloat {
         get {
-            if !expanded || controlsDragging || _dragOffset < 10 {
+            if !expanded || controlsDragging || _dragOffset < 2 {
                 return 0
             }
             
