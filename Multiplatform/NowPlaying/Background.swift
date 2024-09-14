@@ -17,6 +17,8 @@ internal extension NowPlaying {
         @Default(.haltNowPlayingBackground) private var haltNowPlayingBackground
         @Environment(ViewModel.self) private var viewModel
         
+        @State private var opacity: Double = .zero
+        
         @State private var offset = CGFloat.random(in: 0...1)
         @State private var baseSpeed = CGFloat.random(in: 0.2...0.3)
         
@@ -78,11 +80,19 @@ internal extension NowPlaying {
                                 .blur(radius: 100)
                         }
                         
-                        FluidGradient(blobs: viewModel.colors, highlights: highlights, speed: speed, blur: blurRadius)
-                            .opacity(viewModel.finished ? 1 : 0)
-                            .animation(.smooth, value: viewModel.colors)
-                            .animation(.smooth, value: viewModel.highlights)
-                            .animation(.smooth, value: viewModel.finished)
+                        if viewModel.finished {
+                            FluidGradient(blobs: viewModel.colors, highlights: highlights, speed: speed, blur: blurRadius)
+                                .opacity(opacity)
+                                .animation(.smooth, value: opacity)
+                                .animation(.smooth, value: viewModel.colors)
+                                .animation(.smooth, value: viewModel.highlights)
+                                .onAppear {
+                                    opacity = 1
+                                }
+                                .onDisappear {
+                                    opacity = 0
+                                }
+                        }
                     }
                 }
                 .overlay(viewModel.highlights.count < 5 ? .black.opacity(0.2) : .clear)

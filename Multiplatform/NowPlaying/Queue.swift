@@ -326,6 +326,7 @@ private struct QueueSection<Content: View>: View {
     @ViewBuilder let content: (_ track: Track, _ index: Int) -> Content
     
     var body: some View {
+        // TODO: make this a list dumbass
         ScrollView {
             if tracks.isEmpty {
                 Text(emptyText)
