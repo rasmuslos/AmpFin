@@ -77,4 +77,5 @@ internal struct TrackList: View {
         }
         .listStyle(.plain)
     }
+    .environment(NowPlaying.ViewModel())
 }

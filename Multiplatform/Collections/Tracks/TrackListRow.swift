@@ -83,7 +83,8 @@ struct TrackListRow: View {
                         .font(.subheadline)
                         .imageScale(.large)
                         .foregroundStyle(Color(UIColor.label))
-                        .padding(.leading, 0)
+                        .padding(.vertical, 8)
+                        .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
                 .hoverEffect(.lift)
