@@ -47,6 +47,7 @@ internal extension NowPlaying {
                 FavoriteButton(track: track)
                     .matchedGeometryEffect(id: "menu", in: viewModel.namespace, properties: .frame, anchor: .topTrailing)
             }
+            .transition(.opacity)
         }
     }
     

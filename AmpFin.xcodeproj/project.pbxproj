@@ -26,6 +26,7 @@
 		3A2442002BF52682000657CB /* String+Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2441FF2BF52682000657CB /* String+Distance.swift */; };
 		3A24E5D92B4BF5850052DD20 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A24E5D82B4BF5850052DD20 /* Settings.bundle */; };
 		3A24E5DC2B4BF7860052DD20 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A24E5DE2B4BF7860052DD20 /* AppIntentVocabulary.plist */; };
+		3A2944382C9582430092EF7C /* MulticolorGradient in Frameworks */ = {isa = PBXBuildFile; productRef = 3A2944372C9582430092EF7C /* MulticolorGradient */; };
 		3A2B28E52B433C8A00DF9731 /* PlaylistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28E42B433C8A00DF9731 /* PlaylistsView.swift */; };
 		3A2B28E82B43422800DF9731 /* PlaylistsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28E72B43422800DF9731 /* PlaylistsList.swift */; };
 		3A2B28EA2B4342F000DF9731 /* PlaylistListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B28E92B4342F000DF9731 /* PlaylistListRow.swift */; };
@@ -289,6 +290,7 @@
 			files = (
 				3A2146E32BF4D015001DA9E2 /* AmpFinKit in Frameworks */,
 				3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */,
+				3A2944382C9582430092EF7C /* MulticolorGradient in Frameworks */,
 				3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */,
 				3A3A36FA2C7CAE7D001A29FD /* RFKit in Frameworks */,
 				3A2146E52BF4D019001DA9E2 /* AFPlayback in Frameworks */,
@@ -695,6 +697,7 @@
 				3A2146E22BF4D015001DA9E2 /* AmpFinKit */,
 				3A2146E42BF4D019001DA9E2 /* AFPlayback */,
 				3A3A36F92C7CAE7D001A29FD /* RFKit */,
+				3A2944372C9582430092EF7C /* MulticolorGradient */,
 			);
 			productName = JellyfinMusic;
 			productReference = 3ABAFCAA2AA7D6C40011BFD6 /* AmpFin.app */;
@@ -733,6 +736,7 @@
 				3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 				3A5515F02BC435A200B922D7 /* XCRemoteSwiftPackageReference "Defaults" */,
 				3A3A36F82C7CAE7D001A29FD /* XCRemoteSwiftPackageReference "RFKit" */,
+				3A2944362C9582430092EF7C /* XCRemoteSwiftPackageReference "SwiftUI-MulticolorGradient" */,
 			);
 			productRefGroup = 3ABAFCAB2AA7D6C40011BFD6 /* Products */;
 			projectDirPath = "";
@@ -1266,6 +1270,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3A2944362C9582430092EF7C /* XCRemoteSwiftPackageReference "SwiftUI-MulticolorGradient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ArthurGuibert/SwiftUI-MulticolorGradient.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		3A3A36F82C7CAE7D001A29FD /* XCRemoteSwiftPackageReference "RFKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rasmuslos/RFKit";
@@ -1312,6 +1324,11 @@
 		3A2146E62BF4D024001DA9E2 /* AmpFinKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AmpFinKit;
+		};
+		3A2944372C9582430092EF7C /* MulticolorGradient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A2944362C9582430092EF7C /* XCRemoteSwiftPackageReference "SwiftUI-MulticolorGradient" */;
+			productName = MulticolorGradient;
 		};
 		3A3A36F92C7CAE7D001A29FD /* RFKit */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -18,8 +18,11 @@ internal extension NowPlaying {
         
         @ObservationIgnored var namespace: Namespace.ID!
         @MainActor var _dragOffset: CGFloat
+        @MainActor private var dragFinished: Bool
         
         @MainActor private var _expanded: Bool
+        @MainActor private var expandFinished: Bool
+        
         @MainActor var queueTab: QueueTab? = .queue
         @MainActor private(set) var currentTab: NowPlaying.Tab
         
@@ -92,8 +95,11 @@ internal extension NowPlaying {
         init() {
             namespace = nil
             _dragOffset = .zero
+            dragFinished = true
             
             _expanded = false
+            expandFinished = false
+            
             currentTab = .cover
             
             mediaInfoToggled = false
@@ -178,7 +184,19 @@ internal extension NowPlaying.ViewModel {
             addToPlaylistTrack = nil
             
             UIApplication.shared.isIdleTimerDisabled = newValue
-            _expanded = newValue
+            
+            if newValue {
+                withAnimation {
+                    _expanded = true
+                } completion: {
+                    if self.expanded {
+                        self.expandFinished = true
+                    }
+                }
+            } else {
+                _expanded = false
+                expandFinished = false
+            }
         }
     }
     
@@ -192,8 +210,25 @@ internal extension NowPlaying.ViewModel {
             return _dragOffset
         }
         set {
-            self._dragOffset = newValue
+            if newValue.isZero {
+                withAnimation(.smooth) {
+                    self._dragOffset = 0
+                } completion: {
+                    self.dragFinished = true
+                }
+            } else {
+                if dragFinished {
+                    dragFinished = false
+                }
+                
+                _dragOffset = newValue
+            }
         }
+    }
+    
+    @MainActor
+    var finished: Bool {
+        expandFinished && dragFinished
     }
     
     @MainActor

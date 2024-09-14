@@ -78,7 +78,6 @@ internal extension NowPlaying {
                                 .allowsHitTesting(!viewModel.expanded)
                             
                             ExpandedForeground(track: track)
-                                .transition(.move(edge: .bottom))
                         }
                     }
                     .offset(x: 0, y: viewModel.dragOffset)

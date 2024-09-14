@@ -21,7 +21,7 @@ internal extension NowPlaying {
         @State private var baseSpeed = CGFloat.random(in: 0.2...0.3)
         
         private var speed: CGFloat {
-            guard viewModel.expanded && viewModel.playing && !haltNowPlayingBackground else {
+            guard viewModel.finished && viewModel.playing && !haltNowPlayingBackground else {
                 return 0
             }
             
@@ -34,6 +34,10 @@ internal extension NowPlaying {
             return baseSpeed * 2
         }
         private var blurRadius: CGFloat {
+            guard viewModel.finished else {
+                return 0
+            }
+            
             if viewModel.currentTab == .lyrics {
                 return 0.7
             }
@@ -75,6 +79,10 @@ internal extension NowPlaying {
                         }
                         
                         FluidGradient(blobs: viewModel.colors, highlights: highlights, speed: speed, blur: blurRadius)
+                            .opacity(viewModel.finished ? 1 : 0)
+                            .animation(.smooth, value: viewModel.colors)
+                            .animation(.smooth, value: viewModel.highlights)
+                            .animation(.smooth, value: viewModel.finished)
                     }
                 }
                 .overlay(viewModel.highlights.count < 5 ? .black.opacity(0.2) : .clear)
