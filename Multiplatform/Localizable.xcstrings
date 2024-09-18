@@ -1772,6 +1772,7 @@
       }
     },
     "queue.remove.dragging" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

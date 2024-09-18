@@ -15,131 +15,68 @@ internal extension NowPlaying {
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         @Environment(ViewModel.self) private var viewModel
         
-        @State private var toggledRow: Int? = nil
-        @State private var infiniteToggledRow: Int? = nil
-        
-        @State private var dragging: (Int, Track)? = nil
-        
         var body: some View {
             @Bindable var viewModel = viewModel
             
             VStack(spacing: 0) {
-                Header(dragging: $dragging)
+                Header()
                 
                 GeometryReader { proxy in
                     ScrollViewReader { scrollProxy in
                         ScrollView {
                             LazyVStack(spacing: 0) {
-                                QueueSection(tracks: viewModel.history, emptyText: "history.empty", defaultScrollAnchorAtBottom: true) { track, index in
-                                    Row(track: track, toggled: .constant(false)) {
+                                QueueSection(tracks: viewModel.history, emptyText: "history.empty", defaultScrollAnchorAtBottom: true, onMove: nil, onDelete: {
+                                    for index in $0 {
                                         AudioPlayer.current.removePlayed(at: index)
                                     }
-                                    .contextMenu {
-                                        QueueButtons {
-                                            if $0 {
+                                }) { track, index in
+                                    Row(track: track, draggable: false)
+                                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                            QueueNextButton {
                                                 AudioPlayer.current.queue(track, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
-                                            } else {
+                                            }
+                                            .tint(.orange)
+                                        }
+                                        .swipeActions(edge: .leading) {
+                                            QueueLaterButton(hideName: true) {
                                                 AudioPlayer.current.queue(track, after: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
                                             }
+                                            .tint(.blue)
                                         }
-                                        
-                                        Divider()
-                                        
-                                        Button {
-                                            track.favorite.toggle()
-                                        } label: {
-                                            Label("favorite", systemImage: track.favorite ? "star.fill" : "star")
+                                        .onTapGesture {
+                                            AudioPlayer.current.restorePlayed(upTo: index)
                                         }
-                                        
-                                        Button {
-                                            viewModel.addToPlaylistTrack = track
-                                        } label: {
-                                            Label("playlist.add", systemImage: "plus")
-                                        }
-                                        .disabled(!JellyfinClient.shared.online)
-                                        
-                                        Divider()
-                                        
-                                        Button(action: { Navigation.navigate(albumId: track.album.id) }) {
-                                            Label("album.view", systemImage: "square.stack")
-                                            
-                                            if let albumName = track.album.name {
-                                                Text(albumName)
-                                            }
-                                        }
-                                        
-                                        ForEach(track.artists) { artist in
-                                            Button {
-                                                Navigation.navigate(artistId: artist.id)
-                                            } label: {
-                                                Label("artist.view", systemImage: "music.mic")
-                                                Text(artist.name)
-                                            }
-                                        }
-                                        
-                                        Divider()
-                                        
-                                        Button(role: .destructive) {
-                                            AudioPlayer.current.removePlayed(at: index)
-                                        } label: {
-                                            Label("queue.remove", systemImage: "xmark")
-                                        }
-                                    } preview: {
-                                        TrackCollection.TrackPreview(track: track)
-                                    }
-                                    .onTapGesture {
-                                        AudioPlayer.current.restorePlayed(upTo: index)
-                                    }
                                 }
                                 .id(QueueTab.history)
                                 .frame(height: proxy.size.height)
                                 
-                                QueueSection(tracks: viewModel.queue, emptyText: "queue.empty") { track, index in
-                                    Row(track: track, toggled: .init(get: { toggledRow == index }, set: {
-                                        if $0 {
-                                            toggledRow = index
-                                        }
-                                    })) {
-                                        toggledRow = nil
+                                QueueSection(tracks: viewModel.queue, emptyText: "queue.empty", onMove: {
+                                    for index in $0 {
+                                        AudioPlayer.current.move(from: index, to: $1)
+                                    }
+                                }, onDelete: {
+                                    for index in $0 {
                                         let _ = AudioPlayer.current.remove(at: index)
                                     }
-                                    .opacity(dragging?.0 == index && dragging?.1 == track ? 0.6 : 1)
-                                    .animation(.spring, value: dragging?.0)
-                                    .onDrag {
-                                        dragging = (index, track)
-                                        return TrackItemProvider() {
-                                            dragging = nil
+                                }) { track, index in
+                                    Row(track: track, draggable: true)
+                                        .onTapGesture {
+                                            AudioPlayer.current.skip(to: index)
                                         }
-                                    } preview: {
-                                        TrackCollection.TrackPreview(track: track)
-                                    }
-                                    .onDrop(of: [.item], delegate: TrackDropDelegate(current: (index, track), dragging: $dragging))
-                                    .onTapGesture {
-                                        AudioPlayer.current.skip(to: index)
-                                    }
                                 }
                                 .id(QueueTab.queue)
                                 .frame(height: proxy.size.height)
                                 
                                 if let infiniteQueue = viewModel.infiniteQueue {
-                                    QueueSection(tracks: infiniteQueue, emptyText: "infiniteQueue.empty") { track, index in
-                                        let audioPlayerIndex = viewModel.queue.count + index
-                                        
-                                        Row(track: track, toggled: .constant(true)) {
-                                            toggledRow = nil
-                                            let _ = AudioPlayer.current.remove(at: audioPlayerIndex)
+                                    QueueSection(tracks: infiniteQueue, emptyText: "infiniteQueue.empty", onMove: nil, onDelete: {
+                                        for index in $0 {
+                                            let _ = AudioPlayer.current.remove(at: viewModel.queue.count + index)
                                         }
-                                        .onDrag {
-                                            dragging = (audioPlayerIndex, track)
-                                            return TrackItemProvider() {
-                                                dragging = nil
+                                    }) { track, index in
+                                        Row(track: track, draggable: false)
+                                            .onTapGesture {
+                                                AudioPlayer.current.skip(to: viewModel.queue.count + index)
                                             }
-                                        } preview: {
-                                            TrackCollection.TrackPreview(track: track)
-                                        }
-                                        .onTapGesture {
-                                            AudioPlayer.current.skip(to: viewModel.queue.count + index)
-                                        }
                                     }
                                     .id(QueueTab.infiniteQueue)
                                     .frame(height: proxy.size.height)
@@ -149,7 +86,6 @@ internal extension NowPlaying {
                         }
                         .scrollIndicators(.hidden)
                         .scrollTargetBehavior(.paging)
-                        .scrollDisabled(dragging != nil)
                         .scrollPosition(id: $viewModel.queueTab, anchor: .top)
                         .mask(
                             VStack(spacing: 0) {
@@ -177,16 +113,14 @@ internal extension NowPlaying {
 private struct Header: View {
     @Environment(NowPlaying.ViewModel.self) private var viewModel
     
-    @Binding var dragging: (Int, Track)?
-    
     private var title: LocalizedStringKey {
         switch viewModel.queueTab {
-            case .history:
-                "queue.history"
-            case .infiniteQueue:
-                "queue.infinite"
-            default:
-                "queue"
+        case .history:
+            "queue.history"
+        case .infiniteQueue:
+            "queue.infinite"
+        default:
+            "queue"
         }
     }
     
@@ -198,9 +132,7 @@ private struct Header: View {
                     .foregroundStyle(.primary)
                 
                 Group {
-                    if dragging != nil {
-                        Text("queue.remove.dragging")
-                    } else if viewModel.queueTab != .infiniteQueue, let playbackInfo = viewModel.playbackInfo {
+                    if viewModel.queueTab != .infiniteQueue, let playbackInfo = viewModel.playbackInfo {
                         if let container = playbackInfo.container {
                             if container.type == .album {
                                 Text("playback.album \(container.name)")
@@ -239,14 +171,14 @@ private struct Header: View {
                             ForEach(RepeatMode.allCases.filter { AudioPlayer.current.infiniteQueue != nil || $0 != .infinite }) { repeatMode in
                                 Toggle(isOn: .init(get: { viewModel.repeatMode == repeatMode }, set: { _ in AudioPlayer.current.repeatMode = repeatMode })) {
                                     switch repeatMode {
-                                        case .none:
-                                            Label("repeat.none", systemImage: "slash.circle")
-                                        case .queue:
-                                            Label("repeat.queue", systemImage: "repeat")
-                                        case .track:
-                                            Label("repeat.track", systemImage: "repeat.1")
-                                        case .infinite:
-                                            Label("repeat.infinite", systemImage: "infinity")
+                                    case .none:
+                                        Label("repeat.none", systemImage: "slash.circle")
+                                    case .queue:
+                                        Label("repeat.queue", systemImage: "repeat")
+                                    case .track:
+                                        Label("repeat.track", systemImage: "repeat.1")
+                                    case .infinite:
+                                        Label("repeat.infinite", systemImage: "infinity")
                                     }
                                 }
                             }
@@ -256,12 +188,12 @@ private struct Header: View {
                             ForEach(NowPlaying.QueueTab.allCases) { tab in
                                 Toggle(isOn: .init(get: { viewModel.queueTab == tab }, set: { _ in viewModel.queueTab = tab })) {
                                     switch tab {
-                                        case .history:
-                                            Text("queue.history")
-                                        case .queue:
-                                            Text("queue")
-                                        case .infiniteQueue:
-                                            Text("queue.infinite")
+                                    case .history:
+                                        Text("queue.history")
+                                    case .queue:
+                                        Text("queue")
+                                    case .infiniteQueue:
+                                        Text("queue.infinite")
                                     }
                                 }
                             }
@@ -308,9 +240,7 @@ private struct Header: View {
         }
         .padding(.top, 16)
         .contentShape(.rect)
-        .animation(.spring, value: dragging?.0)
         .animation(.spring, value: viewModel.queueTab)
-        .onDrop(of: [.item], delegate: RemoveDropDelegate(dragging: $dragging))
     }
 }
 
@@ -321,29 +251,97 @@ private struct QueueSection<Content: View>: View {
     let emptyText: LocalizedStringKey
     var defaultScrollAnchorAtBottom = false
     
-    @State private var position: String? = nil
+    let onMove: ((_ : IndexSet, _ : Int) -> Void)?
+    let onDelete: (_ : IndexSet) -> Void
     
     @ViewBuilder let content: (_ track: Track, _ index: Int) -> Content
     
+    @State private var position: String? = nil
+    
     var body: some View {
-        // TODO: make this a list dumbass
-        ScrollView {
+        List {
             if tracks.isEmpty {
-                Text(emptyText)
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.4))
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 100)
-                    .padding(.horizontal, 20)
+                HStack(spacing: 0) {
+                    Spacer()
+                    
+                    Text(emptyText)
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.4))
+                        .multilineTextAlignment(.center)
+                    
+                    Spacer()
+                }
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+                .padding(.top, 100)
+                .padding(.horizontal, 20)
             }
             
-            ForEach(Array(tracks.enumerated()), id: \.element) {
-                content($1, $0)
+            ForEach(Array(tracks.enumerated()), id: \.element) { index, track in
+                content(track, index)
+                    .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+                    .listRowBackground(Color.clear)
+                    .contextMenu {
+                        QueueButtons {
+                            if $0 {
+                                AudioPlayer.current.queue(track, after: 0, playbackInfo: .init(container: nil, queueLocation: .next))
+                            } else {
+                                AudioPlayer.current.queue(track, after: AudioPlayer.current.queue.count, playbackInfo: .init(container: nil, queueLocation: .later))
+                            }
+                        }
+                        
+                        Divider()
+                        
+                        Button {
+                            track.favorite.toggle()
+                        } label: {
+                            Label("favorite", systemImage: track.favorite ? "star.fill" : "star")
+                        }
+                        
+                        Button {
+                            viewModel.addToPlaylistTrack = track
+                        } label: {
+                            Label("playlist.add", systemImage: "plus")
+                        }
+                        .disabled(!JellyfinClient.shared.online)
+                        
+                        Divider()
+                        
+                        Button(action: { Navigation.navigate(albumId: track.album.id) }) {
+                            Label("album.view", systemImage: "square.stack")
+                            
+                            if let albumName = track.album.name {
+                                Text(albumName)
+                            }
+                        }
+                        
+                        ForEach(track.artists) { artist in
+                            Button {
+                                Navigation.navigate(artistId: artist.id)
+                            } label: {
+                                Label("artist.view", systemImage: "music.mic")
+                                Text(artist.name)
+                            }
+                        }
+                        
+                        Divider()
+                        
+                        Button(role: .destructive) {
+                            AudioPlayer.current.removePlayed(at: index)
+                        } label: {
+                            Label("queue.remove", systemImage: "xmark")
+                        }
+                    } preview: {
+                        TrackCollection.TrackPreview(track: track)
+                    }
             }
+            .onMove(perform: onMove)
+            .onDelete(perform: onDelete)
         }
+        .listStyle(.plain)
         .scrollPosition(id: $position)
         .scrollIndicators(.hidden)
-        .contentMargins(.vertical, 16, for: .scrollContent)
+        .contentMargins(.vertical, 8, for: .scrollContent)
         .task(id: viewModel.history) {
             if defaultScrollAnchorAtBottom {
                 position = tracks.last?.id
@@ -354,8 +352,7 @@ private struct QueueSection<Content: View>: View {
 
 private struct Row: View {
     let track: Track
-    @Binding var toggled: Bool
-    let remove: (() -> Void)
+    let draggable: Bool
     
     var body: some View {
         HStack(spacing: 0) {
@@ -376,107 +373,16 @@ private struct Row: View {
                 }
             }
             
-            Spacer()
+            Spacer(minLength: 12)
             
-            Group {
-                if toggled {
-                    Button {
-                        remove()
-                    } label: {
-                        ZStack {
-                            Image(systemName: "line.3.horizontal")
-                                .hidden()
-                            
-                            Label("queue.remove", systemImage: "xmark")
-                        }
-                    }
-                } else {
-                    Button {
-                        withAnimation {
-                            toggled = true
-                        }
-                    } label: {
-                        Label("queue.reorder", systemImage: "line.3.horizontal")
-                    }
-                }
+            if draggable {
+                Label("queue.reorder", systemImage: "line.3.horizontal")
+                    .bold()
+                    .labelStyle(.iconOnly)
+                    .foregroundStyle(.white.opacity(0.4))
             }
-            .bold()
-            .fontDesign(.rounded)
-            .labelStyle(.iconOnly)
-            .foregroundStyle(.white.opacity(0.4))
         }
         .id(track.id)
         .contentShape(.rect)
-    }
-}
-
-private class TrackItemProvider: NSItemProvider {
-    var didEnd: () -> Void
-    
-    init(didEnd: @escaping () -> Void) {
-        self.didEnd = didEnd
-        super.init()
-    }
-    
-    deinit {
-        didEnd()
-    }
-}
-private class TrackDropDelegate: DropDelegate {
-    var current: (Int, Track)
-    var dragging: Binding<(Int, Track)?>
-    
-    var timeout: Task<Void, Error>?
-    
-    init(current: (Int, Track), dragging: Binding<(Int, Track)?>) {
-        self.current = current
-        self.dragging = dragging
-        
-        timeout = nil
-    }
-    
-    func performDrop(info: DropInfo) -> Bool {
-        dragging.wrappedValue = nil
-        return true
-    }
-    
-    func dropEntered(info: DropInfo) {
-        guard current.0 != dragging.wrappedValue?.0 && current.1 != dragging.wrappedValue?.1, let index = dragging.wrappedValue?.0 else {
-            return
-        }
-        
-        self.timeout?.cancel()
-        self.timeout = Task { [self] in
-            try await Task.sleep(nanoseconds: UInt64(0.4) * NSEC_PER_SEC)
-            try Task.checkCancellation()
-            
-            AudioPlayer.current.move(from: index, to: current.0)
-            dragging.wrappedValue?.0 = current.0
-        }
-    }
-    
-    func dropExited(info: DropInfo) {
-        self.timeout?.cancel()
-        self.timeout = nil
-    }
-    
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        return DropProposal(operation: .move)
-    }
-}
-private struct RemoveDropDelegate: DropDelegate {
-    var dragging: Binding<(Int, Track)?>
-    
-    func performDrop(info: DropInfo) -> Bool {
-        guard let index = dragging.wrappedValue?.0 else {
-            return false
-        }
-        
-        let _ = AudioPlayer.current.remove(at: index)
-        return true
-    }
-    
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        return DropProposal(operation: .move)
     }
 }

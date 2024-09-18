@@ -171,9 +171,9 @@ internal extension LocalAudioEndpoint {
         let track = copy.remove(at: from)
         
         if from < to {
-            queue.insert(track, at: to)
+            copy.insert(track, at: to - 1)
         } else {
-            queue.insert(track, at: to - 1)
+            copy.insert(track, at: to)
         }
         
         unalteredQueue.insert(track, at: to)
