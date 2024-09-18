@@ -211,7 +211,7 @@ internal extension NowPlaying.ViewModel {
         }
         set {
             if newValue.isZero {
-                withAnimation(.smooth) {
+                withAnimation(.none) {
                     self._dragOffset = 0
                 } completion: {
                     self.dragFinished = true

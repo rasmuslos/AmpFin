@@ -44,15 +44,6 @@
         "revision" : "c6bfd1af48efcc9a9ad203665db12375ba6b145a",
         "version" : "4.0.8"
       }
-    },
-    {
-      "identity" : "swiftui-multicolorgradient",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ArthurGuibert/SwiftUI-MulticolorGradient.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "6f80da646b607d2e3cbacc259eb41f2912ea6e4f"
-      }
     }
   ],
   "version" : 2
