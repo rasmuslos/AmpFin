@@ -75,7 +75,8 @@ internal extension LocalAudioEndpoint {
     var mediaInfo: Track.MediaInfo? {
         get async {
             if let itemId = nowPlaying?.id {
-                let serverBitrateLikelyToBeFalse = DownloadManager.shared.downloaded(trackId: itemId) && Defaults[.maxDownloadBitrate] > 0
+                let downloaded = DownloadManager.shared.downloaded(trackId: itemId)
+                let serverBitrateLikelyToBeFalse = downloaded && Defaults[.maxDownloadBitrate] > 0
                 
                 if !serverBitrateLikelyToBeFalse, var mediaInfo = try? await JellyfinClient.shared.mediaInfo(trackId: itemId) {
                     guard let maxBitrate, let bitrate = mediaInfo.bitrate else {
@@ -84,7 +85,7 @@ internal extension LocalAudioEndpoint {
                     
                     let maxBitrateBits = maxBitrate * 1000
                     
-                    if (bitrate > maxBitrateBits) {
+                    if !downloaded && bitrate > maxBitrateBits {
                         mediaInfo.bitrate = maxBitrateBits
                         mediaInfo.codec = "AAC"
                         mediaInfo.lossless = false
