@@ -26,7 +26,9 @@ struct PlaylistAddSheet: View {
     
     init(track: Track){
         self.track = track
-        self.publicPlaylist = !Defaults[.newPlaylistDefaultPrivate]
+        if JellyfinClient.shared.supports(.sharedPlaylists) {
+            self._publicPlaylist = State(initialValue: !Defaults[.newPlaylistDefaultPrivate])
+        }
     }
     var body: some View {
         NavigationStack {
