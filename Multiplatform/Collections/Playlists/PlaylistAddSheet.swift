@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AmpFinKit
+import Defaults
 
 struct PlaylistAddSheet: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -23,6 +24,10 @@ struct PlaylistAddSheet: View {
     
     @State private var playlists: [Playlist]?
     
+    init(track: Track){
+        self.track = track
+        self.publicPlaylist = !Defaults[.newPlaylistDefaultPrivate]
+    }
     var body: some View {
         NavigationStack {
             Group {
