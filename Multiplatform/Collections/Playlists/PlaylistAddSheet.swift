@@ -17,19 +17,14 @@ struct PlaylistAddSheet: View {
     
     @State private var creatingNewPlaylist = false
     @State private var newPlaylistName = ""
-    @State private var publicPlaylist: Bool = true
+    // Older Jellyfin servers that don't support private playlists are set to true to avoid user confusion, otherwise it checks the user's preference
+    @State private var publicPlaylist: Bool = JellyfinClient.shared.supports(.sharedPlaylists) ? !Defaults[.newPlaylistDefaultPrivate] : true 
     
     @State private var failed = false
     @State private var working = false
     
     @State private var playlists: [Playlist]?
     
-    init(track: Track){
-        self.track = track
-        if JellyfinClient.shared.supports(.sharedPlaylists) {
-            self._publicPlaylist = State(initialValue: !Defaults[.newPlaylistDefaultPrivate])
-        }
-    }
     var body: some View {
         NavigationStack {
             Group {
