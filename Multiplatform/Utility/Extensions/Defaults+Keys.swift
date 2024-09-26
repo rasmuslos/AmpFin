@@ -41,4 +41,5 @@ internal extension Defaults.Keys {
     static let artistInstantMix = Key("artistInstantMix", default: false)
     static let libraryRandomAlbums = Key("libraryRandomAlbums", default: false)
     static let haltNowPlayingBackground = Key("haltNowPlayingBackground", default: false)
+    static let newPlaylistDefaultPrivate = Key<Bool>("newPlaylistDefaultPrivate", default: false)
 }
