@@ -55,32 +55,32 @@ internal struct LoginQuickConnectView: View {
         }
         .interactiveDismissDisabled(success)
         .onAppear() {
-            do {
                 Task {
-                    
-                    let (Code, _, _, Secret) = try await JellyfinClient.shared.initiateQuickConnect()
-                    self.code = Code
-                    self.secret = Secret
-                    repeat {
-                        let authorized = try await JellyfinClient.shared.verifyQuickConnect(secret: secret ?? "")
-                        if authorized {
-                            self.success = true
-                            Task {
-                                do {
-                                    let (token, userId) =  try await JellyfinClient.shared.loginWithQuickConnect(secret: self.secret ?? "")
-                                    
-                                    JellyfinClient.shared.store(token: token)
-                                    JellyfinClient.shared.store(userId: userId)
-                                } catch {
-                                    caughtError = true
+                    do {
+                        try await JellyfinClient.shared.updateCachedServerVersion()
+                        let (Code, _, _, Secret) = try await JellyfinClient.shared.initiateQuickConnect()
+                        self.code = Code
+                        self.secret = Secret
+                        repeat {
+                            let authorized = try await JellyfinClient.shared.verifyQuickConnect(secret: secret ?? "")
+                            if authorized {
+                                self.success = true
+                                Task {
+                                    do {
+                                        let (token, userId) =  try await JellyfinClient.shared.loginWithQuickConnect(secret: self.secret ?? "")
+                                        
+                                        JellyfinClient.shared.store(token: token)
+                                        JellyfinClient.shared.store(userId: userId)
+                                    } catch {
+                                        caughtError = true
+                                    }
                                 }
+                                throw CancellationError()
                             }
-                            throw CancellationError()
-                        }
-
-                        try? await Task.sleep(for: .seconds(5))
-                    } while (!Task.isCancelled)
-                }
+               
+                            try? await Task.sleep(for: .seconds(5))
+                        } while (!Task.isCancelled)
+                    } 
             }
         }
         .toolbar {

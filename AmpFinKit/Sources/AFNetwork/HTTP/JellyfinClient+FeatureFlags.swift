@@ -52,6 +52,11 @@ public extension JellyfinClient {
             case .quickConnect:
                 // Required 10.7+
                 return serverVersion.major >= 10 && serverVersion.minor >= 7
+            case .legacyQuickConnect:
+                // Quick Connect before 10.9.0 used GET instead of POST
+                // GET is required from 10.7.0 until 10.8.13
+            return
+                serverVersion.major == 10 && serverVersion.minor >= 7 && serverVersion.minor <= 8
         }
     }
     
@@ -59,6 +64,7 @@ public extension JellyfinClient {
         case lyrics
         case sharedPlaylists
         case quickConnect
+        case legacyQuickConnect
         
         public var id: Self {
             self

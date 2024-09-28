@@ -16,7 +16,12 @@ public extension JellyfinClient {
     }
     
     func initiateQuickConnect() async throws -> (String, String, String, String) {
-        let response = try await request(ClientRequest<QuickConnectResponse>(path: "/QuickConnect/initiate", method: "POST"))
+        var method = "POST"
+        if JellyfinClient.shared.supports(.legacyQuickConnect) {
+            method = "GET"
+        }
+        
+        let response = try await request(ClientRequest<QuickConnectResponse>(path: "/QuickConnect/initiate", method: method))
         
         return (
             response.Code,
