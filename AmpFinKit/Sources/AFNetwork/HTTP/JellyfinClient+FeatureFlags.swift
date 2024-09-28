@@ -49,12 +49,16 @@ public extension JellyfinClient {
             case .sharedPlaylists, .lyrics:
                 // Required 10.9+
                 return serverVersion.major >= 10 && serverVersion.minor >= 9
+            case .quickConnect:
+                // Required 10.7+
+                return serverVersion.major >= 10 && serverVersion.minor >= 7
         }
     }
     
     enum FeatureFlag: Identifiable, Hashable, Codable {
         case lyrics
         case sharedPlaylists
+        case quickConnect
         
         public var id: Self {
             self
