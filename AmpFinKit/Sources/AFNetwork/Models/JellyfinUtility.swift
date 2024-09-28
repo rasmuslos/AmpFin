@@ -57,7 +57,7 @@ internal struct PublicServerInfoResponse: Codable {
     let StartupWizardCompleted: Bool
 }
 
-internal struct AuthenticateByNameResponse: Codable {
+internal struct AuthenticateByNameOrQuickConnectResponse: Codable {
     let AccessToken: String
     let User: User
     
@@ -80,4 +80,15 @@ internal struct LyricsResponse: Codable {
         let Start: Int64
         let Text: String
     }
+}
+
+internal struct QuickConnectResponse: Codable {
+    let AppName: String
+    let AppVersion: String
+    let Authenticated: Bool
+    let Code: String
+    let DateAdded: String
+    let DeviceId: String
+    let DeviceName: String
+    let Secret: String
 }

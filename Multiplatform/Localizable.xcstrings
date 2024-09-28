@@ -931,6 +931,122 @@
         }
       }
     },
+    "login.quickconnect.code.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Quick Connect code:"
+          }
+        }
+      }
+    },
+    "login.quickconnect.copy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Code"
+          }
+        }
+      }
+    },
+    "login.quickconnect.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter this code on a supported Jellyfin client to login on this client without needing to enter your credentials. This screen will proceed automatically upon entering the code. [Learn more](https://jellyfin.org/docs/general/server/quick-connect/#using-quick-connect)"
+          }
+        }
+      }
+    },
+    "login.quickconnect.error" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong during Quick Connect. Please try again."
+          }
+        }
+      }
+    },
+    "login.quickconnect.preparing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparing Quick Connect"
+          }
+        }
+      }
+    },
+    "login.quickconnect.success" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logged In! Please wait a moment…"
+          }
+        }
+      }
+    },
+    "login.quickconnect.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick Connect"
+          }
+        }
+      }
+    },
+    "login.quickconnect.unavailable.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Jellyfin instance either does not support, or has disabled, the Quick Connect feature. [Learn more](https://jellyfin.org/docs/general/server/quick-connect/#enabling-quick-connect)"
+          }
+        }
+      }
+    },
+    "login.quickconnect.unavailable.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick Connect Unavailable"
+          }
+        }
+      }
+    },
+    "login.quickconnect.waiting" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for login..."
+          }
+        }
+      }
+    },
+    "login.quickconnect.welcome.button.text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Successfully logged in. Welcome to AmpFin."
+          }
+        }
+      }
+    },
     "login.server" : {
       "localizations" : {
         "de" : {
