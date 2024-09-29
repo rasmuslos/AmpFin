@@ -187,6 +187,7 @@ internal extension LoginView {
             Task {
                 do {
                     serverVersion = try await JellyfinClient.shared.serverVersion()
+                    try await JellyfinClient.shared.updateCachedServerVersion()
                     quickConnectAvailable = try await JellyfinClient.shared.checkIfQuickConnectIsAvailable()
                 } catch {
                     loginError = .server
