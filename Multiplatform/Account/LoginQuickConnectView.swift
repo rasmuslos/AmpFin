@@ -57,13 +57,15 @@ internal struct LoginQuickConnectView: View {
         .onAppear() {
                 Task {
                     do {
-                        try await JellyfinClient.shared.updateCachedServerVersion()
-                        let (Code, _, _, Secret) = try await JellyfinClient.shared.initiateQuickConnect()
+                        let (Code, Secret) = try await JellyfinClient.shared.initiateQuickConnect()
                         self.code = Code
                         self.secret = Secret
                         repeat {
-                            let authorized = try await JellyfinClient.shared.verifyQuickConnect(secret: secret ?? "")
+                            let (authorized, authorizationToken) = try await JellyfinClient.shared.verifyQuickConnect(secret: secret ?? "")
                             if authorized {
+                                if authorizationToken != nil {
+                                    self.secret = authorizationToken
+                                }
                                 self.success = true
                                 Task {
                                     do {
