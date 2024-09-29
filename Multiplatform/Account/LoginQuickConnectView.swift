@@ -11,7 +11,7 @@ import AmpFinKit
 internal struct LoginQuickConnectView: View {
     let dismiss: (() -> Void)
     @State var code: String?
-    @State var secret: String?
+    @State var secret: String = ""
     @State var success: Bool = false
     @State var caughtError: Bool = false
     
@@ -61,15 +61,12 @@ internal struct LoginQuickConnectView: View {
                         self.code = Code
                         self.secret = Secret
                         repeat {
-                            let (authorized, authorizationToken) = try await JellyfinClient.shared.verifyQuickConnect(secret: secret ?? "")
+                            let authorized = try await JellyfinClient.shared.verifyQuickConnect(secret: self.secret)
                             if authorized {
-                                if authorizationToken != nil {
-                                    self.secret = authorizationToken
-                                }
                                 self.success = true
                                 Task {
                                     do {
-                                        let (token, userId) =  try await JellyfinClient.shared.loginWithQuickConnect(secret: self.secret ?? "")
+                                        let (token, userId) =  try await JellyfinClient.shared.loginWithQuickConnect(secret: self.secret)
                                         
                                         JellyfinClient.shared.store(token: token)
                                         JellyfinClient.shared.store(userId: userId)

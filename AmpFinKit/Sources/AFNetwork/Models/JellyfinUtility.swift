@@ -94,13 +94,12 @@ internal struct LyricsResponse: Codable {
 }
 
 internal struct QuickConnectResponse: Codable {
-    let AppName: String? // May be nil for legacy Quick Connect
-    let AppVersion: String? // May be nil for legacy Quick Connect
+    let AppName: String
+    let AppVersion: String
     let Authenticated: Bool
-    let Authentication: String? // Quick Connect 10.7
     let Code: String
     let DateAdded: String
-    let DeviceId: String? // May be nil for legacy Quick Connect
-    let DeviceName: String? // May be nil for legacy Quick Connect
+    let DeviceId: String
+    let DeviceName: String
     let Secret: String
 }

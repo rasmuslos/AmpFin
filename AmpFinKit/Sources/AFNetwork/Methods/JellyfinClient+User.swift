@@ -23,10 +23,8 @@ public extension JellyfinClient {
     }
     
     func loginWithQuickConnect(secret: String) async throws -> (String, String) {
-        // 10.7.x uses "Token" as the key name instead of "Secret" used in later versions
-        let keyName = JellyfinClient.shared.supports(.legacyQuickConnectStatus) ? "Token" : "Secret"
         let response = try await request(ClientRequest<AuthenticateByNameOrQuickConnectResponse>(path: "Users/AuthenticateWithQuickConnect", method: "POST", body: [
-            keyName: secret
+            "Secret": secret
         ]))
         
         return (response.AccessToken, response.User.Id)

@@ -1010,7 +1010,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This Jellyfin instance either does not support, or has disabled, the Quick Connect feature. [Learn more](https://jellyfin.org/docs/general/server/quick-connect/#enabling-quick-connect)"
+            "value" : "This could be because AmpFin doesn’t support it on this Jellyfin server version, or the Jellyfin server doesn’t have it enabled. [Learn more](https://jellyfin.org/docs/general/server/quick-connect/#enabling-quick-connect)"
           }
         }
       }

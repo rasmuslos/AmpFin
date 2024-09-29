@@ -50,15 +50,8 @@ public extension JellyfinClient {
                 // Required 10.9+
                 return serverVersion.major >= 10 && serverVersion.minor >= 9
             case .quickConnect:
-                // Required 10.7+
-                return serverVersion.major >= 10 && serverVersion.minor >= 7
-            case .legacyQuickConnect:
-                // Quick Connect before 10.9.0 used GET instead of POST
-                // GET is required from 10.7.0 until 10.8.x
-                return serverVersion.major == 10 && (serverVersion.minor == 7 || serverVersion.minor == 8)
-            case .legacyQuickConnectStatus:
-                // Version 10.7.x uses GET /QuickConnect/Status
-                return serverVersion.major == 10 && serverVersion.minor == 7
+                // Required 10.7+, but AmpFin will only support 10.9+
+                return serverVersion.major >= 10 && serverVersion.minor >= 9
         }
     }
     
@@ -66,8 +59,6 @@ public extension JellyfinClient {
         case lyrics
         case sharedPlaylists
         case quickConnect
-        case legacyQuickConnect
-        case legacyQuickConnectStatus
         
         public var id: Self {
             self

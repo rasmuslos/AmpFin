@@ -10,26 +10,16 @@ import Foundation
 
 public extension JellyfinClient {
     func checkIfQuickConnectIsAvailable() async throws -> Bool {
-        if JellyfinClient.shared.supports(.legacyQuickConnectStatus)  {
-            let response = try await request(ClientRequest<String>(path: "/QuickConnect/Status", method: "GET"))
-            
-            return response == "Active"
-        } else if JellyfinClient.shared.supports(.quickConnect) {
-            let response = try await request(ClientRequest<Bool>(path: "/QuickConnect/Enabled", method: "GET"))
-            
-            return response
-        } else {
+        if !JellyfinClient.shared.supports(.quickConnect) {
             return false
         }
+        let response = try await request(ClientRequest<Bool>(path: "/QuickConnect/Enabled", method: "GET"))
+        
+        return response
     }
     
     func initiateQuickConnect() async throws -> (String, String) {
-        var method = "POST"
-        if JellyfinClient.shared.supports(.legacyQuickConnect) {
-            method = "GET"
-        }
-        
-        let response = try await request(ClientRequest<QuickConnectResponse>(path: "/QuickConnect/initiate", method: method))
+        let response = try await request(ClientRequest<QuickConnectResponse>(path: "/QuickConnect/initiate", method: "POST"))
         
         return (
             response.Code,
@@ -37,11 +27,11 @@ public extension JellyfinClient {
         )
     }
     
-    func verifyQuickConnect(secret: String) async throws -> (Bool, String?) {
+    func verifyQuickConnect(secret: String) async throws -> Bool {
         let response = try await request(ClientRequest<QuickConnectResponse>(path: "/QuickConnect/Connect", method: "GET", query:[
             URLQueryItem(name: "Secret", value: secret)
         ]))
         
-        return (response.Authenticated, response.Authentication)
+        return response.Authenticated
     }
 }
