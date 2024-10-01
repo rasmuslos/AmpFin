@@ -10,10 +10,11 @@ import AmpFinKit
 
 internal struct LoginQuickConnectView: View {
     let dismiss: (() -> Void)
-    @State var code: String?
-    @State var secret: String = ""
-    @State var success: Bool = false
-    @State var caughtError: Bool = false
+    @State private var code: String?
+    @State private var secret: String = ""
+    @State private var success: Bool = false
+    @State private var caughtError: Bool = false
+    @State private var expired: Bool = false
     
     var body: some View {
         
