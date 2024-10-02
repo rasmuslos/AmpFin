@@ -19,29 +19,6 @@ extension NowPlaying {
             horizontalSizeClass == .compact
         }
         
-        private var routeIcon: String {
-            switch viewModel.outputRoute.port {
-                case .usbAudio:
-                    "cable.connector"
-                case .thunderbolt:
-                    "bolt"
-                case .lineOut:
-                    "cable.coaxial"
-                case .carAudio:
-                    "car"
-                case .airPlay:
-                    "airplayaudio"
-                case .HDMI, .displayPort:
-                    "tv"
-                case .bluetoothLE, .bluetoothHFP, .bluetoothA2DP:
-                    "hifispeaker"
-                case .headphones:
-                    "headphones"
-                default:
-                    "airplayaudio"
-            }
-        }
-        
         @ViewBuilder private var lyricsButton: some View {
             Button {
                 viewModel.selectTab(.lyrics)
@@ -113,7 +90,7 @@ extension NowPlaying {
                         Button {
                             AirPlay.shared.presentPicker()
                         } label: {
-                            Label("output", systemImage: routeIcon)
+                            Label("output", systemImage: viewModel.outputRoute.icon)
                                 .labelStyle(.iconOnly)
                                 .contentShape(.rect)
                                 .contentTransition(.symbolEffect(.replace.byLayer.downUp))
@@ -148,7 +125,7 @@ extension NowPlaying {
                             Button {
                                 AirPlay.shared.presentPicker()
                             } label: {
-                                Label("output", systemImage: routeIcon)
+                                Label("output", systemImage: viewModel.outputRoute.icon)
                                     .labelStyle(.iconOnly)
                                     .contentShape(.rect)
                                     .contentTransition(.symbolEffect(.replace.byLayer.downUp))
