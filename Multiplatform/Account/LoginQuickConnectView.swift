@@ -23,17 +23,25 @@ internal struct LoginQuickConnectView: View {
                 Spacer()
                 
                 if caughtError {
-                    VStack {
-                        Text("login.quickconnect.error")
-                            .font(.caption)
-                            .foregroundStyle(.red)
-                        Spacer()
-                    }
+                    Text("login.quickconnect.error")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                    Spacer()
                 }
                 
-                Text(code ?? "??????")
-                    .font(.largeTitle)
+                Text("login.quickconnect.hint")
+                    .font(.caption)
                     .padding(.bottom, 20)
+                
+                Button {
+                    UIPasteboard.general.string = code
+                } label: {
+                    Text(code ?? "??????")
+                        .font(.largeTitle)
+                        .monospaced()
+                        .padding(.bottom, 20)
+                }
+                
                 
                 
                 ProgressView()
