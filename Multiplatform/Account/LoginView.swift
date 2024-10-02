@@ -116,10 +116,8 @@ struct LoginView: View {
 
                                     }
                                     .disabled(!quickConnectAvailable)
-                                    
-                                    if !quickConnectAvailable {
-                                        Text("login.quickconnect.unavailable.description")
-                                    }
+                                } footer: {
+                                    Text("login.quickconnect.description")
                                 }
                             }
                             
