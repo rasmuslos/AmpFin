@@ -51,13 +51,6 @@ internal struct LoginQuickConnectView: View {
                     .padding(.top, 4)
                     .padding(.bottom, 20)
                     .foregroundStyle(.secondary)
-                
-                
-                Button("login.quickconnect.copy", systemImage: "doc.on.doc") {
-                    UIPasteboard.general.string = code
-                }
-                .foregroundColor(.accentColor)
-                .disabled(code == nil)
             }
             .padding(.vertical, 40)
         }
