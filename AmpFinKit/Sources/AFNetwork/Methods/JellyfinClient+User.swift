@@ -14,9 +14,17 @@ public extension JellyfinClient {
     }
     
     func login(username: String, password: String) async throws -> (String, String) {
-        let response = try await request(ClientRequest<AuthenticateByNameResponse>(path: "Users/authenticatebyname", method: "POST", body: [
+        let response = try await request(ClientRequest<AuthenticateByNameOrQuickConnectResponse>(path: "Users/authenticatebyname", method: "POST", body: [
             "Username": username,
             "Pw": password,
+        ]))
+        
+        return (response.AccessToken, response.User.Id)
+    }
+    
+    func loginWithQuickConnect(secret: String) async throws -> (String, String) {
+        let response = try await request(ClientRequest<AuthenticateByNameOrQuickConnectResponse>(path: "Users/AuthenticateWithQuickConnect", method: "POST", body: [
+            "Secret": secret
         ]))
         
         return (response.AccessToken, response.User.Id)

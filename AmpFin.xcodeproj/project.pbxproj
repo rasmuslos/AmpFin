@@ -122,6 +122,7 @@
 		3AF3BA982C525E2900C96E1F /* QueueButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF3BA972C525E2900C96E1F /* QueueButtons.swift */; };
 		3AF815DD2AAA1A80004BA444 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF815DC2AAA1A80004BA444 /* Lyrics.swift */; };
 		3AFCD1212BC5CB6A00589301 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFCD1202BC5CB6A00589301 /* Buttons.swift */; };
+		EAB1E6C52CA69AFC0094D8EF /* LoginQuickConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB1E6C42CA69AF20094D8EF /* LoginQuickConnectView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -271,6 +272,7 @@
 		3AF3BA972C525E2900C96E1F /* QueueButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueButtons.swift; sourceTree = "<group>"; };
 		3AF815DC2AAA1A80004BA444 /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
 		3AFCD1202BC5CB6A00589301 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		EAB1E6C42CA69AF20094D8EF /* LoginQuickConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginQuickConnectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -643,6 +645,7 @@
 				3AEB32292AA7EC3C00853210 /* LoginView.swift */,
 				3A3AF1A52AC4523600811D7D /* AccountSheet.swift */,
 				3ABF77E42C87452C0006ADBC /* CustomHeaderEditView.swift */,
+				EAB1E6C42CA69AF20094D8EF /* LoginQuickConnectView.swift */,
 				3A36ED3E2BE8EDD200AECE9C /* Account+Remote.swift */,
 			);
 			path = Account;
@@ -884,6 +887,7 @@
 				3AA0AFAA2BE540500084B7A1 /* NowPlaying.swift in Sources */,
 				3AAE1B442BC57AFB00FD0200 /* Sidebar+Selection.swift in Sources */,
 				3AC65BDB2BE224D500448D5E /* Array+Repeat.swift in Sources */,
+				EAB1E6C52CA69AFC0094D8EF /* LoginQuickConnectView.swift in Sources */,
 				3A5515F42BC4391300B922D7 /* Sidebar+Links.swift in Sources */,
 				3A773C5B2BA5F2F2005FD583 /* ContextMenuModifier.swift in Sources */,
 				3A3DA66D2AAB2EAE0091211A /* ArtistView+Header.swift in Sources */,
