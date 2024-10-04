@@ -128,6 +128,41 @@ public extension AudioPlayer {
         public var showLabel: Bool {
             port == .bluetoothLE || port == .bluetoothHFP || port == .bluetoothA2DP || port == .carAudio || port == .airPlay
         }
+        
+        public var icon: String {
+            if let icon = iconOverride(routeName: name) {
+                return icon
+            }
+            
+            switch port {
+            case .usbAudio:
+                return "cable.connector"
+            case .thunderbolt:
+                return "bolt"
+            case .lineOut:
+                return "cable.coaxial"
+            case .carAudio:
+                return "car"
+            case .airPlay:
+                return "airplayaudio"
+            case .HDMI, .displayPort:
+                return "tv"
+            case .bluetoothLE, .bluetoothHFP, .bluetoothA2DP:
+                return "hifispeaker"
+            case .headphones:
+                return "headphones"
+            default:
+                return "airplayaudio"
+            }
+        }
+        
+        private func iconOverride(routeName: String) -> String? {
+            if routeName.contains("WH-1000XM5") || routeName.contains("CRUSHER ANC") {
+                return "headphones"
+            }
+            
+            return nil
+        }
     }
 }
 

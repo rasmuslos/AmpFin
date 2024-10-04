@@ -9,7 +9,7 @@ import SwiftUI
 import AmpFinKit
 import AFPlayback
 
-extension NowPlaying {
+internal extension NowPlaying {
     struct RegularBarModifier: ViewModifier {
         @Environment(NowPlaying.ViewModel.self) private var viewModel
         @Environment(\.libraryDataProvider) private var dataProvider
@@ -99,7 +99,7 @@ extension NowPlaying {
                         .foregroundStyle(.primary)
                         .background {
                             Rectangle()
-                                .foregroundStyle(.regularMaterial)
+                                .foregroundStyle(.bar)
                         }
                         .modifier(NowPlaying.ContextMenuModifier(track: currentTrack))
                         .draggable(currentTrack) {
