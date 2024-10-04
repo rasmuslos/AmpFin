@@ -942,12 +942,12 @@
         }
       }
     },
-    "login.quickconnect.copy" : {
+    "login.quickconnect.description" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy Code"
+            "value" : "Requires Jellyfin 10.9+"
           }
         }
       }
@@ -958,6 +958,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Something went wrong during Quick Connect. Please try again."
+          }
+        }
+      }
+    },
+    "login.quickconnect.hint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select the code below to copy"
           }
         }
       }
@@ -1010,7 +1020,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This could be because AmpFin doesn’t support it on this Jellyfin server version, or the Jellyfin server doesn’t have it enabled. [Learn more](https://jellyfin.org/docs/general/server/quick-connect/#enabling-quick-connect)"
+            "value" : "Requires Jellyfin 10.9+"
           }
         }
       }
