@@ -10,9 +10,7 @@ import AFFoundation
 
 internal extension Track {
     convenience init?(_ from: JellyfinItem, fallbackIndex: Int = 0, coverSize: Cover.CoverSize = .normal) {
-        guard let albumId = from.AlbumId else {
-            return nil
-        }
+        let albumId = from.AlbumId ?? "None"
         
         var cover: Cover?
         
