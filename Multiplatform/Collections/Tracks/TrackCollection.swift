@@ -149,7 +149,7 @@ internal extension TrackCollection {
             
             Divider()
             
-            if album == nil {
+            if track.album.id != "None" {
                 NavigationLink(value: .albumLoadDestination(albumId: track.album.id)) {
                     Label("album.view", systemImage: "square.stack")
                     
