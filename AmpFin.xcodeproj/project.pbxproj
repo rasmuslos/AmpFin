@@ -57,7 +57,6 @@
 		3A5515F22BC435A200B922D7 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 3A5515F12BC435A200B922D7 /* Defaults */; };
 		3A5515F42BC4391300B922D7 /* Sidebar+Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5515F32BC4391300B922D7 /* Sidebar+Links.swift */; };
 		3A5515F72BC449A400B922D7 /* Defaults+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5515F62BC449A400B922D7 /* Defaults+Keys.swift */; };
-		3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = 3A58F8352B5EB7F900421D08 /* FluidGradient */; };
 		3A5B87AC2C74AF3500C6F455 /* PlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B87AB2C74AF3500C6F455 /* PlaylistViewModel.swift */; };
 		3A5B87AE2C74B20F00C6F455 /* MainActor+withAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B87AD2C74B20F00C6F455 /* MainActor+withAnimation.swift */; };
 		3A62CC492C08BC790093EA66 /* Double+Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A62CC482C08BC790093EA66 /* Double+Duration.swift */; };
@@ -288,7 +287,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A2146E32BF4D015001DA9E2 /* AmpFinKit in Frameworks */,
-				3A58F8362B5EB7F900421D08 /* FluidGradient in Frameworks */,
 				3AE1B0E32ABCDCE80052C8AA /* NukeUI in Frameworks */,
 				3A3A36FA2C7CAE7D001A29FD /* RFKit in Frameworks */,
 				3A2146E52BF4D019001DA9E2 /* AFPlayback in Frameworks */,
@@ -690,7 +688,6 @@
 			name = Multiplatform;
 			packageProductDependencies = (
 				3AE1B0E22ABCDCE80052C8AA /* NukeUI */,
-				3A58F8352B5EB7F900421D08 /* FluidGradient */,
 				3A5515F12BC435A200B922D7 /* Defaults */,
 				3A2146E22BF4D015001DA9E2 /* AmpFinKit */,
 				3A2146E42BF4D019001DA9E2 /* AFPlayback */,
@@ -730,7 +727,6 @@
 			mainGroup = 3ABAFCA12AA7D6C40011BFD6;
 			packageReferences = (
 				3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */,
-				3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 				3A5515F02BC435A200B922D7 /* XCRemoteSwiftPackageReference "Defaults" */,
 				3A3A36F82C7CAE7D001A29FD /* XCRemoteSwiftPackageReference "RFKit" */,
 			);
@@ -1282,14 +1278,6 @@
 				minimumVersion = 8.2.0;
 			};
 		};
-		3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Cindori/FluidGradient.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		3AE1B0DD2ABCDCE80052C8AA /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke.git";
@@ -1322,11 +1310,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3A5515F02BC435A200B922D7 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
-		};
-		3A58F8352B5EB7F900421D08 /* FluidGradient */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3A58F8322B5EB7EA00421D08 /* XCRemoteSwiftPackageReference "FluidGradient" */;
-			productName = FluidGradient;
 		};
 		3AE1B0E22ABCDCE80052C8AA /* NukeUI */ = {
 			isa = XCSwiftPackageProductDependency;

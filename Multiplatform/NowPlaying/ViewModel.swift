@@ -42,7 +42,6 @@ internal extension NowPlaying {
         // MARK: Background
         
         @MainActor private(set) var colors: [Color]
-        @MainActor private(set) var highlights: [Color]
         @MainActor private var extractedCoverItemID: String?
         
         // MARK: Current state
@@ -112,7 +111,6 @@ internal extension NowPlaying {
             draggedPercentage = 0
             
             colors = []
-            highlights = []
             
             source = AudioPlayer.current.source
             
@@ -224,11 +222,6 @@ internal extension NowPlaying.ViewModel {
                 _dragOffset = newValue
             }
         }
-    }
-    
-    @MainActor
-    var finished: Bool {
-        expandFinished && dragFinished
     }
     
     @MainActor
@@ -347,21 +340,16 @@ private extension NowPlaying.ViewModel {
                     // MARK: extract colors
                     $0.addTask {
                         if let image = await self?.nowPlaying?.cover?.systemImage {
-                            guard let dominantColors = try? await RFKVisuals.extractDominantColors(10, image: image) else {
+                            guard let dominantColors = try? await RFKVisuals.extractDominantColors(16, image: image) else {
                                 await MainActor.withAnimation { [weak self] in
                                     self?.colors = []
-                                    self?.highlights = []
+                                    self?.extractedCoverItemID = nil
                                 }
                                 
                                 return
                             }
                             
                             let colors = RFKVisuals.brightnessExtremeFilter(dominantColors.map { $0.color }, threshold: 0.25)
-                            let highlights = RFKVisuals
-                                .contrastRatios(RFKVisuals.brightnessExtremeFilter(colors, threshold: 0.35))
-                                .sorted { $0.value < $1.value }
-                                .filter { $0.value > 1 }
-                                .map { $0.key }
                             
                             let extractedCoverItemID = await self?.extractedCoverItemID
                             let itemID = await self?.nowPlaying?.id
@@ -370,9 +358,8 @@ private extension NowPlaying.ViewModel {
                                 return
                             }
                             
-                            await MainActor.withAnimation { [colors, highlights, weak self] in
-                                self?.highlights = highlights
-                                self?.colors = colors.filter { !highlights.contains($0) }
+                            await MainActor.withAnimation { [colors, weak self] in
+                                self?.colors = colors
                                 self?.extractedCoverItemID = itemID
                             }
                         }
