@@ -15,6 +15,7 @@ struct LoginView: View {
     @State private var server = JellyfinClient.shared.serverUrl?.absoluteString ?? "https://"
     @State private var username = ""
     @State private var password = ""
+    @State private var quickConnectAvailable: Bool = false
     
     @State private var serverVersion: String?
     @State private var loginError: LoginError?
@@ -95,6 +96,29 @@ struct LoginView: View {
                                     }
                                 }
                                 .foregroundStyle(.red)
+                                
+                                
+                            }
+                            
+                            if loginFlowState == .credentials {
+                                Section {
+                                    Button {
+                                        loginFlowState = .quickConnect
+                                    } label: {
+                                        if !quickConnectAvailable {
+                                            Label("login.quickconnect.unavailable.title", systemImage: "numbers.rectangle")
+                                                .foregroundStyle(.secondary)
+                                        } else {
+                                            Label("login.quickconnect.title", systemImage: "numbers.rectangle")
+                                                .foregroundStyle(.primary)
+                                        }
+                                    
+
+                                    }
+                                    .disabled(!quickConnectAvailable)
+                                } footer: {
+                                    Text("login.quickconnect.description")
+                                }
                             }
                             
                             if loginFlowState == .server {
@@ -115,6 +139,14 @@ struct LoginView: View {
                                 loginFlowState = .server
                             }
                         }
+                        
+                    case .quickConnect:
+                    NavigationStack {
+                        LoginQuickConnectView() {
+                            loginFlowState = .credentials
+                        }
+                    }
+                        
                     case .serverLoading, .credentialsLoading:
                         VStack {
                             ProgressView()
@@ -153,6 +185,8 @@ internal extension LoginView {
             Task {
                 do {
                     serverVersion = try await JellyfinClient.shared.serverVersion()
+                    try await JellyfinClient.shared.updateCachedServerVersion()
+                    quickConnectAvailable = try await JellyfinClient.shared.checkIfQuickConnectIsAvailable()
                 } catch {
                     loginError = .server
                     loginFlowState = .server
@@ -184,6 +218,7 @@ internal extension LoginView {
         case server
         case serverLoading
         case credentials
+        case quickConnect // used instead of credentials
         case credentialsLoading
         
         case customHTTPHeaders
