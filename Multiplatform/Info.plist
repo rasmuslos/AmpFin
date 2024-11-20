@@ -43,5 +43,7 @@
 	<true/>
 	<key>AVInitialRouteSharingPolicy</key>
 	<string>LongFormAudio</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>

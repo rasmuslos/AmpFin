@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import FluidGradient
 import AmpFinKit
+import FluidGradient
 
 internal extension PlaylistView {
     struct Header: View {

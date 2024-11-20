@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import FluidGradient
 import Defaults
 import AmpFinKit
 import AFPlayback

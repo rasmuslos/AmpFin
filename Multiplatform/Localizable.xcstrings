@@ -867,22 +867,6 @@
         }
       }
     },
-    "login.loading" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lade..."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Loading..."
-          }
-        }
-      }
-    },
     "login.next" : {
       "localizations" : {
         "de" : {
@@ -915,14 +899,8 @@
         }
       }
     },
-    "login.promt" : {
+    "login.prompt" : {
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mit Jellyfin anmelden"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -943,6 +921,7 @@
       }
     },
     "login.quickconnect.description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -952,7 +931,11 @@
         }
       }
     },
+    "login.quickConnect.description" : {
+
+    },
     "login.quickconnect.error" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -963,6 +946,7 @@
       }
     },
     "login.quickconnect.hint" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1014,6 +998,9 @@
         }
       }
     },
+    "login.quickConnect.title" : {
+
+    },
     "login.quickconnect.unavailable.description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1036,7 +1023,11 @@
         }
       }
     },
+    "login.quickConnect.unavailable.title" : {
+
+    },
     "login.quickconnect.waiting" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1893,23 +1884,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove from queue"
-          }
-        }
-      }
-    },
-    "queue.remove.dragging" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ziehe das Lied hierher um es aus der Warteschlange zu entfernen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Drag here to remove from queue"
           }
         }
       }

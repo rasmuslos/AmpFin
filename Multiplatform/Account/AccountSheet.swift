@@ -17,10 +17,8 @@ internal struct AccountSheet: View {
     @State private var serverVersion: String?
     @State private var downloads: [Track]? = nil
     
-    @State private var navigationPath = NavigationPath()
-    
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack {
             List {
                 HStack(spacing: 0) {
                     ItemImage(cover: Cover(
@@ -55,7 +53,7 @@ internal struct AccountSheet: View {
                         Label("account.settings", systemImage: "gear")
                     }
                     
-                    NavigationLink(value: "") {
+                    NavigationLink(destination: CustomHeaderEditView()) {
                         Label("login.customHTTPHeaders", systemImage: "network.badge.shield.half.filled")
                     }
                 }
@@ -138,11 +136,6 @@ internal struct AccountSheet: View {
             }
             .navigationTitle("account.title")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: String.self) { _ in
-                CustomHeaderEditView(backButtonVisible: false) {
-                    navigationPath.removeLast()
-                }
-            }
             .task {
                 do {
                     serverVersion = try? await JellyfinClient.shared.serverVersion()
