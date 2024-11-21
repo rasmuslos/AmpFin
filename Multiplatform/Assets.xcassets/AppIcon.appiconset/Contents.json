@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "AmpFin (any).png",
+      "filename" : "AmpFin.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "AmpFin (Dark).png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -24,6 +25,7 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "AmpFin (Monochrome).png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
