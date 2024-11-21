@@ -16,28 +16,10 @@ internal extension NowPlaying {
         
         var body: some View {
             HStack {
-                Button {
-                    AudioPlayer.current.volume = 0
-                } label: {
-                    Label("mute", systemImage: "speaker.fill")
-                        .labelStyle(.iconOnly)
-                }
-                .buttonStyle(.plain)
-                
                 Slider(percentage: $volume, dragging: $dragging)
-                
-                Button {
-                    AudioPlayer.current.volume = 1
-                } label: {
-                    Label("fullVolume", systemImage: "speaker.wave.3.fill")
-                        .labelStyle(.iconOnly)
-                }
-                .buttonStyle(.plain)
             }
             .foregroundStyle(.thinMaterial)
             .saturation(1.6)
-            .dynamicTypeSize(dragging ? .xLarge : .medium)
-            .frame(height: 0)
             .animation(.easeInOut, value: dragging)
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.volumeDidChangeNotification)) { _ in
                 if !dragging {

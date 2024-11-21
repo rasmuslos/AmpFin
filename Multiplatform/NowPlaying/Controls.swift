@@ -35,12 +35,27 @@ private struct ProgressSlider: View {
     
     let compact: Bool
     
+    @State private var wasPlaying: Bool? = nil
+    
     var body: some View {
+        @Bindable var viewModel = viewModel
+        
         VStack(spacing: 2) {
-            NowPlaying.Slider(percentage: .init(get: { viewModel.displayedProgress }, set: { viewModel.setPosition(percentage: $0) }),
-                   dragging: .init(get: { viewModel.seekDragging }, set: { viewModel.seekDragging = $0; viewModel.controlsDragging = $0 }))
-            .frame(height: 10)
-            .padding(.bottom, compact ? 2 : 4)
+            NowPlaying.Slider(percentage: .init(get: { viewModel.currentTime / viewModel.duration }, set: {
+                AudioPlayer.current.currentTime = AudioPlayer.current.duration * $0
+            }), dragging: .init() { viewModel.seekDragging } set: {
+                if $0 && wasPlaying == nil {
+                    wasPlaying = AudioPlayer.current.playing
+                    AudioPlayer.current.playing = false
+                } else if !$0, let wasPlaying {
+                    AudioPlayer.current.playing = wasPlaying
+                    self.wasPlaying = nil
+                }
+                
+                viewModel.seekDragging = $0
+                viewModel.controlsDragging = $0
+            })
+            .padding(.bottom, 2)
             
             HStack(spacing: 0) {
                 Group {

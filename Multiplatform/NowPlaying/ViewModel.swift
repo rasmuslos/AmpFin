@@ -37,8 +37,6 @@ internal extension NowPlaying {
         @MainActor var volumeDragging: Bool
         @MainActor var controlsDragging: Bool
         
-        @MainActor var draggedPercentage = 0.0
-        
         // MARK: Background
         
         @MainActor private(set) var colors: [Color]
@@ -107,8 +105,6 @@ internal extension NowPlaying {
             seekDragging = false
             volumeDragging = false
             controlsDragging = false
-            
-            draggedPercentage = 0
             
             colors = []
             
@@ -246,10 +242,6 @@ internal extension NowPlaying.ViewModel {
         return 0
     }
     
-    @MainActor
-    var displayedProgress: Double {
-        seekDragging ? draggedPercentage : playedPercentage
-    }
     @MainActor
     var playedPercentage: Double {
         currentTime / duration
@@ -503,14 +495,6 @@ internal extension NowPlaying.ViewModel {
             updateLyricsIndex()
             startScrollTimer()
         }
-    }
-    
-    func setPosition(percentage: Double) {
-        Task { @MainActor in
-            draggedPercentage = percentage
-        }
-        
-        AudioPlayer.current.currentTime = AudioPlayer.current.duration * percentage
     }
 }
 

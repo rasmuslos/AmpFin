@@ -46,10 +46,10 @@ extension LoginView {
                         }
                 }
             }
-            .navigationTitle("login.quickconnect.title")
+            .navigationTitle("login.quickConnect.title")
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
-                Link("login.quickconnect.link", destination: URL(string: "https://jellyfin.org/docs/general/server/quick-connect")!)
+                Link("login.quickConnect.link", destination: URL(string: "https://jellyfin.org/docs/general/server/quick-connect")!)
             }
             .refreshable {
                 await viewModel.initiateQuickConnect()

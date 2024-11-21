@@ -625,22 +625,6 @@
         }
       }
     },
-    "fullVolume" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Volle Lautstärke"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full volume"
-          }
-        }
-      }
-    },
     "history.empty" : {
       "localizations" : {
         "de" : {
@@ -901,6 +885,12 @@
     },
     "login.prompt" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Jellyfin anmelden"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -909,20 +899,14 @@
         }
       }
     },
-    "login.quickconnect.code.title" : {
-      "extractionState" : "manual",
+    "login.quickConnect.description" : {
       "localizations" : {
-        "en" : {
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your Quick Connect code:"
+            "value" : "Benötigt Jellyfin 10.9+"
           }
-        }
-      }
-    },
-    "login.quickconnect.description" : {
-      "extractionState" : "stale",
-      "localizations" : {
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -931,33 +915,14 @@
         }
       }
     },
-    "login.quickConnect.description" : {
-
-    },
-    "login.quickconnect.error" : {
-      "extractionState" : "stale",
+    "login.quickConnect.link" : {
       "localizations" : {
-        "en" : {
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Something went wrong during Quick Connect. Please try again."
+            "value" : "Mehr erfahren"
           }
-        }
-      }
-    },
-    "login.quickconnect.hint" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select the code below to copy"
-          }
-        }
-      }
-    },
-    "login.quickconnect.link" : {
-      "localizations" : {
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -966,84 +931,34 @@
         }
       }
     },
-    "login.quickconnect.preparing" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preparing Quick Connect"
-          }
-        }
-      }
-    },
-    "login.quickconnect.success" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logged In! Please wait a moment…"
-          }
-        }
-      }
-    },
-    "login.quickconnect.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick Connect"
-          }
-        }
-      }
-    },
     "login.quickConnect.title" : {
-
-    },
-    "login.quickconnect.unavailable.description" : {
-      "extractionState" : "manual",
       "localizations" : {
-        "en" : {
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Requires Jellyfin 10.9+"
+            "value" : "QuickConnect"
           }
-        }
-      }
-    },
-    "login.quickconnect.unavailable.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quick Connect Unavailable"
+            "value" : "QuickConnect"
           }
         }
       }
     },
     "login.quickConnect.unavailable.title" : {
-
-    },
-    "login.quickconnect.waiting" : {
-      "extractionState" : "stale",
       "localizations" : {
-        "en" : {
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Waiting for authorization..."
+            "value" : "QuickConnect nicht verfügbar"
           }
-        }
-      }
-    },
-    "login.quickconnect.welcome.button.text" : {
-      "extractionState" : "manual",
-      "localizations" : {
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Successfully logged in. Welcome to AmpFin."
+            "value" : "QuickConnect unavailable"
           }
         }
       }
@@ -1236,22 +1151,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "More"
-          }
-        }
-      }
-    },
-    "mute" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stumm"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mute"
           }
         }
       }

@@ -14,7 +14,6 @@ internal extension NowPlaying {
         @Binding var percentage: Double
         @Binding var dragging: Bool
         
-        @State private var counter = 0
         @State private var blocked = false
         
         @State private var captured: Double? = nil
@@ -26,19 +25,15 @@ internal extension NowPlaying {
                     let width = geometry.size.width * min(1, max(0, CGFloat(displayed ?? percentage)))
                     
                     ZStack(alignment: .leading) {
-                        if colorScheme == .dark {
-                            Rectangle()
-                                .fill(.background.tertiary)
-                                .saturation(1.6)
-                        } else {
-                            Rectangle()
-                                .fill(.background.secondary)
-                                .saturation(1.6)
-                        }
+                        Rectangle()
+                            .fill(.white.opacity(0.4))
+                            .saturation(1.6)
                         
                         Rectangle()
+                            .fill(.primary)
                             .frame(width: width)
-                            .foregroundStyle(.primary)
+                            .opacity(dragging ? 0.8 : 0.4)
+                            .animation(.smooth, value: dragging)
                             .animation(.smooth, value: width)
                     }
                     .clipShape(.rect(cornerRadius: 8))
