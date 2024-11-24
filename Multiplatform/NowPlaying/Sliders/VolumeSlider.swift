@@ -16,7 +16,7 @@ internal extension NowPlaying {
         
         var body: some View {
             HStack {
-                Slider(percentage: $volume, dragging: $dragging)
+                Slider(percentage: .init() { volume } set: { AudioPlayer.current.volume = Float($0) }, dragging: $dragging)
             }
             .foregroundStyle(.thinMaterial)
             .saturation(1.6)
@@ -24,11 +24,6 @@ internal extension NowPlaying {
             .onReceive(NotificationCenter.default.publisher(for: AudioPlayer.volumeDidChangeNotification)) { _ in
                 if !dragging {
                     volume = Double(AudioPlayer.current.volume)
-                }
-            }
-            .onChange(of: volume) {
-                if dragging {
-                    AudioPlayer.current.volume = Float(volume)
                 }
             }
         }
