@@ -16,19 +16,11 @@ extension LoginView {
             Group {
                 if let code = viewModel.quickConnectCode {
                     ScrollView {
-                        Image(systemName: "key.radiowaves.forward")
-                            .font(.system(size: 160))
+                        ContentUnavailableView(String(code), systemImage: "person.wave.2", description: Text("login.quickConnect.help"))
                             .symbolEffect(.variableColor)
-                            .padding(.bottom, 40)
-                        
-                        Button {
-                            UIPasteboard.general.string = code
-                        } label: {
-                            Text(code)
-                                .font(.largeTitle)
-                                .fontDesign(.monospaced)
-                        }
-                        .foregroundStyle(.primary)
+                            .onTapGesture {
+                                UIPasteboard.general.string = code
+                            }
                     }
                     .contentMargins(.top, 160)
                     .onAppear {
@@ -48,6 +40,7 @@ extension LoginView {
             }
             .navigationTitle("login.quickConnect.title")
             .navigationBarTitleDisplayMode(.inline)
+            .background(.background.secondary)
             .safeAreaInset(edge: .bottom) {
                 Link("login.quickConnect.link", destination: URL(string: "https://jellyfin.org/docs/general/server/quick-connect")!)
             }

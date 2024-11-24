@@ -915,6 +915,22 @@
         }
       }
     },
+    "login.quickConnect.help" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutze diese Zahlenfolge zur Identifikation in der Web-Oberfläche"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use this code to identify yourself using the Web-Interface"
+          }
+        }
+      }
+    },
     "login.quickConnect.link" : {
       "localizations" : {
         "de" : {
