@@ -148,7 +148,7 @@ public extension AudioPlayer {
             case .HDMI, .displayPort:
                 return "tv"
             case .bluetoothLE, .bluetoothHFP, .bluetoothA2DP:
-                return "hifispeaker"
+                return UserDefaults.standard.string(forKey: "defaultBTDeviceIcon") ?? "hifispeaker"
             case .headphones:
                 return "headphones"
             default:
