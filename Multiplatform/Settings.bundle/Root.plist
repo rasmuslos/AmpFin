@@ -48,6 +48,32 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Default Bluetooth device icon</string>
+			<key>Key</key>
+			<string>defaultBTDeviceIcon</string>
+			<key>DefaultValue</key>
+			<string>hifispeaker</string>
+			<key>Values</key>
+			<array>
+				<string>hifispeaker</string>
+				<string>headphones</string>
+				<string>airpods.gen3</string>
+				<string>airpods.pro</string>
+				<string>airpods.max</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Speaker</string>
+				<string>Headphones</string>
+				<string>AirPods</string>
+				<string>AirPods Pro</string>
+				<string>AirPods Max</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Audio-Quality</string>
