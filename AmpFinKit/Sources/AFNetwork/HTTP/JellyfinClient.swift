@@ -76,6 +76,14 @@ public extension JellyfinClient {
             _userId ?? ""
         }
     }
+
+    var supportsAudioRemuxing: Bool {
+        get {
+            let (major, minor, _) = serverVersion ?? (0,0,0);
+
+            return major >= 10 && minor >= 10;
+        }
+    }
 }
 
 public extension JellyfinClient {
