@@ -8,6 +8,7 @@
 import Foundation
 import MediaPlayer
 import OSLog
+import Defaults
 import AFFoundation
 import AFExtension
 import AFNetwork
@@ -148,7 +149,7 @@ public extension AudioPlayer {
             case .HDMI, .displayPort:
                 return "tv"
             case .bluetoothLE, .bluetoothHFP, .bluetoothA2DP:
-                return UserDefaults.standard.string(forKey: "defaultBTDeviceIcon") ?? "hifispeaker"
+                return Defaults[.defaultBTDeviceIcon]
             case .headphones:
                 return "headphones"
             default:
