@@ -25,7 +25,7 @@ internal extension LocalAudioEndpoint {
         }
         #endif
         var supportedAudioCodecs = "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aiff|aif";
-        if JellyfinClient.shared.supportsAudioRemuxing {
+        if JellyfinClient.shared.supports(.audioRemuxing) {
             supportedAudioCodecs.append(",mp4|opus")
         }
         var url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: track.id).appending(path: "universal").appending(queryItems: [
