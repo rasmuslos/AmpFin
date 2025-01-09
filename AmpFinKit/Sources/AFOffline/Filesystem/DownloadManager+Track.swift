@@ -12,11 +12,15 @@ import AFNetwork
 
 extension DownloadManager {
     func download(trackId: String) -> URLSessionDownloadTask {
+        var supportedAudioCodecs = "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aif";
+        if JellyfinClient.shared.supports(.audioRemuxing) {
+            supportedAudioCodecs.append(",mp4|opus")
+        }
         var url = JellyfinClient.shared.serverUrl.appending(path: "Audio").appending(path: trackId).appending(path: "universal").appending(queryItems: [
             URLQueryItem(name: "apiKey", value: JellyfinClient.shared.token),
             URLQueryItem(name: "deviceId", value: JellyfinClient.shared.clientId),
             URLQueryItem(name: "userId", value: JellyfinClient.shared.userId),
-            URLQueryItem(name: "container", value: "mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,webma,webm|webma,wav,aiff,aif"),
+            URLQueryItem(name: "container", value: supportedAudioCodecs),
             URLQueryItem(name: "startTimeTicks", value: "0"),
             URLQueryItem(name: "audioCodec", value: "aac"),
             URLQueryItem(name: "transcodingContainer", value: "m4a"),

@@ -46,6 +46,9 @@ public extension JellyfinClient {
         }
         
         switch featureFlag {
+            case .audioRemuxing:
+                // Required 10.10+
+                return serverVersion.major >= 10 && serverVersion.minor >= 10;
             case .sharedPlaylists, .lyrics:
                 // Required 10.9+
                 return serverVersion.major >= 10 && serverVersion.minor >= 9
@@ -59,7 +62,8 @@ public extension JellyfinClient {
         case lyrics
         case sharedPlaylists
         case quickConnect
-        
+        case audioRemuxing
+
         public var id: Self {
             self
         }
