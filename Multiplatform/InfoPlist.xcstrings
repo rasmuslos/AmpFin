@@ -17,6 +17,12 @@
             "value" : "AmpFin"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "AmpFin"
+          }
+        }
       }
     },
     "CFBundleName" : {
@@ -24,6 +30,12 @@
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "AmpFin"
+          }
+        }
+        "tr" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "AmpFin"
@@ -39,6 +51,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Hello, World!"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Merhaba Dünya!"
           }
         }
       }
@@ -57,6 +75,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Play your music using Siri"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Siri'yi kullanarak müziğinizi çalın"
           }
         }
       }
