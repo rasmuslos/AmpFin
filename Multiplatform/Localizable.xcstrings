@@ -15,6 +15,12 @@
             "value" : "Account"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap"
+          }
+        }
       }
     },
     "account.app" : {
@@ -29,6 +35,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulama"
           }
         }
       }
@@ -47,6 +59,12 @@
             "value" : "Remove all downloads"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bütün indirilenleri sil"
+          }
+        }
       }
     },
     "account.deleteSpotlightIndex" : {
@@ -61,6 +79,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reset Spotlight-Index & Cache"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önbelleği ve Spotlight dizini sıfırla"
           }
         }
       }
@@ -79,6 +103,12 @@
             "value" : "Download queue"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirme Kuyruğu"
+          }
+        }
       }
     },
     "account.downloads.queue.empty" : {
@@ -95,6 +125,12 @@
             "value" : "No active downloads"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akitf indirme yok"
+          }
+        }
       }
     },
     "account.github" : {
@@ -106,6 +142,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GitHub"
+          }
+        }
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "GitHub"
@@ -127,6 +169,12 @@
             "value" : "Logout"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oturumu kapat"
+          }
+        }
       }
     },
     "account.remote" : {
@@ -141,6 +189,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remote control"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uzaktan kumanda"
           }
         }
       }
@@ -159,6 +213,12 @@
             "value" : "No clients found"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İstemciler bulunamadı"
+          }
+        }
       }
     },
     "account.remote.loading" : {
@@ -173,6 +233,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading clients..."
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İstemciler yükleniyor..."
           }
         }
       }
@@ -191,6 +257,12 @@
             "value" : "Server"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu"
+          }
+        }
       }
     },
     "account.server %@ %@" : {
@@ -202,6 +274,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ (%2$@)"
@@ -223,6 +301,12 @@
             "value" : "Settings"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayarlar"
+          }
+        }
       }
     },
     "account.support" : {
@@ -237,6 +321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Support"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yardım"
           }
         }
       }
@@ -255,6 +345,12 @@
             "value" : "Account"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap"
+          }
+        }
       }
     },
     "account.version.app %@ %@" : {
@@ -266,6 +362,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AmpFin %1$@ (%2$@)"
+          }
+        }
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "AmpFin %1$@ (%2$@)"
@@ -287,6 +389,12 @@
             "value" : "Database: %1$@ (%2$@)"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veritabanı %1$@ (%2$@)"
+          }
+        }
       }
     },
     "album.similar" : {
@@ -303,6 +411,12 @@
             "value" : "Similar"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benzer"
+          }
+        }
       }
     },
     "album.similar %@" : {
@@ -316,7 +430,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Also by %@"
+            "value" : "Also from %@"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayrıca %@ tarafından"
           }
         }
       }
@@ -335,7 +455,12 @@
             "value" : "Unknown album"
           }
         }
-      }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilinmeyen albüm"
+          }
+        }
     },
     "album.view" : {
       "localizations" : {
@@ -349,6 +474,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View album"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albümü görüntüle"
           }
         }
       }
@@ -367,6 +498,12 @@
             "value" : "Albums"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albümler"
+          }
+        }
       }
     },
     "artist.empty" : {
@@ -381,6 +518,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No albums available"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mevcut hiçbir albüm yok"
           }
         }
       }
@@ -399,6 +542,12 @@
             "value" : "Top tracks"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En iyi parçalar"
+          }
+        }
       }
     },
     "artist.unknown" : {
@@ -413,6 +562,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unknown artist"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilinmeyen sanatçı"
           }
         }
       }
@@ -431,6 +586,12 @@
             "value" : "View artist"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanatçıyı görüntüle"
+          }
+        }
       }
     },
     "ascending" : {
@@ -445,6 +606,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ascending"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Artan"
           }
         }
       }
@@ -463,6 +630,12 @@
             "value" : "Back"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geri"
+          }
+        }
       }
     },
     "cancel" : {
@@ -477,6 +650,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İptal"
           }
         }
       }
@@ -495,6 +674,12 @@
             "value" : "Done"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitti"
+          }
+        }
       }
     },
     "download" : {
@@ -509,6 +694,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Download"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndir"
           }
         }
       }
@@ -527,6 +718,12 @@
             "value" : "Delete Download"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirileni Sil"
+          }
+        }
       }
     },
     "download.remove.force" : {
@@ -541,6 +738,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Force remove"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zorla kaldır"
           }
         }
       }
@@ -559,6 +762,12 @@
             "value" : "Update"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Güncelle"
+          }
+        }
       }
     },
     "downloaded" : {
@@ -573,6 +782,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Downloaded"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirildi"
           }
         }
       }
@@ -591,6 +806,12 @@
             "value" : "To access Jellyfin features, please ensure your device is connected to the internet and can reach your Jellyfin instance."
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jellyfin özelliklerine erişebilmek için lütfen cihazınızın internete bağlı olduğundan ve Jellyfin istemcisine erişebildiğinden emin olun."
+          }
+        }
       }
     },
     "error.unavailable.title" : {
@@ -605,6 +826,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Content unavailable"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçerik kullanılamıyor"
           }
         }
       }
@@ -623,6 +850,12 @@
             "value" : "Favorite"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favori"
+          }
+        }
       }
     },
     "history.empty" : {
@@ -639,6 +872,12 @@
             "value" : "Your playback-history is empty."
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynatma geçmişiniz boş"
+          }
+        }
       }
     },
     "home.randomAlbums" : {
@@ -653,6 +892,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Random albums"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rastgele albümler"
           }
         }
       }
@@ -672,6 +917,12 @@
             "value" : "Recently added"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakın zamanda eklenmiş"
+          }
+        }
       }
     },
     "infiniteQueue.empty" : {
@@ -686,6 +937,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enable the infinite queue by pressing the infinity symbol."
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonsuz kuyruğu etkinleştirmek için sonsuzluk sembolüne dokunun"
           }
         }
       }
@@ -704,6 +961,12 @@
             "value" : "Loading…"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yükleniyor..."
+          }
+        }
       }
     },
     "login.customHTTPHeaders" : {
@@ -718,6 +981,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Custom HTTP-Headers"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel HTTP-Başlıkları"
           }
         }
       }
@@ -736,6 +1005,12 @@
             "value" : "Add"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekle"
+          }
+        }
       }
     },
     "login.customHTTPHeaders.key" : {
@@ -750,6 +1025,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Key"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anahtar"
           }
         }
       }
@@ -768,6 +1049,12 @@
             "value" : "Remove"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaldır"
+          }
+        }
       }
     },
     "login.customHTTPHeaders.save" : {
@@ -782,6 +1069,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaydet"
           }
         }
       }
@@ -800,6 +1093,12 @@
             "value" : "Value"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Değer"
+          }
+        }
       }
     },
     "login.error.failed" : {
@@ -816,6 +1115,12 @@
             "value" : "Login failed"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oturum açma başarısız"
+          }
+        }
       }
     },
     "login.error.server" : {
@@ -830,6 +1135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jellyfin instance not found."
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jellyfin istemcisi bulunamadı."
           }
         }
       }
@@ -849,6 +1160,12 @@
             "value" : "The server URL appears to be invalid (Format: http(s)://host:port)."
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu URL'si geçersiz görünüyor (Format: http(s)://host:port)."
+          }
+        }
       }
     },
     "login.next" : {
@@ -863,6 +1180,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonraki"
           }
         }
       }
@@ -881,6 +1204,12 @@
             "value" : "Password"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şifre"
+          }
+        }
       }
     },
     "login.prompt" : {
@@ -895,6 +1224,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Login with Jellyfin"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jellyfin ile oturum aç"
           }
         }
       }
@@ -913,6 +1248,12 @@
             "value" : "Requires Jellyfin 10.9+"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jellyfin 10.9 ve üstü gerektirir."
+          }
+        }
       }
     },
     "login.quickConnect.help" : {
@@ -927,6 +1268,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Use this code to identify yourself using the Web-Interface"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ağ arayüzünü kullanarak kendinizi tanımlamak için bu kodu kullanın"
           }
         }
       }
@@ -945,6 +1292,12 @@
             "value" : "Learn more"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha fazla"
+          }
+        }
       }
     },
     "login.quickConnect.title" : {
@@ -956,6 +1309,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "QuickConnect"
+          }
+        }
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "QuickConnect"
@@ -977,6 +1336,12 @@
             "value" : "QuickConnect unavailable"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quickconnect kullanılamıyor"
+          }
+        }
       }
     },
     "login.server" : {
@@ -991,6 +1356,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Server URL"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu URL'si"
           }
         }
       }
@@ -1009,6 +1380,12 @@
             "value" : "Please login to get started."
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlamak için lütfen oturum açın."
+          }
+        }
       }
     },
     "login.title" : {
@@ -1023,6 +1400,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Login"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oturum aç"
           }
         }
       }
@@ -1041,6 +1424,12 @@
             "value" : "Username"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanıcı adı"
+          }
+        }
       }
     },
     "login.version %@" : {
@@ -1055,6 +1444,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Server-Version: %@"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu Versiyonu: %@"
           }
         }
       }
@@ -1073,6 +1468,12 @@
             "value" : "Welcome to AmpFin"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AmpFin'e hoşgeldiniz"
+          }
+        }
       }
     },
     "lyrics" : {
@@ -1087,6 +1488,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lyrics"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şarkı Sözleri"
           }
         }
       }
@@ -1105,6 +1512,12 @@
             "value" : "Lyrics cannot be retrieved"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şarkı sözleri alınamıyor"
+          }
+        }
       }
     },
     "lyrics.view" : {
@@ -1119,6 +1532,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View lyrics"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şarkı sözlerinii görüntüle "
           }
         }
       }
@@ -1137,6 +1556,12 @@
             "value" : "Migrating database"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veritabanı taşınıyor"
+          }
+        }
       }
     },
     "migrating.description" : {
@@ -1151,6 +1576,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A database migration is necessary due to a bug in SwiftData. Please wait a few seconds and keep AmpFin in the foreground."
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SwiftData'daki bir hata yüzünden veritabanının taşınması gerek. Lütfen birkaç saniye bekleyin ve AmpFin'i açık tutun."
           }
         }
       }
@@ -1169,6 +1600,12 @@
             "value" : "More"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha fazla"
+          }
+        }
       }
     },
     "offline.description" : {
@@ -1183,6 +1620,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Failed to establish a connection to your Jellyfin instance. Please verify your network connection and try again."
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jellyfin istemciniz ile bağlantı kurulamadı. Lütfen internet bağlantınızı kontrol edip tekrar deneyin."
           }
         }
       }
@@ -1201,6 +1644,12 @@
             "value" : "Server unavailable"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucuya erişilemiyor"
+          }
+        }
       }
     },
     "output" : {
@@ -1215,6 +1664,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Output"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çıktı"
           }
         }
       }
@@ -1233,6 +1688,12 @@
             "value" : "Placeholder"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yer tutucu"
+          }
+        }
       }
     },
     "play" : {
@@ -1247,6 +1708,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Play"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynat"
           }
         }
       }
@@ -1265,6 +1732,12 @@
             "value" : "Album: %@"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynat %@"
+          }
+        }
       }
     },
     "playback.artist %@" : {
@@ -1279,6 +1752,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Artist: %@"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanatçı: %@"
           }
         }
       }
@@ -1297,6 +1776,12 @@
             "value" : "Previous Track"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki Şarkı"
+          }
+        }
       }
     },
     "playback.next" : {
@@ -1311,6 +1796,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next track"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonraki Şarkı"
           }
         }
       }
@@ -1329,6 +1820,12 @@
             "value" : "Playlist: %@"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listesi: %@"
+          }
+        }
       }
     },
     "playback.search %@" : {
@@ -1343,6 +1840,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search: \"%@\""
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ara: \"%@\""
           }
         }
       }
@@ -1361,6 +1864,12 @@
             "value" : "Stop playback"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynatmayı durdur"
+          }
+        }
       }
     },
     "playback.toggle" : {
@@ -1375,6 +1884,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toggle playback"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynatmayı aç-kapa"
           }
         }
       }
@@ -1393,6 +1908,12 @@
             "value" : "Add to playlist"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listesine ekle"
+          }
+        }
       }
     },
     "playlist.add.error" : {
@@ -1407,6 +1928,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error while processing."
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşlerken hata oluştu"
           }
         }
       }
@@ -1425,6 +1952,12 @@
             "value" : "Add to playlist"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listesine ekle"
+          }
+        }
       }
     },
     "playlist.delete" : {
@@ -1439,6 +1972,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete playlist"
+          }
+        }
+         "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listesini sil"
           }
         }
       }
@@ -1457,6 +1996,12 @@
             "value" : "Delete playlist?"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listesi silinsin mi?"
+          }
+        }
       }
     },
     "playlist.delete.finalize" : {
@@ -1471,6 +2016,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete playlist permanently"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalıcı olarak çalma listesini sil"
           }
         }
       }
@@ -1489,6 +2040,12 @@
             "value" : "Edit playlist"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listesini düzenle"
+          }
+        }
       }
     },
     "playlist.new" : {
@@ -1503,6 +2060,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "New playlist"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni çalma listesi"
           }
         }
       }
@@ -1521,6 +2084,12 @@
             "value" : "Create new playlist"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni çalma listesi oluştur"
+          }
+        }
       }
     },
     "playlist.new.name" : {
@@ -1535,6 +2104,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name of the new playlist"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni listenin adı"
           }
         }
       }
@@ -1553,6 +2128,12 @@
             "value" : "Shared with Instance"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Örneği ile paylaşıldı"
+          }
+        }
       }
     },
     "playlist.remove" : {
@@ -1567,6 +2148,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove from playlist"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listesinden kaldır"
           }
         }
       }
@@ -1609,6 +2196,24 @@
             }
           }
         }
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "bir parça"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld parçalar"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "playlist.view" : {
@@ -1623,6 +2228,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View playlist"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listesini görüntüle"
           }
         }
       }
@@ -1641,6 +2252,12 @@
             "value" : "Queue"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuyruk"
+          }
+        }
       }
     },
     "queue.empty" : {
@@ -1655,6 +2272,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your Queue is empty. Scroll down to view the infinite queue."
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuyruğunuz boş. Sonsuz kuyruğu görüntülemek için aşağı kaydırın."
           }
         }
       }
@@ -1673,6 +2296,12 @@
             "value" : "History"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmiş"
+          }
+        }
       }
     },
     "queue.infinite" : {
@@ -1687,6 +2316,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Infinite Queue"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonsuz kuyruk"
           }
         }
       }
@@ -1705,6 +2340,12 @@
             "value" : "Selection based on your current queue"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mevcut kuyruğunuza dayalı seçim"
+          }
+        }
       }
     },
     "queue.last" : {
@@ -1719,6 +2360,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Play last"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En son çal"
           }
         }
       }
@@ -1737,6 +2384,12 @@
             "value" : "After: %@"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ den sonra" # I am unsure of how this would work in its current state. If I tried to do "Sonra: @#" it would be gramatticaly incorrect/challenging.
+          }
+        }
       }
     },
     "queue.mix" : {
@@ -1751,6 +2404,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Instant mix"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instant mix" # A direct translation would look silly so I decided not to change it as it is similar in Turkish Spotify
           }
         }
       }
@@ -1769,6 +2428,12 @@
             "value" : "Play next"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonraki parçayı oynat"
+          }
+        }
       }
     },
     "queue.play" : {
@@ -1783,6 +2448,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Play"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynat"
           }
         }
       }
@@ -1801,6 +2472,12 @@
             "value" : "Remove from queue"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuyruktan kaldır"
+          }
+        }
       }
     },
     "queue.reorder" : {
@@ -1815,6 +2492,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reorder"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeniden sırala"
           }
         }
       }
@@ -1833,6 +2516,12 @@
             "value" : "Shuffle"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karıştır"
+          }
+        }
       }
     },
     "remote.connect" : {
@@ -1847,6 +2536,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Connect to your Jellyfin instance"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jellyfin istemcine bağlan"
           }
         }
       }
@@ -1865,6 +2560,12 @@
             "value" : "Disconnect client"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantıyı kopar"
+          }
+        }
       }
     },
     "repeat" : {
@@ -1879,6 +2580,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Repeat"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekrarla"
           }
         }
       }
@@ -1897,6 +2604,12 @@
             "value" : "Infinite"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonsuz"
+          }
+        }
       }
     },
     "repeat.none" : {
@@ -1911,6 +2624,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "None"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiçbiri"
           }
         }
       }
@@ -1929,6 +2648,12 @@
             "value" : "Queue"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuyruk"
+          }
+        }
       }
     },
     "repeat.track" : {
@@ -1943,6 +2668,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Track"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parça"
           }
         }
       }
@@ -1961,6 +2692,12 @@
             "value" : "Search"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ara"
+          }
+        }
       }
     },
     "search.albums" : {
@@ -1977,6 +2714,12 @@
             "value" : "Search albums"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albümü ara"
+          }
+        }
       }
     },
     "search.artists" : {
@@ -1991,6 +2734,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search Artists"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanatçıları ara"
           }
         }
       }
@@ -2010,6 +2759,12 @@
             "value" : "Downloaded"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirilenler"
+          }
+        }
       }
     },
     "search.jellyfin" : {
@@ -2022,6 +2777,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jellyfin"
+          }
+        }
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jellyfin"
@@ -2043,6 +2804,12 @@
             "value" : "Search for albums or tracks"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albümleri ya da parçaları ara"
+          }
+        }
       }
     },
     "search.tracks" : {
@@ -2057,6 +2824,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search tracks"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parçaları ara"
           }
         }
       }
@@ -2075,6 +2848,12 @@
             "value" : "Albums"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albümler"
+          }
+        }
       }
     },
     "section.artists" : {
@@ -2089,6 +2868,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Artists"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanatçılar"
           }
         }
       }
@@ -2107,6 +2892,12 @@
             "value" : "Playlists"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listeleri"
+          }
+        }
       }
     },
     "section.tracks" : {
@@ -2121,6 +2912,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tracks"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parçalar"
           }
         }
       }
@@ -2139,6 +2936,12 @@
             "value" : "Shuffle"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karıştır"
+          }
+        }
       }
     },
     "sort" : {
@@ -2153,6 +2956,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sort"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sırala"
           }
         }
       }
@@ -2171,6 +2980,12 @@
             "value" : "Added"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eklenmiş"
+          }
+        }
       }
     },
     "sort.album" : {
@@ -2185,6 +3000,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Album"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albüm"
           }
         }
       }
@@ -2203,6 +3024,12 @@
             "value" : "Album artist"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albüm sanatçısı"
+          }
+        }
       }
     },
     "sort.artist" : {
@@ -2217,6 +3044,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Artist"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanatçı"
           }
         }
       }
@@ -2235,6 +3068,12 @@
             "value" : "Last played"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son çalınan"
+          }
+        }
       }
     },
     "sort.name" : {
@@ -2249,6 +3088,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İsim"
           }
         }
       }
@@ -2267,6 +3112,12 @@
             "value" : "Play count"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynatma sayısı"
+          }
+        }
       }
     },
     "sort.random" : {
@@ -2281,6 +3132,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Random"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rastgele"
           }
         }
       }
@@ -2299,6 +3156,12 @@
             "value" : "Released"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yayımlanmış"
+          }
+        }
       }
     },
     "sort.runtime" : {
@@ -2313,6 +3176,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Duration"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Süre"
           }
         }
       }
@@ -2331,6 +3200,12 @@
             "value" : "Downloads"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirilenler"
+          }
+        }
       }
     },
     "tab.libarary" : {
@@ -2345,6 +3220,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Library"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kütüphâne"
           }
         }
       }
@@ -2363,6 +3244,12 @@
             "value" : "Library"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kütüphâne"
+          }
+        }
       }
     },
     "tab.search" : {
@@ -2377,6 +3264,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ara"
           }
         }
       }
@@ -2395,6 +3288,12 @@
             "value" : "Album"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albüm"
+          }
+        }
       }
     },
     "table.artist" : {
@@ -2409,6 +3308,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Artist"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanatçı"
           }
         }
       }
@@ -2427,6 +3332,12 @@
             "value" : "Duration"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Süre"
+          }
+        }
       }
     },
     "table.index" : {
@@ -2441,6 +3352,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Index"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndeks"
           }
         }
       }
@@ -2459,6 +3376,12 @@
             "value" : "Disk: %1$lld Index: %2$lld"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disk: %111d Dizin:%2$11d"
+          }
+        }
       }
     },
     "table.lufs" : {
@@ -2475,6 +3398,12 @@
             "value" : "LUFS"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LUFS" # Not sure what this is supposed to mean.
+          }
+        }
       }
     },
     "table.lufs %f" : {
@@ -2486,6 +3415,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%f"
+          }
+        }
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%f"
@@ -2507,6 +3442,12 @@
             "value" : "Name"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ad"
+          }
+        }
       }
     },
     "table.plays" : {
@@ -2521,6 +3462,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plays"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynatmalar"
           }
         }
       }
@@ -2539,6 +3486,12 @@
             "value" : "%lld"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%11d"
+          }
+        }
       }
     },
     "table.released" : {
@@ -2553,6 +3506,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Released"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yayımlandı"
           }
         }
       }
@@ -2571,6 +3530,12 @@
             "value" : "Album Artists"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albüm Sanatçıları"
+          }
+        }
       }
     },
     "title.albums" : {
@@ -2585,6 +3550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Albums"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albümler"
           }
         }
       }
@@ -2603,6 +3574,12 @@
             "value" : "Artists"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sanatçılar"
+          }
+        }
       }
     },
     "title.downloads" : {
@@ -2617,6 +3594,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Downloads"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirilenler"
           }
         }
       }
@@ -2635,6 +3618,12 @@
             "value" : "Favorites"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoriler"
+          }
+        }
       }
     },
     "title.library" : {
@@ -2649,6 +3638,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Library"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kütüphâne"
           }
         }
       }
@@ -2667,6 +3662,12 @@
             "value" : "Playlists"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalma listeleri"
+          }
+        }
       }
     },
     "title.search" : {
@@ -2683,6 +3684,12 @@
             "value" : "Search"
           }
         }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ara"
+          }
+        }
       }
     },
     "title.tracks" : {
@@ -2697,6 +3704,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tracks"
+          }
+        }
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parçalar"
           }
         }
       }
