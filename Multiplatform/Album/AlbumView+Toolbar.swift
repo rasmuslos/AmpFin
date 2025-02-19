@@ -131,6 +131,12 @@ private struct ToolbarMenu: View {
                 viewModel.queue(now: $0)
             }
             
+            Button {
+                
+            } label: {
+                Label("timer", systemImage: "clock")
+            }
+            
             ForEach(viewModel.album.artists) { artist in
                 Divider()
                 

@@ -96,6 +96,19 @@ internal extension AudioPlayer {
             AudioPlayer.current.stopPlayback()
             return .success
         }
+
+        commandCenter.enableLanguageOptionCommand.isEnabled = true
+        commandCenter.enableLanguageOptionCommand.addTarget { [unowned self] event in
+            // TODO: get a value somehow?
+            setSleepTimer(minutes: 30)
+            return .success
+        }
+        
+        commandCenter.disableLanguageOptionCommand.isEnabled = true
+        commandCenter.disableLanguageOptionCommand.addTarget { [unowned self] event in
+            cancelSleepTimer()
+            return .success
+        }
     }
     
     func updateCommandCenter(favorite: Bool) {
