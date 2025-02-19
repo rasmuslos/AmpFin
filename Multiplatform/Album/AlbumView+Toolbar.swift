@@ -131,6 +131,20 @@ private struct ToolbarMenu: View {
                 viewModel.queue(now: $0)
             }
             
+            SleepTimerMenu(
+                // TODO: This feels wrong, I don't fully understand reactivity in Swift
+                hasActiveTimer: Binding<Bool>(
+                    get: { viewModel.hasSleepTimer },
+                    set: {
+                        if !$0 {
+                            viewModel.cancelSleepTimer()
+                        }
+                    }
+                ),
+                set: viewModel.startSleepTimer,
+                unset: viewModel.cancelSleepTimer
+            )
+            
             ForEach(viewModel.album.artists) { artist in
                 Divider()
                 

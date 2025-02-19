@@ -73,6 +73,12 @@ internal extension AlbumViewModel {
             }
         }
     }
+    func startSleepTimer(minutes: Int) {
+        AudioPlayer.current.setSleepTimer(minutes: minutes)
+    }
+    func cancelSleepTimer() {
+        AudioPlayer.current.cancelSleepTimer()
+    }
 }
 
 internal extension AlbumViewModel {
@@ -175,5 +181,10 @@ internal extension AlbumViewModel {
     @MainActor
     var runtime: Double {
         tracks.reduce(0, { $0 + $1.runtime })
+    }
+    
+    @MainActor
+    var hasSleepTimer: Bool {
+        AudioPlayer.current.sleepTimerEndDate != nil
     }
 }

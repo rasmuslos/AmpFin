@@ -21,6 +21,9 @@ import AFOffline
 public final class AudioPlayer {
     static let logger = Logger(subsystem: "io.rfk.ampfin", category: "AudioPlayer")
     
+    private var sleepTimer: Timer?
+    public private(set) var sleepTimerEndDate: Date?
+    
     public var playbackInfo: PlaybackInfo? {
         didSet {
             guard oldValue != playbackInfo else {
@@ -102,6 +105,8 @@ internal extension AudioPlayer {
 }
 
 public extension AudioPlayer {
+    static let sleepTimerCompletedNotification = NSNotification.Name("AudioPlayerSleepTimerCompleted")
+    
     func startRemoteControl(session: Session) {
         Self.logger.info("Setting up remote endpoint \(session.name) (\(session.client))")
         
@@ -112,6 +117,43 @@ public extension AudioPlayer {
         endpoint = RemoteAudioEndpoint(session: session)
         
         signalEndpointChange()
+    }
+    
+    func setSleepTimer(minutes: Int) {
+        cancelSleepTimer()
+        
+        sleepTimerEndDate = Date().addingTimeInterval(TimeInterval(minutes * 60))
+        
+        sleepTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(minutes * 60), repeats: false) { [weak self] _ in
+            self?.handleSleepTimerFired()
+        }
+        
+        Self.logger.info("Sleep timer set for \(minutes) minutes")
+    }
+    
+    func cancelSleepTimer() {
+        sleepTimer?.invalidate()
+        sleepTimer = nil
+        sleepTimerEndDate = nil
+        Self.logger.info("Sleep timer cancelled")
+    }
+    
+    var sleepTimerRemainingMinutes: Int? {
+        guard let endDate = sleepTimerEndDate else { return nil }
+        let remaining = endDate.timeIntervalSinceNow
+        return remaining > 0 ? Int(ceil(remaining / 60)) : nil
+    }
+    
+    private func handleSleepTimerFired() {
+        Self.logger.info("Sleep timer completed")
+        stopPlayback()
+        sleepTimer = nil
+        sleepTimerEndDate = nil
+        
+        NotificationCenter.default.post(
+            name: Self.sleepTimerCompletedNotification,
+            object: nil
+        )
     }
 }
 

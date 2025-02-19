@@ -126,6 +126,7 @@
 		3AF3BA982C525E2900C96E1F /* QueueButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF3BA972C525E2900C96E1F /* QueueButtons.swift */; };
 		3AF815DD2AAA1A80004BA444 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF815DC2AAA1A80004BA444 /* Lyrics.swift */; };
 		3AFCD1212BC5CB6A00589301 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFCD1202BC5CB6A00589301 /* Buttons.swift */; };
+		970719752D66280300FE4749 /* SleepTimerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970719742D6627F300FE4749 /* SleepTimerMenu.swift */; };
 		EAB1E6C52CA69AFC0094D8EF /* LoginQuickConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB1E6C42CA69AF20094D8EF /* LoginQuickConnectView.swift */; };
 /* End PBXBuildFile section */
 
@@ -280,6 +281,7 @@
 		3AF3BA972C525E2900C96E1F /* QueueButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueButtons.swift; sourceTree = "<group>"; };
 		3AF815DC2AAA1A80004BA444 /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
 		3AFCD1202BC5CB6A00589301 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		970719742D6627F300FE4749 /* SleepTimerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepTimerMenu.swift; sourceTree = "<group>"; };
 		EAB1E6C42CA69AF20094D8EF /* LoginQuickConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginQuickConnectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -485,6 +487,7 @@
 		3A98A0332AABA48D00EA84CF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				970719742D6627F300FE4749 /* SleepTimerMenu.swift */,
 				3AAC768C2B02C68600E337C1 /* ItemImage.swift */,
 				3A234E142AA8DBC900197AA7 /* SortSelector.swift */,
 				3AF3BA972C525E2900C96E1F /* QueueButtons.swift */,
@@ -934,6 +937,7 @@
 				3A3DA6612AAB29470091211A /* ArtistsView.swift in Sources */,
 				3ADE8EA02AA93D39009826A3 /* AlbumView+Toolbar.swift in Sources */,
 				3A3DA66B2AAB2DDA0091211A /* ArtistView.swift in Sources */,
+				970719752D66280300FE4749 /* SleepTimerMenu.swift in Sources */,
 				3A3DA6682AAB2CDA0091211A /* ArtistListRow.swift in Sources */,
 				3A8B99402AAA0085004AAA7B /* Controls.swift in Sources */,
 				3AA803E72CE8B05D0048329B /* LoginFormView.swift in Sources */,

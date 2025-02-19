@@ -75,6 +75,11 @@ internal extension PlaylistViewModel {
     var downloadStatus: ItemOfflineTracker.OfflineStatus {
         offlineTracker.status
     }
+    
+    @MainActor
+    var hasSleepTimer: Bool {
+        AudioPlayer.current.sleepTimerEndDate != nil
+    }
 }
 
 internal extension PlaylistViewModel {
@@ -136,6 +141,14 @@ internal extension PlaylistViewModel {
                 }
             }
         }
+    }
+    
+    func startSleepTimer(minutes: Int) {
+        AudioPlayer.current.setSleepTimer(minutes: minutes)
+    }
+    
+    func cancelSleepTimer() {
+        AudioPlayer.current.cancelSleepTimer()
     }
 }
 
