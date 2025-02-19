@@ -73,6 +73,12 @@ internal extension AlbumViewModel {
             }
         }
     }
+    func startSleepTimer(minutes: Int) {
+        AudioPlayer.current.setSleepTimer(minutes: minutes)
+    }
+    func cancelSleepTimer() {
+        AudioPlayer.current.cancelSleepTimer()
+    }
 }
 
 internal extension AlbumViewModel {

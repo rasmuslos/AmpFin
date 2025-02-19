@@ -131,8 +131,12 @@ private struct ToolbarMenu: View {
                 viewModel.queue(now: $0)
             }
             
-            Button {
-                
+            Menu {
+                Button {
+                    viewModel.startSleepTimer(minutes: 1)
+                } label: {
+                    Text("1 minute")
+                }
             } label: {
                 Label("timer", systemImage: "clock")
             }
