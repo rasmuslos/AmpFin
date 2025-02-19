@@ -182,4 +182,9 @@ internal extension AlbumViewModel {
     var runtime: Double {
         tracks.reduce(0, { $0 + $1.runtime })
     }
+    
+    @MainActor
+    var hasSleepTimer: Bool {
+        AudioPlayer.current.sleepTimerEndDate != nil
+    }
 }

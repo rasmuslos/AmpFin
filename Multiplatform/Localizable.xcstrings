@@ -1,6 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld minutes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld minuten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld minutes"
+          }
+        }
+      }
+    },
     "account" : {
       "localizations" : {
         "de" : {
@@ -480,6 +496,9 @@
           }
         }
       }
+    },
+    "Cancel timer" : {
+
     },
     "done" : {
       "localizations" : {
@@ -2140,6 +2159,9 @@
           }
         }
       }
+    },
+    "Sleep timer" : {
+
     },
     "sort" : {
       "localizations" : {

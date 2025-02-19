@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AVInitialRouteSharingPolicy</key>
+	<string>LongFormAudio</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CoreSpotlightContinuation</key>
+	<true/>
 	<key>INAlternativeAppNames</key>
 	<array>
 		<dict>
@@ -11,11 +17,6 @@
 			<string>ampfin</string>
 		</dict>
 	</array>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<true/>
-	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSAppTransportSecurity</key>
@@ -35,15 +36,14 @@
 		<string>io.rfk.ampfin.playlist</string>
 		<string>io.rfk.ampfin.track</string>
 	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
 	</array>
-	<key>CoreSpotlightContinuation</key>
-	<true/>
-	<key>AVInitialRouteSharingPolicy</key>
-	<string>LongFormAudio</string>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
 </dict>
 </plist>
