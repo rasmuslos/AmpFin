@@ -98,6 +98,17 @@ internal extension AlbumViewModel {
             }
         }
     }
+    func download(track: Track) {
+        Task {
+            do {
+                try OfflineManager.shared.download(track: track)
+            } catch {
+                await MainActor.run {
+                    self.errorFeedback.toggle()
+                }
+            }
+        }
+    }
 }
 
 extension AlbumViewModel {
