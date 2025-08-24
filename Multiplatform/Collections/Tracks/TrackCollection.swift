@@ -95,6 +95,9 @@ internal extension TrackCollection {
     
     struct TrackMenu: View {
         @Environment(\.libraryDataProvider) private var dataProvider
+        // get access to the AlbumViewModel
+        @Environment(AlbumViewModel.self) private var albumViewModel: AlbumViewModel?
+        @Environment(PlaylistViewModel.self) private var playlistViewModel: PlaylistViewModel?
         
         let track: Track
         let album: Album?
@@ -146,6 +149,18 @@ internal extension TrackCollection {
                 Label("playlist.add", systemImage: "plus")
             }
             .disabled(!JellyfinClient.shared.online)
+            
+            Button {
+                        if let albumViewModel {
+                            albumViewModel.download(track: track)
+                        } else if let playlistViewModel {
+                            playlistViewModel.download(track: track)
+                        }
+                    } label: {
+                        Label("Download", systemImage: "arrow.down.circle")
+                    }
+
+
             
             Divider()
             

@@ -30,7 +30,7 @@
     {
       "identity" : "rfkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/rasmuslos/RFKit",
+      "location" : "https://git.sr.ht/~rasmuslos/RFKit",
       "state" : {
         "branch" : "main",
         "revision" : "6cc0648ca3804a16ff6e3b94e141957705e63306"

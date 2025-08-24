@@ -121,7 +121,17 @@ internal extension PlaylistViewModel {
             }
         }
     }
-    
+    func download(track: Track) {
+            Task {
+                do {
+                    try OfflineManager.shared.download(track: track)
+                } catch {
+                    //  can add error handling here 
+                }
+            }
+        }
+        
+
     func delete() {
         Task {
             do {

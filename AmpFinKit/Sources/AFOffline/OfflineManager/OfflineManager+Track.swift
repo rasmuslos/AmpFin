@@ -57,6 +57,22 @@ internal extension OfflineManager {
         
         downloadTask.resume()
         
+        // Download album cover when downloading a single song.
+
+        Task.detached {
+            do {
+                // 1. Fetch the full album details.
+                let fullAlbum = try await JellyfinClient.shared.album(identifier: track.album.id)
+                
+                // 2. If the cover exists, download it using the app's helper function.
+                if let cover = fullAlbum.cover {
+                    try await DownloadManager.shared.downloadCover(parentId: fullAlbum.id, cover: cover)
+                }
+            } catch {
+                Self.logger.error("Failed to fetch/download cover for track '\(track.name)': \(error)")
+            }
+        }
+        
         Task.detached {
             await updateLyrics(trackId: track.id)
         }
@@ -102,6 +118,10 @@ internal extension OfflineManager {
 // MARK: Public (Higher Order)
 
 public extension OfflineManager {
+    func download(track: Track) throws {
+            let context = ModelContext(PersistenceManager.shared.modelContainer)
+            self.download(track: track, context: context)
+        }
     func track(identifier: String) throws -> Track {
         let context = ModelContext(PersistenceManager.shared.modelContainer)
         let track = try offlineTrack(trackId: identifier, context: context)
