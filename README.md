@@ -1,5 +1,8 @@
 # AmpFin
 
+> [!IMPORTANT]
+> See https://github.com/rasmuslos/AmpFin/issues/101#issuecomment-3531949239
+
 AmpFin is a music app designed to elevate your listening experience on iPhone and iPad. It seamlessly integrates with your Jellyfin server, bringing your entire music collection to life with a sleek, modern interface and intuitive features.
 This app goes beyond just playing music. Dive deep into your library, explore by artist, or discover new favorites with AmpFin's powerful browsing tools.  Whether you're listening at home or on the go, AmpFin keeps you in control with offline playback, seamless integration with Siri and Spotlight, and a beautiful queue system.
 
